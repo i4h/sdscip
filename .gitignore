@@ -1,0 +1,14 @@
+*.[oa]
+*.pyc
+bin/
+lib/
+obj/
+TAGS
+
+
+doc/doxygen
+doc/footer.html
+doc/html/
+doc/miniscippy.png
+doc/scip.css
+doc/scippy.png
