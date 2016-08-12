@@ -24,7 +24,24 @@
 # paths
 #-----------------------------------------------------------------------------
 
-SCIPDIR         =       ../..
+#-----------------------------------------------------------------------------
+# include default project Makefile from SCIP
+#-----------------------------------------------------------------------------
+
+# save directory to be able to locate library files
+ifeq ($(OSTYPE),mingw)
+SDSCIPDIR	=	./
+else
+SDSCIPDIR	=	$(realpath .)
+endif
+SDSCIPLIBDIR	=	lib
+
+SCIPDIR		= 	$(SDSCIPDIR)/lib/scip
+
+# check whether SCIPDIR exists
+ifeq ("$(wildcard $(SCIPDIR))","")
+$(error Please add a soft-link to the SCIP directory as $(SDSCIPDIR)/lib/scip)
+endif
 
 
 #-----------------------------------------------------------------------------
@@ -33,7 +50,10 @@ SCIPDIR         =       ../..
 include $(SCIPDIR)/make/make.project
 
 
+# include install/uninstall targets
+-include make/make.install
 
+$(info $$SCIPDIR is ${SCIPDIR})
 
 #-----------------------------------------------------------------------------
 # Main Program
@@ -100,6 +120,9 @@ MAINFILE	=	$(BINDIR)/$(MAIN)
 MAINSHORTLINK	=	$(BINDIR)/$(MAINNAME)
 MAINOBJFILES	=	$(addprefix $(OBJDIR)/,$(MAINOBJ))
 
+
+$(info $$MAINSRC is ${MAINSRC})
+
 VERBOSE = true
 
 #-----------------------------------------------------------------------------
@@ -120,6 +143,7 @@ endif
 
 .PHONY: all
 all:   		$(SCIPDIR) $(MAINFILE) $(MAINSHORTLINK)
+
 
 .PHONY: lint
 lint:		$(MAINSRC)
