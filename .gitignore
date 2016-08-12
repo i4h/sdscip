@@ -1,7 +1,6 @@
 *.[oa]
 *.pyc
 bin/
-lib/
 obj/
 TAGS
 
