@@ -1,0 +1,2 @@
+check.sh configuration_logfiles.sh configuration_set.sh configuration_tmpfile_setup_scip.sh evalcheck_cluster.sh evalcheck.sh run.sh
+check.awk getlastprob.awk

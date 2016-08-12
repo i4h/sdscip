@@ -121,7 +121,6 @@ MAINSHORTLINK	=	$(BINDIR)/$(MAINNAME)
 MAINOBJFILES	=	$(addprefix $(OBJDIR)/,$(MAINOBJ))
 
 
-$(info $$MAINSRC is ${MAINSRC})
 
 VERBOSE = true
 
@@ -169,16 +168,20 @@ doc:
 
 .PHONY: test
 test:           $(MAINFILE)
-		@-(cd check && ln -fs ../$(SCIPDIR)/check/check.sh);
-		@-(cd check && ln -fs ../$(SCIPDIR)/check/evalcheck.sh);
-		@-(cd check && ln -fs ../$(SCIPDIR)/check/check.awk);
-		@-(cd check && ln -fs ../$(SCIPDIR)/check/getlastprob.awk);
+		@-(cd check && ln -fs $(SCIPDIR)/check/check.sh);
+		@-(cd check && ln -fs $(SCIPDIR)/check/evalcheck.sh);
+		@-(cd check && ln -fs $(SCIPDIR)/check/evalcheck_cluster.sh);
+		@-(cd check && ln -fs $(SCIPDIR)/check/check.awk);
+		@-(cd check && ln -fs $(SCIPDIR)/check/getlastprob.awk);
+		@-(cd check && ln -fs $(SCIPDIR)/check/configuration_set.sh);
+		@-(cd check && ln -fs $(SCIPDIR)/check/configuration_logfiles.sh);
+		@-(cd check && ln -fs $(SCIPDIR)/check/configuration_tmpfile_setup_scip.sh);
+		@-(cd check && ln -fs $(SCIPDIR)/check/run.sh);
 		cd check; \
-		$(SHELL) ./check.sh $(TEST) $(MAINFILE) $(SETTINGS) $(notdir $(MAINFILE)).$(HOSTNAME) $(TIME) $(NODES) $(MEM) $(THREADS) $(FEASTOL) $(DISPFREQ) $(CONTINUE) $(LOCK) $(VERSION) $(LPS);
+		$(SHELL) ./check.sh $(TEST) $(MAINFILE) $(SETTINGS) $(notdir $(MAINFILE)) $(TIME) $(NODES) $(MEM) $(THREADS) $(FEASTOL) $(DISPFREQ) \
+		$(CONTINUE) $(LOCK) "example" $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE);
 
-$(MAINSHORTLINK):	$(MAINFILE)
-		@rm -f $@
-		cd $(dir $@) && ln -s $(notdir $(MAINFILE)) $(notdir $@)
+
 
 $(OBJDIR):
 		@-mkdir -p $(OBJDIR)
