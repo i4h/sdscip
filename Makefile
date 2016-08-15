@@ -168,6 +168,10 @@ $(MAINSHORTLINK):	$(MAINFILE)
 		cd $(dir $@) && ln -s $(notdir $(MAINFILE)) $(notdir $@)
 
 
+$(MAINSHORTLINK): $(MAINFILE)
+		@rm -f $@
+		cd $(dir $@) && ln -s $(notdir $(MAINFILE)) $(notdir $@)
+
 $(OBJDIR):
 		@-mkdir -p $(OBJDIR)
 
