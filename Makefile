@@ -182,6 +182,10 @@ test:           $(MAINFILE)
 		$(CONTINUE) $(LOCK) "example" $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE);
 
 
+$(MAINSHORTLINK):	$(MAINFILE)
+		@rm -f $@
+		cd $(dir $@) && ln -s $(notdir $(MAINFILE)) $(notdir $@)
+
 
 $(OBJDIR):
 		@-mkdir -p $(OBJDIR)
