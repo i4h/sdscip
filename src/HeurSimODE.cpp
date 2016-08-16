@@ -147,14 +147,9 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    SCIPdbgMsg("set nAlgebraic_ to %i\n", nAlgebraic_);
 
 
-   /* Create solution */
-   SCIPcreateOrigSol(scip_, &sol_, heur);
-
    /** Create integrator **/
    char* discretization;
    SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
-
-
 
    //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE_MIDPOINT; mode = mode + 1) {
    //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_MIDPOINT; mode = mode + 1)
