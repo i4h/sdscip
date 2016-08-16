@@ -167,6 +167,7 @@ public:
 
    using SDproblemStructureInterface::getXdotParams;
    SCIP_Real* getXdotParams( int time );
+   int getNParamsPerTime();
 
    SCIP_Real* getXdotParams(SCIP_Real time);
 

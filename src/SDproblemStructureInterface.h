@@ -296,6 +296,7 @@ public:
    virtual SCIP_EXPR** getXdotAlgebraic();
    virtual SCIP_EXPR** getAlgebraicExpressions();
    virtual SCIP_Real* getXdotParams();
+   virtual int getNParamsPerTime();
    virtual SCIP_Real* getXdotParams(int time);
    //TODOs:
    virtual SCIP_Real* getXdotParams(SCIP_Real time);

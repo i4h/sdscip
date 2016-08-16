@@ -1001,6 +1001,12 @@ SCIP_Real *SDproblemStructureV1::getXdotParams( int time )
 {
    return &xdotParams_[time * nParamsPerTime_];
 }
+
+int SDproblemStructureV1::getNParamsPerTime() {
+   return nParamsPerTime_;
+}
+
+
 void SDproblemStructureV1::setXdotParams( std::vector< SCIP_Real > xdotParams, unsigned int nParamsPerTime )
 {
    xdotParams_ = std::move( xdotParams );
@@ -1187,6 +1193,7 @@ SDproblemStructureInterface::BoundMap SDproblemStructureV1::getStrictBounds()
 void SDproblemStructureV1::setStrictBounds(SDproblemStructureInterface::BoundMap boundMap)
 {
    boundMap_ = std::move(boundMap);
+   //boundMap_ = boundMap;
 }
 
 } /* namespace ctrl */

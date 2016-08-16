@@ -117,6 +117,12 @@ SCIP_Bool SDproblemStructureInterface::isStateVar(SCIP_VAR* var) {
    return false;
 }
 
+int SDproblemStructureInterface::getNParamsPerTime() {
+   //TODO
+   SCIPerrorMessage("%s:%s not implemented\n",__FILE__,__func__);
+   return 0;
+}
+
 /** Returns the first time in which the variable appears
  *  if var is no control variable returns -1 */
 int SDproblemStructureInterface::getStateVarTime(SCIP_VAR* var) {
