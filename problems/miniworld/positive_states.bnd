@@ -1,0 +1,603 @@
+<Assets ConsumptionLevel(0)> 0 inf
+<Assets ConsumptionLevel(1)> 0 inf
+<Assets ConsumptionLevel(2)> 0 inf
+<Assets ConsumptionLevel(3)> 0 inf
+<Assets ConsumptionLevel(4)> 0 inf
+<Assets ConsumptionLevel(5)> 0 inf
+<Assets ConsumptionLevel(6)> 0 inf
+<Assets ConsumptionLevel(7)> 0 inf
+<Assets ConsumptionLevel(8)> 0 inf
+<Assets ConsumptionLevel(9)> 0 inf
+<Assets ConsumptionLevel(10)> 0 inf
+<Assets ConsumptionLevel(11)> 0 inf
+<Assets ConsumptionLevel(12)> 0 inf
+<Assets ConsumptionLevel(13)> 0 inf
+<Assets ConsumptionLevel(14)> 0 inf
+<Assets ConsumptionLevel(15)> 0 inf
+<Assets ConsumptionLevel(16)> 0 inf
+<Assets ConsumptionLevel(17)> 0 inf
+<Assets ConsumptionLevel(18)> 0 inf
+<Assets ConsumptionLevel(19)> 0 inf
+<Assets ConsumptionLevel(20)> 0 inf
+<Assets ConsumptionLevel(21)> 0 inf
+<Assets ConsumptionLevel(22)> 0 inf
+<Assets ConsumptionLevel(23)> 0 inf
+<Assets ConsumptionLevel(24)> 0 inf
+<Assets ConsumptionLevel(25)> 0 inf
+<Assets ConsumptionLevel(26)> 0 inf
+<Assets ConsumptionLevel(27)> 0 inf
+<Assets ConsumptionLevel(28)> 0 inf
+<Assets ConsumptionLevel(29)> 0 inf
+<Assets ConsumptionLevel(30)> 0 inf
+<Assets ConsumptionLevel(31)> 0 inf
+<Assets ConsumptionLevel(32)> 0 inf
+<Assets ConsumptionLevel(33)> 0 inf
+<Assets ConsumptionLevel(34)> 0 inf
+<Assets ConsumptionLevel(35)> 0 inf
+<Assets ConsumptionLevel(36)> 0 inf
+<Assets ConsumptionLevel(37)> 0 inf
+<Assets ConsumptionLevel(38)> 0 inf
+<Assets ConsumptionLevel(39)> 0 inf
+<Assets ConsumptionLevel(40)> 0 inf
+<Assets ConsumptionLevel(41)> 0 inf
+<Assets ConsumptionLevel(42)> 0 inf
+<Assets ConsumptionLevel(43)> 0 inf
+<Assets ConsumptionLevel(44)> 0 inf
+<Assets ConsumptionLevel(45)> 0 inf
+<Assets ConsumptionLevel(46)> 0 inf
+<Assets ConsumptionLevel(47)> 0 inf
+<Assets ConsumptionLevel(48)> 0 inf
+<Assets ConsumptionLevel(49)> 0 inf
+<Assets ConsumptionLevel(50)> 0 inf
+<Assets ConsumptionLevel(51)> 0 inf
+<Assets ConsumptionLevel(52)> 0 inf
+<Assets ConsumptionLevel(53)> 0 inf
+<Assets ConsumptionLevel(54)> 0 inf
+<Assets ConsumptionLevel(55)> 0 inf
+<Assets ConsumptionLevel(56)> 0 inf
+<Assets ConsumptionLevel(57)> 0 inf
+<Assets ConsumptionLevel(58)> 0 inf
+<Assets ConsumptionLevel(59)> 0 inf
+<Assets ConsumptionLevel(60)> 0 inf
+<Assets ConsumptionLevel(61)> 0 inf
+<Assets ConsumptionLevel(62)> 0 inf
+<Assets ConsumptionLevel(63)> 0 inf
+<Assets ConsumptionLevel(64)> 0 inf
+<Assets ConsumptionLevel(65)> 0 inf
+<Assets ConsumptionLevel(66)> 0 inf
+<Assets ConsumptionLevel(67)> 0 inf
+<Assets ConsumptionLevel(68)> 0 inf
+<Assets ConsumptionLevel(69)> 0 inf
+<Assets ConsumptionLevel(70)> 0 inf
+<Assets ConsumptionLevel(71)> 0 inf
+<Assets ConsumptionLevel(72)> 0 inf
+<Assets ConsumptionLevel(73)> 0 inf
+<Assets ConsumptionLevel(74)> 0 inf
+<Assets ConsumptionLevel(75)> 0 inf
+<Assets ConsumptionLevel(76)> 0 inf
+<Assets ConsumptionLevel(77)> 0 inf
+<Assets ConsumptionLevel(78)> 0 inf
+<Assets ConsumptionLevel(79)> 0 inf
+<Assets ConsumptionLevel(80)> 0 inf
+<Assets ConsumptionLevel(81)> 0 inf
+<Assets ConsumptionLevel(82)> 0 inf
+<Assets ConsumptionLevel(83)> 0 inf
+<Assets ConsumptionLevel(84)> 0 inf
+<Assets ConsumptionLevel(85)> 0 inf
+<Assets ConsumptionLevel(86)> 0 inf
+<Assets ConsumptionLevel(87)> 0 inf
+<Assets ConsumptionLevel(88)> 0 inf
+<Assets ConsumptionLevel(89)> 0 inf
+<Assets ConsumptionLevel(90)> 0 inf
+<Assets ConsumptionLevel(91)> 0 inf
+<Assets ConsumptionLevel(92)> 0 inf
+<Assets ConsumptionLevel(93)> 0 inf
+<Assets ConsumptionLevel(94)> 0 inf
+<Assets ConsumptionLevel(95)> 0 inf
+<Assets ConsumptionLevel(96)> 0 inf
+<Assets ConsumptionLevel(97)> 0 inf
+<Assets ConsumptionLevel(98)> 0 inf
+<Assets ConsumptionLevel(99)> 0 inf
+<Assets ConsumptionLevel(100)> 0 inf
+<Assets ConsumptionLevel(101)> 0 inf
+<Assets ConsumptionLevel(102)> 0 inf
+<Assets ConsumptionLevel(103)> 0 inf
+<Assets ConsumptionLevel(104)> 0 inf
+<Assets ConsumptionLevel(105)> 0 inf
+<Assets ConsumptionLevel(106)> 0 inf
+<Assets ConsumptionLevel(107)> 0 inf
+<Assets ConsumptionLevel(108)> 0 inf
+<Assets ConsumptionLevel(109)> 0 inf
+<Assets ConsumptionLevel(110)> 0 inf
+<Assets ConsumptionLevel(111)> 0 inf
+<Assets ConsumptionLevel(112)> 0 inf
+<Assets ConsumptionLevel(113)> 0 inf
+<Assets ConsumptionLevel(114)> 0 inf
+<Assets ConsumptionLevel(115)> 0 inf
+<Assets ConsumptionLevel(116)> 0 inf
+<Assets ConsumptionLevel(117)> 0 inf
+<Assets ConsumptionLevel(118)> 0 inf
+<Assets ConsumptionLevel(119)> 0 inf
+<Assets ConsumptionLevel(120)> 0 inf
+<Assets ConsumptionLevel(121)> 0 inf
+<Assets ConsumptionLevel(122)> 0 inf
+<Assets ConsumptionLevel(123)> 0 inf
+<Assets ConsumptionLevel(124)> 0 inf
+<Assets ConsumptionLevel(125)> 0 inf
+<Assets ConsumptionLevel(126)> 0 inf
+<Assets ConsumptionLevel(127)> 0 inf
+<Assets ConsumptionLevel(128)> 0 inf
+<Assets ConsumptionLevel(129)> 0 inf
+<Assets ConsumptionLevel(130)> 0 inf
+<Assets ConsumptionLevel(131)> 0 inf
+<Assets ConsumptionLevel(132)> 0 inf
+<Assets ConsumptionLevel(133)> 0 inf
+<Assets ConsumptionLevel(134)> 0 inf
+<Assets ConsumptionLevel(135)> 0 inf
+<Assets ConsumptionLevel(136)> 0 inf
+<Assets ConsumptionLevel(137)> 0 inf
+<Assets ConsumptionLevel(138)> 0 inf
+<Assets ConsumptionLevel(139)> 0 inf
+<Assets ConsumptionLevel(140)> 0 inf
+<Assets ConsumptionLevel(141)> 0 inf
+<Assets ConsumptionLevel(142)> 0 inf
+<Assets ConsumptionLevel(143)> 0 inf
+<Assets ConsumptionLevel(144)> 0 inf
+<Assets ConsumptionLevel(145)> 0 inf
+<Assets ConsumptionLevel(146)> 0 inf
+<Assets ConsumptionLevel(147)> 0 inf
+<Assets ConsumptionLevel(148)> 0 inf
+<Assets ConsumptionLevel(149)> 0 inf
+<Assets ConsumptionLevel(150)> 0 inf
+<Assets ConsumptionLevel(151)> 0 inf
+<Assets ConsumptionLevel(152)> 0 inf
+<Assets ConsumptionLevel(153)> 0 inf
+<Assets ConsumptionLevel(154)> 0 inf
+<Assets ConsumptionLevel(155)> 0 inf
+<Assets ConsumptionLevel(156)> 0 inf
+<Assets ConsumptionLevel(157)> 0 inf
+<Assets ConsumptionLevel(158)> 0 inf
+<Assets ConsumptionLevel(159)> 0 inf
+<Assets ConsumptionLevel(160)> 0 inf
+<Assets ConsumptionLevel(161)> 0 inf
+<Assets ConsumptionLevel(162)> 0 inf
+<Assets ConsumptionLevel(163)> 0 inf
+<Assets ConsumptionLevel(164)> 0 inf
+<Assets ConsumptionLevel(165)> 0 inf
+<Assets ConsumptionLevel(166)> 0 inf
+<Assets ConsumptionLevel(167)> 0 inf
+<Assets ConsumptionLevel(168)> 0 inf
+<Assets ConsumptionLevel(169)> 0 inf
+<Assets ConsumptionLevel(170)> 0 inf
+<Assets ConsumptionLevel(171)> 0 inf
+<Assets ConsumptionLevel(172)> 0 inf
+<Assets ConsumptionLevel(173)> 0 inf
+<Assets ConsumptionLevel(174)> 0 inf
+<Assets ConsumptionLevel(175)> 0 inf
+<Assets ConsumptionLevel(176)> 0 inf
+<Assets ConsumptionLevel(177)> 0 inf
+<Assets ConsumptionLevel(178)> 0 inf
+<Assets ConsumptionLevel(179)> 0 inf
+<Assets ConsumptionLevel(180)> 0 inf
+<Assets ConsumptionLevel(181)> 0 inf
+<Assets ConsumptionLevel(182)> 0 inf
+<Assets ConsumptionLevel(183)> 0 inf
+<Assets ConsumptionLevel(184)> 0 inf
+<Assets ConsumptionLevel(185)> 0 inf
+<Assets ConsumptionLevel(186)> 0 inf
+<Assets ConsumptionLevel(187)> 0 inf
+<Assets ConsumptionLevel(188)> 0 inf
+<Assets ConsumptionLevel(189)> 0 inf
+<Assets ConsumptionLevel(190)> 0 inf
+<Assets ConsumptionLevel(191)> 0 inf
+<Assets ConsumptionLevel(192)> 0 inf
+<Assets ConsumptionLevel(193)> 0 inf
+<Assets ConsumptionLevel(194)> 0 inf
+<Assets ConsumptionLevel(195)> 0 inf
+<Assets ConsumptionLevel(196)> 0 inf
+<Assets ConsumptionLevel(197)> 0 inf
+<Assets ConsumptionLevel(198)> 0 inf
+<Assets ConsumptionLevel(199)> 0 inf
+<Assets ConsumptionLevel(200)> 0 inf
+<Population(0)> 0 inf
+<Population(1)> 0 inf
+<Population(2)> 0 inf
+<Population(3)> 0 inf
+<Population(4)> 0 inf
+<Population(5)> 0 inf
+<Population(6)> 0 inf
+<Population(7)> 0 inf
+<Population(8)> 0 inf
+<Population(9)> 0 inf
+<Population(10)> 0 inf
+<Population(11)> 0 inf
+<Population(12)> 0 inf
+<Population(13)> 0 inf
+<Population(14)> 0 inf
+<Population(15)> 0 inf
+<Population(16)> 0 inf
+<Population(17)> 0 inf
+<Population(18)> 0 inf
+<Population(19)> 0 inf
+<Population(20)> 0 inf
+<Population(21)> 0 inf
+<Population(22)> 0 inf
+<Population(23)> 0 inf
+<Population(24)> 0 inf
+<Population(25)> 0 inf
+<Population(26)> 0 inf
+<Population(27)> 0 inf
+<Population(28)> 0 inf
+<Population(29)> 0 inf
+<Population(30)> 0 inf
+<Population(31)> 0 inf
+<Population(32)> 0 inf
+<Population(33)> 0 inf
+<Population(34)> 0 inf
+<Population(35)> 0 inf
+<Population(36)> 0 inf
+<Population(37)> 0 inf
+<Population(38)> 0 inf
+<Population(39)> 0 inf
+<Population(40)> 0 inf
+<Population(41)> 0 inf
+<Population(42)> 0 inf
+<Population(43)> 0 inf
+<Population(44)> 0 inf
+<Population(45)> 0 inf
+<Population(46)> 0 inf
+<Population(47)> 0 inf
+<Population(48)> 0 inf
+<Population(49)> 0 inf
+<Population(50)> 0 inf
+<Population(51)> 0 inf
+<Population(52)> 0 inf
+<Population(53)> 0 inf
+<Population(54)> 0 inf
+<Population(55)> 0 inf
+<Population(56)> 0 inf
+<Population(57)> 0 inf
+<Population(58)> 0 inf
+<Population(59)> 0 inf
+<Population(60)> 0 inf
+<Population(61)> 0 inf
+<Population(62)> 0 inf
+<Population(63)> 0 inf
+<Population(64)> 0 inf
+<Population(65)> 0 inf
+<Population(66)> 0 inf
+<Population(67)> 0 inf
+<Population(68)> 0 inf
+<Population(69)> 0 inf
+<Population(70)> 0 inf
+<Population(71)> 0 inf
+<Population(72)> 0 inf
+<Population(73)> 0 inf
+<Population(74)> 0 inf
+<Population(75)> 0 inf
+<Population(76)> 0 inf
+<Population(77)> 0 inf
+<Population(78)> 0 inf
+<Population(79)> 0 inf
+<Population(80)> 0 inf
+<Population(81)> 0 inf
+<Population(82)> 0 inf
+<Population(83)> 0 inf
+<Population(84)> 0 inf
+<Population(85)> 0 inf
+<Population(86)> 0 inf
+<Population(87)> 0 inf
+<Population(88)> 0 inf
+<Population(89)> 0 inf
+<Population(90)> 0 inf
+<Population(91)> 0 inf
+<Population(92)> 0 inf
+<Population(93)> 0 inf
+<Population(94)> 0 inf
+<Population(95)> 0 inf
+<Population(96)> 0 inf
+<Population(97)> 0 inf
+<Population(98)> 0 inf
+<Population(99)> 0 inf
+<Population(100)> 0 inf
+<Population(101)> 0 inf
+<Population(102)> 0 inf
+<Population(103)> 0 inf
+<Population(104)> 0 inf
+<Population(105)> 0 inf
+<Population(106)> 0 inf
+<Population(107)> 0 inf
+<Population(108)> 0 inf
+<Population(109)> 0 inf
+<Population(110)> 0 inf
+<Population(111)> 0 inf
+<Population(112)> 0 inf
+<Population(113)> 0 inf
+<Population(114)> 0 inf
+<Population(115)> 0 inf
+<Population(116)> 0 inf
+<Population(117)> 0 inf
+<Population(118)> 0 inf
+<Population(119)> 0 inf
+<Population(120)> 0 inf
+<Population(121)> 0 inf
+<Population(122)> 0 inf
+<Population(123)> 0 inf
+<Population(124)> 0 inf
+<Population(125)> 0 inf
+<Population(126)> 0 inf
+<Population(127)> 0 inf
+<Population(128)> 0 inf
+<Population(129)> 0 inf
+<Population(130)> 0 inf
+<Population(131)> 0 inf
+<Population(132)> 0 inf
+<Population(133)> 0 inf
+<Population(134)> 0 inf
+<Population(135)> 0 inf
+<Population(136)> 0 inf
+<Population(137)> 0 inf
+<Population(138)> 0 inf
+<Population(139)> 0 inf
+<Population(140)> 0 inf
+<Population(141)> 0 inf
+<Population(142)> 0 inf
+<Population(143)> 0 inf
+<Population(144)> 0 inf
+<Population(145)> 0 inf
+<Population(146)> 0 inf
+<Population(147)> 0 inf
+<Population(148)> 0 inf
+<Population(149)> 0 inf
+<Population(150)> 0 inf
+<Population(151)> 0 inf
+<Population(152)> 0 inf
+<Population(153)> 0 inf
+<Population(154)> 0 inf
+<Population(155)> 0 inf
+<Population(156)> 0 inf
+<Population(157)> 0 inf
+<Population(158)> 0 inf
+<Population(159)> 0 inf
+<Population(160)> 0 inf
+<Population(161)> 0 inf
+<Population(162)> 0 inf
+<Population(163)> 0 inf
+<Population(164)> 0 inf
+<Population(165)> 0 inf
+<Population(166)> 0 inf
+<Population(167)> 0 inf
+<Population(168)> 0 inf
+<Population(169)> 0 inf
+<Population(170)> 0 inf
+<Population(171)> 0 inf
+<Population(172)> 0 inf
+<Population(173)> 0 inf
+<Population(174)> 0 inf
+<Population(175)> 0 inf
+<Population(176)> 0 inf
+<Population(177)> 0 inf
+<Population(178)> 0 inf
+<Population(179)> 0 inf
+<Population(180)> 0 inf
+<Population(181)> 0 inf
+<Population(182)> 0 inf
+<Population(183)> 0 inf
+<Population(184)> 0 inf
+<Population(185)> 0 inf
+<Population(186)> 0 inf
+<Population(187)> 0 inf
+<Population(188)> 0 inf
+<Population(189)> 0 inf
+<Population(190)> 0 inf
+<Population(191)> 0 inf
+<Population(192)> 0 inf
+<Population(193)> 0 inf
+<Population(194)> 0 inf
+<Population(195)> 0 inf
+<Population(196)> 0 inf
+<Population(197)> 0 inf
+<Population(198)> 0 inf
+<Population(199)> 0 inf
+<Population(200)> 0 inf
+<Pollution(0)> 0 inf
+<Pollution(1)> 0 inf
+<Pollution(2)> 0 inf
+<Pollution(3)> 0 inf
+<Pollution(4)> 0 inf
+<Pollution(5)> 0 inf
+<Pollution(6)> 0 inf
+<Pollution(7)> 0 inf
+<Pollution(8)> 0 inf
+<Pollution(9)> 0 inf
+<Pollution(10)> 0 inf
+<Pollution(11)> 0 inf
+<Pollution(12)> 0 inf
+<Pollution(13)> 0 inf
+<Pollution(14)> 0 inf
+<Pollution(15)> 0 inf
+<Pollution(16)> 0 inf
+<Pollution(17)> 0 inf
+<Pollution(18)> 0 inf
+<Pollution(19)> 0 inf
+<Pollution(20)> 0 inf
+<Pollution(21)> 0 inf
+<Pollution(22)> 0 inf
+<Pollution(23)> 0 inf
+<Pollution(24)> 0 inf
+<Pollution(25)> 0 inf
+<Pollution(26)> 0 inf
+<Pollution(27)> 0 inf
+<Pollution(28)> 0 inf
+<Pollution(29)> 0 inf
+<Pollution(30)> 0 inf
+<Pollution(31)> 0 inf
+<Pollution(32)> 0 inf
+<Pollution(33)> 0 inf
+<Pollution(34)> 0 inf
+<Pollution(35)> 0 inf
+<Pollution(36)> 0 inf
+<Pollution(37)> 0 inf
+<Pollution(38)> 0 inf
+<Pollution(39)> 0 inf
+<Pollution(40)> 0 inf
+<Pollution(41)> 0 inf
+<Pollution(42)> 0 inf
+<Pollution(43)> 0 inf
+<Pollution(44)> 0 inf
+<Pollution(45)> 0 inf
+<Pollution(46)> 0 inf
+<Pollution(47)> 0 inf
+<Pollution(48)> 0 inf
+<Pollution(49)> 0 inf
+<Pollution(50)> 0 inf
+<Pollution(51)> 0 inf
+<Pollution(52)> 0 inf
+<Pollution(53)> 0 inf
+<Pollution(54)> 0 inf
+<Pollution(55)> 0 inf
+<Pollution(56)> 0 inf
+<Pollution(57)> 0 inf
+<Pollution(58)> 0 inf
+<Pollution(59)> 0 inf
+<Pollution(60)> 0 inf
+<Pollution(61)> 0 inf
+<Pollution(62)> 0 inf
+<Pollution(63)> 0 inf
+<Pollution(64)> 0 inf
+<Pollution(65)> 0 inf
+<Pollution(66)> 0 inf
+<Pollution(67)> 0 inf
+<Pollution(68)> 0 inf
+<Pollution(69)> 0 inf
+<Pollution(70)> 0 inf
+<Pollution(71)> 0 inf
+<Pollution(72)> 0 inf
+<Pollution(73)> 0 inf
+<Pollution(74)> 0 inf
+<Pollution(75)> 0 inf
+<Pollution(76)> 0 inf
+<Pollution(77)> 0 inf
+<Pollution(78)> 0 inf
+<Pollution(79)> 0 inf
+<Pollution(80)> 0 inf
+<Pollution(81)> 0 inf
+<Pollution(82)> 0 inf
+<Pollution(83)> 0 inf
+<Pollution(84)> 0 inf
+<Pollution(85)> 0 inf
+<Pollution(86)> 0 inf
+<Pollution(87)> 0 inf
+<Pollution(88)> 0 inf
+<Pollution(89)> 0 inf
+<Pollution(90)> 0 inf
+<Pollution(91)> 0 inf
+<Pollution(92)> 0 inf
+<Pollution(93)> 0 inf
+<Pollution(94)> 0 inf
+<Pollution(95)> 0 inf
+<Pollution(96)> 0 inf
+<Pollution(97)> 0 inf
+<Pollution(98)> 0 inf
+<Pollution(99)> 0 inf
+<Pollution(100)> 0 inf
+<Pollution(101)> 0 inf
+<Pollution(102)> 0 inf
+<Pollution(103)> 0 inf
+<Pollution(104)> 0 inf
+<Pollution(105)> 0 inf
+<Pollution(106)> 0 inf
+<Pollution(107)> 0 inf
+<Pollution(108)> 0 inf
+<Pollution(109)> 0 inf
+<Pollution(110)> 0 inf
+<Pollution(111)> 0 inf
+<Pollution(112)> 0 inf
+<Pollution(113)> 0 inf
+<Pollution(114)> 0 inf
+<Pollution(115)> 0 inf
+<Pollution(116)> 0 inf
+<Pollution(117)> 0 inf
+<Pollution(118)> 0 inf
+<Pollution(119)> 0 inf
+<Pollution(120)> 0 inf
+<Pollution(121)> 0 inf
+<Pollution(122)> 0 inf
+<Pollution(123)> 0 inf
+<Pollution(124)> 0 inf
+<Pollution(125)> 0 inf
+<Pollution(126)> 0 inf
+<Pollution(127)> 0 inf
+<Pollution(128)> 0 inf
+<Pollution(129)> 0 inf
+<Pollution(130)> 0 inf
+<Pollution(131)> 0 inf
+<Pollution(132)> 0 inf
+<Pollution(133)> 0 inf
+<Pollution(134)> 0 inf
+<Pollution(135)> 0 inf
+<Pollution(136)> 0 inf
+<Pollution(137)> 0 inf
+<Pollution(138)> 0 inf
+<Pollution(139)> 0 inf
+<Pollution(140)> 0 inf
+<Pollution(141)> 0 inf
+<Pollution(142)> 0 inf
+<Pollution(143)> 0 inf
+<Pollution(144)> 0 inf
+<Pollution(145)> 0 inf
+<Pollution(146)> 0 inf
+<Pollution(147)> 0 inf
+<Pollution(148)> 0 inf
+<Pollution(149)> 0 inf
+<Pollution(150)> 0 inf
+<Pollution(151)> 0 inf
+<Pollution(152)> 0 inf
+<Pollution(153)> 0 inf
+<Pollution(154)> 0 inf
+<Pollution(155)> 0 inf
+<Pollution(156)> 0 inf
+<Pollution(157)> 0 inf
+<Pollution(158)> 0 inf
+<Pollution(159)> 0 inf
+<Pollution(160)> 0 inf
+<Pollution(161)> 0 inf
+<Pollution(162)> 0 inf
+<Pollution(163)> 0 inf
+<Pollution(164)> 0 inf
+<Pollution(165)> 0 inf
+<Pollution(166)> 0 inf
+<Pollution(167)> 0 inf
+<Pollution(168)> 0 inf
+<Pollution(169)> 0 inf
+<Pollution(170)> 0 inf
+<Pollution(171)> 0 inf
+<Pollution(172)> 0 inf
+<Pollution(173)> 0 inf
+<Pollution(174)> 0 inf
+<Pollution(175)> 0 inf
+<Pollution(176)> 0 inf
+<Pollution(177)> 0 inf
+<Pollution(178)> 0 inf
+<Pollution(179)> 0 inf
+<Pollution(180)> 0 inf
+<Pollution(181)> 0 inf
+<Pollution(182)> 0 inf
+<Pollution(183)> 0 inf
+<Pollution(184)> 0 inf
+<Pollution(185)> 0 inf
+<Pollution(186)> 0 inf
+<Pollution(187)> 0 inf
+<Pollution(188)> 0 inf
+<Pollution(189)> 0 inf
+<Pollution(190)> 0 inf
+<Pollution(191)> 0 inf
+<Pollution(192)> 0 inf
+<Pollution(193)> 0 inf
+<Pollution(194)> 0 inf
+<Pollution(195)> 0 inf
+<Pollution(196)> 0 inf
+<Pollution(197)> 0 inf
+<Pollution(198)> 0 inf
+<Pollution(199)> 0 inf
+<Pollution(200)> 0 inf
