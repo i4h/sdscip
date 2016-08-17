@@ -1292,19 +1292,22 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
 
          case ExpressionGraph::CONTROL:
          {
-            assert( node == entry.second ); //control should have symbol
+            if ( node == entry.second ) { //control should have symbol
 
-            MdlScipVar msvar;
-            msvar.node = node;
+               MdlScipVar msvar;
+               msvar.node = node;
 
-            assert( controls.find( msvar ) == controls.end() ); //and it should be unique
-            msvar.lagrange_coeff = lagrange_coeff;
-            msvar.mayer_coeff = mayer_coeff;
-            msvar.name = entry.first;
-            if(msvar.node->integer)
-               msvar.type = SCIP_VARTYPE_INTEGER;
-            controls.emplace( std::move( msvar ) );
+               assert( controls.find( msvar ) == controls.end() ); //and it should be unique
+               msvar.lagrange_coeff = lagrange_coeff;
+               msvar.mayer_coeff = mayer_coeff;
+               msvar.name = entry.first;
+               if(msvar.node->integer)
+                  msvar.type = SCIP_VARTYPE_INTEGER;
+               controls.emplace( std::move( msvar ) );
+            }
+
             continue;
+
          }
 
          case ExpressionGraph::TIME:
