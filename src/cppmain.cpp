@@ -374,17 +374,23 @@ if (false)
    //std::cout << "Setting parameter" << std::endl;
    //SCIP_CALL( SCIPsetIntParam(scip, "constraints/nonlinear/maxprerounds", 0) );
 
+   SCIPdbgMsg("adding parameters");
 
    SCIPaddIntParam(scip,
       "misc/SDproblemStructureVersion",
       "Which version of the problemStructure Class should be loaded",
       NULL, FALSE, 0, 0, INT_MAX, NULL, NULL);
 
-   SCIPdbgMsg("adding parameters");
-      SCIPaddBoolParam(scip,
-             "sd/checkStructure",
-             "Performs checks of problem structure after first read",
-             NULL, FALSE, FALSE, NULL, NULL);
+   SCIPaddBoolParam(scip,
+          "sd/checkStructure",
+          "Performs checks of problem structure after first read",
+          NULL, FALSE, FALSE, NULL, NULL);
+
+   SCIPaddBoolParam(scip,
+          "sd/printSummary",
+          "Show problem structure summary after reading a vop file",
+          NULL, FALSE, TRUE, NULL, NULL);
+
 
     SCIP_CALL( SCIPprocessShellArguments(scip, argc, argv, "sdscip.set") );
    //SCIP_CALL( SCIPprocessShellArguments(scip, argc, argv, "default.set") );

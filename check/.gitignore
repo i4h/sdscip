@@ -7,3 +7,5 @@ evalcheck.sh
 run.sh
 check.awk
 getlastprob.awk
+tmpfile
+results

@@ -546,6 +546,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
    }
 
    SCIP_Bool printSummary(true);
+   SCIP_CALL( SCIPgetBoolParam(scip ,"sd/printSummary", &printSummary) );
    if (printSummary)
    {
       char* discretization;
@@ -555,7 +556,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
       ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
 
-      SCIPinfoMessage(scip, NULL, "=== Printing structure summary ===\n");
+      SCIPinfoMessage(scip, NULL, "\n=== Printing structure summary ===\n");
       SCIPinfoMessage(scip, NULL, "STATES:   %s (%i)\n",structure->getStateVarList().c_str(), structure->getNStates());
       SCIPinfoMessage(scip, NULL, "CONTROLS: %s (%i)\n",structure->getControlVarList().c_str(), structure->getNControls());
       SCIPinfoMessage(scip, NULL, "ALGEBRAIC: %s (%i)\n",structure->getAlgebraicVarList().c_str(), structure->getNAlgebraic());
@@ -600,15 +601,6 @@ SCIP_RETCODE checkStructure(SCIP* scip)
                , (key.second == SCIP_BOUNDTYPE_LOWER ? "lower" : "upper"), bound );
 
       }
-
-      SCIPinfoMessage(scip, NULL, "Parameters at time 0\n");
-      SCIP_Real* params = structure->getXdotParams(0);
-      for (int i = 0; i < 2; ++i)
-      {
-         SCIPinfoMessage(scip, NULL, "%f,\n", params[i]);
-      }
-
-
       SCIPinfoMessage(scip, NULL, "=== End of structure summary ===\n");
    }
 
@@ -908,11 +900,10 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
    SCIPdebugMessage("done reading structure\n");
    structure->doneReading();
 
-
    SCIP_Bool check;
    SCIP_CALL( SCIPgetBoolParam(scip ,"sd/checkStructure", &check) );
    if( check ) {
-      SCIPdebugMessage("performing structure checks after reading structure\n");
+      SCIPinfoMessage(scip, NULL, "\n=== Performing structure checks ===\n");
       checkStructure(scip);
    }
 
@@ -939,8 +930,9 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
    SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
    assert(probdata != NULL);
    ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+   int nParamsPerTime = structure->getNParamsPerTime();
 
-   SCIPinfoMessage(scip, NULL, "Printing Structure of Control Problem\n");
+   SCIPinfoMessage(scip, NULL, "\n=== Printing full structure data ===\n");
 
    for (int currentTime = structure->startTimeIteration(); structure->timesLeft(); currentTime = structure->incrementTime())
    {
@@ -1057,6 +1049,15 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
 
          }
 
+         if( nParamsPerTime != 0)
+         {
+            SCIPinfoMessage(scip, NULL, "Parameters at time %i \n",currentTime);
+            SCIP_Real* params = structure->getXdotParams(currentTime);
+            for (int i = 0; i < nParamsPerTime; ++i)
+            {
+               SCIPinfoMessage(scip, NULL, "%f,\n", params[i]);
+            }
+         }
 
 
 #if 0
