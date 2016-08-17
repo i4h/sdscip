@@ -1043,6 +1043,8 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
    std::unordered_set<MdlScipVar> algebraic;
    std::unordered_set<sdo::ExpressionGraph::Node*> positive;
 
+   std::string seperator = "";
+
    //for each symbol walk in the expression graph to find possibly hidden states
    for( auto & entry : exprGraph.getSymbolTable() )
    {
@@ -1109,7 +1111,7 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
                if( n != comparisons.end() )
                {
                   auto& name = const_cast<std::string &>(n->name);
-                  name += " ";
+                  name += seperator;
                   name += entry.first;
                }
                else
@@ -1247,7 +1249,7 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
                      nonconst.mayer_coeff += mayer_coeff;
                      if(nonconst.name != entry.first)
                      {
-                        nonconst.name += " ";
+                        nonconst.name += seperator;
                         nonconst.name += entry.first;
                      }
                   }
@@ -1348,7 +1350,7 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
             for( const std::pair<ExpressionGraph::Node *, Symbol> &symb : range )
             {
                if( !msvar.name.empty() )
-                  msvar.name += " ";
+                  msvar.name += seperator;
 
                msvar.name += symb.second;
 
