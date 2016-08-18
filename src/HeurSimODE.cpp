@@ -368,6 +368,12 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
          (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
          solTime, SCIPclockGetTime(clock), obj);
 
+      /* If we are in presolving and still in sim mode, inform user that problem is simulation */
+      if( SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING && integrator.getSolveMode() == ReduceODEintegrator::SOLVE_MODE_SIM)
+      {
+         SCIPinfoMessage(scip, NULL, "HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.\n");
+      }
+
 
 #if 0
       if (*result == SCIP_CUTOFF)
