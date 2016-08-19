@@ -1,0 +1,23 @@
+# SCIP version 2.0.0
+
+
+
+
+### simODE
+
+### vopreader
+
+
+### Problem structure
+
+misc/SDproblemStructureVersion = 1
+
+sd/checkStructure = true
+
+
+
+
+
+
+
+
