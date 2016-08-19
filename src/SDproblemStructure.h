@@ -194,7 +194,7 @@ private:
    AlgebraicMap propCuts_;
    AlgebraicConsMap algebraicConstraints_;
    ExplicitDifferentialMap explicitDifferential_;
-   VarTimeTypeMap variableTypes_;           /*variableTypes_[unsigned int time][int SCIPvarId] = std::pair<varType, Pointer>, varType= 0: state variable, varType = 1: algebraic */
+   VarTimeTypeMap variableTypes_;              /*variableTypes_[unsigned int time][int SCIPvarId] = std::pair<varType, Pointer>, varType= 0: state variable, varType = 1: algebraic */
    VarVecMap controlVariables_; /* Control variables at  the times of their first appearances */
    VarVecMap controlVariablesAtT_; /* All control variables that appear at given time */
    VarVecMap stateVariables_; /* State variables at times t, ordered according to the names in stateVarNames */

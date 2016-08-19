@@ -114,7 +114,7 @@ SCIP_RETCODE probdataCreate(
 
    /* create problem structure using factory*/
    int probStructureVersion(0);
-   SCIP_CALL( SCIPgetIntParam(scip,"misc/SDproblemStructureVersion",&probStructureVersion));
+   SCIP_CALL( SCIPgetIntParam(scip,"sd/problemStructureVersion",&probStructureVersion));
    ctrl::SDproblemStructureFactory factory;
 
    (*probdata)->structure = factory.create(probStructureVersion, scip);
@@ -1720,3 +1720,29 @@ SCIP_RETCODE SCIPincludeDialogWriteTransprobSD(
 
    return SCIP_OKAY;
 }
+
+/** includes sdscip */
+SCIP_RETCODE SCIPaddParamsSD(
+   SCIP*                 scip                /**< SCIP data structure */
+)
+{
+
+   SCIPdbgMsg("adding parameters");
+   /* Add parameters concerning problem data */
+   SCIPaddIntParam(scip,
+      "sd/problemStructureVersion",
+      "Which version of the problemStructure Class should be loaded",
+      NULL, FALSE, 1, 0, INT_MAX, NULL, NULL);
+
+   SCIPaddBoolParam(scip,
+      "sd/checkStructure",
+      "Performs checks of problem structure after first read",
+      NULL, FALSE, FALSE, NULL, NULL);
+
+
+
+}
+
+
+
+

@@ -169,6 +169,9 @@ SCIP_RETCODE SCIPincludeDialogSDdisable(
    SCIP*                 scip                /**< SCIP data structure */
    );
 
+SCIP_RETCODE SCIPaddParamsSD(
+   SCIP*                 scip                /**< SCIP data structure */
+);
 
 
 SCIP_RETCODE SDinit(SCIP* scip);
