@@ -10,9 +10,9 @@
 
 ### Problem structure
 
-misc/SDproblemStructureVersion = 1
+#misc/SDproblemStructureVersion = 1
 
-sd/checkStructure = true
+#sd/checkStructure = true
 
 
 
