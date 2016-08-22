@@ -47,10 +47,10 @@ public:
     		  "solving auxiliary ODEs to bound SDO Problems",    /** description of the propagator */
     		   100000,                                           /** default priority of the propagator */
     		   1,                                                /** freq */
-    		   FALSE,                                            /** delay */
+    		   0,                                                /** delay */
      		   SCIP_PROPTIMING_AFTERLPLOOP,                      /** timingmask */
     		   1,                                                /** presolpriority */
-    		   1,                                                /** presolmaxrounds */
+    		   5,                                                /** presolmaxrounds */
     		   //SCIP_PRESOLTIMING_EXHAUSTIVE                    /** presoltiming */
     		   SCIP_PRESOLTIMING_FAST                            /** presoltiming */
       )
