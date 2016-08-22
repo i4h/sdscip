@@ -77,6 +77,16 @@ public:
              "Write calculated bounds to file",
              NULL, FALSE, FALSE, NULL, NULL);
 
+      SCIPaddBoolParam(scip,
+             "propagating/propODE/addErrorTerms",
+             "Add error terms corresponding to step size when applying bounds",
+             NULL, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddIntParam(scip,
+             "propagating/propODE/intermediateSteps",
+             "Number of integration steps performed by PropODE in additon to problem discretization",
+             NULL, FALSE, 5, 0, 1000, NULL, NULL );
+
       SCIPaddStringParam(scip,
              "propagating/propODE/outFilePrefix",
              "Path of file to write calculated bounds to. The current node id and a .dat extension "
@@ -144,6 +154,13 @@ private:
    int nLookups_;
    std::ofstream outFile_;
    SCIP_Real boundApplyCutoff_; /* We dont apply bounds outside of [-boundAppplyCutoff, boundApplyCutoff ] to avoid numerical problems with bounds very close to SCIPinfinity */
+
+   /* Private variables for scip parameters */
+   SCIP_Bool writeFile_ = false;
+   char* outfilePrefix_;
+
+
+
 };
 
 

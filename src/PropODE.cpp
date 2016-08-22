@@ -16,7 +16,7 @@
 using namespace ctrl;
 
 
-/** execution method of propagator */
+/** initialization method of propagator */
 SCIP_DECL_PROPINIT(PropODE::scip_init)
 {
    ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
@@ -34,11 +34,14 @@ SCIP_DECL_PROPINIT(PropODE::scip_init)
    nAlgebraic_= structure->getNAlgebraic();
    nParams_ = 0;
    dt_ = structure->getTstep();
-   intermediateSteps_ = 1;
+   intermediateSteps_ = 5;
    dtIntermediate_ = dt_ / intermediateSteps_;
    t0_ = structure->getTinit();
    tf_ = structure->getTfinal();
 
+   /* Get parameters from scip */
+   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/writeBounds", &writeFile_) );
+   SCIPgetStringParam(scip_ , "propagating/propODE/outFilePrefix",&outfilePrefix_);
 
    return SCIP_OKAY;
 }
@@ -155,6 +158,7 @@ SCIP_DECL_PROPEXEC(PropODE::scip_exec)
    SDensureValidStructure(scip);
    ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip) );
 
+
    assert(scip != NULL);
    assert(prop != NULL);
 
@@ -233,13 +237,9 @@ SCIP_RETCODE PropODE::prepareOutFile(std::vector<std::string>  stateVarNames)
 {
    /* Prepare output file */
    std::ostringstream outFileName;
-   SCIP_Bool writeFile;
-   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/writeBounds", &writeFile) );
-   if (writeFile)
+   if (writeFile_)
    {
-      char* paramstr;
-      SCIPgetStringParam(scip_ , "propagating/propODE/outFilePrefix",&paramstr);
-      outFileName << paramstr << "_" << execCount_ << ".dat";
+      outFileName << outfilePrefix_ << "_" << execCount_ << ".dat";
       outFile_.open(outFileName.str());
       SCIPdebugMessage("WRITNG u,v to %s\n", outFileName.str().c_str());
       outFile_ << "#" << std::setw(3) << "t" << "\t";
@@ -293,6 +293,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
    I4H::Statistics stats;
    int oldnchgbds = *nchgbds; /* private counter for changed bounds */
    int potentialBndChgs(0);
+
 
    /* Get structure */
    SDensureValidStructure(scip);
@@ -363,7 +364,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
       integrator.writeStates(outFile_);
 
       SCIP_Bool applyTightenings(true);
-      SCIP_Bool addErrorTerms(false);
+      SCIP_Bool addErrorTerms(true);
       if (execCount_ >= outCount) {  SCIPdbgMsg("evaluating bounds\n"); }
 
       /* Check if we still produce at least one useful bound */
@@ -381,8 +382,6 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
          strictBoundViolated = true;
          doingFine = false;
       }
-
-
 
       /* Foreach state and boundtype: check for infeasibility, check for and apply bound tightenings */
       int varCounter(0);
