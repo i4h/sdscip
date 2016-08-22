@@ -545,10 +545,12 @@ SCIP_RETCODE checkStructure(SCIP* scip)
       SCIPinfoMessage(scip, NULL, "structure check failed, %i errors\n",errorCount);
    }
 
-   SCIP_Bool printSummary(true);
-   SCIP_CALL( SCIPgetBoolParam(scip ,"sd/printSummary", &printSummary) );
-   if (printSummary)
-   {
+   return SCIP_OKAY;
+}
+
+
+SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
+
       char* discretization;
       SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
 
@@ -602,7 +604,6 @@ SCIP_RETCODE checkStructure(SCIP* scip)
 
       }
       SCIPinfoMessage(scip, NULL, "=== End of structure summary ===\n");
-   }
 
    return SCIP_OKAY;
 }
@@ -1733,13 +1734,6 @@ SCIP_RETCODE SCIPaddParamsSD(
       "sd/problemStructureVersion",
       "Which version of the problemStructure Class should be loaded",
       NULL, FALSE, 1, 0, INT_MAX, NULL, NULL);
-
-   SCIPaddBoolParam(scip,
-      "sd/checkStructure",
-      "Performs checks of problem structure after first read",
-      NULL, FALSE, FALSE, NULL, NULL);
-
-
 
 }
 

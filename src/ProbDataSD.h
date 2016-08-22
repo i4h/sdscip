@@ -94,6 +94,7 @@ SCIP_RETCODE SDensureValidStructure(SCIP* scip);
 SCIP_RETCODE SDreadStructure(SCIP* scip);
 //SCIP_RETCODE checkStructure(SCIP* scip);
 SCIP_RETCODE SDcheckStructure(SCIP* scip);
+SCIP_RETCODE SDprintStructureSummary(SCIP* scip);
 SCIP_RETCODE SDprintStructure(SCIP* scip);
 SCIP_RETCODE SDprintStateVarNames(SCIP *scip);
 ctrl::SDproblemStructureInterface* SDgetStructure(SCIP* scip);
