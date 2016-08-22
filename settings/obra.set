@@ -1,0 +1,39 @@
+# SCIP version 2.0.0
+
+presolving/donotaggr = true
+presolving/donotmultaggr = true
+
+# obra
+constraints/ctrlDifferential/maxprerounds = 1
+constraints/ctrlDifferential/historicCons = 5
+#constraints/ctrlDifferential/subscipTimeLimit = 1e20
+#constraints/ctrlDifferential/subscipNodeLimit = 1000
+
+constraints/ctrlDifferential/propagateControls = false
+constraints/ctrlDifferential/propagateAlgebraic = true
+constraints/ctrlDifferential/propagateStates = true
+constraints/ctrlDifferential/addMultiTimeCuts = false
+constraints/ctrlDifferential/multiTimeCutLookback = 2
+constraints/ctrlDifferential/useUnitCuts = false
+constraints/ctrlDifferential/writeSubscips = false
+constraints/ctrlDifferential/cutConf3d = 2
+#constraints/ctrlDifferential/muteSubscip = false
+
+
+
+
+
+#limits/gap = 0.01
+### vopreader
+
+reading/vopreader/checkStructure = true
+reading/vopreader/printSummary = true
+
+
+
+
+
+
+
+
+
