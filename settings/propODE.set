@@ -1,0 +1,19 @@
+# SCIP version 2.0.0
+
+presolving/donotaggr = true
+presolving/donotmultaggr = true
+
+limits/gap = 0.01
+### vopreader
+
+reading/vopreader/checkStructure = true
+reading/vopreader/printSummary = true
+
+
+
+
+
+
+
+
+
