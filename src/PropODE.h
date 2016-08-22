@@ -80,7 +80,7 @@ public:
       SCIPaddBoolParam(scip,
              "propagating/propODE/addErrorTerms",
              "Add error terms corresponding to step size when applying bounds",
-             NULL, FALSE, FALSE, NULL, NULL);
+             NULL, FALSE, TRUE, NULL, NULL);
 
       SCIPaddIntParam(scip,
              "propagating/propODE/intermediateSteps",
@@ -140,7 +140,7 @@ private:
    int nAlgebraic_;
    int nControls_;
    int nParams_;
-   SCIP_Real intermediateSteps_;
+   int intermediateSteps_;
    SCIP_Real dt_;
    SCIP_Real dtIntermediate_;
    SCIP_Real t0_;
@@ -158,6 +158,7 @@ private:
    /* Private variables for scip parameters */
    SCIP_Bool writeFile_ = false;
    char* outfilePrefix_;
+   SCIP_Bool addErrorTerms_;
 
 
 

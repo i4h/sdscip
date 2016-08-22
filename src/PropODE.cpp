@@ -21,27 +21,32 @@ SCIP_DECL_PROPINIT(PropODE::scip_init)
 {
    ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
 
+   /* Disable propODE if derivatives ar not continuous */
    if( !structure->isXdotContinuous() )
    {
-      SCIPverbMessage(scip, SCIP_VERBLEVEL_NORMAL, NULL, "Derivatives are not absolutely continuous, disabling propODE\n");
+      SCIPwarningMessage(scip, "Derivatives are not absolutely continuous, disabling propODE\n");
       SCIP_CALL( SCIPsetIntParam(scip, "propagating/propODE/maxprerounds", 0) );
       SCIP_CALL( SCIPsetIntParam(scip, "propagating/propODE/freq", -1) );
    }
 
-   /* Get everything from problem structure */
+   /* Get parameters from scip */
+   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/writeBounds", &writeFile_) );
+   SCIP_CALL( SCIPgetStringParam(scip_ , "propagating/propODE/outFilePrefix",&outfilePrefix_) );
+   SCIP_CALL( SCIPgetIntParam(scip_ , "propagating/propODE/intermediateSteps",&intermediateSteps_) );
+   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/addErrorTerms", &addErrorTerms_) );
+
+
+   /* Get parameters from problem structure */
    nStates_ = structure->getNStates();
    nControls_ = structure->getNControls();
    nAlgebraic_= structure->getNAlgebraic();
    nParams_ = 0;
    dt_ = structure->getTstep();
-   intermediateSteps_ = 5;
-   dtIntermediate_ = dt_ / intermediateSteps_;
    t0_ = structure->getTinit();
    tf_ = structure->getTfinal();
 
-   /* Get parameters from scip */
-   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/writeBounds", &writeFile_) );
-   SCIPgetStringParam(scip_ , "propagating/propODE/outFilePrefix",&outfilePrefix_);
+   /* Derived parameters */
+   dtIntermediate_ = dt_ / intermediateSteps_;
 
    return SCIP_OKAY;
 }
@@ -364,7 +369,6 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
       integrator.writeStates(outFile_);
 
       SCIP_Bool applyTightenings(true);
-      SCIP_Bool addErrorTerms(true);
       if (execCount_ >= outCount) {  SCIPdbgMsg("evaluating bounds\n"); }
 
       /* Check if we still produce at least one useful bound */
@@ -404,7 +408,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
                }
                else
                {
-                  if (addErrorTerms)
+                  if (addErrorTerms_)
                      newBound = newBound + (bndType == SCIP_BOUNDTYPE_LOWER ? -1.0*dtIntermediate_: dtIntermediate_);
 
                   if (    (bndType == SCIP_BOUNDTYPE_LOWER && SCIPisLE(scip, newBound, -1.0 * boundApplyCutoff_))

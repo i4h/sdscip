@@ -357,7 +357,6 @@ if (false)
    printf("including PropODE Propagator\n");
    SCIP_CALL( SCIPincludeObjProp(scip, new ctrl::PropODE(scip), TRUE) );
 
-
    printf ( "including ReaderVOP\n" );
    SCIP_CALL( SCIPincludeObjReader(scip, new sdo::ReaderVOP(scip), TRUE) );
 

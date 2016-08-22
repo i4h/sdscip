@@ -1,3 +1,6 @@
+#define SCIP_DEBUG
+#define SCIP_DBG
+
 /*
  * PropagationPattern.cpp
  *
@@ -689,7 +692,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 
 					newBound = SCIPgetSolVal(this->subscip_, subSol, boundVar.second.second);
 					SCIPdbgMsg("new bound is %1.16e\n",newBound);
-					SCIP_CALL( SCIPcheckSolOrig(this->subscip_, subSol, &feasible, FALSE, FALSE) );
+					SCIP_CALL( SCIPcheckSolOrig(this->subscip_, subSol, &feasible, TRUE, FALSE) );
 					if( !feasible )
 					{
 					   SCIPwarningMessage(scip_, "sol is not feasible\n");
