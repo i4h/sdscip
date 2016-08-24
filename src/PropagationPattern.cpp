@@ -1,5 +1,5 @@
-#define SCIP_DEBUG
-#define SCIP_DBG
+//#define SCIP_DEBUG
+//#define SCIP_DBG
 
 /*
  * PropagationPattern.cpp
@@ -589,7 +589,7 @@ SCIP_RETCODE PropagationPattern::updateSubscipSolutionVector() {
 SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 {
 
-	SCIP_Bool boundsDiverge;
+	SCIP_Bool boundsDiverge = false;
 	/* Get parameters */
 	int historicCons(0);
 	SCIP_CALL( SCIPgetIntParam(this->scip_,"constraints/ctrlDifferential/historicCons",&historicCons));
@@ -692,11 +692,14 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 
 					newBound = SCIPgetSolVal(this->subscip_, subSol, boundVar.second.second);
 					SCIPdbgMsg("new bound is %1.16e\n",newBound);
-					SCIP_CALL( SCIPcheckSolOrig(this->subscip_, subSol, &feasible, TRUE, FALSE) );
+					//SCIPprintStatistics(this->subscip_, NULL);
+					SCIP_CALL( SCIPcheckSolOrig(this->subscip_, subSol, &feasible, FALSE, FALSE) );
+
 					if( !feasible )
 					{
-					   SCIPwarningMessage(scip_, "sol is not feasible\n");
+					   //SCIPwarningMessage(scip_, "sol is not feasible\n");
 						SCIPdbgMsg("sol is not feasible\n");
+						//assert(false);
 						if (boundVar.first == SDSCIP_UP)
 						{
 							SCIPdbgMsg("sol is not feasible, increasing bound slightly\n");
@@ -707,6 +710,10 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 							SCIPdbgMsg("sol is not feasible, lowering bound slightly\n");
 							newBound -= 1e-6;
 						}
+					}
+					else
+					{
+					   SCIPdbgMsg("sol is feasible\n");
 					}
 				}
 				else
