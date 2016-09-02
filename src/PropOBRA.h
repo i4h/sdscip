@@ -55,11 +55,11 @@ public:
     		  "obra", 									              /** name of the propagator */
     		  "optimization based reachability analysis",        /** description of the propagator */
     		   100000,                                           /** default priority of the propagator */
-    		   1,                                                /** freq */
+    		   0,                                                /** freq */
     		   0,                                                /** delay */
      		   SCIP_PROPTIMING_BEFORELP,                         /** timingmask */
     		   100000,                                           /** presolpriority */
-    		   1,                                                /** presolmaxrounds */
+    		   0,                                                /** presolmaxrounds */
     		   SCIP_PRESOLTIMING_FAST                            /** presoltiming */
       )
       ,propDidRun_(false)
