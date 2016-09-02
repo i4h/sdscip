@@ -29,13 +29,11 @@
 #include "objscip/objscipdefplugins.h"
 
 /* include TSP specific components */
-#include "ReaderTSP.h"
 #include "reader_osilc.h"
 #include "ProbDataSD.h"
 
-#include "HeurFarthestInsert.h"
-#include "Heur2opt.h"
-#include "ConshdlrCtrlDifferential.h"
+
+#include "PropOBRA.h"
 #include "HeurSimODE.h"
 #include "BranchControlFirst.h"
 //#include "PropCtrlOBBT.h"
@@ -43,8 +41,6 @@
 
 //#include "reader_osilc.h"
 #include "ReaderVOP.h"
-#include "HeurFrats.h"
-#include "EventhdlrNewSol.h"
 #include "PresolConsGraph.h"
 //#include "prop_obobt.h"
 #include "Statistics.hpp"
@@ -59,8 +55,8 @@
 #include "TestEstimatorTypes.hpp"
 
 using namespace scip;
-using namespace tsp;
 using namespace std;
+
 
 /** creates and runs a SCIP instance with default and TSP plugins */
 static
@@ -332,8 +328,8 @@ if (false)
    /* include TSP specific plugins */
 /*   SCIP_CALL( SCIPincludeObjReader(scip, new ReaderTSP(scip), TRUE) ); */
 /*   SCIP_CALL( SCIPincludeObjPresol(scip, new PresolConsGraph(scip), TRUE) );*/
-   SCIPdebugMessage("now including CtrlDifferential\n");
-   SCIP_CALL( SCIPincludeObjConshdlr(scip, new ctrl::ConshdlrCtrlDifferential(scip), TRUE) );
+   SCIPdebugMessage("now including PropOBRA\n");
+   SCIP_CALL( SCIPincludeObjProp(scip, new ctrl::PropOBRA(scip), TRUE) );
 /*   SCIP_CALL( SCIPincludeObjConshdlr(scip, new ConshdlrSubtour(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjEventhdlr(scip, new EventhdlrNewSol(scip), TRUE) ); */
 

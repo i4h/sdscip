@@ -592,12 +592,12 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	SCIP_Bool boundsDiverge = false;
 	/* Get parameters */
 	int historicCons(0);
-	SCIP_CALL( SCIPgetIntParam(this->scip_,"constraints/ctrlDifferential/historicCons",&historicCons));
+	SCIP_CALL( SCIPgetIntParam(this->scip_,"propagating/obra/historicCons",&historicCons));
 	char* paramstr,*paramstr2;
-	SCIPgetStringParam(scip_,"constraints/ctrlDifferential/outFile",&paramstr);
-	SCIPgetStringParam(scip_,"constraints/ctrlDifferential/outDir",&paramstr2);
+	SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
+	SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
 	SCIP_Bool writeSubscips;
-	SCIPgetBoolParam(scip_,"constraints/ctrlDifferential/writeSubscips",&writeSubscips);
+	SCIPgetBoolParam(scip_,"propagating/obra/writeSubscips",&writeSubscips);
 
 	/* Add cuts using the pattern class with the added variables */
 	SCIPdebugMessage("entering solving loop------------------------ \n");
@@ -826,7 +826,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 					SCIP_CALL( SCIPaddCons(this->scip_, lincons) );
 					SCIPdebugMessage("  Added cut to scip\n");
 
-					/* Make constraint known to ConshdlrCtrlDifferential, so it will be considered in the next time steps */
+					/* Make constraint known in problem structure, so it will be considered in the next time steps */
 					ctrl::SDproblemStructureInterface* structure(SDgetStructure(this->scip_));
 					structure->addCut(lincons, currentTime);
 					SCIP_CALL( SCIPreleaseCons(this->scip_, &lincons) );
@@ -851,6 +851,9 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 					SCIP_CALL( SCIPaddCons(this->subscip_, lincons) );
 					SCIP_CALL( SCIPreleaseCons(this->subscip_, &lincons) );
 				} /* Close cut is useful */
+
+				SCIPfreeBufferArray(scip_, &vals);
+				SCIPfreeBufferArray(scip_, &vars);
 			}
 		}
 		else

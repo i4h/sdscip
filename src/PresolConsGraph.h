@@ -24,9 +24,6 @@
 #define __PRESOLCONSGRAPH_H__
 
 #include "objscip/objscip.h"
-#include "GomoryHuTree.h"
-#include "ProbDataTSP.h"
-
 
 /** C++ Minimal Presolver constraints */
 class PresolConsGraph : public scip::ObjPresol

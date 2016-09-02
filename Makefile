@@ -1,23 +1,6 @@
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-#*                                                                           *
-#*                  This file is part of the program and library             *
-#*         SCIP --- Solving Constraint Integer Programs                      *
-#*                                                                           *
-#*    Copyright (C) 2002-2012 Konrad-Zuse-Zentrum                            *
-#*                            fuer Informationstechnik Berlin                *
-#*                                                                           *
-#*  SCIP is distributed under the terms of the ZIB Academic Licence.         *
-#*                                                                           *
-#*  You should have received a copy of the ZIB Academic License              *
-#*  along with SCIP; see the file COPYING. If not email to scip@zib.de.      *
-#*                                                                           *
-#* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
 #@file    Makefile
-#@brief   Makefile for C++ TSP example using SCIP as a callable library
-#@author  Thorsten Koch
-#@author  Tobias Achterberg
-#@author  Marc Pfetsch
+#@brief   Makefile for SD-SCIP, based on Makefiles of SCIP-SDP and SCIP's C++ TSP example 
+#@author  Ingmar Vierhaus
 
 
 #-----------------------------------------------------------------------------
@@ -53,7 +36,7 @@ include $(SCIPDIR)/make/make.project
 # include install/uninstall targets
 -include make/make.install
 
-$(info $$SCIPDIR is ${SCIPDIR})
+# $(info $$SCIPDIR is ${SCIPDIR})
 
 #-----------------------------------------------------------------------------
 # Main Program
@@ -62,8 +45,6 @@ $(info $$SCIPDIR is ${SCIPDIR})
 MAINNAME	=	sdscip
 MAINSRCPATH	=	cppmain.cpp \
 			PresolCppMin.cpp \
-			GomoryHuTree.cpp \
-			ProbDataTSP.cpp \
 			ProbDataCtrl.cpp \
 			NLPGraph.cpp \
 			PresolConsGraph.cpp \
@@ -72,7 +53,7 @@ MAINSRCPATH	=	cppmain.cpp \
 			ReaderVOP.cpp \
 			ExprLookup.cpp \
 			ProbDataSD.cpp \
-			ConshdlrCtrlDifferential.cpp \
+			PropOBRA.cpp \
 			HeurSimODE.cpp \
 			PropODE.cpp \
 			ODEintegrator.cpp \
