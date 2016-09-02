@@ -136,7 +136,7 @@ public:
       SCIPaddIntParam(scip,
              "propagating/obra/writeFreq",
              "(Problem) Time Intervals in which to write the problem during propagation",
-             NULL, FALSE, 5, -1, INT_MAX, NULL, NULL);
+             NULL, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/addCuts",
