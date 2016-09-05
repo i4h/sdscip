@@ -50,11 +50,11 @@ public:
     		  scip,                                              /**< SCIP data structure */
     		  "obra", 									              /** name of the propagator */
     		  "optimization based reachability analysis",        /** description of the propagator */
-    		   100000,                                           /** default priority of the propagator */
+    		   1,                                                /** default priority of the propagator */
     		   -1,                                               /** freq */
     		   0,                                                /** delay */
      		   SCIP_PROPTIMING_BEFORELP,                         /** timingmask */
-    		   100000,                                           /** presolpriority */
+    		   0,                                                /** presolpriority */
     		   0,                                                /** presolmaxrounds */
     		   SCIP_PRESOLTIMING_FAST                            /** presoltiming */
       )

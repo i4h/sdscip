@@ -49,7 +49,7 @@ public:
     		   1,                                                /** freq */
     		   0,                                                /** delay */
      		   SCIP_PROPTIMING_AFTERLPLOOP,                      /** timingmask */
-    		   1,                                                /** presolpriority */
+    		   100,                                                /** presolpriority */
     		   5,                                                /** presolmaxrounds */
     		   //SCIP_PRESOLTIMING_EXHAUSTIVE                    /** presoltiming */
     		   SCIP_PRESOLTIMING_FAST                            /** presoltiming */
