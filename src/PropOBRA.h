@@ -20,10 +20,6 @@
 #include "scip/clock.h"
 #include "objscip/objscipdefplugins.h"
 
-
-
-
-
 namespace ctrl
 {
 
@@ -62,7 +58,6 @@ public:
     		   0,                                                /** presolmaxrounds */
     		   SCIP_PRESOLTIMING_FAST                            /** presoltiming */
       )
-      ,propDidRun_(false)
       ,signal_(false)
       ,currentTime_(0)
       ,progressTime_(0)
@@ -188,48 +183,35 @@ public:
    {
    }
 
-   SCIP_RETCODE printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars);
-   SCIP_RETCODE printProgress();
-
    virtual SCIP_DECL_PROPINIT(scip_init);
    virtual SCIP_DECL_PROPEXEC(scip_exec);
    virtual SCIP_DECL_PROPPRESOL(scip_presol);
 
 private:
 
+   SCIP_RETCODE printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars);
+   SCIP_RETCODE printProgress();
    SCIP_RETCODE applyOBRA(SCIP* scip, SCIP_RESULT* result);
-
    SCIP_RETCODE ensureCurrentStructure(SCIP* scip);
-
    SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
-
    SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int historicCons, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
-
    SCIP_RETCODE propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP* subscip, SCIP_VAR* subscipObjectiveVar, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge, std::map<SCIP_VAR*, SCIP_Real>* solMap );
-
    SCIP_RETCODE addPlanesWithSubscip(SCIP* scip, int nVars, SCIP_VAR** origVars, SCIP* subscip, SCIP_VAR** subscipObjectiveVars, int* nNewCons );
-
    SCIP_RETCODE prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
-
    SCIP_RETCODE prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_VAR* lastVar, SCIP_HASHMAP* varmap);
-
    SCIP_RETCODE propagateDifferentialWithPattern(SCIP* scip, SCIP* subscip, int* nNewCons, SCIP_Bool * boundsDiverge);
 
-
-   SCIP_Bool propDidRun_;
    SCIP_Bool signal_;
    int currentTime_;
-   int progressTime_; /* time shown in progress bare */
-   SCIP_Real progressStep_; /* time shown in progress bare */
+   int progressTime_; /* time shown in progress bar */
+   SCIP_Real progressStep_; /* time shown in progress bar */
    ctrl::SDproblemStructureInterface* structure_;
    Statistics stats_;
    boost::regex varRegex_;
    boost::regex consRegex_;
    PropagationPattern constTimePattern_;
    PropagationPattern multiTimePattern_;
-
 };
-
 
 }
 
