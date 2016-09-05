@@ -514,9 +514,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
 			   ++(*nPropagatedVars);
 
 		   /* Set objective of the control variable back to 0*/
-		   //subscipControlVar->obj = 0;
-		   SCIPchgVarObj(subscip, subscipControlVar, 1);
-
+		   SCIPchgVarObj(subscip, subscipControlVar, 0);
 
 	   } //Close Iteration over control variables at given time
    }
