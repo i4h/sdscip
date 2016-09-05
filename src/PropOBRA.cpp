@@ -445,15 +445,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
    }
 
    /*
-   SCIP_CALL( SCIPtransformProb(subscip));
-   SCIPdbgMsg("after adding constraints: cutoffbound is %f\n",SCIPgetCutoffbound(subscip));
-   SCIPdbgMsg("after adding constraints Origprob objlim is %e\n",SCIPprobGetObjlim(subscip->origprob,scip->set));
-   SCIP_CALL( SCIPfreeTransform(subscip) );
-   */
-   /*SCIPdbgMsg("subproblem before starting step 7_2:\n");
-   SCIPprintOrigProblem(subscip,NULL,"cip",FALSE);*/
-
-   /*
     * 7_2: propagation of states 'vertically', 'horizontally' and 'diagonally'
     */
    if(  currentTime_ >= 1 && propagateStates && !(*boundsDiverge) )
@@ -462,19 +453,14 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
       ConsVarVec::iterator pairIt;
 
       SCIP_CALL( prepareConstTimeStatePattern(scip, subscip, varmap));
-	   /*SCIPdbgMsg("subproblem after prepare constTimeStatePattern:\n");
-	   SCIPprintOrigProblem(subscip,NULL,"cip",FALSE);*/
       SCIP_CALL( constTimePattern_.setSolMap(solMap));
       SCIP_CALL( constTimePattern_.buildHyperCube() );
 
       SCIP_CALL( constTimePattern_.propagate(currentTime_));
-      //SCIP_CALL( propagateDifferentialWithPattern(scip, subscip, &nNewCons, boundsDiverge));
       SCIPdebugMessage("#### Done with Step 7_2\n");
    } //Close Step 7
 
 
-   /*SCIPdbgMsg("current subscip:\n");
-   SCIPprintOrigProblem(subscip,NULL,"cip",FALSE);*/
    /*
     * 7_3: Propagation of states from different times
     */
@@ -489,19 +475,18 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
          SCIP_CALL( SCIPgetIntParam(scip,"propagating/obra/multiTimeCutLookback",&multiTimecutLookback) );
          SCIP_VAR* var(structure_->getDiffConsVar());
          SCIP_CONS* cons(structure_->getDiffConsCons());
-    	  //SCIPprintOrigProblem(subscip,NULL,"cip",FALSE);
-    	  SCIPdebugMessage("  Creating multitime cuts on Variable %s --> %s\n",SCIPvarGetName(var),SCIPconsGetName(cons));
+         SCIPdebugMessage("  Creating multitime cuts on Variable %s --> %s\n",SCIPvarGetName(var),SCIPconsGetName(cons));
 
-    	  SCIP_CALL( prepareMultiTimeStatePattern(scip, subscip, var, varmap));
-    	  multiTimePattern_.toString();
-    	  SCIP_CALL( multiTimePattern_.setSolMap(solMap));
-    	  SCIP_CALL(multiTimePattern_.buildHyperCube() );
-    	  SCIP_CALL(multiTimePattern_.propagate(currentTime_));
-    	  SCIP_CALL(multiTimePattern_.resetObjVals());
+         SCIP_CALL( prepareMultiTimeStatePattern(scip, subscip, var, varmap));
+         multiTimePattern_.toString();
+         SCIP_CALL( multiTimePattern_.setSolMap(solMap));
+         SCIP_CALL(multiTimePattern_.buildHyperCube() );
+         SCIP_CALL(multiTimePattern_.propagate(currentTime_));
+         SCIP_CALL(multiTimePattern_.resetObjVals());
 
       }
       SCIPdebugMessage("#### Done with Step 7_3\n");
-   } //Close Step 7
+   } /* Close Step 7 */
 
 
    if( propagateControls )
@@ -509,7 +494,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
 	   SCIPdebugMessage(" Step 7_4: Propagating bounds to control variables at t=%i\n",currentTime_);
 	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )
 	   {
-
 		   SCIP_VAR* controlVar(structure_->getControlVar());
 		   SCIP_Bool localBoundsDiverge(false);
 
@@ -522,7 +506,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
 		   /* Set objective of the control variable to 1 */
 		   SCIP_VAR* subscipControlVar;
 		   subscipControlVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap,controlVar);
-		   //subscipControlVar->obj = 1;
 		   SCIPchgVarObj(subscip, subscipControlVar, 1);
 
 		   /* Call propBoundWithSubscip on this variable */
