@@ -361,10 +361,9 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
                   SCIP_Bool localBoundsDiverge(false);
 
                   /* Set Objective of last variable back to zero */
-                  if( subscipLastVar != NULL ) {
+                  if( subscipLastVar != NULL )
                      SCIPchgVarObj(subscip, subscipLastVar, 0);
-                     //subscipLastVar->obj = 0;
-                  }
+
                   /* Set Objective of current variable to 1 */
                   SCIPcppDbgMsg("Setting Objective" << std::endl);
                   SCIP_VAR* subscipForwardVar;
@@ -377,17 +376,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
                   SCIPcppDbgMsg("Set Objective" << std::endl);
                   subscipLastVar = subscipForwardVar;
 
-                  if( false && currentTime_ == 3 )
-                  {
-                     SCIPtransformProb(subscip);
-                     signal_ = true;
-                     /*
-                  std::ostringstream oss;
-                  oss << "algebraicSubscipInd1FreeShort_" << currentTime << "_" << currentLevel << "_" << consCounter << ".cip";
-                  SCIPcppDebugMsg("writing to " << oss.str() << std::endl);
-                  SCIPdebug( SCIP_CALL( SCIPwriteTransProblem(subscip, oss.str().c_str(), "cip", FALSE) ) );
-                      */
-                  }
                   SCIP_CALL( propBoundWithSubscip(scip,forwardVar,subscip,subscipForwardVar,nchgbds,totalBoundReduction,&localBoundsDiverge, solMap) );
                   if( nPropagatedVars != NULL )
                      ++(*nPropagatedVars);
@@ -398,10 +386,8 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
                   }
 
                   /* Set Objective of current variable back to 0*/
-                  //subscipForwardVar->obj = 0;
                   SCIPchgVarObj(subscip, subscipForwardVar, 0);
                   ++consCounter;
-                  //assert(consCounter < 2);
                }
                else
                {
@@ -415,7 +401,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
 
    //TODO _SD: This worked well before, removed for sol copy testing, better way?
    //SCIP_CALL(SCIPfreeTransform(subscip) );
-
 
    /*
     * 6: Add differential constraints at current time to subscip
@@ -523,16 +508,13 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
 
    if( (*boundsDiverge) )
    {
-      SCIPdebugMessage("Bounds diverge at  t=%i, breaking\n",currentTime_);
+      SCIPdebugMessage("Bounds diverge at  t=%i\n",currentTime_);
    }
-
 
    delete solMap;
 
    return SCIP_OKAY;
 }
-
-
 
 /** propagation of Bounds of a variable by global solution of a subscip
  *
@@ -561,8 +543,6 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
    assert( subscipObjectiveVar != NULL );
    assert( boundsDiverge != NULL );
 
-   //new
-   //SCIP_Bool success;
    SCIP_Bool changedBounds[] = {false, false};
    SCIP_Real newBounds[2];
    SCIP_Real oldBounds[2];
@@ -573,12 +553,11 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
    int i;
 
    SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/historicCons", &historicCons ) );
-
    std::string origVarFullName( SCIPvarGetName( origVar ) );
 
    *boundsDiverge = false;
 
-   //Create clock and start measuring time in propagator
+   /* Create clock and start measuring time in propagator */
    SCIP_CLOCK* propClock;
    SCIP_CALL( SCIPclockCreate( & propClock , SCIP_CLOCKTYPE_DEFAULT ) );
    SCIPclockSetTime( propClock, 0 );
@@ -597,22 +576,11 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
       SCIP_CALL( SCIPfreeTransform( subscip ) );
 
       /* Preparations of the run, depending on maximization or minimization */
-//TODO if what
+      //TODO if what
       if( i == 0 )
-      {
          SCIP_CALL( SCIPsetObjsense( subscip, SCIP_OBJSENSE_MINIMIZE ) );
-      }
       else
-      {
          SCIP_CALL( SCIPsetObjsense( subscip, SCIP_OBJSENSE_MAXIMIZE ) );
-      }
-
-      /* Emptying solution candidate storage */
-      /*SCIP_CALL( SCIPprimalFree( &subscip->origprimal, subscip->mem->probmem ) );
-      SCIP_CALL( SCIPprimalCreate( &subscip->origprimal ) );*/
-
-      /*SCIPdbgMsg("writing problem to file algebraicsubscip.cip\n");
-      SCIPwriteOrigProblem(subscip,"algebraicsubscip.cip","cip",0);*/
 
       /* Solve the subscip */
       SCIPdbgMsg( "ready to solve subscip\n" );
@@ -629,17 +597,13 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
          std::ostringstream oss;
          oss << paramstr2 << paramstr << "_" << historicCons << "_" << currentTime_ << "_algebraic_subscip_" << SCIPvarGetName( origVar ) << "_" << i << ".cip";
          SCIPdebugMessage( "WRITING transformed subscip to file %s\n", oss.str().c_str() );
-         /*SCIPwriteTransProblem(subscip, oss.str().c_str(), std::string("cip").c_str(), false);*/
          SCIPdebug( SCIP_CALL( SCIPwriteOrigProblem( subscip, oss.str().c_str(), "cip", FALSE ) ) );
-         /*SCIPcppDebugMsg("writing subscip to " << oss.str() << std::endl);
-          SCIPdebug( SCIP_CALL( SCIPwriteOrigProblem(subscip, oss.str().c_str(), "cip", FALSE) ) );*/
       }
 
       SCIPdbgMsg( "(t=%i) solving SCIP for %s bound and Variable %s (%s)\n", currentTime_, ( i == 0 ? "lower" : "upper" ), SCIPvarGetName( origVar ), SCIPvarGetName( subscipObjectiveVar ) );
 
       if( signal_)
       {
-         //SCIP_CALL( SCIPpresolve(subscip) );
          std::ostringstream oss;
          oss << "algebraicSubscipStrangeStall_" << SCIPvarGetName( subscipObjectiveVar );
 
@@ -648,36 +612,24 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
          else
             oss << "_upper.cip";
 
-         //SCIPcppDebugMsg("writing subscip to " << oss.str() << std::endl);
          SCIPdebug( SCIP_CALL( SCIPwriteOrigProblem( subscip, oss.str().c_str(), "cip", FALSE ) ) );
       }
 
       SCIP_CALL( SCIPtransformProb( subscip ) );
       SCIPdbgMsg( "ready to solve SCIP for %s bound of variable %s\n", ( i == 0 ? "lower" : "upper" ) , SCIPvarGetName(origVar));
 
-
-      //TODO _SD segfault: Create new sol from map through own function and try
       SCIP_SOL* subscipSol;
       SCIP_CALL(SCIPcreateSol(subscip,&subscipSol,NULL));
       for( auto iter = solMap->begin(); iter != solMap->end(); ++iter)
-      {
-         //SCIPdbgMsg("adding var %s to sol with val %f\n",SCIPvarGetName(iter->first), iter->second);
          SCIPsetSolVal(subscip, subscipSol, iter->first, iter->second);
-      }
 
-
-      SCIPdbgMsg("trying solution\n");
-      //SCIP_CALL( SCIPprintSol(subscip, subscipSol, NULL, TRUE) );
       SCIP_Bool success;
       SCIPtrySolFree(subscip,&subscipSol,FALSE,TRUE,TRUE,TRUE,&success);
-      if( success)
-      {
-         SCIPdbgMsg("solution accepted!\n");
-      }
+      if( !success)
+         SCIPwarningMessage(scip, "Solution was not accepted in subscip\n");
 
       SDsetIsReformulated( subscip, false );
       SCIP_CALL( SCIPsolve( subscip ) );
-      SCIPdbgMsg( "solved SCIP for %s bound\n", ( i == 0 ? "lower" : "upper" ) );
 
       /* Evaluate (hopefully) solved subscip */
       if( SCIPgetStatus( subscip ) == SCIP_STATUS_UNBOUNDED )
@@ -705,8 +657,8 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
 
             SCIP_SOL* subSol = SCIPgetBestSol( subscip );
             SCIPdbgMsg( "optimal solution value is %e\n", SCIPgetSolVal( subscip, subSol, subscipObjectiveVar ) );
-            //Set new lower bound if global solution was found and bound is tighter
 
+            //Set new lower bound if global solution was found and bound is tighter
             newBounds[i] = SCIPgetSolVal( subscip, subSol, subscipObjectiveVar );
             SCIP_Bool feasible;
             SCIP_CALL( SCIPcheckSolOrig( subscip, subSol, &feasible, FALSE, FALSE ) );
@@ -845,8 +797,7 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
          else if( ( changedBounds[0] && SCIPvarGetUbLocal( origVar ) > 1e10 ) || ( changedBounds[1] && SCIPvarGetLbLocal( origVar ) < -1e10 ) )
          {
             *boundsDiverge = true;
-
-         SCIPdebugMessage( "Set boundsDiverge to true because bound was set to high/low value\n" );
+            SCIPdebugMessage( "Set boundsDiverge to true because bound was set to high/low value\n" );
          }
       }
       else
@@ -895,24 +846,15 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
 
 SCIP_DECL_PROPPRESOL( PropOBRA::scip_presol )
 {
-
    SCIPdebugMessage( "entered Presolving of Constraintless Conshdlr CtrlDifferential \n" );
 
-   //TODO _SD: Any way to make scip propagate in presolving?
    SDensureValidStructure(scip );
 
    SCIPdebugMessage( "Running Propagation of CtrlDifferential routine as part of presolving\n" );
 
-   /* Time to runOBRA */
    SCIP_CALL( applyOBRA(scip, result) );
-   /*SCIP_RESULT propResult;
-   propResult = SCIP_DIDNOTRUN;
-   SCIP_CALL( conshdlr->consprop( scip, conshdlr, conss, nconss, 0, 0, SCIP_PROPTIMING_ALWAYS, &propResult ) );
-   SCIPdebugMessage( " -> propagation returned result <%d>\n", propResult ); */
 
-   *result = SCIP_DIDNOTFIND;
    return SCIP_OKAY;
-
 }
 
 SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
@@ -1030,8 +972,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
           * without free variables to differ by more then SCIPepsilon */
          /* SCIP_CALL( SCIPsetSetFeastol(subscip->set,SCIPsetEpsilon(scip->set)) ); */
 
-         /** configure scip for solution of easy problems (no expensive presolving or heuristics) **/
-         /* Set timelimit of subscip given through parameters of this constraint handler */
+         /* Set timelimit and nodelimit of subscip from scip obra  parameters*/
          SCIP_Real subscipTimeLimit;
          SCIP_CALL( SCIPgetRealParam(scip,"propagating/obra/subscipTimeLimit",&subscipTimeLimit) );
          SCIP_CALL( SCIPsetRealParam(subscip,"limits/time",subscipTimeLimit) );
@@ -1043,14 +984,13 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
          /* Read params for subscip */
          readSubscipParams(scip, subscip);
 
-
          /* Create and allocate consmap and varmap */
          SCIP_HASHMAP* consmap;
          SCIP_CALL( SCIPhashmapCreate(&consmap, SCIPblkmem(subscip), SCIPgetNConss(scip)) );
          SCIP_HASHMAP* varmap;
          SCIP_CALL( SCIPhashmapCreate(&varmap, SCIPblkmem(subscip), SCIPcalcHashtableSize(SCIPgetNVars(scip))) );
 
-         /* disable output to console */
+         /* mute subscips */
          SCIP_Bool muteSubscip;
          SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/muteSubscip",&muteSubscip) );
          if(muteSubscip == true)
@@ -1062,10 +1002,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
          SCIPdbgMsg("calling propBoundsAtTwithSubscip, currentTime = %i\n",currentTime_);
          SCIP_CALL( propBoundsAtTwithSubscip(scip,subscip,historicCons,varmap,consmap, &nPropagatedVars, &nchgbds, &totalBoundReduction, &boundsDiverge));
 
-         /*
-          * Clean up allocated maps, empty subscip
-          */
-
+         /* Clean up allocated maps, empty subscip */
          SCIPcppDbgMsg("Freeing hashmaps" << std::endl);
          SCIPhashmapFree(&varmap);
          SCIPhashmapFree(&consmap);
@@ -1073,11 +1010,11 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
          SCIPcppDbgMsg("Freeing subscip" << std::endl);
          SCIP_CALL( SCIPfree(&subscip) );
 
-         if( boundsDiverge) {
+         if( boundsDiverge)
+         {
             SCIPdebugMessage("breaking for boundsDiverge at t = %i\n",currentTime_);
             break;
          }
-
 
       } /*Close stop iteration at given time*/
       else if( currentTime_ == breakTime)
@@ -1085,10 +1022,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
          SCIPdebugMessage("breaking for breakTime\n");
       }
       printProgress();
-   } /*/Close iteration over times in explicitDifferential_ Map*/
-
-   printf("\nFinished run\n");
-   fflush(stdout);
+   } /*/Close iteration over times */
 
    SCIPclockStop( propClock, scip->set );
 
@@ -1096,7 +1030,6 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
    SCIP_Real aggSolvingTime    = constTimePattern_.stats_.aggSolutionTime    + multiTimePattern_.stats_.aggSolutionTime;
    std::multimap<int, std::string> dst;
    std::map<int, std::string>::iterator iter;
-
 
    SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
    SCIPinfoMessage(scip,NULL,"| CtrlDifferential General Statistics in depth %5i                    |\n",SCIPgetDepth(scip));
@@ -1171,8 +1104,6 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
    }
 
    SCIPclockFree( &propClock );
-
-
 
    *result = SCIP_DIDNOTFIND;
    return SCIP_OKAY;
