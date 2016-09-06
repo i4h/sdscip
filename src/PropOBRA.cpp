@@ -857,6 +857,66 @@ SCIP_DECL_PROPPRESOL( PropOBRA::scip_presol )
    return SCIP_OKAY;
 }
 
+SCIP_RETCODE PropOBRA::printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, int historicCons, SCIP_CLOCK* propClock)
+{
+   std::multimap<int, std::string> dst;
+   std::map<int, std::string>::iterator iter;
+
+   SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
+   SCIPinfoMessage(scip,NULL,"| CtrlDifferential General Statistics in depth %5i                    |\n",SCIPgetDepth(scip));
+   SCIPinfoMessage(scip,NULL,"| HistoricCons parameter:          %-4i                                 |\n",historicCons);
+   SCIPinfoMessage( scip, NULL, "| Total time elapsed:             %1.5e s                         |\n", SCIPclockGetTime( propClock ) );
+   SCIPinfoMessage( scip, NULL, "| Last propagated Time:           %-4i                                  |\n", ( breakTime < 0 ? currentTime_ : breakTime - 1 ) );
+   SCIPinfoMessage(scip,NULL,"| Number of solved Subscips:       %-5i                                |\n",nSubscips);
+   SCIPinfoMessage(scip,NULL,"| Total Solving Time:              %1.5e s                        |\n",aggSolvingTime);
+   SCIPinfoMessage(scip,NULL,"| Avrg Time per Subscip:           %1.5e s                        |\n",aggSolvingTime / nSubscips);
+   SCIPinfoMessage(scip,NULL,"| Time solving subscips [%]:       %-3.2f                                |\n",aggSolvingTime / SCIPclockGetTime(propClock) * 100.0);
+   SCIPinfoMessage(scip,NULL,"-------------------------------------------------------------------------\n");
+   SCIPinfoMessage(scip,NULL,"| Constant Time Statistics - Direct Bounds                              |\n");
+   SCIPinfoMessage(scip,NULL,"| Number of considered bounds:     %-4i                                 |\n",constTimePattern_.stats_.nDirectBounds);
+   SCIPinfoMessage(scip,NULL,"| Number of changed bounds:        %-4i                                 |\n",constTimePattern_.stats_.nUpdatedBounds);
+   SCIPinfoMessage(scip,NULL,"| Updated Bounds [percent]:        %-3.2f                               |\n",(double) constTimePattern_.stats_.nDirectBounds / (double) constTimePattern_.stats_.nUpdatedBounds * 100);
+   SCIPinfoMessage(scip,NULL,"| Optimal Bounds [percent]:        %-3.2f                               |\n",(double) constTimePattern_.stats_.nDirectBounds / (double) constTimePattern_.stats_.nDirectOptimal * 100);
+   SCIPinfoMessage(scip,NULL,"| Aggregated Remaining Bounds:     %1.5e                          |\n",constTimePattern_.stats_.aggRemainingBounds);
+   SCIPinfoMessage(scip,NULL,"| Average Remaining Bounds:        %1.5e                          |\n",constTimePattern_.stats_.aggRemainingBounds / constTimePattern_.stats_.nDirectBounds / 2);
+   SCIPinfoMessage(scip,NULL,"| Aggregated Bound Reduction:      %1.5e                          |\n",constTimePattern_.stats_.aggBoundReduction);
+   SCIPinfoMessage(scip,NULL,"| Bound Reduction per Variable:    %1.5e                          |\n",constTimePattern_.stats_.aggBoundReduction / constTimePattern_.stats_.nDirectBounds / 2);
+   SCIPinfoMessage(scip,NULL,"| Aggregated Bounds Solving Time:  %1.5e s                        |\n",constTimePattern_.stats_.aggDirectSolutionTime);
+   SCIPinfoMessage(scip,NULL,"| Bounds Solving Time per subscip: %1.5e s                        |\n",constTimePattern_.stats_.aggDirectSolutionTime / constTimePattern_.stats_.nDirectBounds);
+   if( addCuts == TRUE)
+   {
+      SCIPinfoMessage(scip,NULL,"-------------------------------------------------------------------------\n");
+      SCIPinfoMessage(scip,NULL,"| Constant Time Statistics - Cuts                                       |\n");
+      SCIPinfoMessage(scip,NULL,"| Number of considered cuts:       %-4i                                 |\n",constTimePattern_.stats_.nCuts);
+      SCIPinfoMessage(scip,NULL,"| Useful Cuts [percent] :          %-3.2f                               |\n",(double) constTimePattern_.stats_.nCutsUseful / (double) constTimePattern_.stats_.nCuts * 100.0);
+      SCIPinfoMessage(scip,NULL,"| Optimal Cuts  [percent] :        %-3.2f                               |\n",(double) constTimePattern_.stats_.nCutsOptimal / (double) constTimePattern_.stats_.nCuts * 100.0);
+      SCIPinfoMessage(scip,NULL,"| Aggregated Cuts Solving Time:    %1.5e s                        |\n",constTimePattern_.stats_.aggCutsSolutionTime);
+      SCIPinfoMessage(scip,NULL,"| Cuts Solving Time per subscip:   %1.5e s                        |\n",constTimePattern_.stats_.aggCutsSolutionTime / constTimePattern_.stats_.nCuts);
+      dst = flip_map(constTimePattern_.stats_.usefulCutDistribution);
+      for( iter = dst.begin(); iter != dst.end(); ++iter) {
+         SCIPinfoMessage(scip,NULL,"|   Percentage of type %8s*:   %-3.1f                                |\n",iter->second.c_str(),(double) iter->first / (double) constTimePattern_.stats_.nCutsUseful * 100.0);
+      }
+   }
+   if( addMultiTimeCuts == TRUE)
+   {
+      SCIPinfoMessage(scip,NULL,"-------------------------------------------------------------------------\n");
+      SCIPinfoMessage(scip,NULL,"| Multi Time Statistics - Cuts                                          |\n");
+      SCIPinfoMessage(scip,NULL,"| Number of considered cuts:       %-4i                                 |\n",multiTimePattern_.stats_.nCuts);
+      SCIPinfoMessage(scip,NULL,"| Useful Cuts [percent] :          %-3.2f                               |\n",(double) multiTimePattern_.stats_.nCutsUseful / (double) multiTimePattern_.stats_.nCuts * 100.0);
+      SCIPinfoMessage(scip,NULL,"| Optimal Cuts  [percent] :        %-3.2f                               |\n",(double) multiTimePattern_.stats_.nCutsOptimal / (double) multiTimePattern_.stats_.nCuts * 100.0);
+      SCIPinfoMessage(scip,NULL,"| Aggregated Cuts Solving Time:    %1.5e s                        |\n",multiTimePattern_.stats_.aggCutsSolutionTime);
+      SCIPinfoMessage(scip,NULL,"| Cuts Solving Time per subscip:   %1.5e s                        |\n",multiTimePattern_.stats_.aggCutsSolutionTime / multiTimePattern_.stats_.nCuts);
+      dst = flip_map(multiTimePattern_.stats_.usefulCutDistribution);
+      for( iter = dst.begin(); iter != dst.end(); ++iter) {
+         SCIPinfoMessage(scip,NULL,"|   Percentage of type %8s*:   %-3.1f                                |\n",iter->second.c_str(),(double) iter->first / (double) multiTimePattern_.stats_.nCutsUseful * 100.0);
+      }
+      SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
+      SCIPinfoMessage(scip,NULL,"*: Unless variables are always orderd correctly this is not yet meaningful\n");
+   }
+   SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
+
+}
+
 SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
 {
    /* Make sure parameters are the way we want them */
@@ -1028,86 +1088,37 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
 
    int nSubscips = constTimePattern_.stats_.nSubscips + constTimePattern_.stats_.nSubscips;
    SCIP_Real aggSolvingTime    = constTimePattern_.stats_.aggSolutionTime    + multiTimePattern_.stats_.aggSolutionTime;
-   std::multimap<int, std::string> dst;
-   std::map<int, std::string>::iterator iter;
 
-   SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
-   SCIPinfoMessage(scip,NULL,"| CtrlDifferential General Statistics in depth %5i                    |\n",SCIPgetDepth(scip));
-   SCIPinfoMessage(scip,NULL,"| HistoricCons parameter:          %-4i                                 |\n",historicCons);
-   SCIPinfoMessage( scip, NULL, "| Total time elapsed:             %1.5e s                         |\n", SCIPclockGetTime( propClock ) );
-   SCIPinfoMessage( scip, NULL, "| Last propagated Time:           %-4i                                  |\n", ( breakTime < 0 ? currentTime_ : breakTime - 1 ) );
-   SCIPinfoMessage(scip,NULL,"| Number of solved Subscips:       %-5i                                |\n",nSubscips);
-   SCIPinfoMessage(scip,NULL,"| Total Solving Time:              %1.5e s                        |\n",aggSolvingTime);
-   SCIPinfoMessage(scip,NULL,"| Avrg Time per Subscip:           %1.5e s                        |\n",aggSolvingTime / nSubscips);
-   SCIPinfoMessage(scip,NULL,"| Time solving subscips [%]:       %-3.2f                                |\n",aggSolvingTime / SCIPclockGetTime(propClock) * 100.0);
-   SCIPinfoMessage(scip,NULL,"-------------------------------------------------------------------------\n");
-   SCIPinfoMessage(scip,NULL,"| Constant Time Statistics - Direct Bounds                              |\n");
-   SCIPinfoMessage(scip,NULL,"| Number of considered bounds:     %-4i                                 |\n",constTimePattern_.stats_.nDirectBounds);
-   SCIPinfoMessage(scip,NULL,"| Number of changed bounds:        %-4i                                 |\n",constTimePattern_.stats_.nUpdatedBounds);
-   SCIPinfoMessage(scip,NULL,"| Updated Bounds [percent]:        %-3.2f                               |\n",(double) constTimePattern_.stats_.nDirectBounds / (double) constTimePattern_.stats_.nUpdatedBounds * 100);
-   SCIPinfoMessage(scip,NULL,"| Optimal Bounds [percent]:        %-3.2f                               |\n",(double) constTimePattern_.stats_.nDirectBounds / (double) constTimePattern_.stats_.nDirectOptimal * 100);
-   SCIPinfoMessage(scip,NULL,"| Aggregated Remaining Bounds:     %1.5e                          |\n",constTimePattern_.stats_.aggRemainingBounds);
-   SCIPinfoMessage(scip,NULL,"| Average Remaining Bounds:        %1.5e                          |\n",constTimePattern_.stats_.aggRemainingBounds / constTimePattern_.stats_.nDirectBounds / 2);
-   SCIPinfoMessage(scip,NULL,"| Aggregated Bound Reduction:      %1.5e                          |\n",constTimePattern_.stats_.aggBoundReduction);
-   SCIPinfoMessage(scip,NULL,"| Bound Reduction per Variable:    %1.5e                          |\n",constTimePattern_.stats_.aggBoundReduction / constTimePattern_.stats_.nDirectBounds / 2);
-   SCIPinfoMessage(scip,NULL,"| Aggregated Bounds Solving Time:  %1.5e s                        |\n",constTimePattern_.stats_.aggDirectSolutionTime);
-   SCIPinfoMessage(scip,NULL,"| Bounds Solving Time per subscip: %1.5e s                        |\n",constTimePattern_.stats_.aggDirectSolutionTime / constTimePattern_.stats_.nDirectBounds);
-   if( addCuts == TRUE)
-   {
-      SCIPinfoMessage(scip,NULL,"-------------------------------------------------------------------------\n");
-      SCIPinfoMessage(scip,NULL,"| Constant Time Statistics - Cuts                                       |\n");
-      SCIPinfoMessage(scip,NULL,"| Number of considered cuts:       %-4i                                 |\n",constTimePattern_.stats_.nCuts);
-      SCIPinfoMessage(scip,NULL,"| Useful Cuts [percent] :          %-3.2f                               |\n",(double) constTimePattern_.stats_.nCutsUseful / (double) constTimePattern_.stats_.nCuts * 100.0);
-      SCIPinfoMessage(scip,NULL,"| Optimal Cuts  [percent] :        %-3.2f                               |\n",(double) constTimePattern_.stats_.nCutsOptimal / (double) constTimePattern_.stats_.nCuts * 100.0);
-      SCIPinfoMessage(scip,NULL,"| Aggregated Cuts Solving Time:    %1.5e s                        |\n",constTimePattern_.stats_.aggCutsSolutionTime);
-      SCIPinfoMessage(scip,NULL,"| Cuts Solving Time per subscip:   %1.5e s                        |\n",constTimePattern_.stats_.aggCutsSolutionTime / constTimePattern_.stats_.nCuts);
-      dst = flip_map(constTimePattern_.stats_.usefulCutDistribution);
-      for( iter = dst.begin(); iter != dst.end(); ++iter) {
-         SCIPinfoMessage(scip,NULL,"|   Percentage of type %8s*:   %-3.1f                                |\n",iter->second.c_str(),(double) iter->first / (double) constTimePattern_.stats_.nCutsUseful * 100.0);
-      }
-   }
-   if( addMultiTimeCuts == TRUE)
-   {
-      SCIPinfoMessage(scip,NULL,"-------------------------------------------------------------------------\n");
-      SCIPinfoMessage(scip,NULL,"| Multi Time Statistics - Cuts                                          |\n");
-      SCIPinfoMessage(scip,NULL,"| Number of considered cuts:       %-4i                                 |\n",multiTimePattern_.stats_.nCuts);
-      SCIPinfoMessage(scip,NULL,"| Useful Cuts [percent] :          %-3.2f                               |\n",(double) multiTimePattern_.stats_.nCutsUseful / (double) multiTimePattern_.stats_.nCuts * 100.0);
-      SCIPinfoMessage(scip,NULL,"| Optimal Cuts  [percent] :        %-3.2f                               |\n",(double) multiTimePattern_.stats_.nCutsOptimal / (double) multiTimePattern_.stats_.nCuts * 100.0);
-      SCIPinfoMessage(scip,NULL,"| Aggregated Cuts Solving Time:    %1.5e s                        |\n",multiTimePattern_.stats_.aggCutsSolutionTime);
-      SCIPinfoMessage(scip,NULL,"| Cuts Solving Time per subscip:   %1.5e s                        |\n",multiTimePattern_.stats_.aggCutsSolutionTime / multiTimePattern_.stats_.nCuts);
-      dst = flip_map(multiTimePattern_.stats_.usefulCutDistribution);
-      for( iter = dst.begin(); iter != dst.end(); ++iter) {
-         SCIPinfoMessage(scip,NULL,"|   Percentage of type %8s*:   %-3.1f                                |\n",iter->second.c_str(),(double) iter->first / (double) multiTimePattern_.stats_.nCutsUseful * 100.0);
-      }
-      SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
-      SCIPinfoMessage(scip,NULL,"*: Unless variables are always orderd correctly this is not yet meaningful\n");
-   }
+   /* Display the summary of this obra run */
+   printSummary(scip, nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime, historicCons, propClock);
 
-
-   SCIP_Bool writeAfterProp;
-
-   if( SCIPgetBoolParam( scip, "propagating/obra/writeAfterProp", &writeAfterProp ) && writeAfterProp )
-   {
-      char* paramstr, *paramstr2;
-      std::ostringstream oss,bndoss;
-      SCIPgetStringParam( scip, "propagating/obra/outFile", &paramstr );
-      SCIPgetStringParam( scip, "propagating/obra/outDir", &paramstr2 );
-      oss << paramstr2 << paramstr << "_" << historicCons << "_" << ( breakTime < 0 ? currentTime_ : breakTime - 1 ) << ".cip";
-
-      SCIPdebugMessage( "WRITING transformed problem to file %s at t=%i\n", oss.str().c_str(), currentTime_ );
-      SCIPwriteTransProblem(scip, oss.str().c_str(),"cip", false);
-      bndoss << paramstr2 << paramstr << "_" << historicCons << "_" << currentTime_ << ".bnd";
-      SCIPdebugMessage("WRITING bounds to file %s at t=%i\n",bndoss.str().c_str(),currentTime_);
-      SCIPwriteTransProblem(scip, bndoss.str().c_str(), "bnd", false);
-
-      SCIPdebugMessage( "done writing\n" );
-   }
+   SCIP_CALL( writeAfterProp(scip, breakTime, historicCons) );
 
    SCIPclockFree( &propClock );
 
    *result = SCIP_DIDNOTFIND;
    return SCIP_OKAY;
+}
 
+SCIP_RETCODE PropOBRA::writeAfterProp(SCIP* scip, int breakTime, int historicCons)
+{
+   SCIP_Bool writeAfterProp;
+   if( SCIPgetBoolParam( scip, "propagating/obra/writeAfterProp", &writeAfterProp ) && writeAfterProp )
+   {
+      char* outfilestr, *outdirstr;
+      std::ostringstream oss,bndoss;
+      SCIPgetStringParam( scip, "propagating/obra/outFile", &outfilestr );
+      SCIPgetStringParam( scip, "propagating/obra/outDir", &outdirstr );
+      oss << outdirstr << outfilestr << "_" << historicCons << "_" << ( breakTime < 0 ? currentTime_ : breakTime - 1 ) << ".cip";
+
+      SCIPdebugMessage( "WRITING transformed problem to file %s at t=%i\n", oss.str().c_str(), currentTime_ );
+      SCIPwriteTransProblem(scip, oss.str().c_str(),"cip", false);
+      bndoss << outdirstr << outfilestr << "_" << historicCons << "_" << currentTime_ << ".bnd";
+      SCIPdebugMessage("WRITING bounds to file %s at t=%i\n",bndoss.str().c_str(),currentTime_);
+      SCIPwriteTransProblem(scip, bndoss.str().c_str(), "bnd", false);
+
+      SCIPdebugMessage( "done writing\n" );
+   }
 }
 
 SCIP_RETCODE PropOBRA::ensureCurrentStructure( SCIP* scip )

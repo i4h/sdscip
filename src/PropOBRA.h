@@ -191,7 +191,9 @@ private:
 
    SCIP_RETCODE printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars);
    SCIP_RETCODE printProgress();
+   SCIP_RETCODE printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, int historicCons, SCIP_CLOCK* propClock);
    SCIP_RETCODE applyOBRA(SCIP* scip, SCIP_RESULT* result);
+   SCIP_RETCODE writeAfterProp(SCIP* scip, int breakTime, int historicCons);
    SCIP_RETCODE ensureCurrentStructure(SCIP* scip);
    SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
    SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int historicCons, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
