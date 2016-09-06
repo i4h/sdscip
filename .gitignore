@@ -3,6 +3,7 @@
 bin/
 obj/
 TAGS
+run.sh
 
 
 doc/doxygen
