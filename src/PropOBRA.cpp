@@ -1119,6 +1119,8 @@ SCIP_RETCODE PropOBRA::writeAfterProp(SCIP* scip, int breakTime, int historicCon
 
       SCIPdebugMessage( "done writing\n" );
    }
+
+   return SCIP_OKAY;
 }
 
 SCIP_RETCODE PropOBRA::ensureCurrentStructure( SCIP* scip )

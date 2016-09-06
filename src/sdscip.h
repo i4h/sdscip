@@ -3,7 +3,7 @@
 /*                  This file is part of the program and library             */
 /*         SCIP --- Solving Constraint Integer Programs                      */
 /*                                                                           */
-/*    Copyright (C) 2002-2012 Konrad-Zuse-Zentrum                            */
+/*    Copyright (C) 2002-2015 Konrad-Zuse-Zentrum                            */
 /*                            fuer Informationstechnik Berlin                */
 /*                                                                           */
 /*  SCIP is distributed under the terms of the ZIB Academic License.         */
@@ -13,36 +13,23 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/**@file   reader_osilc.h
- * @ingroup FILEREADERS
- * @brief  OS instance language (OSiL) format file reader
- * @author Stefan Vigerske
- *
- * This reader allows to parse OSiL files with linear and nonlinear constraints and objective.
- * Writing is not implemented yet.
- *
- * The OSiL format is an XML based format to represent a broad class of mathematical programming instances, see http://www.coin-or.org/OS/OSiL.html .
+/**@file   scip.h
+ * @ingroup PUBLICMETHODS
+ * @brief  SD-SCIP common includes
+ * @author Ingmar Vierhaus
  */
 
 /*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
 
-#ifndef __SCIP_READER_OSILC_H__
-#define __SCIP_READER_OSILC_H__
+#ifndef __SCIP_SDSCIP_H__
+#define __SCIP_SDSCIP_H__
 
 
-#include "sdscip.h"
-#include <boost/regex.hpp>
+#include "scip/scip.h"
+#include "pub_message_sd.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
 
-/** includes the osilControl file reader into SCIP */
-EXTERN
-SCIP_RETCODE SCIPincludeReaderOsilC(
-   SCIP*                 scip                /**< SCIP data structure */
-   );
-
+/**@} */
 #ifdef __cplusplus
 }
 #endif

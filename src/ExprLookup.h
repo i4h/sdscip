@@ -8,6 +8,7 @@
 #include <scip/def.h>
 #include <nlpi/type_expr.h>
 #include <boost/shared_ptr.hpp>
+#include "sdscip.h"
 
 /**
  * Creates a piecewise linear expression using its piecewise cubic approximation

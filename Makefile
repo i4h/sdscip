@@ -44,7 +44,6 @@ include $(SCIPDIR)/make/make.project
 
 MAINNAME	=	sdscip
 MAINSRCPATH	=	cppmain.cpp \
-			PresolCppMin.cpp \
 			ProbDataCtrl.cpp \
 			NLPGraph.cpp \
 			PresolConsGraph.cpp \

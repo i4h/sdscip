@@ -9,7 +9,7 @@
 #define BOUNDMAPHELPERS_H_
 
 
-#include "scip/scip.h"
+#include "sdscip.h"
 
 #include <iostream>
 #include <sstream>

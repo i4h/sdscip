@@ -8,7 +8,7 @@
 #ifndef TESTBOUNDMAP_H_
 #define TESTBOUNDMAP_H_
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SDproblemStructureInterface.h"
 #include "BoundMapHelpers.cpp"
 

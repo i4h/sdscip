@@ -28,26 +28,23 @@
 #include "objscip/objscip.h"
 #include "objscip/objscipdefplugins.h"
 
-/* include TSP specific components */
+
+/* include SD-SCIP components */
 #include "reader_osilc.h"
 #include "ProbDataSD.h"
-
 
 #include "PropOBRA.h"
 #include "HeurSimODE.h"
 #include "BranchControlFirst.h"
-//#include "PropCtrlOBBT.h"
 #include "PropODE.h"
 
-//#include "reader_osilc.h"
 #include "ReaderVOP.h"
 #include "PresolConsGraph.h"
-//#include "prop_obobt.h"
 #include "Statistics.hpp"
 #include "scip/scipdefplugins.h"
 #include "scip/debug.h"
 
-/* Just for testing */
+/* Inlucde testing classes */
 #include "TestODEintegrator.h"
 #include "TestSBrateEvaluator.h"
 #include "TestBoundMap.h"

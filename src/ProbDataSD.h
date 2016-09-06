@@ -28,9 +28,10 @@
 #include <boost/regex.hpp>
 #include <iostream>
 #include <string>
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SDproblemStructureInterface.h"
 #include "SDproblemStructureFactory.h"
+#include "pub_message_sd.h"
 
 
 /* For usage of these classes see declaration of  class variables in ProbDataSD.h */

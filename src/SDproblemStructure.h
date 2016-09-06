@@ -13,7 +13,7 @@
 #include <boost/regex.hpp>
 #include <sstream>
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SDVarBasic.h"
 #include "SDproblemStructureInterface.h"
 

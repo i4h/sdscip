@@ -8,7 +8,7 @@
 #ifndef TESTSBRATEVALUATOR_H_
 #define TESTSBRATEVALUATOR_H_
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SBrateEvaluator.h"
 
 namespace ctrl

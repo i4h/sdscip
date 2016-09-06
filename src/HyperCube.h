@@ -21,7 +21,7 @@
 #include "Orthant.h"
 #include "OrthantList.h"
 #include "HyperPlane.h"
-#include "scip/scip.h"
+#include "sdscip.h"
 
 
 namespace SDgeom {

@@ -13,7 +13,7 @@
 #include <map>
 #include "SDList.h"
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SDVarBasic.h"
 #include "SDproblemStructureInterface.h"
 

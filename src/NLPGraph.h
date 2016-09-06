@@ -13,7 +13,7 @@
 #include<lemon/maps.h>
 
 #include "scip/type_cons.h"
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "scip/struct_var.h"
 
 #include<iostream>

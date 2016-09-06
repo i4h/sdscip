@@ -12,7 +12,7 @@
 #include <map>
 #include <boost/regex.hpp>
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SDVarBasic.h"
 
 namespace ctrl {

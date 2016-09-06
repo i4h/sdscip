@@ -10,7 +10,7 @@
 
 #include <string>
 #include <vector>
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "BoundMapHelpers.cpp"
 
 namespace ctrl

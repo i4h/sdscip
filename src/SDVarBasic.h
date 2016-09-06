@@ -8,7 +8,7 @@
 #ifndef SDVARBASIC_H_
 #define SDVARBASIC_H_
 
-#include "scip/scip.h"
+#include "sdscip.h"
 
 namespace ctrl {
 

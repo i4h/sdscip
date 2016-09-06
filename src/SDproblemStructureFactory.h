@@ -8,7 +8,7 @@
 #ifndef SDPROBLEMSTRUCTUREFACTORY_H_
 #define SDPROBLEMSTRUCTUREFACTORY_H_
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "SDproblemStructureInterface.h"
 #include "SDproblemStructure.h"
 #include "SDproblemStructureV1.h"

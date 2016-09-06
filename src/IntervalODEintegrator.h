@@ -16,7 +16,7 @@
 #include "SBrateEvaluator.h"
 #include "Vector.h"
 #include <string>
-#include "scip/scip.h"
+#include "sdscip.h"
 #include <fstream>
 
 namespace ctrl

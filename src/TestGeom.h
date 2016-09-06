@@ -9,7 +9,7 @@
 #define TESTGEOM_H_
 
 #include <iostream>
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "Point.h"
 #include "Vector.h"
 #include "Orthant.h"

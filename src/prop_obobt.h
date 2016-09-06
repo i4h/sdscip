@@ -43,7 +43,7 @@
 #define __SCIP_PROP_OBOBT_H__
 
 
-#include "scip/scip.h"
+#include "sdscip.h"
 #include "ProbDataSD.h"
 #include "SDproblemStructureInterface.h"
 
