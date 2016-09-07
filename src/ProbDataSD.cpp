@@ -350,7 +350,9 @@ SCIP_DECL_DIALOGEXEC(dialogExecSDdisable)
    SCIPsetIntParam(scip, "heuristics/simODE/freq", -1);
    SCIPsetIntParam(scip, "propagating/propODE/freq", -1);
    SCIPsetIntParam(scip, "propagating/propODE/maxprerounds", 0);
-   SCIPsetIntParam(scip, "constraints/ctrlDifferential/maxprerounds", 0);
+   SCIPsetIntParam(scip, "propagating/obra/maxprerounds", 0);
+   SCIPsetIntParam(scip, "propagating/obra/freq", -1);
+
 
    /* next dialog will be root dialog again */
    *nextdialog = SCIPdialoghdlrGetRoot(dialoghdlr);
