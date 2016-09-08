@@ -1,13 +1,15 @@
 #!/bin/bash
 
-make test TEST=simulate SETTINGS=simulate  OPT=dbg LPS=cpx IPOPT=true
+if [ $FLAGS = "" ]; then
+    FLAGS="OPT=dbg LPS=cpx IPOPT=true"
+fi
+
+make test TEST=simulate SETTINGS=simulate $FLAGS
 #read -p "Done with testset __simulate__. Press enter to continue" yn
 
-
-make test TEST=propODE SETTINGS=propODE  TIME=10  OPT=dbg LPS=cpx IPOPT=true
+make test TEST=propODE SETTINGS=propODE  TIME=10 $FLAGS
 #read -p "Done with testset __simulate__. Press enter to continue" yn
 
-
-make test TEST=obra SETTINGS=obra    OPT=dbg LPS=cpx IPOPT=true
+make test TEST=obra SETTINGS=obra  $FLAGS
 #read -p "Done with testset __simulate__. Press enter to continue" yn
 
