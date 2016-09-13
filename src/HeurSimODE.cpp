@@ -132,10 +132,6 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    SCIPclockSetTime(clock,0);
    SCIPstartClock(scip, clock);
 
-   /* Declare internal flags */
-   SCIP_Bool infeasible(false); /* Know internally if we found infeasibility */
-   SCIP_Bool violatedBounds(false);
-   SCIP_Bool infiniteBound(false); /* Know internally if a bound went to infinity */
    I4H::Statistics stats;
 
    /* Get structure */
@@ -152,10 +148,15 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
 
    //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE_MIDPOINT; mode = mode + 1) {
+   //ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER;
    //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_MIDPOINT; mode = mode + 1)
-   ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER;
-   //for( ReduceODEintegrator::REDUCTION_MODE mode : ReduceODEintegrator::getReductionModeVector())
+   for( ReduceODEintegrator::REDUCTION_MODE mode : ReduceODEintegrator::getReductionModeVector())
    {
+      /* Declare internal flags */
+      SCIP_Bool infeasible(false); /* Know internally if we found infeasibility */
+      SCIP_Bool violatedBounds(false);
+      SCIP_Bool infiniteBound(false); /* Know internally if a bound went to infinity */
+
 
 
 	   /* Start clock */
@@ -318,7 +319,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       }
 
       /* Do one more step to set values of superfluous control and algebraic vars at t = T */
-      if( true) {
+      if( doingFine) {
 
          SCIPdebugMessage("----Last step: Integrating to currentTime %i -----\n",currentTime);
          integrator.computeAlgebraic(structure->getXdotParams(currentTime - 1));
@@ -355,23 +356,32 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       SCIP_Real solTime = SCIPclockGetTime(clock);
 
       //SCIPprintSol(scip_, sol_, NULL, TRUE);
-      SCIP_Real obj = SCIPsolGetOrigObj(sol_);
 
-      SCIPtrySolFree(scip_, &sol_, FALSE, TRUE, TRUE, TRUE, &stored);
-      //SCIPdebugMessage("Solution%s stored!\n", (stored ? "" : " NOT"));
-      finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
-      assert(stored  || (SCIPgetBestSol(scip_) != NULL));
-
-      SCIPstopClock(scip_, clock);
-
-      SCIPdebugMessage("Exit HeurSimODE %s, %f seconds for sim, %f total, obj: %f\n",
-         (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
-         solTime, SCIPclockGetTime(clock), obj);
-
-      /* If we are in presolving and still in sim mode, inform user that problem is simulation */
-      if( SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING && integrator.getSolveMode() == ReduceODEintegrator::SOLVE_MODE_SIM)
+      if (doingFine)
       {
-         SCIPinfoMessage(scip, NULL, "HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.\n");
+         SCIP_Real obj = SCIPsolGetOrigObj(sol_);
+         SCIPtrySolFree(scip_, &sol_, FALSE, TRUE, TRUE, TRUE, &stored);
+         //SCIPdebugMessage("Solution%s stored!\n", (stored ? "" : " NOT"));
+         finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
+         assert(stored  || (SCIPgetBestSol(scip_) != NULL));
+
+         SCIPstopClock(scip_, clock);
+
+         SCIPdebugMessage("Exit HeurSimODE %s, %f seconds for sim, %f total, obj: %f\n",
+            (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
+            solTime, SCIPclockGetTime(clock), obj);
+
+         /* If we are in presolving and still in sim mode, inform user that problem is simulation */
+         if( SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING && integrator.getSolveMode() == ReduceODEintegrator::SOLVE_MODE_SIM)
+         {
+            SCIPinfoMessage(scip, NULL, "HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.\n");
+         }
+      }
+      else
+      {
+         SCIPdbgMsg("Exit HeurSimODE %s, %f seconds for sim, %f total, \n",
+            (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
+            solTime, SCIPclockGetTime(clock));
       }
 
 
