@@ -207,9 +207,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       int tStep(0);
       SCIP_Bool doingFine = TRUE;
 
-      SCIPdebugMessage("Set initial values in integrator:\n");
-      SCIPdebugMessage("%s\n",integrator.statesToString().c_str());
-
+      SCIPdbgMsg("Set initial values in integrator:\n");
+      SCIPdbgMsg("%s\n",integrator.statesToString().c_str());
 
       for (currentTime = structure->incrementTime(); structure->timesLeft() && doingFine ; currentTime = structure->incrementTime())
       {
@@ -242,7 +241,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
             {
                doingFine = false;
                violatedBounds = true;
-               SCIPdebugMessage("solution value for state var %s of %f violates existing bounds [%f, %f], exiting\n", SCIPvarGetName(var), val, SCIPvarGetLbLocal(var), SCIPvarGetUbLocal(var));
+               SCIPdbgMsg("solution value for state var %s of %f violates existing bounds [%f, %f], exiting\n", SCIPvarGetName(var), val, SCIPvarGetLbLocal(var), SCIPvarGetUbLocal(var));
                break;
             }
             SCIP_CALL( SCIPsetSolVal(scip_, sol_, var, val) );
