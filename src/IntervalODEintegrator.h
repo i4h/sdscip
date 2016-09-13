@@ -18,6 +18,8 @@
 #include <string>
 #include "sdscip.h"
 #include <fstream>
+#include <sstream>
+
 
 namespace ctrl
 {
