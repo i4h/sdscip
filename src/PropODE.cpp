@@ -359,7 +359,13 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
       SBrateEvaluator::BoundMap currentStateBounds = structure->getStateBoundsMap();
 
       /* Step integrator with state bounds and parameters */
-      integrator.step(oldStateBounds, currentStateBounds, structure->getXdotParams(currentTime - 1) );
+      try {
+         integrator.step(oldStateBounds, currentStateBounds, structure->getXdotParams(currentTime - 1) );
+      } catch( std::exception &err) {
+         SCIPerrorMessage("%s %s\n","IntervalIntegrator threw Exception:",err.what());
+         return SCIP_ERROR;
+      }
+
       t = integrator.getT();
       tStep++;
       SCIPdbgMsg("after integrator step: step = %i, t = %f, currentTime = %i\n",tStep,t,currentTime);

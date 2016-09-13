@@ -324,11 +324,13 @@ void IntervalODEintegrator::step(const BoundMap& startStateBounds, const BoundMa
             SCIPdbgMsg("stage %i, dim %i, contribution to sup is %1.16e\n", i, j, row[j] * dtIntermediate_ * kMatrix[j][i].sup);
          }
 
+         /* This is possible due to numerical difficulties and really bad bounds */
          if( varValues_[i].inf > varValues_[i].sup)
          {
-            SCIPerrorMessage("boundswitch of size %e detected in varValues[%i]\n", varValues_[i].sup - varValues_[i].inf, i);
+            std::ostringstream oss;
+            oss << "boundswitch of size " <<  (varValues_[i].sup - varValues_[i].inf) << " in state " << i << " at t=" << t_ ;
+            throw std::runtime_error(oss.str());
          }
-         assert(varValues_[i].inf <= varValues_[i].sup);
       }
 
       /* Move time forward */
