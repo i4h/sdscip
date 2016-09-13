@@ -1,7 +1,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /**@file   Propode.h
- * @brief  Propagating bounds of control problems by solving auxiliary ODEs, implementing Scott, Barton 2012
+ * @brief  Propagating bounds of control problems by solving auxiliary ODEs, implementing Scott, Barton 2013
+ *
  * @author Ingmar Vierhaus
  */
 /*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
