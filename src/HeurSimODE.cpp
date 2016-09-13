@@ -378,6 +378,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       }
       else
       {
+         SCIPfreeSol(scip_, &sol_);
          SCIPdbgMsg("Exit HeurSimODE %s, %f seconds for sim, %f total, \n",
             (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
             solTime, SCIPclockGetTime(clock));
