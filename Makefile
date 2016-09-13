@@ -32,11 +32,16 @@ endif
 #-----------------------------------------------------------------------------
 include $(SCIPDIR)/make/make.project
 
+$(info $$PERMUTE is [${PERMUTE}])
+$(info $$VERSION is [${VERSION}])
 
 # include install/uninstall targets
 -include make/make.install
 
 # $(info $$SCIPDIR is ${SCIPDIR})
+
+VERSION		=	0.9.0
+
 
 #-----------------------------------------------------------------------------
 # Main Program
@@ -159,7 +164,7 @@ test:           $(MAINFILE)
 		@-(cd check && ln -fs $(SCIPDIR)/check/run.sh);
 		cd check; \
 		$(SHELL) ./check.sh $(TEST) $(MAINFILE) $(SETTINGS) $(notdir $(MAINFILE)) $(TIME) $(NODES) $(MEM) $(THREADS) $(FEASTOL) $(DISPFREQ) \
-		$(CONTINUE) $(LOCK) "example" $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE);
+		$(CONTINUE) $(LOCK) $(VERSION) $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE) $(PERMUTE);
 
 
 $(MAINSHORTLINK):	$(MAINFILE)
