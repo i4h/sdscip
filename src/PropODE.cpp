@@ -299,13 +299,12 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
    int oldnchgbds = *nchgbds; /* private counter for changed bounds */
    int potentialBndChgs(0);
 
+   SCIP_Bool doingFine = true;
 
    /* Get structure */
    SDensureValidStructure(scip);
    ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip) );
 
-   /* Prepare out file */
-   SCIP_CALL( prepareOutFile(structure->getStateVarNames()) );
 
    /* Write initial transproblem to file */
 #ifdef SD_PROPODE_WRITE_PREPROP
@@ -341,11 +340,21 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
    /* Save the state bounds at t = 0 to use as enclosure */
    SDproblemStructureInterface::BoundMap oldStateBounds = structure->getStateBoundsMap();
 
+   if (!integrator.sane())
+   {
+      SCIPdebugMessage("sanity check failed, not running PropODE\n");
+      *result = SCIP_DIDNOTRUN;
+      doingFine = false;
+   }
+
+   /* Prepare out file */
+   SCIP_CALL( prepareOutFile(structure->getStateVarNames()) );
+
    /** Start integration loop */
    SCIP_Real t(startTime);
    int tStep(0);
    if (execCount_ >= outCount) { SCIPdbgMsg("dt_ = %f\n",dt_); }
-   SCIP_Bool doingFine = true;
+
    for( currentTime = structure->incrementTime(); structure->timesLeft() && doingFine; currentTime = structure->incrementTime())
    {
       SCIPdbgMsg("Preparing for integration to currentTime %i\n",currentTime);
