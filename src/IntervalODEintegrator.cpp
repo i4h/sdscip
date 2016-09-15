@@ -219,7 +219,6 @@ std::vector<SCIP_Interval> IntervalODEintegrator::getNewX(const std::vector<std:
    {
       for (int j = 0; j < s; ++j)
       {
-         SCIP_Interval oldX = newX[i];
          newX[i].inf = newX[i].inf + row[j+1] * dtIntermediate_ * kMatrix[j][i].inf;
          newX[i].sup = newX[i].sup + row[j+1] * dtIntermediate_ * kMatrix[j][i].sup;
          assert(newX[i].inf <= newX[i].sup);
