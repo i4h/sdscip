@@ -90,6 +90,16 @@ public:
    void setXdot(SCIP_EXPR** xDot);
    void printXdot();
 
+   /**
+    * Performs sanity checks of the configured initial values.
+    * Should be called after the initial set and  the control set were set.
+    * */
+   SCIP_Bool sane() const;
+
+   /* How many orders of magnitude can lowest upper and highest lower bound of initial states be apart for Integrator to be sane*/
+   SCIP_Real saneBoundGap_;
+
+
 private:
    /* vector varValues_ contains the state of the integrator:
     * varValues[0,1,..nStates_-1].inf = \vec v
@@ -103,6 +113,7 @@ private:
    INTERVAL_INTEGRATOR_CONTROL_MODE controlMode_;
 
    SBrateEvaluator* rateEvaluator_; /* Computes right hand sides of (3) in [1] */
+
 
 };
 }

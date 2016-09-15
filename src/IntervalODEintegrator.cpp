@@ -29,6 +29,9 @@ IntervalODEintegrator::IntervalODEintegrator(SCIP* _scip, std::string _discretiz
    zero.inf = 0.0;
    zero.sup = 0.0;
    varValues_ = std::vector<SCIP_Interval>(nStates_ + nControls_ + nAlgebraic_, zero);
+
+   /* Default configuration */
+   saneBoundGap_ = 3.0;
 }
 
 IntervalODEintegrator::~IntervalODEintegrator()
@@ -369,6 +372,47 @@ SCIP_Bool IntervalODEintegrator::checkBounds(const BoundMap& bounds) const
          return false;
       }
    }
+   return true;
+}
+
+
+SCIP_Bool IntervalODEintegrator::sane() const
+{
+   /* Not sane if highest lower bound is orders of magnitude lower than lowest upper bound */
+   if( nStates_ >= 2)
+   {
+      double lowestUpper = infinity_;
+      double highestLower = -infinity_;
+      int lowestUpperInd = 0;
+      int highestLowerInd = 0;
+
+      for (int i = 0; i < nStates_; ++i)
+      {
+         /* Update at most one bound */
+         if (varValues_[i].sup < lowestUpper )
+         {
+            lowestUpper = varValues_[i].sup;
+            lowestUpperInd = i;
+         }
+
+         if (varValues_[i].inf > highestLower )
+         {
+            highestLower = varValues_[i].inf;
+            highestLowerInd = i;
+         }
+      }
+
+      if(     (highestLowerInd != lowestUpperInd)
+           && (highestLower  > lowestUpper)
+           && ((std::log10(highestLower) - std::log10(lowestUpper)) > saneBoundGap_ )
+           )
+      {
+         SCIPdebugMessage("Sanity check of IntervalIntegrator failed: x_%i = [%e,] and x_%i = [,%e] are %f orders of magnitude apart (limit %1.2f)\n",
+               lowestUpperInd, lowestUpper, highestLowerInd, highestLower,std::log10(highestLower) - std::log10(lowestUpper), saneBoundGap_);
+         return false;
+      }
+   }
+
    return true;
 }
 
