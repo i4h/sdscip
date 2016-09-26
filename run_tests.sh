@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ $FLAGS = "" ]; then
-    FLAGS="OPT=dbg LPS=cpx IPOPT=true"
+    FLAGS="OPT=dbg LPS=cpx IPOPT=true ZIMPL=false"
 fi
 
 make test TEST=simulate SETTINGS=simulate $FLAGS
