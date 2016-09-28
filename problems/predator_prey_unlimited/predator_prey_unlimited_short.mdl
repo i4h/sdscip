@@ -77,7 +77,7 @@ Prey Losses=
 		Simulation Control Parameters
 	|
 
-FINAL TIME  = 6.02
+FINAL TIME  = 6.0
 	~	Month
 	~	The final time for the simulation.
 	|
