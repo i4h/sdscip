@@ -82,7 +82,7 @@ fi
 
 # Check if repos are clean
 if [[ $FORCE = n ]] ; then
-    dirtyrepos=`sd_repo_summary.sh | grep "scip" | grep '(dirty)'`
+    dirtyrepos=`sd_repo_summary.sh | grep "scip" | grep '(dirty)'` || true
     if [ "$dirtyrepos" != "" ] ; then
 	echo "Dirty repo detected:"
 	echo $dirtyrepos
