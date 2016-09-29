@@ -79,8 +79,6 @@ if [ $QUICK = y ]; then
     log="logs/tests_quick_current.log"
 fi
 
-# Clear log
-cat /dev/null > $log
 
 # Check if repos are clean
 if [[ $FORCE = n ]] ; then
@@ -94,6 +92,10 @@ if [[ $FORCE = n ]] ; then
 	fi
     fi
 fi
+
+# Clear log
+cat /dev/null > $log
+
 
 # Write repo status to log
 echo "Getting repo_summary"
