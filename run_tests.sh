@@ -111,8 +111,8 @@ if [ $QUICK = n ]]; then
     make test TEST=obra SETTINGS=obra  $FLAGS  | tee -a $log
 else
     make test TEST=obra_quick SETTINGS=obra  $FLAGS  | tee -a $log   
+fi
 #read -p "Done with testset __simulate__. Press enter to continue" yn
-
 
 
 exit $EXIT_SUCCESS
