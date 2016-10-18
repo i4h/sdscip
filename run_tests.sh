@@ -79,6 +79,8 @@ if [ $QUICK = y ]; then
     log="logs/tests_quick_current.log"
 fi
 
+echo "Writing log to "$log
+
 
 # Check if repos are clean
 if [[ $FORCE = n ]] ; then
@@ -107,7 +109,7 @@ make test TEST=simulate SETTINGS=simulate $FLAGS | tee -a $log
 make test TEST=propODE SETTINGS=propODE  TIME=10 $FLAGS  | tee -a $log
 #read -p "Done with testset __simulate__. Press enter to continue" yn
 
-if [ $QUICK = n ]]; then
+if [[ $QUICK = n ]]; then
     make test TEST=obra SETTINGS=obra  $FLAGS  | tee -a $log
 else
     make test TEST=obra_quick SETTINGS=obra  $FLAGS  | tee -a $log   
