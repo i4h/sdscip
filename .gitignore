@@ -1,3 +1,4 @@
+makeIt.sh
 *.[oa]
 *.pyc
 bin/
