@@ -95,10 +95,6 @@ if [[ $FORCE = n ]] ; then
     fi
 fi
 
-# Clear log
-cat /dev/null > $log
-
-
 # Write repo status to log
 echo "Getting repo_summary"
 sd_repo_summary.sh | tee $log
