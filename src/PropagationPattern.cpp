@@ -632,7 +632,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
             //SCIPdbgMsg("adding var %s to sol with val %f\n",SCIPvarGetName(iter->first), iter->second);
             SCIPsetSolVal(this->subscip_, subscipSol, iter->first, iter->second);
          }
-         SCIPtrySolFree(this->subscip_,&subscipSol,FALSE,TRUE,TRUE,TRUE,&success);
+         SCIPtrySolFree(this->subscip_, &subscipSol, FALSE, TRUE, TRUE, TRUE, TRUE, &success);
          if (success == FALSE)
          {
             SCIPdebugMessage("  primal solution not accepted in subscip\n");

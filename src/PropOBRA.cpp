@@ -624,7 +624,7 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
          SCIPsetSolVal(subscip, subscipSol, iter->first, iter->second);
 
       SCIP_Bool success;
-      SCIPtrySolFree(subscip,&subscipSol,FALSE,TRUE,TRUE,TRUE,&success);
+      SCIPtrySolFree(subscip, &subscipSol, FALSE, TRUE, TRUE, TRUE, TRUE, &success);
       if( !success)
          SCIPwarningMessage(scip, "Solution was not accepted in subscip\n");
 

@@ -359,7 +359,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       if (doingFine)
       {
          SCIP_Real obj = SCIPsolGetOrigObj(sol_);
-         SCIPtrySolFree(scip_, &sol_, FALSE, TRUE, TRUE, TRUE, &stored);
+         SCIPtrySolFree(scip_, &sol_, FALSE, TRUE, TRUE, TRUE, TRUE, &stored);
          //SCIPdebugMessage("Solution%s stored!\n", (stored ? "" : " NOT"));
          finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
          assert(stored  || (SCIPgetBestSol(scip_) != NULL));
