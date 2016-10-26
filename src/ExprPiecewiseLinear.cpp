@@ -123,9 +123,10 @@ SCIP_RETCODE estimateSafe(
 
    /* Compute the slope */
    if( mup )
-      SCIPintervalSetRoundingMode(SCIP_ROUND_UPWARDS);
+      SCIPintervalSetRoundingModeUpwards();
    else
-      SCIPintervalSetRoundingMode(SCIP_ROUND_DOWNWARDS);
+      SCIPintervalSetRoundingModeDownwards();
+
    *coefficient = (y2 - y1) / (x2 - x1);
    SCIPdbgMsg("Rounded %s, coefficient = %e\n", mup ? "up" : "down", *coefficient);
 
@@ -165,18 +166,20 @@ SCIP_RETCODE estimateSafe(
       case SAFE_ESTIMATOR_TYPE_4:
          /* Simply round the intercept in the right direction */
             if (overestimate)
-               SCIPintervalSetRoundingMode(SCIP_ROUND_UPWARDS);
+               SCIPintervalSetRoundingModeUpwards();
             else
-               SCIPintervalSetRoundingMode(SCIP_ROUND_DOWNWARDS);
+               SCIPintervalSetRoundingModeDownwards();
+
             *intercept = y1-(*coefficient)*x1; //, y2-coeffs[0]*x2);
             break;
       case SAFE_ESTIMATOR_TYPE_5:
       case SAFE_ESTIMATOR_TYPE_6:
          /* Compute intercept for E5 (E6) from x1 (x2) and y1 (y2) */
          if (overestimate)
-            SCIPintervalSetRoundingMode(SCIP_ROUND_UPWARDS);
+            SCIPintervalSetRoundingModeUpwards();
          else
-            SCIPintervalSetRoundingMode(SCIP_ROUND_DOWNWARDS);
+            SCIPintervalSetRoundingModeDownwards();
+
          if( estimator == SAFE_ESTIMATOR_TYPE_5)
             *intercept = y2-(*coefficient)*x2;
          else
