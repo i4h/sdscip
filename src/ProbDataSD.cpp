@@ -74,7 +74,9 @@ bool SDisEquation(SCIP* scip, SCIP_CONS* cons)
    SCIP_CONSHDLR* conshdlr;
    conshdlr = SCIPconsGetHdlr(cons);
 
-   if (strcmp(SCIPconshdlrGetName(conshdlr),"nonlinear") == 0) {
+   //TODO _SD: check if this method is really needed, if yes implement this in sdscip not in scip
+
+   /*if (strcmp(SCIPconshdlrGetName(conshdlr),"nonlinear") == 0) {
       SCIP_CALL(SCIPconsIsEquationNonlinear(scip,cons,&isEquation));
    }
    else if (strcmp(SCIPconshdlrGetName(conshdlr),"linear") == 0)
@@ -90,10 +92,10 @@ bool SDisEquation(SCIP* scip, SCIP_CONS* cons)
       SCIPconsIsEquationQuadratic(scip,cons,&isEquation);
    }
    else
-   {
+   {*/
       SCIPdbgMsg("isEquation for constraint type %s not implemented",SCIPconshdlrGetName(conshdlr));
       assert(false);
-   }
+   /*}*/
    return isEquation;
 }
 
