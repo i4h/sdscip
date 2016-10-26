@@ -49,7 +49,6 @@ VERSION		=	0.9.0
 
 MAINNAME	=	sdscip
 MAINSRCPATH	=	cppmain.cpp \
-			ProbDataCtrl.cpp \
 			NLPGraph.cpp \
 			PresolConsGraph.cpp \
 			reader_osilc.c \
