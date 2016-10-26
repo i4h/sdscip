@@ -119,11 +119,11 @@ SCIP_RETCODE MdlExpressionTranslator::getScipExpr( sdo::ExpressionGraph::Node *r
          {
          case sdo::ExpressionGraph::INTEG:
          {
-            auto i = vars.find( node );
+            auto j = vars.find( node );
 
-            if( i != vars.end() )
+            if( j != vars.end() )
             {
-               *expr = i->second;
+               *expr = j->second;
                expr_stack.push( *expr );
             }
             else
@@ -1393,10 +1393,10 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
    }
 
    //insert all vars into vector with proper order
-   std::vector<MdlScipVar> vars;
-   vars.insert( vars.end(), states.begin(), states.end() );
+   std::vector<MdlScipVar> varvec;
+   varvec.insert( varvec.end(), states.begin(), states.end() );
    std::sort(
-      vars.begin(), vars.end(),
+      varvec.begin(), varvec.end(),
       []( const MdlScipVar & a, const MdlScipVar & b )
    {
       return a.name < b.name;
@@ -1414,33 +1414,33 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
          return a.name < b.name;
       }
       );
-      vars.insert(vars.end(), controlVec.begin(), controlVec.end());
+      varvec.insert(varvec.end(), controlVec.begin(), controlVec.end());
    }
 
-   auto pos = vars.size();
+   auto pos = varvec.size();
 
-   vars.insert( vars.end(), comparisons.begin(), comparisons.end() );
-   vars.insert( vars.end(), algebraic.begin(), algebraic.end() );
+   varvec.insert( varvec.end(), comparisons.begin(), comparisons.end() );
+   varvec.insert( varvec.end(), algebraic.begin(), algebraic.end() );
 
    std::sort(
-      vars.begin()+pos, vars.end(),
+      varvec.begin()+pos, varvec.end(),
       []( const MdlScipVar & a, const MdlScipVar & b )
    {
       return a.node->level < b.node->level;
    }
    );
 
-   vars.shrink_to_fit();
+   varvec.shrink_to_fit();
    //then set the indexes in this order
    int val = 0;
 
-   for( MdlScipVar & var : vars )
+   for( MdlScipVar & var : varvec )
    {
       var.idx = val++;
       var.positive = positive.find(var.node) != positive.end();
    }
 
-   return vars;
+   return varvec;
 }
 
 std::vector< double > MdlExpressionTranslator::getParameterValues( double time, bool initial )

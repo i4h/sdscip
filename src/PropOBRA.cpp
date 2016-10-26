@@ -86,6 +86,7 @@ SCIP_RETCODE readSubscipParams(SCIP* scip, SCIP* subscip)
    else
       SCIPdebugMessage("subscip parameter file <%s> not found - using default parameters\n", setfile);
 
+   return SCIP_OKAY;
 }
 
 
@@ -456,8 +457,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
 
       for( structure_->startDiffConsIteration(); structure_->diffConsLeft(); structure_->incrementDiffCons())
       {
-         int multiTimecutLookback;
-         SCIP_CALL( SCIPgetIntParam(scip,"propagating/obra/multiTimeCutLookback",&multiTimecutLookback) );
          SCIP_VAR* var(structure_->getDiffConsVar());
          SCIP_CONS* cons(structure_->getDiffConsCons());
          SCIPdebugMessage("  Creating multitime cuts on Variable %s --> %s\n",SCIPvarGetName(var),SCIPconsGetName(cons));
@@ -915,6 +914,7 @@ SCIP_RETCODE PropOBRA::printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolv
    }
    SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
 
+   return SCIP_OKAY;
 }
 
 SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
@@ -1102,8 +1102,8 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
 
 SCIP_RETCODE PropOBRA::writeAfterProp(SCIP* scip, int breakTime, int historicCons)
 {
-   SCIP_Bool writeAfterProp;
-   if( SCIPgetBoolParam( scip, "propagating/obra/writeAfterProp", &writeAfterProp ) && writeAfterProp )
+   SCIP_Bool writeAfterPropParam;
+   if( SCIPgetBoolParam( scip, "propagating/obra/writeAfterProp", &writeAfterPropParam ) && writeAfterPropParam )
    {
       char* outfilestr, *outdirstr;
       std::ostringstream oss,bndoss;

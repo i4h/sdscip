@@ -161,8 +161,6 @@ SCIP_DECL_PROPEXEC(PropODE::scip_exec)
    SCIP_DECL_PROPPRESOL(PropODE::scip_presol)
 {
    SDensureValidStructure(scip);
-   ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip) );
-
 
    assert(scip != NULL);
    assert(prop != NULL);
@@ -459,7 +457,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
                      {
 
 #if defined(SCIP_DBG) || defined(SCIP_DEBUG)
-                        SCIP_Real oldBound = bndType == SCIP_BOUNDTYPE_LOWER ? SCIPvarGetLbLocal(var) : SCIPvarGetUbLocal(var);
+                        //SCIP_Real oldBound = bndType == SCIP_BOUNDTYPE_LOWER ? SCIPvarGetLbLocal(var) : SCIPvarGetUbLocal(var);
                         SCIP_Real boundDiff = bndType == SCIP_BOUNDTYPE_LOWER ? newBound - SCIPvarGetLbLocal(var) : SCIPvarGetUbLocal(var) - newBound;
                         SCIP_Real relImprovement(boundDiff / (SCIPvarGetUbLocal(var) - SCIPvarGetLbLocal(var)) * 100);
                         SCIPdbgMsg("    Setting local %s bound of %s to %e\n",bndType == SCIP_BOUNDTYPE_LOWER ? "lower" : "upper", SCIPvarGetName(var), newBound);

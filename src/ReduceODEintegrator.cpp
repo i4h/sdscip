@@ -59,7 +59,7 @@ void ReduceODEintegrator::setControls(const std::vector<SCIP_Interval>& controls
    assert(controls.size() == std::size_t(nControls_));
    for (int i = 0; i < nControls_; ++i)
    {
-      SCIPdbgMsg("Setting control %f\n",controls[i]);
+      SCIPdbgMsg("Setting control %i\n",i);
       varValues_[nStates_ + i] = reduce(controls[i]);
       SCIPdbgMsg("Set to %f\n",varValues_[nStates_ + i]);
    }

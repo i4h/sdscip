@@ -353,8 +353,8 @@ if (false)
    printf ( "including ReaderVOP\n" );
    SCIP_CALL( SCIPincludeObjReader(scip, new sdo::ReaderVOP(scip), TRUE) );
 
-   printf("including reader_osilc\n");
-   SCIP_CALL( SCIPincludeReaderOsilC(scip) );
+   //printf("including reader_osilc\n");
+   //SCIP_CALL( SCIPincludeReaderOsilC(scip) );
 
    SCIP_CALL( SCIPaddParamsSD(scip));
 

@@ -372,7 +372,7 @@ bool SDproblemStructureInterface::isTranformed() const
 {
    return true;
 }
-SCIP_RETCODE SDproblemStructureInterface::setIsTransformed(bool isReformulated)
+SCIP_RETCODE SDproblemStructureInterface::setIsTransformed(bool _isReformulated)
 {
    return SCIP_OKAY;
 }

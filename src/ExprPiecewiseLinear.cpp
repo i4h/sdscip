@@ -78,6 +78,8 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
             return SAFE_ESTIMATOR_TYPE_2;
       }
    }
+   SCIPerrorMessage(" ERROR! Unable to pick estimator.\n");
+   return SAFE_ESTIMATOR_TYPE_1;
 }
 
 SCIP_RETCODE estimateSafe(
@@ -492,14 +494,6 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
             SCIPdbgMsg("the best estimator is %i\n", estimator);
             SCIP_CALL( estimateSafe(overestimate, lb, ub, argvals[0], x1, x2, y1, y2, estimator, coeffs, constant) );
 
-
-            /* Check if we need a safeguard due to numerics */
-            SCIP_Real actualy1 = x1 * coeffs[0] + *constant;
-            SCIP_Real actualy2 = x2 * coeffs[0] + *constant;
-            SCIP_Real safeguard;
-            if (overestimate)
-               //safeguard = MAX( );
-
             break;
          }
       }
@@ -522,14 +516,14 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors))
    {
       SCIPdbgMsg("Invalid estimation:\n");
-      SCIPdbgMsg("Estimation: %1.16e * x + %1.16e\n", coeffs[0], constant);
+      SCIPdbgMsg("Estimation: %1.16e * x + %1.16e\n", coeffs[0], *constant);
 
       /* Print lookup points */
-      auto coeffs = data->lookup->getCoefficients();
+      auto lkpcoeffs = data->lookup->getCoefficients();
       std::ostringstream oss;
 
-      for (auto it = coeffs.begin(); it < coeffs.end(); ++it) {
-         int i = it - coeffs.begin();
+      for (auto it = lkpcoeffs.begin(); it < lkpcoeffs.end(); ++it) {
+         int i = it - lkpcoeffs.begin();
          if (i  >= 1)
             oss << ", ";
          oss << std::string("(") << std::to_string(data->lookup->getKnot(i)) << std::string(", ") << std::to_string(*it) << std::string(")");

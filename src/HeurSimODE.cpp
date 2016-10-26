@@ -250,9 +250,9 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
             if( integrator.getSolveMode() == ReduceODEintegrator::SOLVE_MODE_SIM)
             {
                SCIP_Bool fixed = FALSE;
-               SCIP_Bool infeasible = FALSE;
-               SCIPfixVar(scip_, var, val, &infeasible, &fixed);
-               if (infeasible)
+               SCIP_Bool fixinfeasible = FALSE;
+               SCIPfixVar(scip_, var, val, &fixinfeasible, &fixed);
+               if (fixinfeasible)
                {
                   doingFine = false;
                   violatedBounds = true;
@@ -304,9 +304,9 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
             if( integrator.getSolveMode() == ReduceODEintegrator::SOLVE_MODE_SIM)
             {
                SCIP_Bool fixed = FALSE;
-               SCIP_Bool infeasible = FALSE;
-               SCIPfixVar(scip_, var, val, &infeasible, &fixed);
-               if (infeasible)
+               SCIP_Bool fixinfeasible = FALSE;
+               SCIPfixVar(scip_, var, val, &fixinfeasible, &fixed);
+               if (fixinfeasible)
                {
                   doingFine = false;
                   violatedBounds = true;

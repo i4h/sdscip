@@ -182,9 +182,9 @@ bool SDproblemStructure::isValid() const
    return isValid_;
 }
 
-SCIP_RETCODE SDproblemStructure::setIsValid(bool isValid)
+SCIP_RETCODE SDproblemStructure::setIsValid(bool _isValid)
 {
-   isValid_ = isValid;
+   isValid_ = _isValid;
    return SCIP_OKAY;
 }
 
@@ -193,9 +193,9 @@ bool SDproblemStructure::isReformulated() const
    return isReformulated_;
 }
 
-SCIP_RETCODE SDproblemStructure::setIsReformulated(bool isReformulated)
+SCIP_RETCODE SDproblemStructure::setIsReformulated(bool _isReformulated)
 {
-   isReformulated_ = isReformulated;
+   isReformulated_ = _isReformulated;
    SCIPdebugMessage("setting isReformulated to true\n");
    assert(false);
    return SCIP_OKAY;

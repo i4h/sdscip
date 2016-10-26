@@ -111,7 +111,7 @@ public:
     *                     in the expression graph. If an entry in this map is empty then a
     *                     piecewise linear expression will be created from the lookup directly
     */
-   MdlExpressionTranslator( SCIP *scip,  sdo::ExpressionGraph &exprGraph, const LookupMap &lkpMap ) : scip(scip), exprGraph( exprGraph ), lkpMap(lkpMap) {}
+   MdlExpressionTranslator( SCIP *_scip,  sdo::ExpressionGraph &_exprGraph, const LookupMap &_lkpMap ) : scip(_scip), exprGraph(_exprGraph), lkpMap(_lkpMap) {}
 
    /* Disable copying of expression translator */
    MdlExpressionTranslator( const MdlExpressionTranslator& ) = delete;

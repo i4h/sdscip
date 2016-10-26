@@ -282,14 +282,14 @@ void TestEstimatorTypes::runTests()
             auto pcwlin = SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr));
 
             /* Sample at points */
-            int oldErrors = nErrors_;
+            int localOldErrors = nErrors_;
             sampleEstimationAtKnots(pcwlin, estimation, data.argbounds[i], nErrors_);
 
             /* Check tightness at argounbd */
             errsAtX[type]  = std::abs(compareEstimationSpline(pcwlin, estimation, data.argvals[i]));
 
             //SCIPdebugMessage("found %i errors, checked %i knots \n", nErrors_);
-            if (nErrors_ != oldErrors)
+            if (nErrors_ != localOldErrors)
             {
                SCIPdebugMessage("Estimator %i is INVALID but should be valid\n", type);
                assert(false);

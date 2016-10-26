@@ -1338,11 +1338,9 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
 
 SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj, SCIP_Bool global, std::map<SCIP_VAR*, SCIP_Real>* solMap, SCIP_Bool copysol)
 {
-   SCIP_VAR* targetvar;
    int nConsVars;
    SCIP_VAR** consvars;
    SCIP_Bool success;
-   SCIP_SOL* scipSol;
    SCIP_CONS* targetcons = NULL;
 
    assert(currentCons != NULL);
@@ -1351,7 +1349,6 @@ SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip
    assert(varmap != NULL);
    assert(consmap != NULL);
 
-   scipSol = SCIPgetBestSol(scip);
    SCIPdebugMessage("adding cons with Vars from scip in stage %i\n",SCIPgetStage(scip));
 
     //Add constraint to subscip
@@ -1374,7 +1371,6 @@ SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip
    assert(success);
    for( int v = 0; v < nConsVars; v++ )
    {
-      targetvar = NULL;
       SCIPdbgMsg("considering %s variable %s %p\n",SCIPvarIsOriginal(consvars[v]) ? "original" : "transformed", SCIPvarGetName(consvars[v]), (void*) consvars[v]);
       SCIP_VAR* sourcevar = consvars[v];
       SCIP_VAR* targetvar = (SCIP_VAR*) SCIPhashmapGetImage(varmap,consvars[v]);
@@ -1739,6 +1735,7 @@ SCIP_RETCODE SCIPaddParamsSD(
       "Which version of the problemStructure Class should be loaded",
       NULL, FALSE, 1, 0, INT_MAX, NULL, NULL);
 
+   return SCIP_OKAY;
 }
 
 

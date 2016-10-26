@@ -107,6 +107,8 @@ void SBrateEvaluator::applyB(int state, SCIP_BOUNDTYPE boundType, std::vector<SC
       varValues[state].inf = varValues[state].sup;
 }
 
+
+// @TODO _SD: Why is this no longer needed? What code replaces this?
 void SBrateEvaluator::applyEnclosure(int state, SCIP_BOUNDTYPE boundType, const BoundMap& stateBounds, std::vector<SCIP_Interval>& varValues)
 {
    //SCIPdbgMsg("entered applyEnclosure\n");

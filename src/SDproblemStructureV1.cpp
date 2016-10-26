@@ -72,9 +72,9 @@ bool SDproblemStructureV1::isValid() const
    return isValid_;
 }
 
-SCIP_RETCODE SDproblemStructureV1::setIsValid( bool isValid )
+SCIP_RETCODE SDproblemStructureV1::setIsValid( bool _isValid )
 {
-   isValid_ = isValid;
+   isValid_ = _isValid;
    return SCIP_OKAY;
 }
 
@@ -83,9 +83,9 @@ bool SDproblemStructureV1::isReformulated() const
    return isReformulated_;
 }
 
-SCIP_RETCODE SDproblemStructureV1::setIsReformulated( bool isReformulated )
+SCIP_RETCODE SDproblemStructureV1::setIsReformulated( bool _isReformulated )
 {
-   isReformulated_ = isReformulated;
+   isReformulated_ = _isReformulated;
    return SCIP_OKAY;
 }
 
@@ -795,16 +795,16 @@ unsigned int SDproblemStructureV1::getConsTime( SCIP_VAR *var )
 
    if( varIt != backwardDiffVarMap_.end() )
    {
-      SDVariable *var = varIt->second;
-      return var->getTime();
+      SDVariable *_var = varIt->second;
+      return _var->getTime();
    }
 
    varIt = backwardAlgebraicVarMap_.find( var );
 
    if( varIt != backwardAlgebraicVarMap_.end() )
    {
-      SDVariable *var = varIt->second;
-      return var->getTime();
+      SDVariable *_var = varIt->second;
+      return _var->getTime();
    }
 
    //TODO: Assuming that calling getConsTime(v) for a control variable v is wrong usage of the interface
@@ -1105,13 +1105,13 @@ int SDproblemStructureV1::getCurrentStateVarId()
    return explDiffIt_ - (explDiff_.begin() + currentTime_ * nStates_);
 }
 
-void SDproblemStructureV1::setTfinal(SCIP_Real tfinal)
+void SDproblemStructureV1::setTfinal(SCIP_Real _tfinal)
 {
-   this->tfinal = tfinal;
+   this->tfinal = _tfinal;
 }
-void SDproblemStructureV1::setTinit(SCIP_Real tinit)
+void SDproblemStructureV1::setTinit(SCIP_Real _tinit)
 {
-   this->tinit = tinit;
+   this->tinit = _tinit;
 }
 SCIP_Real SDproblemStructureV1::getTfinal()
 {
@@ -1125,9 +1125,9 @@ SCIP_Real SDproblemStructureV1::getTstep()
 {
    return tstep;
 }
-void SDproblemStructureV1::setTstep(SCIP_Real tstep)
+void SDproblemStructureV1::setTstep(SCIP_Real _tstep)
 {
-   this->tstep = tstep;
+   this->tstep = _tstep;
 }
 
 SCIP_Real *SDproblemStructureV1::getXdotParams(SCIP_Real time)
@@ -1135,7 +1135,7 @@ SCIP_Real *SDproblemStructureV1::getXdotParams(SCIP_Real time)
    int t(SCIPepsilon(scip_) + (time - tinit) / tstep );
    return getXdotParams(t);
 }
-SCIP_RETCODE SDproblemStructureV1::setIsTransformed(bool isReformulated)
+SCIP_RETCODE SDproblemStructureV1::setIsTransformed(bool _isReformulated)
 {
    if( isTranformed_ )
       return SCIP_OKAY;
