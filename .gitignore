@@ -1,4 +1,4 @@
-makeIt.sh
+make_flags
 *.[oa]
 *.pyc
 bin/
