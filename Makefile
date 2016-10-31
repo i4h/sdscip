@@ -48,6 +48,8 @@ VERSION		=	0.9.0
 #-----------------------------------------------------------------------------
 
 MAINNAME	=	sdscip
+UNITTESTNAME	=	unittest
+
 MAINSRCPATH	=	cppmain.cpp \
 			MdlExpressionTranslator.cpp \
 			ReaderVOP.cpp \
@@ -90,10 +92,51 @@ MAINSRCPATH	=	cppmain.cpp \
 			SDCons.cpp\
 			ExprPiecewiseLinear.cpp
 
+UNITTESTSRCPATH =	unittests.cpp \
+			MdlExpressionTranslator.cpp \
+			ReaderVOP.cpp \
+			ExprLookup.cpp \
+			ProbDataSD.cpp \
+			PropOBRA.cpp \
+			HeurSimODE.cpp \
+			PropODE.cpp \
+			ODEintegrator.cpp \
+			PointODEintegrator.cpp \
+			ReduceODEintegrator.cpp \
+			IntervalODEintegrator.cpp \
+			TestSDplugin.cpp \
+			TestExprPiecewiseLinear.cpp \
+			TestEstimatorTypes.cpp \
+			TestODEintegrator.cpp \
+			TestSBrateEvaluator.cpp \
+			TestBoundMap.cpp \
+			ConstRateEvaluator.cpp \
+			SimRateEvaluator.cpp \
+			SBrateEvaluator.cpp \
+			PointRateEvaluator.cpp \
+			BranchControlFirst.cpp \
+			PropagationPattern.cpp \
+			Orthant.cpp \
+			OrthantList.cpp \
+			HyperCube.cpp \
+			HyperPlane.cpp \
+			Vector.cpp \
+			Point.cpp \
+			Line.cpp \
+			Statistics.cpp \
+			TestGeom.cpp \
+			SDproblemStructureInterface.cpp \
+			BoundMapHelpers.cpp \
+			SDproblemStructure.cpp \
+			SDproblemStructureV1.cpp \
+			SDproblemStructureFactory.cpp \
+			SDVarBasic.cpp \
+			SDCons.cpp\
+			ExprPiecewiseLinear.cpp
+
+
 MAINSRC		= 	$(addprefix $(SRCDIR)/,$(MAINSRCPATH))
-
 MAINOBJ		=  	$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(MAINSRCPATH)))
-
 MAINDEP		=	$(SRCDIR)/depend.cppmain.$(OPT)
 
 MAIN		=	$(MAINNAME).$(BASE).$(LPS)$(EXEEXTENSION)
@@ -101,6 +144,15 @@ MAINFILE	=	$(BINDIR)/$(MAIN)
 MAINSHORTLINK	=	$(BINDIR)/$(MAINNAME)
 MAINOBJFILES	=	$(addprefix $(OBJDIR)/,$(MAINOBJ))
 
+
+UNITTESTSRC	= 	$(addprefix $(SRCDIR)/,$(UNITTESTSRCPATH))
+UNITTESTOBJ	=  	$(patsubst %.c,%.o,$(patsubst %.cpp,%.o,$(UNITTESTSRCPATH)))
+UNITTESTDEP	=	$(SRCDIR)/depend.unittest.$(OPT)
+
+UNITTEST	=	$(UNITTESTNAME).$(BASE).$(LPS)$(EXEEXTENSION)
+UNITTESTFILE	=	$(BINDIR)/$(UNITTEST)
+UNITTESTSHORTLINK	=	$(BINDIR)/$(UNITTESTNAME)
+UNITTESTOBJFILES	=	$(addprefix $(OBJDIR)/,$(UNITTESTOBJ))
 
 
 VERBOSE = true
@@ -162,6 +214,9 @@ test:           $(MAINFILE)
 		cd check; \
 		$(SHELL) ./check.sh $(TEST) $(MAINFILE) $(SETTINGS) $(notdir $(MAINFILE)) $(TIME) $(NODES) $(MEM) $(THREADS) $(FEASTOL) $(DISPFREQ) \
 		$(CONTINUE) $(LOCK) $(VERSION) $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE) $(PERMUTE) $(SEEDS) ;
+
+unittest:           $(UNITTESTFILE)
+
 
 
 $(MAINSHORTLINK):	$(MAINFILE)
