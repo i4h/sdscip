@@ -8,3 +8,4 @@ check.awk
 getlastprob.awk
 tmpfile
 results
+run.sh
