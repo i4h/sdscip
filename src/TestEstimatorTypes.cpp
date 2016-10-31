@@ -9,7 +9,7 @@
 
 #include "TestEstimatorTypes.hpp"
 
-namespace ctrl
+namespace sdscip
 {
 
 TestEstimatorTypes::TestEstimatorTypes(SCIP* scip) :

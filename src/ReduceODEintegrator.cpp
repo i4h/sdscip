@@ -12,7 +12,7 @@
 #include "PointRateEvaluator.h"
 
 
-namespace ctrl
+namespace sdscip
 {
 
 /* Delegate constructor */

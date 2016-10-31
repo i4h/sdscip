@@ -10,7 +10,7 @@
 #include "PointRateEvaluator.h"
 
 
-namespace ctrl {
+namespace sdscip {
 
 PointRateEvaluator::PointRateEvaluator(int _nStates, SCIP* _scip) :
    PointRateEvaluator( _nStates, 0, 0, _scip)

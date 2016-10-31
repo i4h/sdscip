@@ -73,7 +73,7 @@ typedef std::map <int, TypeConsPair> LevelConsMap;
 
 struct SCIP_ProbData
 {
-   ctrl::SDproblemStructureInterface* structure;
+   sdscip::SDproblemStructureInterface* structure;
    PropCutMap* propCuts;
    bool isReformulated;
    bool isStructureValid;
@@ -98,7 +98,7 @@ SCIP_RETCODE SDcheckStructure(SCIP* scip);
 SCIP_RETCODE SDprintStructureSummary(SCIP* scip);
 SCIP_RETCODE SDprintStructure(SCIP* scip);
 SCIP_RETCODE SDprintStateVarNames(SCIP *scip);
-ctrl::SDproblemStructureInterface* SDgetStructure(SCIP* scip);
+sdscip::SDproblemStructureInterface* SDgetStructure(SCIP* scip);
 
 SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj, SCIP_Bool global, std::map<SCIP_VAR*, SCIP_Real>* solMap, SCIP_Bool copysol);
 

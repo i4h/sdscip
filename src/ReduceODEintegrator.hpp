@@ -20,7 +20,7 @@
 #include <vector>
 #include "scip/scip.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 

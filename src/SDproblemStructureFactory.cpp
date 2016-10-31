@@ -11,7 +11,7 @@
 
 
 
-namespace ctrl {
+namespace sdscip {
 
 SDproblemStructureFactory::SDproblemStructureFactory()
 {
@@ -29,10 +29,10 @@ SDproblemStructureInterface* SDproblemStructureFactory::create(int version, SCIP
    switch (version)
    {
    case 0:
-      return new ctrl::SDproblemStructure(scip);
+      return new sdscip::SDproblemStructure(scip);
       break;
    case 1:
-      return new ctrl::SDproblemStructureV1(scip);
+      return new sdscip::SDproblemStructureV1(scip);
       break;
 
       /* Add more versions here */
@@ -45,4 +45,4 @@ SDproblemStructureInterface* SDproblemStructureFactory::create(int version, SCIP
 
 
 
-} /* namespace ctrl */
+} /* namespace sdscip */

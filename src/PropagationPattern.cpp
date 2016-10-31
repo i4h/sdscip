@@ -827,7 +827,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 					SCIPdebugMessage("  Added cut to scip\n");
 
 					/* Make constraint known in problem structure, so it will be considered in the next time steps */
-					ctrl::SDproblemStructureInterface* structure(SDgetStructure(this->scip_));
+					sdscip::SDproblemStructureInterface* structure(SDgetStructure(this->scip_));
 					structure->addCut(lincons, currentTime);
 					SCIP_CALL( SCIPreleaseCons(this->scip_, &lincons) );
 					SCIP_Real solTime;

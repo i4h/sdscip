@@ -10,7 +10,7 @@
 
 #include "TestSDplugin.hpp"
 
-namespace ctrl
+namespace sdscip
 {
 
 TestSDplugin::TestSDplugin(SCIP* scip) :

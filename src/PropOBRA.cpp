@@ -13,7 +13,7 @@
 
 #include "PropOBRA.h"
 
-using namespace ctrl;
+using namespace sdscip;
 
 template<typename A, typename B>
 std::pair<B,A> flip_pair(const std::pair<A,B> &p)
@@ -813,7 +813,7 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
       /* 'Valid' Unbounded variables should not stop propagation  */
       if(false && *boundsDiverge )
       {
-         ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
+         sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip));
          boost::cmatch matches;
          if( boost::regex_match(origVarFullName.c_str(), matches, structure->getVarRegex() ))
          {
@@ -1026,7 +1026,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
             SCIPdebugMessage("reoptimization: DISABLED\n");
          }
 
-         //SCIP_CALL( SCIPincludeObjHeur(subscip, new ctrl::HeurMaxCtrl(subscip), TRUE) );
+         //SCIP_CALL( SCIPincludeObjHeur(subscip, new sdscip::HeurMaxCtrl(subscip), TRUE) );
 
          /* Standard feasibility tolerance allows sense reversed solutions of problem
           * without free variables to differ by more then SCIPepsilon */

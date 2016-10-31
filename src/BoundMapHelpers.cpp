@@ -12,7 +12,7 @@
 #include "SDproblemStructureInterface.h"
 #include <iomanip>      // std::setprecision
 
-using namespace ctrl;
+using namespace sdscip;
 
 using BoundMap = SDproblemStructureInterface::BoundMap;
 using BoundKey = SDproblemStructureInterface::BoundKey;

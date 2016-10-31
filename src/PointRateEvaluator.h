@@ -13,7 +13,7 @@
 #include "sdscip.h"
 #include "BoundMapHelpers.cpp"
 
-namespace ctrl
+namespace sdscip
 {
 
 class ODEintegrator;

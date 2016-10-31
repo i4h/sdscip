@@ -11,7 +11,7 @@
 #include "PointRateEvaluator.h"
 
 
-namespace ctrl
+namespace sdscip
 {
 
 PointODEintegrator::PointODEintegrator(SCIP* _scip, std::string _discretization, SCIP_Real _dt, int _nIntermediateSteps, int _nStates, int _nAlgebraic, int _nControls, PointRateEvaluator::POINT_RATE_EVALUATOR_TYPE _rateEvalType) :

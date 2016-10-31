@@ -13,7 +13,7 @@
 #include "IntervalODEintegrator.h"
 #include "PointRateEvaluator.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 class TestODEintegrator

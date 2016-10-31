@@ -10,7 +10,7 @@
 
 #include "TestBoundMap.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 using BoundMap = SDproblemStructureInterface::BoundMap;

@@ -11,7 +11,7 @@
 #include "sdscip.h"
 #include "SBrateEvaluator.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 class TestSBrateEvaluator

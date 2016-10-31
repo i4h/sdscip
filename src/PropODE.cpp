@@ -13,13 +13,13 @@
 
 #include "PropODE.h"
 
-using namespace ctrl;
+using namespace sdscip;
 
 
 /** initialization method of propagator */
 SCIP_DECL_PROPINIT(PropODE::scip_init)
 {
-   ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
+   sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip));
 
    /* Disable propODE if derivatives ar not continuous */
    if( !structure->isXdotContinuous() )
@@ -111,7 +111,7 @@ SCIP_DECL_PROPEXEC(PropODE::scip_exec)
    for (int i = 0; i < nbranchvars; ++i) {
       SCIP_VAR *branchVar(branchvars[i]);
       SCIPdbgMsg("considering %i th branchvar %s\n",i, SCIPvarGetName(branchVar));
-      ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
+      sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip));
       //SCIPdebugMessage("found last branchvar %s in [%f,%f]\n",SCIPvarGetName(lastBranchVar), SCIPvarGetLbLocal(lastBranchVar), SCIPvarGetUbLocal(lastBranchVar));
       if( structure->isControlVar(branchVar) )
       {
@@ -301,7 +301,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
 
    /* Get structure */
    SDensureValidStructure(scip);
-   ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip) );
+   sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip) );
 
 
    /* Write initial transproblem to file */

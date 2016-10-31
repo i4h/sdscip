@@ -17,7 +17,7 @@
 #include <string>
 #include "sdscip.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 class ODEintegrator

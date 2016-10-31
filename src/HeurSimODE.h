@@ -37,7 +37,7 @@
 
 
 
-namespace ctrl
+namespace sdscip
 {
 
 /** C++ wrapper */

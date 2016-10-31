@@ -16,7 +16,7 @@
 #include "SDVarBasic.h"
 #include "sdo/ButcherTableau.hpp"
 
-namespace ctrl {
+namespace sdscip {
 
 class SDproblemStructureInterface
 {
@@ -340,6 +340,6 @@ public:
    BoundMap getMaxStateBoundsBoundMap(const std::vector<SCIP_Interval>& oldStateBounds);
 };
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 #endif /* SDPROBLEMSTRUCTUREINTERFACE_H_ */

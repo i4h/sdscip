@@ -7,7 +7,7 @@
 
 #include "SimRateEvaluator.h"
 
-using namespace ctrl;
+using namespace sdscip;
 
 
 SimRateEvaluator::SimRateEvaluator(int nStates, SCIP* scip) :

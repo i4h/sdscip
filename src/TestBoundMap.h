@@ -13,7 +13,7 @@
 #include "BoundMapHelpers.cpp"
 
 
-namespace ctrl
+namespace sdscip
 {
 
 class TestBoundMap

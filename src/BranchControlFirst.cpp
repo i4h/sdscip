@@ -12,7 +12,7 @@
 #include "BranchControlFirst.h"
 #include "ProbDataSD.h"
 
-using namespace ctrl;
+using namespace sdscip;
 
 SCIP_DECL_BRANCHEXECLP(BranchruleControlFirst::scip_execlp)
 {
@@ -49,7 +49,7 @@ SCIP_DECL_BRANCHEXECEXT(BranchruleControlFirst::scip_execext)
 	   SCIPdbgMsg("branching in depth %i, picking  %i th control var\n", depth, depth);
 	   /* Spatial branching on the first appearing control */
 	   /* Get the first control here */
-	   ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
+	   sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip));
 	   SCIP_VAR* branchVar(structure->getNthsControlVar(depth));
 
 	   /* Break if no control var was returned */

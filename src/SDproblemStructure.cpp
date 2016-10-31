@@ -7,7 +7,7 @@
 
 #include "SDproblemStructure.h"
 
-namespace ctrl {
+namespace sdscip {
 
 SDproblemStructure::SDproblemStructure(SCIP* scip) :
    SDproblemStructureInterface(scip)
@@ -762,6 +762,6 @@ std::string SDproblemStructure::getStateVarList()
 }
 
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 

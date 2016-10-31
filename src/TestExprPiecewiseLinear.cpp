@@ -9,7 +9,7 @@
 
 #include "TestExprPiecewiseLinear.hpp"
 
-namespace ctrl
+namespace sdscip
 {
 
 std::string EstimatorTestData::toString(int boundidx)

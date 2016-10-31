@@ -10,7 +10,7 @@
 
 #include "sdscip.h"
 
-namespace ctrl {
+namespace sdscip {
 
 class SDVarBasic
 {
@@ -32,6 +32,6 @@ private:
 
 
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 #endif /* SDVARBASIC_H_ */

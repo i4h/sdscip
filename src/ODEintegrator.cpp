@@ -9,7 +9,7 @@
 
 #include "ODEintegrator.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 ODEintegrator::ODEintegrator(SCIP* _scip, std::string _discretization, SCIP_Real _dt, int _nIntermediateSteps, int _nStates, int _nAlgebraic, int _nControls) :
@@ -24,7 +24,7 @@ ODEintegrator::ODEintegrator(SCIP* _scip, std::string _discretization, SCIP_Real
    ,discretization_(_discretization)
 {
    /* Get butcher tableau for selected discretization scheme */
-   tableau_= ctrl::SDproblemStructureInterface::getButcherTableau(_scip, _discretization);
+   tableau_= sdscip::SDproblemStructureInterface::getButcherTableau(_scip, _discretization);
 }
 
 ODEintegrator::~ODEintegrator()

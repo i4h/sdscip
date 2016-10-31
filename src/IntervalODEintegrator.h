@@ -21,7 +21,7 @@
 #include <sstream>
 
 
-namespace ctrl
+namespace sdscip
 {
 
 

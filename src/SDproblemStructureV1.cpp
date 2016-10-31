@@ -21,7 +21,7 @@ static SCIP_VAR* getTransVar(SCIP* scip, SCIP_VAR* var)
 }
 
 
-namespace ctrl
+namespace sdscip
 {
 
 SDproblemStructureV1::SDproblemStructureV1( SCIP *scip )  :
@@ -285,9 +285,9 @@ SCIP_RETCODE SDproblemStructureV1::addControlVar( SCIP_VAR *var, int index, unsi
 
 SCIP_RETCODE SDproblemStructureV1::addVariable( int index, SCIP_VAR *var, unsigned int time, SD_VAR_TYPE type, int sdVarId )
 {
-   if( type == ctrl::SDproblemStructureInterface::ALGEBRAIC && time == 0 )
+   if( type == sdscip::SDproblemStructureInterface::ALGEBRAIC && time == 0 )
       ++nAlgebraic_;
-   else if( type == ctrl::SDproblemStructureInterface::STATE && time == 0 )
+   else if( type == sdscip::SDproblemStructureInterface::STATE && time == 0 )
    {
       ++nStates_;
    }
@@ -1196,4 +1196,4 @@ void SDproblemStructureV1::setStrictBounds(SDproblemStructureInterface::BoundMap
    //boundMap_ = boundMap;
 }
 
-} /* namespace ctrl */
+} /* namespace sdscip */

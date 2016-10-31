@@ -15,7 +15,7 @@
 #include "sdscip.h"
 #include "SDVarBasic.h"
 
-namespace ctrl {
+namespace sdscip {
 
 class SDproblemStructureExtendedInterface
 {
@@ -147,6 +147,6 @@ public:
 
 };
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 #endif /* SDPROBLEMSTRUCTUREINTERFACE_H_ */

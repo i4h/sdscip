@@ -31,13 +31,6 @@
 #include "scip/scipdefplugins.h"
 #include "scip/debug.h"
 
-/* Include unit-testing classes */
-#include "TestODEintegrator.h"
-#include "TestSBrateEvaluator.h"
-#include "TestBoundMap.h"
-#include "TestExprPiecewiseLinear.hpp"
-#include "TestEstimatorTypes.hpp"
-
 using namespace scip;
 using namespace std;
 
@@ -76,107 +69,12 @@ SCIP_RETCODE runSCIP(
 
    //SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
 
-/*
-   SDgeom::TestGeom test(scip);
-   //test.runAll();
-   test.runCurrent();
-   std::cout << "Finished tests" << std::endl;
-   assert(false);
-*/
 
-/*
-   SCIPdebugMessage("testing sb rate evaluator:\n");
-   ctrl::TestSBrateEvaluator test;
-   test.runBoundTests();
-
-   SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
-   assert(false);
-*/
-
-/*Test ODEintegrator */
-/*
-   SCIPdebugMessage("testing ode integrator:\n");
-   ctrl::TestODEintegrator test(scip);
-   //test.runSimTests();
-   //test.runSBtests();
-   //test.runPredatorPreySBsimTest();
-   test.runAll();
-
-   SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
-   assert(false);
-*/
-
-/* Test BoundMap operations */
-/*   ctrl::TestBoundMap test;
-   assert(false); */
-
-
-/* Test Statistics class */
-/*
-   I4H::Statistics stats;
-
-   double val(0);
-   for (int i = 0; i < 10001; i++)
-   {
-      stats.addVal(val);
-      val += 0.0001;
-   }
-   SCIPdebugMessage("mean is %f\n", stats.mean());
-   SCIPdebugMessage("max is %f\n", stats.max());
-   SCIPdebugMessage("min is %f\n", stats.min());
-   SCIPdebugMessage("number of values is %i\n", stats.nVals());
-   assert(false);
-*/
-
-/*Test ExprPiecewiseLinear */
-if (false)
-{
-
-   ctrl::TestEstimatorTypes test(scip);
-   //test.runEstimatorManualTests();
-   //test.runEstimatorRandomTests();
-   SCIPdebugMessage("Testing class-1 estimators :\n");
-   test.runAll();
-
-   SCIPdebugMessage("finished %i tests, %i success, %i errors:\n", test.getNtests(), test.getNsuccess(), test.getNerrors());
-   assert(false);
-}
-
-
-
-   /* include TSP specific plugins */
-/*   SCIP_CALL( SCIPincludeObjReader(scip, new ReaderTSP(scip), TRUE) ); */
-/*   SCIP_CALL( SCIPincludeObjPresol(scip, new PresolConsGraph(scip), TRUE) );*/
-   SCIPdebugMessage("now including PropOBRA\n");
-   SCIP_CALL( SCIPincludeObjProp(scip, new ctrl::PropOBRA(scip), TRUE) );
-/*   SCIP_CALL( SCIPincludeObjConshdlr(scip, new ConshdlrSubtour(scip), TRUE) );
-   SCIP_CALL( SCIPincludeObjEventhdlr(scip, new EventhdlrNewSol(scip), TRUE) ); */
-
-   printf("including SimODE heuristic\n");
-   SCIP_CALL( SCIPincludeObjHeur(scip, new ctrl::HeurSimODE(scip), TRUE) );
-
-   printf("including ControlFirst branching rule\n");
-   SCIP_CALL( SCIPincludeObjBranchrule(scip, new ctrl::BranchruleControlFirst(scip), TRUE) );
-
-   //printf("including PropCtrlOBBT Propagator\n");
-   //SCIP_CALL( SCIPincludeObjProp(scip, new ctrl::PropCtrlOBBT(scip), TRUE) );
-
-   //printf("including PropProbingObjTest Propagator\n");
-   //SCIP_CALL( SCIPincludeObjProp(scip, new ctrl::PropProbingObjTest(scip), TRUE) );
-
-
-   //printf("including prop_obobt Propagator\n");
-   //SCIP_CALL( SCIPincludePropObobt(scip) );
-
-
-   printf("including PropODE Propagator\n");
-   SCIP_CALL( SCIPincludeObjProp(scip, new ctrl::PropODE(scip), TRUE) );
-
-   printf ( "including ReaderVOP\n" );
+   SCIP_CALL( SCIPincludeObjProp(scip, new sdscip::PropOBRA(scip), TRUE) );
+   SCIP_CALL( SCIPincludeObjHeur(scip, new sdscip::HeurSimODE(scip), TRUE) );
+   SCIP_CALL( SCIPincludeObjBranchrule(scip, new sdscip::BranchruleControlFirst(scip), TRUE) );
+   SCIP_CALL( SCIPincludeObjProp(scip, new sdscip::PropODE(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjReader(scip, new sdo::ReaderVOP(scip), TRUE) );
-
-   //printf("including reader_osilc\n");
-   //SCIP_CALL( SCIPincludeReaderOsilC(scip) );
 
    SCIP_CALL( SCIPaddParamsSD(scip));
 

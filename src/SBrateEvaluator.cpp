@@ -7,7 +7,7 @@
  */
 
 #include "SBrateEvaluator.h"
-using namespace ctrl;
+using namespace sdscip;
 
 
 //SBrateEvaluator::SBrateEvaluator(ODEintegrator* _integrator, int _nStates) : PointRateEvaluatorInterface(_integrator, _nStates)
@@ -257,7 +257,7 @@ void SBrateEvaluator::applyEnclosure(int state, SCIP_BOUNDTYPE boundType, const 
 
 
 /* Implementation of procedure described in Definition 4 */
-void SBrateEvaluator::applyEnclosure( int t, std::vector<SCIP_Interval> varValues, ctrl::SDproblemStructureInterface* structure)
+void SBrateEvaluator::applyEnclosure( int t, std::vector<SCIP_Interval> varValues, sdscip::SDproblemStructureInterface* structure)
 {
    assert(structure->getCurrentTime()*structure->getTstep()  == t);
 

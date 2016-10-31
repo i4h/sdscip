@@ -12,7 +12,7 @@
 #include "BoundMapHelpers.cpp"
 #include <string>
 
-namespace ctrl{
+namespace sdscip{
 
 class SimRateEvaluator: public PointRateEvaluator
 {

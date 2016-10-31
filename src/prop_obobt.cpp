@@ -1041,7 +1041,7 @@ SCIP_RETCODE findNewBounds(
    lastboundsuccessful = TRUE;
    SCIP_Bool boundsDiverge(FALSE);
 
-   ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip ));
+   sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip ));
 
    SCIPdbgMsg("starting at time %i\n",startTime);
    SCIP_Bool useless(false);
@@ -1657,7 +1657,7 @@ SCIP_DECL_PROPEXEC(propExecObobt)
    SCIPfreeBufferArray(scip, &boundtypes);
 
    if( lastBranchVar != NULL ) {
-      ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip));
+      sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip));
       SCIPdbgMsg("nbranchvars is %i\n",nbranchvars);
       SCIPdbgMsg("branchvar is %s\n",SCIPvarGetName(lastBranchVar));
       if( structure->isControlVar(lastBranchVar) )

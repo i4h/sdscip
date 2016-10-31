@@ -62,12 +62,6 @@ MAINSRCPATH	=	cppmain.cpp \
 			PointODEintegrator.cpp \
 			ReduceODEintegrator.cpp \
 			IntervalODEintegrator.cpp \
-			TestSDplugin.cpp \
-			TestExprPiecewiseLinear.cpp \
-			TestEstimatorTypes.cpp \
-			TestODEintegrator.cpp \
-			TestSBrateEvaluator.cpp \
-			TestBoundMap.cpp \
 			ConstRateEvaluator.cpp \
 			SimRateEvaluator.cpp \
 			SBrateEvaluator.cpp \
@@ -82,7 +76,6 @@ MAINSRCPATH	=	cppmain.cpp \
 			Point.cpp \
 			Line.cpp \
 			Statistics.cpp \
-			TestGeom.cpp \
 			SDproblemStructureInterface.cpp \
 			BoundMapHelpers.cpp \
 			SDproblemStructure.cpp \
@@ -90,6 +83,8 @@ MAINSRCPATH	=	cppmain.cpp \
 			SDproblemStructureFactory.cpp \
 			SDVarBasic.cpp \
 			SDCons.cpp\
+			TestSDplugin.cpp \
+			TestExprPiecewiseLinear.cpp \
 			ExprPiecewiseLinear.cpp
 
 UNITTESTSRCPATH =	unittests.cpp \
@@ -104,7 +99,7 @@ UNITTESTSRCPATH =	unittests.cpp \
 			PointODEintegrator.cpp \
 			ReduceODEintegrator.cpp \
 			IntervalODEintegrator.cpp \
-			SDtest.cpp \
+			BaseTest.cpp \
 			TestSDplugin.cpp \
 			TestExprPiecewiseLinear.cpp \
 			TestEstimatorTypes.cpp \

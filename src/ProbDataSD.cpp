@@ -117,7 +117,7 @@ SCIP_RETCODE probdataCreate(
    /* create problem structure using factory*/
    int probStructureVersion(0);
    SCIP_CALL( SCIPgetIntParam(scip,"sd/problemStructureVersion",&probStructureVersion));
-   ctrl::SDproblemStructureFactory factory;
+   sdscip::SDproblemStructureFactory factory;
 
    (*probdata)->structure = factory.create(probStructureVersion, scip);
    SCIPdebugMessage("created probStructure, is reformulated = %s\n",( (*probdata)->structure->isReformulated() ? "true" : "false"));
@@ -332,7 +332,7 @@ SCIP_DECL_DIALOGEXEC(dialogExecSDdoSomething)
    SCIPdebugMessage("!!!!!!!!!doing Something!!!!!!!!!!!!!!!!\n");
 
    /* Lots of blank space for testing */
-   //ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip) );
+   //sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip) );
 
 
    /* next dialog will be root dialog again */
@@ -426,7 +426,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
       SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
       assert(probdata != NULL);
       SDensureValidStructure(scip);;
-      ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+      sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
       unsigned int nStates(structure->getNStates());
       SCIPdebugMessage("nStates is %i\n",nStates);
       std::vector<std::string> stateVarNames(structure->getStateVarNames());
@@ -444,7 +444,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
       SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
       assert(probdata != NULL);
       SDensureValidStructure(scip);;
-      ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+      sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
       unsigned int nStates(structure->getNStates());
       SCIPdebugMessage("nStates is %i\n",nStates);
       std::vector<std::string> expectedBaseNames(structure->getStateVarNames());
@@ -481,7 +481,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
       SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
       assert(probdata != NULL);
       SDensureValidStructure(scip);;
-      ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+      sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
       unsigned int nControls(structure->getNControls());
       std::vector<std::string> expectedBaseNames(structure->getControlVarNames());
 
@@ -516,7 +516,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
       SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
       assert(probdata != NULL);
       SDensureValidStructure(scip);;
-      ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+      sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
       for (structure->startTimeIteration(); structure->timesLeft(); structure->incrementTime())
       {
@@ -559,7 +559,7 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
       SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
 
       SDensureValidStructure(scip);;
-      ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+      sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
 
       SCIPinfoMessage(scip, NULL, "\n=== Printing structure summary ===\n");
@@ -594,14 +594,14 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
       {
          SCIPinfoMessage(scip, NULL, "At least one of the state derivatives is not absolutely continuous\n");
       }
-      ctrl::SDproblemStructureInterface::BoundMap boundMap = structure->getStrictBounds();
+      sdscip::SDproblemStructureInterface::BoundMap boundMap = structure->getStrictBounds();
       if (boundMap.size() != 0)
       {
          SCIPinfoMessage(scip, NULL, "STRICT BOUNDS: \n",boundMap.size());
       }
       for( auto it = boundMap.begin(); it != boundMap.end(); ++it)
       {
-         ctrl::SDproblemStructureInterface::BoundKey key = it->first;
+         sdscip::SDproblemStructureInterface::BoundKey key = it->first;
          SCIP_Real bound = it->second;
          SCIPinfoMessage(scip, NULL, "Variable %s has strict %s bound: %e\n", structure->getVarName(key.first).c_str()
                , (key.second == SCIP_BOUNDTYPE_LOWER ? "lower" : "upper"), bound );
@@ -631,7 +631,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
    //Get propdata
    probdata = SCIPgetProbData(scip);
    assert(probdata != NULL);
-   ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
    SCIPdbgMsg("entered SDrefreshStructure, got probdata and structure\n");
    //SCIPprintTransProblem(scip,NULL,"cip",false);
@@ -721,12 +721,12 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
 
                   unsigned int consTime = atoi(consTimeString.c_str());
                   unsigned int consLevel = 0;
-                  ctrl::SDproblemStructureInterface::SD_CONS_TYPE consType = ctrl::SDproblemStructureInterface::DEFAULT_ALGEBRAIC_CONS;
+                  sdscip::SDproblemStructureInterface::SD_CONS_TYPE consType = sdscip::SDproblemStructureInterface::DEFAULT_ALGEBRAIC_CONS;
 
                   if (consLevelString.compare(std::string("")) != 0)
                      consLevel = atoi(consLevelString.c_str());
                   if (consTypeString.compare(std::string("")) != 0)
-                     consType= ctrl::SDproblemStructureInterface::SD_CONS_TYPE(atoi(consTypeString.c_str()));
+                     consType= sdscip::SDproblemStructureInterface::SD_CONS_TYPE(atoi(consTypeString.c_str()));
 
                   SCIP_VAR* explicitVar;
                   SCIP_VAR* algebraicForwardVar = NULL;
@@ -763,7 +763,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
 
                      if (boost::regex_match(varFullName.c_str(), matches, structure->getVarRegex() ))
                      {
-                        ctrl::SDproblemStructureInterface::SD_VAR_TYPE  type = ctrl::SDproblemStructureInterface::ALGEBRAIC;
+                        sdscip::SDproblemStructureInterface::SD_VAR_TYPE  type = sdscip::SDproblemStructureInterface::ALGEBRAIC;
                         std::string varName(matches[1].first,matches[1].second);
                         std::string varTimeString(matches[5].first,matches[5].second);
                         std::string varControlString(matches[2].first,matches[2].second);
@@ -784,7 +784,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
                             * need a redo of variableTypes anyway...
                             */
                            SCIPdebugMessage("found control variable %s\n",SCIPvarGetName(consvars[v]));
-                           type = ctrl::SDproblemStructureInterface::CONTROL; //control variable
+                           type = sdscip::SDproblemStructureInterface::CONTROL; //control variable
                         }
                         else
                         {
@@ -816,7 +816,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
 
                         //Add variable to bookkeeping as algebraic or control (will be updated to differential during constraint type detection if necessary)
                         // or to counting of control variables
-                        if (type == ctrl::SDproblemStructureInterface::CONTROL)
+                        if (type == sdscip::SDproblemStructureInterface::CONTROL)
                         {
 
                               SCIPdebugMessage("pushing var %s into controlVarTimes map at time %i\n", SCIPvarGetName(consvars[v]), consTime);
@@ -934,7 +934,7 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
    //Get propdata
    SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
    assert(probdata != NULL);
-   ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
    int nParamsPerTime = structure->getNParamsPerTime();
 
    SCIPinfoMessage(scip, NULL, "\n=== Printing full structure data ===\n");
@@ -949,7 +949,7 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
          {
             for (structure->startVarIteration(); structure->varsLeft();structure->incrementVar())
             {
-               ctrl::SDVarBasic var = structure->getCurrentVar();
+               sdscip::SDVarBasic var = structure->getCurrentVar();
                SCIPinfoMessage(scip,NULL,"   Var: %s, Type: %i",SCIPvarGetName(var.getScipVariable()) ,var.getType());
                SCIPinfoMessage(scip, NULL, ";\n");
             }
@@ -1426,7 +1426,7 @@ bool SDgetIsReformulated(SCIP *scip)
 	   //Get propdata
 	   probdata = SCIPgetProbData(scip);
 	   assert(probdata != NULL);
-	   ctrl::SDproblemStructureInterface* structure = SDgetStructure(scip);
+	   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
 	   //return probdata->isReformulated ;
 	   return structure->isReformulated();
@@ -1679,7 +1679,7 @@ SCIP_RETCODE SCIPincludeDialogSDdisable(
 
 
 
-ctrl::SDproblemStructureInterface* SDgetStructure(SCIP* scip)
+sdscip::SDproblemStructureInterface* SDgetStructure(SCIP* scip)
 {
    SCIP_PROBDATA* probdata;
    probdata = SCIPgetProbData(scip);

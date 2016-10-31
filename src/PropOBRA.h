@@ -20,7 +20,7 @@
 #include "scip/clock.h"
 #include "objscip/objscipdefplugins.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 struct Statistics
@@ -207,7 +207,7 @@ private:
    int currentTime_;
    int progressTime_; /* time shown in progress bar */
    SCIP_Real progressStep_; /* time shown in progress bar */
-   ctrl::SDproblemStructureInterface* structure_;
+   sdscip::SDproblemStructureInterface* structure_;
    Statistics stats_;
    boost::regex varRegex_;
    boost::regex consRegex_;

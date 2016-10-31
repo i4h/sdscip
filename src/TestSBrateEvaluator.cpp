@@ -10,7 +10,7 @@
 
 #include "TestSBrateEvaluator.h"
 
-namespace ctrl
+namespace sdscip
 {
 
 TestSBrateEvaluator::TestSBrateEvaluator(SCIP* scip) :

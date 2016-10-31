@@ -12,7 +12,7 @@
 #include "PointRateEvaluator.h"
 
 
-namespace ctrl
+namespace sdscip
 {
 
 TestODEintegrator::TestODEintegrator(SCIP* scip) :

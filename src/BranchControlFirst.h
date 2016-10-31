@@ -11,7 +11,7 @@
 #include "objscip/objscip.h"
 
 
-namespace ctrl
+namespace sdscip
 {
 
 

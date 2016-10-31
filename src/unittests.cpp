@@ -76,7 +76,7 @@ SCIP_RETCODE runSCIP(
 
    /*{
    SCIPdebugMessage("testing sb rate evaluator:\n");
-   ctrl::TestSBrateEvaluator test;
+   sdscip::TestSBrateEvaluator test;
    test.runBoundTests();
 
 
@@ -87,7 +87,7 @@ SCIP_RETCODE runSCIP(
 /*Test ODEintegrator */
 /*
    SCIPdebugMessage("testing ode integrator:\n");
-   ctrl::TestODEintegrator test(scip);
+   sdscip::TestODEintegrator test(scip);
    //test.runSimTests();
    //test.runSBtests();
    //test.runPredatorPreySBsimTest();
@@ -98,7 +98,7 @@ SCIP_RETCODE runSCIP(
 */
 
 /* Test BoundMap operations */
-/*   ctrl::TestBoundMap test;
+/*   sdscip::TestBoundMap test;
    assert(false); */
 
 
@@ -123,7 +123,7 @@ SCIP_RETCODE runSCIP(
 if (false)
 {
 
-   ctrl::TestEstimatorTypes test(scip);
+   sdscip::TestEstimatorTypes test(scip);
    //test.runEstimatorManualTests();
    //test.runEstimatorRandomTests();
    SCIPdebugMessage("Testing class-1 estimators :\n");

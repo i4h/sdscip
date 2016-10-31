@@ -7,7 +7,7 @@
 
 #include "SDVarBasic.h"
 
-namespace ctrl {
+namespace sdscip {
 
 SDVarBasic::SDVarBasic()
 {
@@ -52,6 +52,6 @@ int SDVarBasic::getType() const
 
 
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 

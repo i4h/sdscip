@@ -31,7 +31,7 @@
 #include <iomanip>
 #include <math.h>
 
-namespace ctrl
+namespace sdscip
 {
 
 class PropODE: public scip::ObjProp
@@ -127,7 +127,7 @@ private:
    SCIP_RETCODE applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result, unsigned int startTime);
    SCIP_RETCODE applyPropODEold(SCIP* scip, SCIP_Real tStart, int *nchgbds, SCIP_RESULT *result, unsigned int startTime);
    SCIP_RETCODE addGlobalEnclosure(int nState, SCIP_BOUNDTYPE boundType, SCIP_Real val);
-   SCIP_RETCODE applyEnclosure(SCIP_Interval** varIntervals, int t, ctrl::SDproblemStructureInterface* structure);
+   SCIP_RETCODE applyEnclosure(SCIP_Interval** varIntervals, int t, sdscip::SDproblemStructureInterface* structure);
 
    /* Set params for given time. Params array is expected to be pre-allocated with nParams elements */
    SCIP_RETCODE getParams(SCIP_Real t, SCIP_Real* params);

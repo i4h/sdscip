@@ -11,7 +11,7 @@
 
 //TODO: When everything is implemented, this can be removed
 
-namespace ctrl {
+namespace sdscip {
 
 
 
@@ -536,4 +536,4 @@ std::string SDproblemStructureInterface::getVarName(unsigned int varId) {
 
 }
 
-} /* namespace ctrl */
+} /* namespace sdscip */

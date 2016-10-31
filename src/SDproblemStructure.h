@@ -19,7 +19,7 @@
 
 
 
-namespace ctrl {
+namespace sdscip {
 
 
 class SDproblemStructure : public SDproblemStructureInterface
@@ -224,6 +224,6 @@ private:
 
 };
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 #endif /* SDPROBLEMSTRUCTURE_H_ */

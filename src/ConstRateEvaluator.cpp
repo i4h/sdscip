@@ -6,7 +6,7 @@
  */
 
 #include "ConstRateEvaluator.h"
-using namespace ctrl;
+using namespace sdscip;
 
 
 ConstRateEvaluator::ConstRateEvaluator(int nStates, SCIP* scip) :

@@ -31,7 +31,7 @@
 
 #include "HeurSimODE.h"
 
-using namespace ctrl;
+using namespace sdscip;
 
 
 
@@ -136,7 +136,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
    /* Get structure */
    SDensureValidStructure(scip);
-   ctrl::SDproblemStructureInterface* structure(SDgetStructure(scip) );
+   sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip) );
    nControls_ = structure->getNControls();
    nStates_ = structure->getNStates();
    nAlgebraic_ = structure->getNAlgebraic();

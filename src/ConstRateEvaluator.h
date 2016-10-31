@@ -11,7 +11,7 @@
 #include "PointRateEvaluator.h"
 #include <string>
 
-namespace ctrl{
+namespace sdscip{
 
 class ConstRateEvaluator: public PointRateEvaluator
 {

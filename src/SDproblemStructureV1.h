@@ -19,7 +19,7 @@
 
 
 
-namespace ctrl
+namespace sdscip
 {
 
 
@@ -308,6 +308,6 @@ private:
 
 };
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 #endif /* SDPROBLEMSTRUCTUREV1_H_ */

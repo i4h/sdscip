@@ -19,7 +19,7 @@
 #include "sdscip.h"
 #include <fstream>
 
-namespace ctrl
+namespace sdscip
 {
 
 

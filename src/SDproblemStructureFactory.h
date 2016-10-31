@@ -14,7 +14,7 @@
 #include "SDproblemStructureV1.h"
 
 
-namespace ctrl {
+namespace sdscip {
 
 class SDproblemStructureFactory
 {
@@ -24,6 +24,6 @@ public:
    static SDproblemStructureInterface* create(int version, SCIP* scip);
 };
 
-} /* namespace ctrl */
+} /* namespace sdscip */
 
 #endif /* SDPROBLEMSTRUCTUREFACTORY_H_ */

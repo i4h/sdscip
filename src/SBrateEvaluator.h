@@ -14,7 +14,7 @@
 #include <string>
 #include <map>
 
-namespace ctrl{
+namespace sdscip{
 
 class SBrateEvaluator : public PointRateEvaluator
 {
@@ -74,7 +74,7 @@ public:
 private:
 
    /* Apply the local bounds of the state variables pointed to by structure as enclosure */
-   void applyEnclosure( int t, std::vector<SCIP_Interval> varValues, ctrl::SDproblemStructureInterface* structure);
+   void applyEnclosure( int t, std::vector<SCIP_Interval> varValues, sdscip::SDproblemStructureInterface* structure);
 
    /* Returns a map containing the tightest known bounds for all states/boundtype where bounds are known globally or from stateBounds parameter */
    BoundMap getTightestEnclosure(const BoundMap& stateBounds);
