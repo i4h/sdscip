@@ -104,6 +104,7 @@ UNITTESTSRCPATH =	unittests.cpp \
 			PointODEintegrator.cpp \
 			ReduceODEintegrator.cpp \
 			IntervalODEintegrator.cpp \
+			SDtest.cpp \
 			TestSDplugin.cpp \
 			TestExprPiecewiseLinear.cpp \
 			TestEstimatorTypes.cpp \
@@ -215,13 +216,18 @@ test:           $(MAINFILE)
 		$(SHELL) ./check.sh $(TEST) $(MAINFILE) $(SETTINGS) $(notdir $(MAINFILE)) $(TIME) $(NODES) $(MEM) $(THREADS) $(FEASTOL) $(DISPFREQ) \
 		$(CONTINUE) $(LOCK) $(VERSION) $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE) $(PERMUTE) $(SEEDS) ;
 
-unittest:           $(UNITTESTFILE)
-
-
+unittest:           $(UNITTESTFILE) $(UNITTESTSHORTLINK)
+		cd unittest; \
+		../bin/unittest ;
 
 $(MAINSHORTLINK):	$(MAINFILE)
 		@rm -f $@
 		cd $(dir $@) && ln -s $(notdir $(MAINFILE)) $(notdir $@)
+
+$(UNITTESTSHORTLINK):	$(UNITTESTFILE)
+		@rm -f $@
+		cd $(dir $@) && ln -s $(notdir $(UNITTESTFILE)) $(notdir $@)
+
 
 $(OBJDIR):
 		@-mkdir -p $(OBJDIR)

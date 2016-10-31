@@ -5,8 +5,8 @@
  *      Author: bzfvierh
  */
 
-#ifndef TESTGEOM_H_
-#define TESTGEOM_H_
+#ifndef SDSCIP_TESTGEOM_H_
+#define SDSCIP_TESTGEOM_H_
 
 #include <iostream>
 #include "sdscip.h"
@@ -16,13 +16,13 @@
 #include "OrthantList.h"
 #include "HyperCube.h"
 #include "HyperPlane.h"
+#include "SDtest.h"
 
 
 
 namespace SDgeom {
 
-
-class TestGeom
+class TestGeom : public sdscip::BaseTest
 {
 public:
    TestGeom(SCIP* _scip);
@@ -52,4 +52,4 @@ private:
 
 }
 
-#endif /* TESTGEOM_H_ */
+#endif /* SDSCIP_TESTGEOM_H_ */

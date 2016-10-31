@@ -5,8 +5,8 @@
  *      Author: bzfvierh
  */
 
-#ifndef SIMRATEEVALUATOR_H_
-#define SIMRATEEVALUATOR_H_
+#ifndef SDSCIP_SIMRATEEVALUATOR_H_
+#define SDSCIP_SIMRATEEVALUATOR_H_
 
 #include "PointRateEvaluator.h"
 #include "BoundMapHelpers.cpp"
@@ -34,4 +34,4 @@ private:
 
 }
 
-#endif /* SIMRATEEVALUATOR_H_ */
+#endif /* SDSCIP_SIMRATEEVALUATOR_H_ */

@@ -30,14 +30,7 @@ HyperCube TestGeom::unitCube() const {
    return cube;
 }
 
-void TestGeom::test(bool t) {
-   if (t)
-      ++nSuccess_;
-   else {
-      std::cout << "Test " << nSuccess_ + 1 << " failed." << std::endl;
-      assert(false);
-   }
-}
+
 
 void TestGeom::testEqual(double a, double b) {
    // std::cout << "testing equality of " << a << " and " << b << std::endl;
@@ -240,7 +233,7 @@ void TestGeom::testIntersection() {
 
 void TestGeom::testGetSeparatedVolume() {
       std::cout << "-- Testing cube.getSeparatedVolume(plane)" << std::endl;
-      if (false) {
+      if (true) {
          HyperCube cube;
          cube = unitCube();
          SDgeom::Vector vec, point;
@@ -268,7 +261,6 @@ void TestGeom::testGetSeparatedVolume() {
          //std::cout << "Rel. Volume is " << vol << std::endl;
          test(vol >= 0.125 || (ndim_ >= 5 && vol == 0 && cube.intersects(plane)));
          //std::cout << "Relative Volume is " << vol << std::endl;
-
       }
 
       {
