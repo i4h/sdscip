@@ -8,7 +8,7 @@
 #include "TestGeom.h"
 #include <math.h>
 
-namespace SDgeom {
+namespace sdscip {
 
 TestGeom::TestGeom(SCIP* _scip) :
       scip_(_scip)
@@ -124,15 +124,15 @@ void TestGeom::testFindSeveredVertex() {
          HyperCube cube;
          cube = unitCube();
 
-         SDgeom::Vector vec, point;
+         sdscip::Vector vec, point;
          for (int i = 0; i < ndim_; ++i) {
             vec.addDim(1.0);
             point.addDim(0.9);
          }
          HyperPlane plane(vec,point);
-         SDgeom::HyperCube::VertexIntersectionsPair pair = cube.findSeveredVertex(&plane);
-         SDgeom::Orthant orth(pair.first);
-         std::vector<SDgeom::Vector> intersections(pair.second);
+         sdscip::HyperCube::VertexIntersectionsPair pair = cube.findSeveredVertex(&plane);
+         sdscip::Orthant orth(pair.first);
+         std::vector<sdscip::Vector> intersections(pair.second);
         for (int i = 0; i < ndim_; ++i) {
            test(orth.getHalfSpace(i) == true);
          }
@@ -149,7 +149,7 @@ void TestGeom::testFindSeveredVertex() {
       }
       {
          HyperCube cube;
-         SDgeom::Vector vec, point;
+         sdscip::Vector vec, point;
 
          for (int i = 0; i < ndim_; ++i) {
             vec.addDim(1.0);
@@ -158,9 +158,9 @@ void TestGeom::testFindSeveredVertex() {
          }
          HyperPlane plane(vec,point);
 
-         SDgeom::HyperCube::VertexIntersectionsPair pair = cube.findSeveredVertex(&plane);
-         SDgeom::Orthant orth(pair.first);
-         std::vector<SDgeom::Vector> intersections(pair.second);
+         sdscip::HyperCube::VertexIntersectionsPair pair = cube.findSeveredVertex(&plane);
+         sdscip::Orthant orth(pair.first);
+         std::vector<sdscip::Vector> intersections(pair.second);
 
         for (int i = 0; i < ndim_; ++i) {
            test(orth.getHalfSpace(i) == true);
@@ -183,11 +183,11 @@ void TestGeom::testFindSeveredVertex() {
 void TestGeom::testVectorOperators() {
    std::cout << "-- Testing Vector operators " << std::endl;
    {
-      SDgeom::Vector a(1,2,3);
-      SDgeom::Vector b(-1,-2,-3);
-      SDgeom::Vector c;
+      sdscip::Vector a(1,2,3);
+      sdscip::Vector b(-1,-2,-3);
+      sdscip::Vector c;
 
-      //SDgeom::Vector c(a+b);
+      //sdscip::Vector c(a+b);
       a += b;
       c = b + (-1.0)*b;
 
@@ -197,8 +197,8 @@ void TestGeom::testVectorOperators() {
       }
    }
    {
-      SDgeom::Vector a(1,2,3);
-      SDgeom::Vector b(-1,-2,3);
+      sdscip::Vector a(1,2,3);
+      sdscip::Vector b(-1,-2,3);
       double s = a*b;
       test(s == 4);
    }
@@ -208,22 +208,22 @@ void TestGeom::testVectorOperators() {
 void TestGeom::testIntersection() {
    std::cout << "-- Testing line::intersection(plane)" << std::endl;
    {
-      SDgeom::Line line(SDgeom::Vector(0,1.0),SDgeom::Vector(2,1.0));
-      SDgeom::HyperPlane plane(SDgeom::Vector(0,1.0),SDgeom::Vector(2,1.0));
-      SDgeom::Vector i(line.intersection(&plane));
+      sdscip::Line line(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
+      sdscip::HyperPlane plane(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
+      sdscip::Vector i(line.intersection(&plane));
       test(i.getDim() == 0);
    }
    {
-      SDgeom::Line line(SDgeom::Vector(0,1.0),SDgeom::Vector(2,1.0));
-      SDgeom::HyperPlane plane(SDgeom::Vector(1,0),SDgeom::Vector(1,0));
-      SDgeom::Vector i(line.intersection(&plane));
+      sdscip::Line line(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
+      sdscip::HyperPlane plane(sdscip::Vector(1,0),sdscip::Vector(1,0));
+      sdscip::Vector i(line.intersection(&plane));
       test(i.getComponent(0) == 1);
       test(i.getComponent(1) == 1);
    }
    {
-      HyperPlane plane(SDgeom::Vector(1.0,1.0),SDgeom::Vector(0.99999,0.99999));
+      HyperPlane plane(sdscip::Vector(1.0,1.0),sdscip::Vector(0.99999,0.99999));
       Line line(Vector(0.0,1.0),Vector(2.0,1.0));
-      SDgeom::Vector intersection(line.intersection(&plane));
+      sdscip::Vector intersection(line.intersection(&plane));
       for (int i = 0; i < intersection.getDim(); ++i)
          test(intersection.getComponent(i) > 0.9999 && intersection.getComponent(i) <= 1.0);
    }
@@ -236,7 +236,7 @@ void TestGeom::testGetSeparatedVolume() {
       if (true) {
          HyperCube cube;
          cube = unitCube();
-         SDgeom::Vector vec, point;
+         sdscip::Vector vec, point;
          for (int i = 0; i < ndim_; ++i) {
             vec.addDim(1.0);
             point.addDim(0.9);
@@ -249,7 +249,7 @@ void TestGeom::testGetSeparatedVolume() {
       {
          HyperCube cube;
          cube = unitCube();
-         SDgeom::Vector vec, point;
+         sdscip::Vector vec, point;
          for (int i = 0; i < ndim_; ++i) {
             vec.addDim(1.0);
             point.addDim(0.75);
@@ -265,7 +265,7 @@ void TestGeom::testGetSeparatedVolume() {
 
       {
          HyperCube cube;
-         SDgeom::Vector vec, point;
+         sdscip::Vector vec, point;
          for (int i = 0; i < ndim_; ++i) {
             vec.addDim(1.0);
             point.addDim(0.5);
@@ -285,7 +285,7 @@ void TestGeom::testHyperCubeIntersects() {
    HyperCube cube;
    cube = unitCube();
    {
-      SDgeom::Vector vec, point;
+      sdscip::Vector vec, point;
       for (int i = 0; i < ndim_; ++i) {
          vec.addDim(1.0);
          point.addDim(0.9);
@@ -294,7 +294,7 @@ void TestGeom::testHyperCubeIntersects() {
       test(cube.intersects(plane));
    }
    {
-      SDgeom::Vector vec, point;
+      sdscip::Vector vec, point;
       for (int i = 0; i < ndim_; ++i) {
          vec.addDim(1.0);
          point.addDim(1.0);
@@ -303,7 +303,7 @@ void TestGeom::testHyperCubeIntersects() {
       test(cube.intersects(plane));
    }
    {
-      SDgeom::Vector vec, point;
+      sdscip::Vector vec, point;
       for (int i = 0; i < ndim_; ++i) {
          vec.addDim(1.0);
          point.addDim(1.1);
@@ -312,7 +312,7 @@ void TestGeom::testHyperCubeIntersects() {
       test(!cube.intersects(plane));
    }
    {
-      SDgeom::Vector vec, point;
+      sdscip::Vector vec, point;
       for (int i = 0; i < ndim_; ++i) {
          vec.addDim(1.0);
          point.addDim(-0.1);
@@ -321,7 +321,7 @@ void TestGeom::testHyperCubeIntersects() {
       test(!cube.intersects(plane));
    }
    {
-      SDgeom::Vector vec, point;
+      sdscip::Vector vec, point;
       for (int i = 0; i < ndim_; ++i) {
          vec.addDim(-1.0);
          point.addDim(-0.1);
@@ -334,11 +334,11 @@ void TestGeom::testHyperCubeIntersects() {
 void TestGeom::testVectorLength() {
    std::cout << "-- Testing Vector Length" << std::endl;
    {
-      SDgeom::Vector a(1,2,3);
-      SDgeom::Vector b(-1,-2,-3);
-      SDgeom::Vector c(4,5);
+      sdscip::Vector a(1,2,3);
+      sdscip::Vector b(-1,-2,-3);
+      sdscip::Vector c(4,5);
 
-      //SDgeom::Vector c(a+b);
+      //sdscip::Vector c(a+b);
       testEqual(a.length(),sqrt(1 + 4 + 9));
       testEqual(b.length(),sqrt(1 + 4 + 9));
       testEqual(c.length(),sqrt(16 + 25));

@@ -7,7 +7,7 @@
 
 #include "HyperPlane.h"
 
-namespace SDgeom {
+namespace sdscip {
 
 HyperPlane::HyperPlane() :
    ndim_(0)
@@ -15,7 +15,7 @@ HyperPlane::HyperPlane() :
 
 HyperPlane::HyperPlane(int _ndim) :
    ndim_(_ndim)
-   ,vector_(SDgeom::Vector(_ndim))
+   ,vector_(sdscip::Vector(_ndim))
 {
 
 }
@@ -74,11 +74,11 @@ int HyperPlane::getDim() const {
    return ndim_;
 }
 
-const SDgeom::Vector * HyperPlane::getVector() const {
+const sdscip::Vector * HyperPlane::getVector() const {
    return &vector_;
 }
 
-const SDgeom::Vector * HyperPlane::getPoint() const {
+const sdscip::Vector * HyperPlane::getPoint() const {
    return &point_;
 }
 

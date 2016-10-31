@@ -20,7 +20,7 @@
 #include "Vector.h"
 #include "HyperPlane.h"
 
-namespace SDgeom {
+namespace sdscip {
 
 class Vector;
 class HyperPlane;
@@ -30,16 +30,16 @@ class Line
 {
 
 public:
-   typedef SDgeom::Vector::Components::iterator ComponentIterator ;
+   typedef sdscip::Vector::Components::iterator ComponentIterator ;
    Line();
    Line(int _ndim);
-   Line(SDgeom::Vector a, SDgeom::Vector b);
+   Line(sdscip::Vector a, sdscip::Vector b);
    virtual ~Line();
 
    /* Shortcut constructors Used for testing */
 
    std::string toString();
-   SDgeom::Vector intersection(const SDgeom::HyperPlane *plane);
+   sdscip::Vector intersection(const sdscip::HyperPlane *plane);
    /*
    Vector::Components::iterator aBeginIt();
    Vector::Components::iterator aEndIt();

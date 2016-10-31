@@ -7,7 +7,7 @@
 
 #include "Line.h"
 
-namespace SDgeom {
+namespace sdscip {
 
 Line::Line() :
    ndim_(0)
@@ -21,7 +21,7 @@ Line::Line(int _ndim) :
    ,b_(_ndim)
 { }
 
-Line::Line(SDgeom::Vector _a, SDgeom::Vector _b) :
+Line::Line(sdscip::Vector _a, sdscip::Vector _b) :
    a_(_a)
    ,b_(_b)
 {
@@ -49,7 +49,7 @@ std::string Line::toString() {
  * \alpha = frac{n(p-a)}{n(b-a)}
  * The hyperplane cuts the line if \alpha \in [0,1]
  */
-SDgeom::Vector Line::intersection(const SDgeom::HyperPlane *plane) {
+sdscip::Vector Line::intersection(const sdscip::HyperPlane *plane) {
    assert(ndim_ == plane->getDim());
 
    double enumerator(*(plane->getVector()) * (*(plane->getPoint()) - a_));
@@ -58,7 +58,7 @@ SDgeom::Vector Line::intersection(const SDgeom::HyperPlane *plane) {
 
    if (denominator < 1e-9 && denominator > -1e-9) {
       /* Denominator is ~ 0 -> line and plane are parallel */
-      return SDgeom::Vector(0);
+      return sdscip::Vector(0);
    }
    /*
    std::cout << "alpha is " << alpha << std::endl;
@@ -67,10 +67,10 @@ SDgeom::Vector Line::intersection(const SDgeom::HyperPlane *plane) {
    */
 
    if (alpha < 0 || alpha > 1)
-      return SDgeom::Vector(0);
+      return sdscip::Vector(0);
    else
    {
-      SDgeom::Vector result(a_ + alpha*(b_-a_));
+      sdscip::Vector result(a_ + alpha*(b_-a_));
       //std::cout << "result is " << result.toString() << std::endl;
       return result;
    }

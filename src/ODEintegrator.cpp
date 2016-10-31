@@ -42,7 +42,7 @@ SCIP_Real ODEintegrator::getT()
 
 void ODEintegrator::printVec(std::vector<double> vec, std::string message)
 {
-   SDgeom::Vector temp(vec);
+   sdscip::Vector temp(vec);
    SCIPdbgMsg("%s = %s\n",message.c_str(), temp.toString().c_str());
 }
 

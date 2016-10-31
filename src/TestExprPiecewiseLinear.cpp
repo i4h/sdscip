@@ -15,8 +15,8 @@ namespace sdscip
 std::string EstimatorTestData::toString(int boundidx)
 {
    std::ostringstream oss;
-   oss << "xvals:        " << SDgeom::Vector::vec2string(points.first,std::string()) << std::endl;
-   oss << "yvals:        " << SDgeom::Vector::vec2string(points.second,std::string()) << std::endl;
+   oss << "xvals:        " << sdscip::Vector::vec2string(points.first,std::string()) << std::endl;
+   oss << "yvals:        " << sdscip::Vector::vec2string(points.second,std::string()) << std::endl;
    oss << "argbounds:    (" << std::to_string(argbounds[boundidx].first) << ", " << std::to_string(argbounds[boundidx].second) << ")" << std::endl;
    oss << "argval:       " << std::to_string(argvals[boundidx]) << std::endl;
    oss << "overestimate: " << ( overestimate ? std::string("true") : std::string("false"));
@@ -192,7 +192,7 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
    }
    else
    {
-      SCIPdebugMessage("Estimation is invalid at %i of %i sampled knots: %s\n", nerrors, checkedknots, SDgeom::Vector::vec2string(invalidPoints, std::string("")).c_str());
+      SCIPdebugMessage("Estimation is invalid at %i of %i sampled knots: %s\n", nerrors, checkedknots, sdscip::Vector::vec2string(invalidPoints, std::string("")).c_str());
       return false;
    }
 }
@@ -288,8 +288,8 @@ void TestExprPiecewiseLinear::removeCoincidingPoints(ValVec &xvals, ValVec &yval
 {
    double mindist = 1e-3;
    SCIPdbgMsg("removing coinciding points from:\n");
-   SCIPdbgMsg("xvec: %s\n",SDgeom::Vector::vec2string(xvals, std::string()).c_str());
-   SCIPdbgMsg("yvec: %s\n",SDgeom::Vector::vec2string(yvals, std::string()).c_str());
+   SCIPdbgMsg("xvec: %s\n",sdscip::Vector::vec2string(xvals, std::string()).c_str());
+   SCIPdbgMsg("yvec: %s\n",sdscip::Vector::vec2string(yvals, std::string()).c_str());
    double lastx = xvals[0];
    for( auto it = xvals.begin() + 1; it != xvals.end(); /*++it*/)
    {

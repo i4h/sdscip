@@ -8,7 +8,7 @@
 #include "Vector.h"
 #include <math.h>
 
-namespace SDgeom {
+namespace sdscip {
 
 Vector::Vector() :
    Point()
@@ -33,13 +33,13 @@ Vector::Vector(double x1, double x2, double x3) :
 
 std::string Vector::vec2string(std::vector<double> vec, std::string message)
 {
-   SDgeom::Vector temp(vec);
+   sdscip::Vector temp(vec);
    return message + temp.toString();
 }
 
 void Vector::printVec(std::vector<double> vec, std::string message)
 {
-   SDgeom::Vector temp(vec);
+   sdscip::Vector temp(vec);
    printf("%s = %s\n",message.c_str(), temp.toString().c_str());
 }
 

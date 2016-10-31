@@ -17,7 +17,7 @@
 #include "Point.h"
 
 
-namespace SDgeom {
+namespace sdscip {
 
 
 class Vector : public Point {

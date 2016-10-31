@@ -7,7 +7,7 @@
 
 #include "Point.h"
 
-namespace SDgeom {
+namespace sdscip {
 
 
 
@@ -42,7 +42,7 @@ Point::Point(double x1, double x2, double x3) {
 }
 
 
-/*Point::Point(SDgeom::Vector vec) {
+/*Point::Point(sdscip::Vector vec) {
    for (Vector::Components::iterator it = vec.beginIt(); it != vec.endIt(); ++it) {
       addDim(*it);
    }

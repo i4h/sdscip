@@ -17,7 +17,7 @@
 #include <iomanip>
 
 
-namespace SDgeom {
+namespace sdscip {
 
 class Point
 {
@@ -27,7 +27,7 @@ public:
    Point();
    Point(int _ndim);
    Point(std::vector<double> components);
-   //Point(SDgeom::Vector vec);
+   //Point(sdscip::Vector vec);
    virtual ~Point();
 
    /* Shortcut constructors Used for testing    */

@@ -506,7 +506,7 @@ SCIP_RETCODE PropagationPattern::setSubscipVarsArray(SCIP_VAR** vars) const
 
 SCIP_RETCODE PropagationPattern::buildHyperCube()
 {
-	hyperCube_ = SDgeom::HyperCube();
+	hyperCube_ = sdscip::HyperCube();
 	for( VarPairVec::const_iterator it = vars_.begin(); it != vars_.end(); ++it)
 	{
 		hyperCube_.addDim(SCIPvarGetLbLocal(it->first),SCIPvarGetUbLocal(it->first));
@@ -573,7 +573,7 @@ SCIP_RETCODE PropagationPattern::cutIsUseful(SCIP_Real rhs, SCIP_Bool * isUseful
 SCIP_RETCODE PropagationPattern::updateSubscipSolutionVector() {
 
 	assert(SCIPgetStatus(subscip_) >= SCIP_STATUS_NODELIMIT && SCIPgetStatus(subscip_) <= SCIP_STATUS_OPTIMAL);
-	subscipSolutionVector_ = SDgeom::Vector();
+	subscipSolutionVector_ = sdscip::Vector();
 
 	for( VarPairVec::const_iterator it = vars_.begin(); it != vars_.end(); ++it)
 	{

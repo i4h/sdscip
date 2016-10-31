@@ -17,7 +17,7 @@
 
 
 
-namespace SDgeom {
+namespace sdscip {
 
 
 class Vector;
@@ -31,14 +31,14 @@ public:
    typedef Vector::Components::iterator ComponentIterator;
    HyperPlane();
    HyperPlane(int _ndim);
-   HyperPlane(SDgeom::Vector);
+   HyperPlane(sdscip::Vector);
    HyperPlane(Vector _vector, Vector _point);
    virtual ~HyperPlane();
    std::string toString() const;
    void addDim(double);
    int getDim() const;
-   const SDgeom::Vector * getVector() const;
-   const SDgeom::Vector * getPoint() const;
+   const sdscip::Vector * getVector() const;
+   const sdscip::Vector * getPoint() const;
    Vector::Components::iterator vecBeginIt();
    Vector::Components::iterator vecEndIt();
    Vector::Components::iterator pointBeginIt();

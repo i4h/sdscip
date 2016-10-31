@@ -9,7 +9,7 @@
 #include "HyperCube.h"
 #include <cmath>
 
-namespace SDgeom {
+namespace sdscip {
 
 HyperCube::HyperCube() :
    ndim_(0)
@@ -103,9 +103,9 @@ void HyperCube::addDim(double lower, double higher) {
 /*
  * Checks if a vector is inside of this hypercube
  */
-bool HyperCube::contains(SDgeom::Vector vec) {
+bool HyperCube::contains(sdscip::Vector vec) {
    assert(vec.getDim() == ndim_);
-   SDgeom::Vector::Components::iterator vecIt(vec.beginIt());
+   sdscip::Vector::Components::iterator vecIt(vec.beginIt());
    for (Extent::iterator it = this->beginIt(); it != this->endIt(); ++it) {
       if (*vecIt < it->first)
          return false;
@@ -119,9 +119,9 @@ bool HyperCube::contains(SDgeom::Vector vec) {
 /*
  * Checks if a vector is inside of this hypercube using the scip comparison functions
  */
-bool HyperCube::contains(SCIP* scip, SDgeom::Vector vec) {
+bool HyperCube::contains(SCIP* scip, sdscip::Vector vec) {
    assert(vec.getDim() == ndim_);
-   SDgeom::Vector::Components::iterator vecIt(vec.beginIt());
+   sdscip::Vector::Components::iterator vecIt(vec.beginIt());
    for (Extent::iterator it = this->beginIt(); it != this->endIt(); ++it) {
       SCIPcppDbgMsg("comparing component " << *vecIt << " with lower extent " << it->first << std::endl);
       if (SCIPisLT(scip,*vecIt,it->first))
@@ -139,9 +139,9 @@ bool HyperCube::contains(SCIP* scip, SDgeom::Vector vec) {
 /*
  * Checks if a vector is on one of the faces of the cube using the scip comparison functions
  */
-bool HyperCube::isOnFace(SCIP* scip, SDgeom::Vector vec) {
+bool HyperCube::isOnFace(SCIP* scip, sdscip::Vector vec) {
    assert(vec.getDim() == ndim_);
-   SDgeom::Vector::Components::iterator vecIt(vec.beginIt());
+   sdscip::Vector::Components::iterator vecIt(vec.beginIt());
    for (Extent::iterator it = this->beginIt(); it != this->endIt(); ++it) {
       SCIPcppDbgMsg("comparing component " << std::setprecision(16) << *vecIt << " with lower extent " << it->first << std::endl);
       if (SCIPisEQ(scip,*vecIt,it->first))
@@ -157,9 +157,9 @@ bool HyperCube::isOnFace(SCIP* scip, SDgeom::Vector vec) {
 /*
  * Checks if a vector is on one of the vertices of the cube using the scip comparison functions
  */
-bool HyperCube::isOnVertex(SCIP* scip, SDgeom::Vector vec) {
+bool HyperCube::isOnVertex(SCIP* scip, sdscip::Vector vec) {
    assert(vec.getDim() == ndim_);
-   SDgeom::Vector::Components::iterator vecIt(vec.beginIt());
+   sdscip::Vector::Components::iterator vecIt(vec.beginIt());
    for (Extent::iterator it = this->beginIt(); it != this->endIt(); ++it) {
       /* If a single vector component is not on the higher or lower extent, the vector does not point to a vertex */
       if (!SCIPisEQ(scip,*vecIt,it->first) && !SCIPisEQ(scip,*vecIt,it->second))
@@ -175,19 +175,19 @@ bool HyperCube::isOnVertex(SCIP* scip, SDgeom::Vector vec) {
  * If no vertex is found, a 0-dim orthant is returned
  * function also returns the intersections of the edges
  */
-HyperCube::VertexIntersectionsPair HyperCube::findSeveredVertex(const SDgeom::HyperPlane * plane) const {
+HyperCube::VertexIntersectionsPair HyperCube::findSeveredVertex(const sdscip::HyperPlane * plane) const {
    assert(plane->getDim() == ndim_);
-   SDgeom::OrthantList oList(ndim_);
+   sdscip::OrthantList oList(ndim_);
 
    for(OrthantList::OrthantIterator it = oList.beginIt(); it != oList.endIt(); ++it)
    {
       //std::cout << "Considering orthant " << it->toString() << std::endl;
-      std::vector<SDgeom::Line> edges(this->getEdges(*it));
-      std::vector<SDgeom::Vector> intersections;
+      std::vector<sdscip::Line> edges(this->getEdges(*it));
+      std::vector<sdscip::Vector> intersections;
       bool cutOff(true);
-      for(std::vector<SDgeom::Line>::iterator lineIt = edges.begin();  lineIt != edges.end(); ++lineIt) {
+      for(std::vector<sdscip::Line>::iterator lineIt = edges.begin();  lineIt != edges.end(); ++lineIt) {
          //std::cout << "checking if plane cuts line " << std::endl << lineIt->toString() << std::endl;
-         SDgeom::Vector intersection(lineIt->intersection(plane));
+         sdscip::Vector intersection(lineIt->intersection(plane));
          //std::cout << "Found intersection " << intersection.toString() << std::endl;
          if (intersection.getDim() == 0) {
             cutOff = false;
@@ -200,7 +200,7 @@ HyperCube::VertexIntersectionsPair HyperCube::findSeveredVertex(const SDgeom::Hy
          return HyperCube::VertexIntersectionsPair(*it,intersections);
    }
    //std::cout << "Returning empty orthant " << std::endl;
-   return HyperCube::VertexIntersectionsPair(Orthant(0),std::vector<SDgeom::Vector>());
+   return HyperCube::VertexIntersectionsPair(Orthant(0),std::vector<sdscip::Vector>());
 
 }
 
@@ -211,19 +211,19 @@ HyperCube::VertexIntersectionsPair HyperCube::findSeveredVertex(const SDgeom::Hy
  * Returns 0 if no vertex was found, or
  */
 
-double HyperCube::getSeparatedVolume(const SDgeom::HyperPlane * plane) const {
-   SDgeom::HyperCube::VertexIntersectionsPair pair = this->findSeveredVertex(plane);
-   SDgeom::Orthant orth(pair.first);
-   std::vector<SDgeom::Vector> intersections(pair.second);
+double HyperCube::getSeparatedVolume(const sdscip::HyperPlane * plane) const {
+   sdscip::HyperCube::VertexIntersectionsPair pair = this->findSeveredVertex(plane);
+   sdscip::Orthant orth(pair.first);
+   std::vector<sdscip::Vector> intersections(pair.second);
    if (orth.getDim() == 0) {
       std::cout << "No cleanly severed vertex found" << std::endl;
       return 0;
    }
-   SDgeom::Vector vertex(this->getVertex(orth));
+   sdscip::Vector vertex(this->getVertex(orth));
    double vol(1);
    /* Calculated pyramid sides */
    for (
-      std::pair<SDgeom::Orthant::ConstHalfSpaceIterator,std::vector<SDgeom::Vector>::const_iterator > it(orth.constBeginIt(),intersections.begin());
+      std::pair<sdscip::Orthant::ConstHalfSpaceIterator,std::vector<sdscip::Vector>::const_iterator > it(orth.constBeginIt(),intersections.begin());
       it.first != orth.constEndIt() && it.second != intersections.end();
       ++(it.first), ++(it.second)
    ) {
@@ -238,7 +238,7 @@ double HyperCube::getSeparatedVolume(const SDgeom::HyperPlane * plane) const {
    return (vol / ndim_);
 }
 
-double HyperCube::getRelativeSeparatedVolume(const SDgeom::HyperPlane * plane) const {
+double HyperCube::getRelativeSeparatedVolume(const sdscip::HyperPlane * plane) const {
    double vol(this->getSeparatedVolume(plane));
    return vol / this->getVolume();
 }
@@ -260,18 +260,18 @@ double HyperCube::getVolume() const {
 /*
  * Gets the Edges of the HyperCube that end in the Vertex associated with orth
  */
-std::vector<SDgeom::Line> HyperCube::getEdges(SDgeom::Orthant orth) const {
-   std::vector<SDgeom::Line> lines;
-   SDgeom::Vector a(this->getVertex(orth));
+std::vector<sdscip::Line> HyperCube::getEdges(sdscip::Orthant orth) const {
+   std::vector<sdscip::Line> lines;
+   sdscip::Vector a(this->getVertex(orth));
    //std::cout << "Got Vertex a: " << a.toString() << std::endl;
    for (Orthant::HalfSpaceIterator it = orth.beginIt(); it != orth.endIt(); ++it) {
       int dim = it - orth.beginIt();
-      SDgeom::Vector b(a);
+      sdscip::Vector b(a);
       if (*it)
          b.setComponent(dim,this->getLowerExtent(dim));
       else
          b.setComponent(dim,this->getHigherExtent(dim));
-      lines.push_back(SDgeom::Line(a,b));
+      lines.push_back(sdscip::Line(a,b));
    }
 
    return lines;
@@ -282,9 +282,9 @@ std::vector<SDgeom::Line> HyperCube::getEdges(SDgeom::Orthant orth) const {
 /*
  * Gets the point representing the Edge associated with orth
  */
-SDgeom::Vector HyperCube::getVertex(SDgeom::Orthant orth) const {
+sdscip::Vector HyperCube::getVertex(sdscip::Orthant orth) const {
    assert(ndim_ == orth.getDim());
-   SDgeom::Vector vertex;
+   sdscip::Vector vertex;
    ConstExtentIterator extentIt = constBeginIt();
    for (Orthant::HalfSpaceIterator it = orth.beginIt(); it != orth.endIt(); ++it) {
       if (*it)
@@ -302,21 +302,21 @@ SDgeom::Vector HyperCube::getVertex(SDgeom::Orthant orth) const {
  * normal vector of the plane, and the other one in the opposite direction. We compute projections of
  * vectors from the plane point to the vertex until we find one of both
  */
-bool HyperCube::intersects(const SDgeom::HyperPlane plane) const {
+bool HyperCube::intersects(const sdscip::HyperPlane plane) const {
    assert(ndim_ == plane.getDim());
    bool foundPos(false);
    bool foundNeg(false);
 
-   const SDgeom::Vector planeVec(*plane.getVector());
-   const SDgeom::Vector planePoint(*plane.getPoint());
+   const sdscip::Vector planeVec(*plane.getVector());
+   const sdscip::Vector planePoint(*plane.getPoint());
 
-   SDgeom::OrthantList oList(ndim_);
+   sdscip::OrthantList oList(ndim_);
 
    for(OrthantList::OrthantIterator it = oList.beginIt(); it != oList.endIt(); ++it)
    {
       //std::cout << "Considering orthant " << it->toString() << std::endl;
-      SDgeom::Vector vertex(this->getVertex(*it));
-      SDgeom::Vector r(vertex - planePoint);
+      sdscip::Vector vertex(this->getVertex(*it));
+      sdscip::Vector r(vertex - planePoint);
       double projection(r*planeVec);
       if (projection >= 0)
          foundPos = true;

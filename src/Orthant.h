@@ -18,7 +18,7 @@
 #include <sstream>
 #include <iterator>
 
-namespace SDgeom {
+namespace sdscip {
 
 
 class Orthant

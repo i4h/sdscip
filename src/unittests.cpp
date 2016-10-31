@@ -69,7 +69,7 @@ SCIP_RETCODE runSCIP(
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
 
    {
-   SDgeom::TestGeom test(scip);
+   sdscip::TestGeom test(scip);
    test.runAll();
    std::cout << "Finished tests of SDgeom class" << std::endl;
    }

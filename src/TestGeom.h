@@ -16,11 +16,11 @@
 #include "OrthantList.h"
 #include "HyperCube.h"
 #include "HyperPlane.h"
-#include "SDtest.h"
+#include "BaseTest.h"
 
 
 
-namespace SDgeom {
+namespace sdscip {
 
 class TestGeom : public sdscip::BaseTest
 {

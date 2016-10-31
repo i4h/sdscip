@@ -7,8 +7,8 @@
 
 #include "OrthantList.h"
 
-namespace SDgeom {
-using namespace SDgeom;
+namespace sdscip {
+using namespace sdscip;
 
 OrthantList::OrthantList()
 {

@@ -20,7 +20,7 @@
 #include "Orthant.h"
 
 
-namespace SDgeom {
+namespace sdscip {
 
 
 class OrthantList

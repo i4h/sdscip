@@ -147,8 +147,8 @@ private:
    int currentConfiguration_;
    int currentTime_;
    int totalPatterns_;
-   SDgeom::HyperCube hyperCube_;
-   SDgeom::Vector subscipSolutionVector_;
+   sdscip::HyperCube hyperCube_;
+   sdscip::Vector subscipSolutionVector_;
    SCIP * subscip_;
    SCIP * scip_;
    bool configurationLoaded_;

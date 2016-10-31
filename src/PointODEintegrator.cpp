@@ -60,9 +60,9 @@ std::string PointODEintegrator::toString()
    oss << "# rateEvaluator = " << rateEvaluator_->getName() << std::endl;
    oss << "ODE Integrator State:" << std::endl;
    oss << "# t = " << t_ << std::endl;
-   oss << SDgeom::Vector::vec2string(getStates(), std::string("# x = ")) << std::endl;
-   oss << SDgeom::Vector::vec2string(getControls(), std::string("# z = ")) << std::endl;
-   oss << SDgeom::Vector::vec2string(varValues_, std::string("# (x, z) = "));
+   oss << sdscip::Vector::vec2string(getStates(), std::string("# x = ")) << std::endl;
+   oss << sdscip::Vector::vec2string(getControls(), std::string("# z = ")) << std::endl;
+   oss << sdscip::Vector::vec2string(varValues_, std::string("# (x, z) = "));
 
    return oss.str();
 }

@@ -24,7 +24,7 @@
 #include "sdscip.h"
 
 
-namespace SDgeom {
+namespace sdscip {
 
 class Line;
 class Vector;
@@ -41,7 +41,7 @@ public:
    typedef std::vector<std::pair<double,double> >  Extent ;
    typedef std::vector<std::pair<double,double> >::iterator  ExtentIterator ;
    typedef std::vector<std::pair<double,double> >::const_iterator  ConstExtentIterator ;
-   typedef std::pair<SDgeom::Orthant,std::vector<SDgeom::Vector> > VertexIntersectionsPair;
+   typedef std::pair<sdscip::Orthant,std::vector<sdscip::Vector> > VertexIntersectionsPair;
    HyperCube();
    HyperCube(int _ndim);
    virtual ~HyperCube();
@@ -57,17 +57,17 @@ public:
    double getExtent(int dim) const;
    bool areExtentsFinite(SCIP* scip) const;
    double getNormalizationFactor() const;
-   bool contains(SDgeom::Vector vec);
-   bool contains(SCIP* scip, SDgeom::Vector vec);
-   bool isOnFace(SCIP* scip, SDgeom::Vector vec);
-   bool isOnVertex(SCIP* scip, SDgeom::Vector vec);
-   VertexIntersectionsPair findSeveredVertex(const SDgeom::HyperPlane * plane) const;
-   double getSeparatedVolume(const SDgeom::HyperPlane * plane) const;
-   double getRelativeSeparatedVolume(const SDgeom::HyperPlane * plane) const;
+   bool contains(sdscip::Vector vec);
+   bool contains(SCIP* scip, sdscip::Vector vec);
+   bool isOnFace(SCIP* scip, sdscip::Vector vec);
+   bool isOnVertex(SCIP* scip, sdscip::Vector vec);
+   VertexIntersectionsPair findSeveredVertex(const sdscip::HyperPlane * plane) const;
+   double getSeparatedVolume(const sdscip::HyperPlane * plane) const;
+   double getRelativeSeparatedVolume(const sdscip::HyperPlane * plane) const;
    double getVolume() const;
-   SDgeom::Vector getVertex(SDgeom::Orthant orth) const;
-   std::vector<SDgeom::Line> getEdges(SDgeom::Orthant orth) const;
-   bool intersects(const SDgeom::HyperPlane plane) const;
+   sdscip::Vector getVertex(sdscip::Orthant orth) const;
+   std::vector<sdscip::Line> getEdges(sdscip::Orthant orth) const;
+   bool intersects(const sdscip::HyperPlane plane) const;
 
 
 private:

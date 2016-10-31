@@ -7,8 +7,8 @@
 
 #include "Orthant.h"
 
-namespace SDgeom {
-using namespace SDgeom;
+namespace sdscip {
+using namespace sdscip;
 
 
 Orthant::Orthant() :
