@@ -17,14 +17,11 @@
 
 
 /* include SD-SCIP components */
-#include "reader_osilc.h"
 #include "ProbDataSD.h"
-
 #include "PropOBRA.h"
 #include "HeurSimODE.h"
 #include "BranchControlFirst.h"
 #include "PropODE.h"
-
 #include "ReaderVOP.h"
 #include "PresolConsGraph.h"
 #include "Statistics.hpp"
