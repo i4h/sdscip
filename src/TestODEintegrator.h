@@ -12,15 +12,18 @@
 #include "PointODEintegrator.h"
 #include "IntervalODEintegrator.h"
 #include "PointRateEvaluator.h"
+#include "BaseTest.h"
 
 namespace sdscip
 {
 
-class TestODEintegrator
+class TestODEintegrator : public BaseTest
 {
 public:
    TestODEintegrator(SCIP* scip);
    virtual ~TestODEintegrator();
+
+   std::ostream& toString(std::ostream& strm) const;
 
    int getNsuccess();
    int getNerrors();
@@ -39,14 +42,20 @@ public:
 
    std::vector<std::string> getTestDiscretizations();
 
+   void createVar(SCIP_VAR* &var, const char* name , SCIP_Real lb, SCIP_Real ub, SCIP_Real obj, SCIP_VARTYPE vartype);
    std::vector<SCIP_EXPR*> getXdotPredatorPrey();
 
 
 private:
-   SCIP* scip_;
-   SCIP* subscip_; /* Private scip to hold memory for testing expressions */
-   int nSuccess_;
-   int nErrors_;
+   /* Private scip to hold memory for testing expressions */
+   SCIP* subscip_;
+
+   /* Vars to be released in destructor */
+   std::vector<SCIP_VAR*> subscipVars_;
+
+   /* Expressions to be freed in destructor */
+   std::vector<SCIP_EXPR*> subscipExpressions_;
+
 };
 
 }

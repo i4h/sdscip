@@ -1,3 +1,5 @@
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 /*
  * SimRateEvaluator.cpp
  *
@@ -36,6 +38,7 @@ std::vector<SCIP_Real> SimRateEvaluator::getRates(SCIP_Real t, std::vector<SCIP_
 {
    computeAlgebraic(varValues, params);
 
+   SCIPdbgMsg("done computing algebraic\n");
    std::vector<SCIP_Real> rates(nStates_);
    for( int i = 0; i < nStates_; ++i)
    {
@@ -43,6 +46,7 @@ std::vector<SCIP_Real> SimRateEvaluator::getRates(SCIP_Real t, std::vector<SCIP_
    }
 
    SCIPdbgMsg("done with states, varValues: %s\n",valVecToString(varValues).c_str());
+   SCIPdbgMsg("cmputed rates: %s\n", valVecToString(rates).c_str());
    return rates;
 
 }

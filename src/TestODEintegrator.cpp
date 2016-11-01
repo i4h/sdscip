@@ -16,20 +16,32 @@ namespace sdscip
 {
 
 TestODEintegrator::TestODEintegrator(SCIP* scip) :
-   scip_(scip)
-   ,nSuccess_(0)
-   ,nErrors_(0)
+   BaseTest(scip)
 {
+   SCIPdbgMsg("allocating subscip\n");
    SCIPcreate(&subscip_);
    SCIPcreateProbBasic(subscip_, "TestODEintegrator memory container");
 }
 
 TestODEintegrator::~TestODEintegrator()
 {
-   // TODO Auto-generated destructor stub
+   for( auto it : subscipVars_)
+   {
+      SCIPreleaseVar(subscip_, &it);
+   }
+
+   for( auto it : subscipExpressions_)
+   {
+      SCIPexprFreeShallow(SCIPblkmem(subscip_), &it);
+   }
    SCIPfreeProb(subscip_);
    SCIPfree(&subscip_);
 }
+
+std::ostream& TestODEintegrator::toString(std::ostream& strm) const {
+  return strm << "TestODEintegrator";
+}
+
 
 int TestODEintegrator::getNsuccess()
 {
@@ -38,27 +50,27 @@ int TestODEintegrator::getNsuccess()
 
 int TestODEintegrator::getNerrors()
 {
-   return nErrors_;
+   return nError_;
 }
 
 void TestODEintegrator::runAll()
 {
    SCIPdbgMsg("running all\n");
 
-   runConstRateEvaluatorTest();
+   //runConstRateEvaluatorTest();
    runSimTests();
-   runSBtests();
+   //runSBtests();
 
-   SCIPdebugMessage("Finished running all, %i success, %i errors\n",nSuccess_, nErrors_);
+   SCIPdebugMessage("Finished running all, %i success, %i errors\n",nSuccess_, nError_);
 }
 
 void TestODEintegrator::runSimTests()
 {
    SCIPdbgMsg("running SimTests\n");
-   runConstRateEvaluatorTest();
-   runPredatorPreySimTest();
+   //runConstRateEvaluatorTest();
+   //runPredatorPreySimTest();
    runPredatorPreySimIntermediateStepsTest();
-   SCIPdebugMessage("Finished running SimTests, %i success, %i errors\n",nSuccess_, nErrors_);
+   SCIPdebugMessage("Finished running SimTests, %i success, %i errors\n",nSuccess_, nError_);
 }
 
 void TestODEintegrator::runSBtests()
@@ -68,7 +80,13 @@ void TestODEintegrator::runSBtests()
    runPredatorPreySBcontrolTest();
    runPredatorPreySBglobalBoundsTest();
    runPredatorPreySBboundsTest();
-   SCIPdebugMessage("Finished running SBtests, %i success, %i errors\n",nSuccess_, nErrors_);
+   SCIPdebugMessage("Finished running SBtests, %i success, %i errors\n",nSuccess_, nError_);
+}
+
+void TestODEintegrator::createVar(SCIP_VAR* &var, const char* name , SCIP_Real lb, SCIP_Real ub, SCIP_Real obj, SCIP_VARTYPE vartype)
+{
+   SCIPcreateVarBasic(subscip_, &var, "", 0, 0, 0, SCIP_VARTYPE_CONTINUOUS);
+   subscipVars_.push_back(var);
 }
 
 std::vector<SCIP_EXPR*> TestODEintegrator::getXdotPredatorPrey()
@@ -92,15 +110,20 @@ std::vector<SCIP_EXPR*> TestODEintegrator::getXdotPredatorPrey()
    SCIPdbgMsg("creating vars and expressions for state vars\n");
    for( int i = 0; i < nStates; ++i)
    {
-      (SCIPcreateVarBasic(subscip_, &(x[i]), "", 0, 0, 0, SCIP_VARTYPE_CONTINUOUS));
-      (SCIPexprCreate(SCIPblkmem(subscip_), &exprX[i], SCIP_EXPR_VARIDX, i) );
+      createVar(x[i], "", 0, 0, 0, SCIP_VARTYPE_CONTINUOUS);
+      SCIPexprCreate(SCIPblkmem(subscip_), &exprX[i], SCIP_EXPR_VARIDX, i);
+      subscipExpressions_.push_back(exprX[i]);
    }
+
+   //return std::vector<SCIP_EXPR*>();
+
 
    SCIPdbgMsg("creating vars and expressions for control vars\n");
    for( int i = 0; i < nControls; ++i)
    {
-      (SCIPcreateVarBasic(subscip_, &(z[i]), "", 0, 0, 0, SCIP_VARTYPE_CONTINUOUS));
-      (SCIPexprCreate(SCIPblkmem(subscip_), &exprZ[i], SCIP_EXPR_VARIDX, nStates + i) );
+      createVar(z[i], "", 0, 0, 0, SCIP_VARTYPE_CONTINUOUS);
+      SCIPexprCreate(SCIPblkmem(subscip_), &exprZ[i], SCIP_EXPR_VARIDX, nStates + i) ;
+      subscipExpressions_.push_back(exprZ[i]);
    }
    /* Building expression \dot x */
    {
@@ -108,34 +131,50 @@ std::vector<SCIP_EXPR*> TestODEintegrator::getXdotPredatorPrey()
       SCIP_EXPR* term1;
       //( SCIPexprCreate(SCIPblkmem(subscip), &term1, SCIP_EXPR_LINEAR, 1, &(exprX[0]), &a));
       ( SCIPexprCreateLinear(SCIPblkmem(subscip_), &term1, 1, &(exprX[0]), &a, 0) );
+      subscipExpressions_.push_back(term1);
+
+
+      SCIP_EXPR* quadTerm;
+      SCIPexprCreate(SCIPblkmem(subscip_), &quadTerm, SCIP_EXPR_MUL, exprX[0], exprX[1]);
+      subscipExpressions_.push_back(quadTerm);
+
+      SCIP_EXPR* exprB;
+      SCIPexprCreate(SCIPblkmem(subscip_), &exprB, SCIP_EXPR_CONST, b);
+      subscipExpressions_.push_back(exprB);
 
       SCIP_EXPR* term2;
-      SCIP_EXPR* quadTerm;
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &quadTerm, SCIP_EXPR_MUL, exprX[0], exprX[1]));
-      SCIP_EXPR* exprB;
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &exprB, SCIP_EXPR_CONST, b));
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &term2, SCIP_EXPR_MUL, exprB, quadTerm));
-
+      SCIPexprCreate(SCIPblkmem(subscip_), &term2, SCIP_EXPR_MUL, exprB, quadTerm);
+      subscipExpressions_.push_back(term2);
 
       SCIP_EXPR* sum1;
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &sum1, SCIP_EXPR_MINUS, term1, term2));
+      SCIPexprCreate(SCIPblkmem(subscip_), &sum1, SCIP_EXPR_MINUS, term1, term2);
+      subscipExpressions_.push_back(sum1);
 
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &(xDot[0]), SCIP_EXPR_MINUS, sum1, exprZ[0]));
+      SCIPexprCreate(SCIPblkmem(subscip_), &(xDot[0]), SCIP_EXPR_MINUS, sum1, exprZ[0]);
+      subscipExpressions_.push_back(xDot[0]);
    }
    {
       //eq_y(t+1) .. y(t+1) =e= y(t) + dt*(-d*y(t) + c*y(t)*x(t));
       SCIP_EXPR* term1;
-      //( SCIPexprCreate(SCIPblkmem(subscip), &term1, SCIP_EXPR_LINEAR, 1, &(exprX[0]), &a));
-      ( SCIPexprCreateLinear(SCIPblkmem(subscip_), &term1, 1, &(exprX[1]), &d, 0) );
+      SCIPexprCreateLinear(SCIPblkmem(subscip_), &term1, 1, &(exprX[1]), &d, 0);
+      subscipExpressions_.push_back(term1);
+
+      SCIP_EXPR* quadTerm;
+      SCIPexprCreate(SCIPblkmem(subscip_), &quadTerm, SCIP_EXPR_MUL, exprX[0], exprX[1]);
+      subscipExpressions_.push_back(quadTerm);
+
+
+      SCIP_EXPR* exprC;
+      SCIPexprCreate(SCIPblkmem(subscip_), &exprC, SCIP_EXPR_CONST, c);
+      subscipExpressions_.push_back(exprC);
+
 
       SCIP_EXPR* term2;
-      SCIP_EXPR* quadTerm;
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &quadTerm, SCIP_EXPR_MUL, exprX[0], exprX[1]));
-      SCIP_EXPR* exprC;
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &exprC, SCIP_EXPR_CONST, c));
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &term2, SCIP_EXPR_MUL, exprC, quadTerm));
+      SCIPexprCreate(SCIPblkmem(subscip_), &term2, SCIP_EXPR_MUL, exprC, quadTerm);
+      subscipExpressions_.push_back(term2);
 
-      ( SCIPexprCreate(SCIPblkmem(subscip_), &(xDot[1]), SCIP_EXPR_MINUS, term2, term1) );
+      SCIPexprCreate(SCIPblkmem(subscip_), &(xDot[1]), SCIP_EXPR_MINUS, term2, term1);
+      subscipExpressions_.push_back(xDot[1]);
    }
 
 #ifdef SCIP_DBG
@@ -208,7 +247,7 @@ void TestODEintegrator::runConstRateEvaluatorTest()
                SCIPdebugMessage("error testing %s, nStates = %i, component %i is %f, should be %f\n", discretization.c_str(), nStates, i, integrator.getState(i), expected);
                myErrors++;
             }
-            nErrors_ += (myErrors != 0);
+            nError_ += (myErrors != 0);
             nSuccess_ += (myErrors == 0);
          }
       }
@@ -238,6 +277,7 @@ void TestODEintegrator::runPredatorPreySimTest()
 
    /* Get xDot for predator prey as first test model */
    std::vector<SCIP_EXPR*> xDotPP = getXdotPredatorPrey();
+
    for( auto it = discretizations.begin(); it != discretizations.end(); ++it)
    {
       std::string discretization = *it;
@@ -247,7 +287,7 @@ void TestODEintegrator::runPredatorPreySimTest()
 
       int nSteps = 100;
       /* Initialize and configure ODEintegrator */
-      PointODEintegrator integrator(scip_, discretization, 0.1, 1, nStates, nAlgebraic, nControls, PointRateEvaluator::RATE_EVALUATOR_SIM);
+      PointODEintegrator integrator(subscip_, discretization, 0.1, 1, nStates, nAlgebraic, nControls, PointRateEvaluator::RATE_EVALUATOR_SIM);
       integrator.setXdots(xDotPP);
       std::vector<SCIP_Real> x(nStates,0.5);
       std::vector<SCIP_Real> z(nControls,0);
@@ -279,7 +319,7 @@ void TestODEintegrator::runPredatorPreySimTest()
          if (myErrors == 0)
             ++nSuccess_;
          else
-            nErrors_ += myErrors;
+            nError_ += myErrors;
       }
    }
    SCIPdbgMsg("Finished Testing SimRateEvaluator\n");
@@ -301,7 +341,8 @@ void TestODEintegrator::runPredatorPreySimIntermediateStepsTest()
    for( auto it = discretizations.begin(); it != discretizations.end(); ++it)
    {
       std::string discretization = *it;
-      std::vector<int> intermediateSteps = {2, 5, 10, 50 };
+      //std::vector<int> intermediateSteps = {2, 5, 10, 50 };
+      std::vector<int> intermediateSteps = {2, 5};
       //const std::vector<int> intermediateSteps = {2 };
       SCIPdbgMsg("===================================\n");
       SCIPdbgMsg("===================================\n");
@@ -310,7 +351,8 @@ void TestODEintegrator::runPredatorPreySimIntermediateStepsTest()
       int nTotalSteps = 1000;
       SCIP_Real dt(0.01);
       /* Initialize and configure master ODEintegrator */
-      PointODEintegrator masterIntegrator(scip_, discretization, dt, 1, nStates, nAlgebraic, nControls, PointRateEvaluator::RATE_EVALUATOR_SIM);
+      SCIPdbgMsg("creating masterIntegrator\n");
+      PointODEintegrator masterIntegrator(subscip_, discretization, dt, 1, nStates, nAlgebraic, nControls, PointRateEvaluator::RATE_EVALUATOR_SIM);
       masterIntegrator.setXdots(xDotPP);
       std::vector<SCIP_Real> x(nStates,0.5);
       std::vector<SCIP_Real> z(nControls,0);
@@ -324,7 +366,7 @@ void TestODEintegrator::runPredatorPreySimIntermediateStepsTest()
       for (auto &is : intermediateSteps)
       {
          SCIPdbgMsg("creating integrator making %i intermediate steps\n", is);
-         slaveIntegrators.push_back(PointODEintegrator(scip_, discretization, dt*is, is, nStates, nAlgebraic, nControls, PointRateEvaluator::RATE_EVALUATOR_SIM));
+         slaveIntegrators.emplace_back(subscip_, discretization, dt*is, is, nStates, nAlgebraic, nControls, PointRateEvaluator::RATE_EVALUATOR_SIM);
          slaveIntegrators.back().setXdots(xDotPP);
          slaveIntegrators.back().setInitial(t, x, z);
       }
@@ -355,7 +397,7 @@ void TestODEintegrator::runPredatorPreySimIntermediateStepsTest()
       }
       SCIPdbgMsg("x_master(%f) = %s\n",masterIntegrator.getT(), masterIntegrator.statesToString().c_str());
    }
-   nErrors_ += myErrors;
+   nError_ += myErrors;
    nSuccess_ += mySuccesses;
    printf("Finished Testing Intermediate steps\n");
 }
@@ -446,7 +488,7 @@ void TestODEintegrator::runPredatorPreySBsimTest()
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
       SCIPdbgMsg("pointIntegrator: %s\n",pointIntegrator.statesToString().c_str());
    }
-   nErrors_ += myErrors;
+   nError_ += myErrors;
    nSuccess_ += mySuccesses;
    SCIPdbgMsg("Finished PredatorPreySBtest\n");
 }
@@ -525,7 +567,7 @@ void TestODEintegrator::runPredatorPreySBcontrolTest()
       SCIPdbgMsg("pointIntegrator: %s\n",pointIntegrator.statesToString().c_str());
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
    }
-   nErrors_ += myErrors;
+   nError_ += myErrors;
    nSuccess_ += mySuccesses;
    SCIPdbgMsg("Finished PredatorPreySBcontrolTest\n");
 }
@@ -608,7 +650,7 @@ void TestODEintegrator::runPredatorPreySBglobalBoundsTest()
       SCIPdbgMsg("boundedIntegrator: %s\n",boundedIntegrator.statesToString().c_str());
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
    }
-   nErrors_ += myErrors;
+   nError_ += myErrors;
    nSuccess_ += mySuccesses;
    SCIPdbgMsg("Finished PredatorPreySBglobalBoundsTest\n");
 }
@@ -696,7 +738,7 @@ void TestODEintegrator::runPredatorPreySBboundsTest()
       SCIPdbgMsg("boundedIntegrator: %s\n",boundedIntegrator.statesToString().c_str());
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
    }
-   nErrors_ += myErrors;
+   nError_ += myErrors;
    nSuccess_ += mySuccesses;
    SCIPdbgMsg("Finished PredatorPreySBboundsTest\n");
 }

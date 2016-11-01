@@ -1,3 +1,5 @@
+#define SCIP_DEBUG
+#define SCIP_DBG
 
 /*
  * PointODEintegrator.cpp
@@ -35,11 +37,48 @@ PointODEintegrator::PointODEintegrator(SCIP* _scip, std::string _discretization,
       SCIPerrorMessage("Rate Evaluator type %i does not exist\n", _rateEvalType);
    }
    SCIPdebugMessage("Constructed PointODEintegrator, using %s, dt = %f, intermediateSteps = %i, nStates = %i, nControls = %i\n",discretization_.c_str(), dt_, nIntermediateSteps_, nStates_, nControls_);
+   SCIPdbgMsg("rateEvaluator at %i\n", rateEvaluator_);
 
 }
 
 PointODEintegrator::~PointODEintegrator()
-{}
+{
+   SCIPdbgMsg("Destructing PointODEintegrator, deleting rateEvaluator_ at %i\n", rateEvaluator_);
+   delete rateEvaluator_;
+}
+
+PointODEintegrator::PointODEintegrator(const ODEintegrator &integrator )
+     : ODEintegrator(integrator)
+{
+   std::cout << "copy constructor for base \n" << std::endl << std::flush;
+}
+
+PointODEintegrator::PointODEintegrator(const PointODEintegrator& integrator)
+      : ODEintegrator(integrator)
+{
+   std::cout << "copy constructor !\n" << std::endl << std::flush;
+}
+
+PointODEintegrator& PointODEintegrator::operator=(PointODEintegrator &&)
+{
+   std::cout << "move failed!\n" << std::endl << std::flush;
+}
+
+PointODEintegrator& PointODEintegrator::operator=(const PointODEintegrator& integrator)
+{
+   varValues_ = integrator.varValues_;
+   tAlgebraic_ = integrator.tAlgebraic_;
+   endControls_ = integrator.endControls_;
+
+   //rateEvaluator = new PointRateEvaluator
+   //PointRateEvaluator* rateEvaluator_;
+   //std::vector<SCIP_Real> ; /* To be used in the integration step */
+
+
+   std::cout << "assignment failed!\n" << std::endl << std::flush;
+}
+
+
 
 PointRateEvaluator* PointODEintegrator::rateEvaluator()
 {
@@ -211,7 +250,7 @@ void PointODEintegrator::step(SCIP_Real* startParams, SCIP_Real* endParams)
    /* Compute values of algebraic variables at t_ */
    if (tAlgebraic_ != t_)
    {
-      SCIPdbgMsg("computing algebraic variables \n");
+      //SCIPdbgMsg("computing algebraic variables \n");
       rateEvaluator_->computeAlgebraic(varValues_, startParams);
       tAlgebraic_ = t_;
    }
@@ -223,6 +262,10 @@ void PointODEintegrator::step(SCIP_Real* startParams, SCIP_Real* endParams)
       std::vector<std::vector<SCIP_Real> > kMatrix;
 
       /* k_1 is trivial */
+      SCIPdbgMsg("my rateEvaluator is at %i\n",rateEvaluator_);
+      SCIPdbgMsg("my rateEvaluator is %s\n",rateEvaluator_->getName().c_str());
+      rateEvaluator_->getRates(t_, varValues_, startParams);
+      //SCIPdbgMsg("called getRates once\n");
       kMatrix.push_back(rateEvaluator_->getRates(t_, varValues_, startParams));
 
       /* Calculate remaining stages */

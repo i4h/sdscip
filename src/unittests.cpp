@@ -75,7 +75,7 @@ SCIP_RETCODE runSCIP(
 
    //tests.push_back( new sdscip::TestGeom(scip));
    //tests.push_back( new sdscip::TestSBrateEvaluator(scip));
-#if 0
+
    tests.push_back( new sdscip::TestODEintegrator(scip));
 
    for (auto it : tests)
@@ -87,13 +87,14 @@ SCIP_RETCODE runSCIP(
       std::cout << " " << it->summaryString() << std::endl;
       std::cout << "=========================================" << std::endl;
       std::cout << std::endl;
+      delete it;
 
    }
-#endif
+
 
 
 /*Test ODEintegrator */
-
+/*
    SCIPdebugMessage("testing ode integrator:\n");
    sdscip::TestODEintegrator test(scip);
    //test.runSimTests();
@@ -103,7 +104,7 @@ SCIP_RETCODE runSCIP(
 
    SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
    assert(false);
-
+*/
 
 /* Test BoundMap operations */
 /*   sdscip::TestBoundMap test;

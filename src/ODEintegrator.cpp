@@ -27,13 +27,6 @@ ODEintegrator::ODEintegrator(SCIP* _scip, std::string _discretization, SCIP_Real
    tableau_= sdscip::SDproblemStructureInterface::getButcherTableau(_scip, _discretization);
 }
 
-ODEintegrator::~ODEintegrator()
-{
-   // TODO Auto-generated destructor stub
-}
-
-
-
 
 SCIP_Real ODEintegrator::getT()
 {

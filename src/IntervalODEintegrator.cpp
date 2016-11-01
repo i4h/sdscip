@@ -35,7 +35,9 @@ IntervalODEintegrator::IntervalODEintegrator(SCIP* _scip, std::string _discretiz
 }
 
 IntervalODEintegrator::~IntervalODEintegrator()
-{}
+{
+   //delete rateEvaluator_;
+}
 
 SBrateEvaluator* IntervalODEintegrator::rateEvaluator()
 {
