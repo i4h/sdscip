@@ -51,7 +51,7 @@ public:
    std::string algebraicToString();
    void writeStates(std::ofstream& outFile);
    std::string controlsToString();
-   void setXdots(std::vector<SCIP_EXPR*> xDot);
+   void setXdots(std::vector<SCIP_EXPR*> &xDot);
    void printXdot();
 
    void computeAlgebraic(SCIP_Real* params);

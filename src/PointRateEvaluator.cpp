@@ -28,7 +28,7 @@ PointRateEvaluator::PointRateEvaluator(int _nStates, int _nAlgebraic, int _nCont
 { }
 
 
-void PointRateEvaluator::setXdot(std::vector<SCIP_EXPR*> xDot)
+void PointRateEvaluator::setXdot(std::vector<SCIP_EXPR*> &xDot)
 {
    SCIPdbgMsg("got xDot with %lu elements\n",xDot.size());
    xDot_ = &xDot[0];

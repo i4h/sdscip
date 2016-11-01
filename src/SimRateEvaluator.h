@@ -21,8 +21,6 @@ public:
    SimRateEvaluator(int _nStates, int _nAlgebraic, int _nControls, SCIP* _scip);
    virtual ~SimRateEvaluator();
 
-   SCIP_EXPR* getXdot(int nDim);
-
    std::string getName();
 
    std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> states);

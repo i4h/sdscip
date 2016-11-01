@@ -22,11 +22,6 @@ SimRateEvaluator::SimRateEvaluator(int _nStates, int _nAlgebraic, int _nControls
 SimRateEvaluator::~SimRateEvaluator()
 { }
 
-SCIP_EXPR* SimRateEvaluator::getXdot(int nDim)
-{
-   return xDot_[nDim];
-}
-
 std::string SimRateEvaluator::getName()
 {
    return std::string("SimRateEvaluator");

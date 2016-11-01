@@ -86,7 +86,7 @@ public:
    void writeStates(std::ofstream& outFile);
    std::string controlsToString();
    void setControlMode(INTERVAL_INTEGRATOR_CONTROL_MODE mode);
-   void setXdots(std::vector<SCIP_EXPR*> xDot);
+   void setXdots(std::vector<SCIP_EXPR*> &xDot);
    void setXdot(SCIP_EXPR** xDot);
    void printXdot();
 

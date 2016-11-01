@@ -35,7 +35,7 @@ public:
    PointRateEvaluator(int _nStates, int _nAlgebraic, int _nControls, SCIP* _scip);
    virtual ~PointRateEvaluator() {};
 
-   void setXdot(std::vector<SCIP_EXPR*> xDot);
+   void setXdot(std::vector<SCIP_EXPR*> &xDot);
    void setXdot(SCIP_EXPR** xDot);
    SCIP_EXPR* getXdot(int nDim);
 

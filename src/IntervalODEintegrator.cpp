@@ -116,7 +116,7 @@ void IntervalODEintegrator::setControlMode(INTERVAL_INTEGRATOR_CONTROL_MODE mode
    controlMode_ = mode;
 }
 
-void IntervalODEintegrator::setXdots(std::vector<SCIP_EXPR*> xDot)
+void IntervalODEintegrator::setXdots(std::vector<SCIP_EXPR*> &xDot)
 {
    rateEvaluator_->setXdot(xDot);
 }

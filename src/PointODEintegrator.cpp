@@ -137,7 +137,7 @@ void PointODEintegrator::printXdot()
    }
 }
 
-void PointODEintegrator::setXdots(std::vector<SCIP_EXPR*> xDot)
+void PointODEintegrator::setXdots(std::vector<SCIP_EXPR*> &xDot)
 {
    rateEvaluator_->setXdot(xDot);
 }
