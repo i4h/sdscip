@@ -66,6 +66,7 @@ PointODEintegrator& PointODEintegrator::operator=(PointODEintegrator &&)
 
 PointODEintegrator& PointODEintegrator::operator=(const PointODEintegrator& integrator)
 {
+   ODEintegrator::operator=(integrator);
    varValues_ = integrator.varValues_;
    tAlgebraic_ = integrator.tAlgebraic_;
    endControls_ = integrator.endControls_;
