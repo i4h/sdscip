@@ -216,7 +216,7 @@ double HyperCube::getSeparatedVolume(const sdscip::HyperPlane * plane) const {
    sdscip::Orthant orth(pair.first);
    std::vector<sdscip::Vector> intersections(pair.second);
    if (orth.getDim() == 0) {
-      std::cout << "No cleanly severed vertex found" << std::endl;
+      //std::cout << "No cleanly severed vertex found" << std::endl;
       return 0;
    }
    sdscip::Vector vertex(this->getVertex(orth));
