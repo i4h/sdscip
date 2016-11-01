@@ -11,17 +11,20 @@
 namespace sdscip {
 
 TestGeom::TestGeom(SCIP* _scip) :
-      scip_(_scip)
-      ,nSuccess_(0)
+      BaseTest(_scip)
       ,eps_(1e-9)
-	  ,ndim_(0)
-
+      ,ndim_(0)
 { }
 
 TestGeom::~TestGeom()
 {
    // TODO Auto-generated destructor stub
 }
+
+std::ostream& TestGeom::toString(std::ostream& strm) const {
+  return strm << "TestGeom";
+}
+
 
 HyperCube TestGeom::unitCube() const {
    HyperCube cube;
@@ -32,21 +35,8 @@ HyperCube TestGeom::unitCube() const {
 
 
 
-void TestGeom::testEqual(double a, double b) {
-   // std::cout << "testing equality of " << a << " and " << b << std::endl;
-   if (SCIPisEQ(scip_,a,b))
-      ++nSuccess_;
-   else {
-      std::cout << "Test " << nSuccess_ + 1 << " failed." << std::endl;
-      assert(false);
-   }
-}
-
-
-
-
 void TestGeom::testContains() {
-   std::cout << "-- Testing cube.contains(vector)" << std::endl;
+   std::cout << "   Testing cube.contains(vector)" << std::endl;
    HyperCube cube;
    cube = unitCube();
    Vector vec(ndim_);
@@ -65,7 +55,7 @@ void TestGeom::testContains() {
 }
 
 void TestGeom::testIsOnFace() {
-   std::cout << "-- Testing cube.isOnFace(vector)" << std::endl;
+   std::cout << "   Testing cube.isOnFace(vector)" << std::endl;
    HyperCube cube;
    cube = unitCube();
    Vector vec(ndim_);
@@ -90,7 +80,7 @@ void TestGeom::testIsOnFace() {
 }
 
 void TestGeom::testIsOnVertex() {
-   std::cout << "-- Testing cube.isOnVertex(vector)" << std::endl;
+   std::cout << "   Testing cube.isOnVertex(vector)" << std::endl;
    HyperCube cube;
    cube = unitCube();
    Vector vec(ndim_);
@@ -119,7 +109,7 @@ void TestGeom::testIsOnVertex() {
 
 
 void TestGeom::testFindSeveredVertex() {
-      std::cout << "-- Testing cube.findSeveredVertex(plane)" << std::endl;
+      std::cout << "   Testing cube.findSeveredVertex(plane)" << std::endl;
       {
          HyperCube cube;
          cube = unitCube();
@@ -181,7 +171,7 @@ void TestGeom::testFindSeveredVertex() {
 }
 
 void TestGeom::testVectorOperators() {
-   std::cout << "-- Testing Vector operators " << std::endl;
+   std::cout << "   Testing Vector operators " << std::endl;
    {
       sdscip::Vector a(1,2,3);
       sdscip::Vector b(-1,-2,-3);
@@ -206,7 +196,7 @@ void TestGeom::testVectorOperators() {
 }
 
 void TestGeom::testIntersection() {
-   std::cout << "-- Testing line::intersection(plane)" << std::endl;
+   std::cout << "   Testing line::intersection(plane)" << std::endl;
    {
       sdscip::Line line(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
       sdscip::HyperPlane plane(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
@@ -232,7 +222,7 @@ void TestGeom::testIntersection() {
 
 
 void TestGeom::testGetSeparatedVolume() {
-      std::cout << "-- Testing cube.getSeparatedVolume(plane)" << std::endl;
+      std::cout << "   Testing cube.getSeparatedVolume(plane)" << std::endl;
       if (true) {
          HyperCube cube;
          cube = unitCube();
@@ -281,7 +271,7 @@ void TestGeom::testGetSeparatedVolume() {
 }
 
 void TestGeom::testHyperCubeIntersects() {
-   std::cout << "-- Testing cube.intersects(plane)" << std::endl;
+   std::cout << "   Testing cube.intersects(plane)" << std::endl;
    HyperCube cube;
    cube = unitCube();
    {
@@ -332,7 +322,7 @@ void TestGeom::testHyperCubeIntersects() {
 }
 
 void TestGeom::testVectorLength() {
-   std::cout << "-- Testing Vector Length" << std::endl;
+   std::cout << "   Testing Vector Length" << std::endl;
    {
       sdscip::Vector a(1,2,3);
       sdscip::Vector b(-1,-2,-3);
@@ -350,16 +340,33 @@ void TestGeom::testVectorLength() {
 
 void TestGeom::runAll() {
    for (int ndim = 2; ndim <= 5; ++ndim) {
-      std::cout << "Running tests for d = " << ndim << std::endl;
+      std::cout << "  Running tests for d = " << ndim << std::endl;
       ndim_ = ndim;
+
       testContains();
+      nExecutedTests_++;
+
       testIsOnFace();
+      nExecutedTests_++;
+
       testIsOnVertex();
-      testVectorOperators();
-      testIntersection();
-      testHyperCubeIntersects();
+      nExecutedTests_++;
+
       testFindSeveredVertex();
+      nExecutedTests_++;
+
+      testVectorOperators();
+      nExecutedTests_++;
+
+      testIntersection();
+      nExecutedTests_++;
+
       testGetSeparatedVolume();
+      nExecutedTests_++;
+
+      testHyperCubeIntersects();
+      nExecutedTests_++;
+
       std::cout << "All tests for D=" << ndim_ << " finished" << std::endl;
    }
 }

@@ -22,11 +22,12 @@
 
 namespace sdscip {
 
-class TestGeom : public sdscip::BaseTest
+class TestGeom : public BaseTest
 {
 public:
    TestGeom(SCIP* _scip);
    virtual ~TestGeom();
+   std::ostream& toString(std::ostream& strm) const;
    void runAll();
    void runCurrent();
    void testContains();
@@ -38,14 +39,10 @@ public:
    void testGetSeparatedVolume();
    void testHyperCubeIntersects();
    HyperCube unitCube() const;
-   void test(bool t);
-   void testEqual(double a, double b);
    void testVectorLength();
 
 
 private:
-   SCIP* scip_;
-   int nSuccess_;
    double eps_;
    int ndim_;
 };

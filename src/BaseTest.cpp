@@ -1,3 +1,4 @@
+#define SCIP_DBG
 /*
  * BaseTest.cpp
  *
@@ -9,18 +10,19 @@
 
 namespace sdscip {
 
-BaseTest::BaseTest()
+BaseTest::BaseTest(SCIP* _scip) :
+      scip_(_scip)
+      ,nSuccess_(0)
+      ,nError_(0)
+      ,nExecutedTests_(0)
 {
-   // TODO Auto-generated constructor stub
-
 }
 
-BaseTest::~BaseTest()
-{
-   // TODO Auto-generated destructor stub
-}
 
-void BaseTest::test(bool t) {
+BaseTest::~BaseTest() {}
+
+void BaseTest::test(bool t)
+{
    if (t)
       ++nSuccess_;
    else {
@@ -28,5 +30,25 @@ void BaseTest::test(bool t) {
       assert(false);
    }
 }
+
+void BaseTest::testEqual(double a, double b)
+{
+   // std::cout << "testing equality of " << a << " and " << b << std::endl;
+   if (SCIPisEQ(scip_,a,b))
+      ++nSuccess_;
+   else {
+      std::cout << "Test " << nSuccess_ + 1 << " failed." << std::endl;
+      assert(false);
+   }
+}
+
+std::string BaseTest::summaryString() const
+{
+   std::ostringstream oss;
+   oss << "Executed " << nExecutedTests_ << " tests " << std::endl;
+   oss << "Asserts passed: " << nSuccess_ << ", Asserts failed : " << nError_;
+   return oss.str();
+}
+
 
 } /* namespace sdscip */

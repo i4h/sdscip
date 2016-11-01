@@ -10,6 +10,8 @@
 /*--+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
 
 #include <iostream>
+#include <vector>
+
 
 /* include SCIP components */
 #include "objscip/objscip.h"
@@ -68,20 +70,24 @@ SCIP_RETCODE runSCIP(
    /* include default SCIP plugins */
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
 
+   /* Create the test classes */
+   std::vector<sdscip::BaseTest*> tests;
+
+   //tests.push_back( new sdscip::TestGeom(scip));
+   //tests.push_back( new sdscip::TestSBrateEvaluator(scip));
+   tests.push_back( new sdscip::TestODEintegrator(scip));
+
+   for (auto it : tests)
    {
-   sdscip::TestGeom test(scip);
-   test.runAll();
-   std::cout << "Finished tests of SDgeom class" << std::endl;
+      std::cout << "=========================================" << std::endl;
+      std::cout << "Running all tests in class " << *it << std::endl;
+      it->runAll();
+      std::cout << " ----------------------------------------" << std::endl;
+      std::cout << " " << it->summaryString() << std::endl;
+      std::cout << "=========================================" << std::endl;
+      std::cout << std::endl;
+
    }
-
-   /*{
-   SCIPdebugMessage("testing sb rate evaluator:\n");
-   sdscip::TestSBrateEvaluator test;
-   test.runBoundTests();
-
-
-   SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
-   }*/
 
 
 /*Test ODEintegrator */
