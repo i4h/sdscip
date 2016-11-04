@@ -38,6 +38,9 @@ public:
    int getNControls();
    int getNAlgebraic();
 
+   //* Just for testing */
+   void setNStates(int states);
+
 
 protected:
    SCIP* scip_;

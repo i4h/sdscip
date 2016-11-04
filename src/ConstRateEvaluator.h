@@ -23,7 +23,9 @@ public:
    void setXdots(std::vector<SCIP_EXPR*> xDot);
    SCIP_EXPR* getXdot(int nDim);
 
-   std::string getName();
+   std::string getName() const;
+
+   PointRateEvaluator* clone();
 
    std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> states);
    std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> states, SCIP_Real* params);

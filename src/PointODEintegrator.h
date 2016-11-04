@@ -14,6 +14,7 @@
 #include "ConstRateEvaluator.h"
 #include "SimRateEvaluator.h"
 #include "SBrateEvaluator.h"
+#include "CopyablePointer.h"
 #include "Vector.h"
 #include <string>
 #include "sdscip.h"
@@ -28,30 +29,30 @@ class PointODEintegrator : public ODEintegrator
    friend class ReduceODEintegrator;
 public:
    PointODEintegrator(SCIP* _scip, std::string _discretization, SCIP_Real _dt, int _nIntermediateSteps, int _nStates, int _nAlgebraic, int _nControls, PointRateEvaluator::POINT_RATE_EVALUATOR_TYPE _rateEvalType);
-   virtual ~PointODEintegrator() noexcept;
+   virtual ~PointODEintegrator() = default;
 
 
    /* Copy constructor */
    //PointODEintegrator( const ODEintegrator &d ) : ODEintegrator(d)   { std::cout << "copy constructor\n" << std::endl << std::flush; }
 
    /* Move constructor */
-   PointODEintegrator(PointODEintegrator&& o) noexcept : ODEintegrator(o) { std::cout << "move failed!\n" << std::endl << std::flush; }
+   //PointODEintegrator(PointODEintegrator&& o) noexcept : ODEintegrator(o) { std::cout << "move failed!\n" << std::endl << std::flush; }
 
 
    //Object(const Object&) = delete;
    //Object(Object&&);
 
    /* Copy constructor */
-   PointODEintegrator(const ODEintegrator &d );
-   PointODEintegrator(const PointODEintegrator&);
+   //PointODEintegrator(const ODEintegrator &d );
+   //PointODEintegrator(const PointODEintegrator&);
 
    /* Copy assignment */
-   PointODEintegrator& operator=(const PointODEintegrator&);
+   //PointODEintegrator& operator=(const PointODEintegrator&);
 
    /* Move assignment */
-   PointODEintegrator& operator=(PointODEintegrator &&);
+   //PointODEintegrator& operator=(PointODEintegrator &&);
 
-   PointRateEvaluator* rateEvaluator();
+   CopyablePointer<PointRateEvaluator> rateEvaluator();
 
    std::vector<SCIP_Real> getStates();
 
@@ -88,10 +89,11 @@ private:
    std::vector<SCIP_Real> varValues_;
    SCIP_Real tAlgebraic_;
 
-   PointRateEvaluator* rateEvaluator_;
+   CopyablePointer<PointRateEvaluator> rateEvaluator_;
    std::vector<SCIP_Real> endControls_; /* To be used in the integration step */
 
 
-};
+}
+;
 }
 #endif /* POINTODEINTEGRATOR_H_ */

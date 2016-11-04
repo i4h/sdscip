@@ -18,10 +18,14 @@ SBrateEvaluator::SBrateEvaluator(int _nStates, int _nAlgebraic, int _nControls, 
 SBrateEvaluator::~SBrateEvaluator()
 { }
 
-
-std::string SBrateEvaluator::getName()
+std::string SBrateEvaluator::getName() const
 {
    return std::string("SBrateEvaluator");
+}
+
+PointRateEvaluator* SBrateEvaluator::clone()
+{
+   return (new SBrateEvaluator(*this));
 }
 
 std::vector<SCIP_Real> SBrateEvaluator::getRates(SCIP_Real t, std::vector<SCIP_Real> states)

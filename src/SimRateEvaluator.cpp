@@ -24,10 +24,16 @@ SimRateEvaluator::SimRateEvaluator(int _nStates, int _nAlgebraic, int _nControls
 SimRateEvaluator::~SimRateEvaluator()
 { }
 
-std::string SimRateEvaluator::getName()
+std::string SimRateEvaluator::getName() const
 {
    return std::string("SimRateEvaluator");
 }
+
+PointRateEvaluator* SimRateEvaluator::clone()
+{
+   return (new SimRateEvaluator(*this));
+}
+
 
 std::vector<SCIP_Real> SimRateEvaluator::getRates(SCIP_Real t, std::vector<SCIP_Real> states)
 {

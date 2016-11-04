@@ -39,7 +39,10 @@ public:
    void setXdot(SCIP_EXPR** xDot);
    SCIP_EXPR* getXdot(int nDim);
 
-   virtual std::string getName() = 0;
+   virtual std::string getName()  const;
+
+   /* Pure virtual clone method for polymorphic descendant classes */
+   virtual PointRateEvaluator* clone() = 0;
 
    virtual std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> varValues) = 0;
    virtual std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> varValues, SCIP_Real* params) = 0;

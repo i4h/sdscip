@@ -27,7 +27,10 @@ public:
    SBrateEvaluator(int _nStates, int _nAlgebraic, int _nControls, SCIP* _scip);
    virtual ~SBrateEvaluator();
 
-   std::string getName();
+   std::string getName() const;
+
+   PointRateEvaluator* clone();
+
 
 
    /* Returns rates computed according to [1] in a way that looks like a pointIntegrator

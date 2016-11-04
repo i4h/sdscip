@@ -30,9 +30,14 @@ SCIP_EXPR* ConstRateEvaluator::getXdot(int nDim)
    return NULL;
 }
 
-std::string ConstRateEvaluator::getName()
+std::string ConstRateEvaluator::getName() const
 {
    return std::string("ConstRateEvaluator");
+}
+
+PointRateEvaluator* ConstRateEvaluator::clone()
+{
+   return (new ConstRateEvaluator(*this));
 }
 
 std::vector<SCIP_Real> ConstRateEvaluator::getRates(SCIP_Real t, std::vector<SCIP_Real> states)

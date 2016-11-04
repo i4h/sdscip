@@ -1,4 +1,5 @@
 #define SCIP_DEBUG
+#define SCIP_DBG
 //{##header##}
 
 /**@file   cppmain.cpp
@@ -76,9 +77,53 @@ SCIP_RETCODE runSCIP(
    //tests.push_back( new sdscip::TestGeom(scip));
    //tests.push_back( new sdscip::TestSBrateEvaluator(scip));
 
-   tests.push_back( new sdscip::TestODEintegrator(scip));
+   //tests.push_back( new sdscip::TestODEintegrator(scip));
 
-   for (auto it : tests)
+
+
+   /* Test cloning of rateEvaluators */
+/*
+   PointRateEvaluator* p;
+   PointRateEvaluator* q;
+
+   p = new SimRateEvaluator(1,1,1,scip);
+   SCIPdbgMsg("created p\n");
+   SCIPdbgMsg("p is %s\n",p->getName().c_str());
+
+
+   q = p->clone();
+   SCIPdbgMsg("cloned into q\n");
+   SCIPdbgMsg("q is %s\n",q->getName().c_str());
+*/
+
+   /* Check copying etc of PointODEintegrator */
+
+   SCIPdbgMsg("creating integratorA\n");
+
+   PointODEintegrator integratorA(scip, std::string("euler"), 0.5, 1, 3, 1, 1, PointRateEvaluator::RATE_EVALUATOR_SIM);
+
+   SCIPdbgMsg("created IntegratorA, \n");
+   SCIPdbgMsg("%s\n",integratorA.toString().c_str());
+
+#if 0
+   CopyablePointer<PointRateEvaluator> temp = integratorA.rateEvaluator();
+
+   SCIPdbgMsg("got pointer to rateEvaluator\n");
+
+   SCIPdbgMsg("IntegratorA has rateEvaluator %s\n",temp->getName().c_str());
+
+
+   SCIPdbgMsg("copy creating integratorB\n");
+   PointODEintegrator integratorB(integratorA);
+   integratorB.setNStates(4);
+
+   SCIPdbgMsg("created IntegratorB, \n");
+
+   SCIPdbgMsg("%s\n",integratorB.toString().c_str());
+#endif
+
+
+   /*for (auto it : tests)
    {
       std::cout << "=========================================" << std::endl;
       std::cout << "Running all tests in class " << *it << std::endl;
@@ -89,7 +134,7 @@ SCIP_RETCODE runSCIP(
       std::cout << std::endl;
       delete it;
 
-   }
+   } */
 
 
 

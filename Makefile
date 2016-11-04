@@ -85,6 +85,7 @@ MAINSRCPATH	=	cppmain.cpp \
 			SDCons.cpp\
 			TestSDplugin.cpp \
 			TestExprPiecewiseLinear.cpp \
+			CopyablePointer.cpp\
 			ExprPiecewiseLinear.cpp
 
 UNITTESTSRCPATH =	unittests.cpp \
@@ -128,6 +129,7 @@ UNITTESTSRCPATH =	unittests.cpp \
 			SDproblemStructureFactory.cpp \
 			SDVarBasic.cpp \
 			SDCons.cpp\
+			CopyablePointer.cpp\
 			ExprPiecewiseLinear.cpp
 
 
@@ -212,8 +214,8 @@ test:           $(MAINFILE)
 		$(CONTINUE) $(LOCK) $(VERSION) $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE) $(PERMUTE) $(SEEDS) ;
 
 unittest:           $(UNITTESTFILE) $(UNITTESTSHORTLINK)
-		cd unittest; \
-		../bin/unittest ;
+#		cd unittest; \
+#		../bin/unittest ;
 
 $(MAINSHORTLINK):	$(MAINFILE)
 		@rm -f $@
@@ -237,6 +239,7 @@ ifneq ($(OBJDIR),)
 		-rmdir $(OBJDIR)
 endif
 		-rm -f $(MAINFILE)
+		-rm -f $(UNITTESTFILE)
 
 .PHONY: depend
 depend:		$(SCIPDIR)

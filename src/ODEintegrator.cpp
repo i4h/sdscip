@@ -12,6 +12,8 @@
 namespace sdscip
 {
 
+
+
 ODEintegrator::ODEintegrator(SCIP* _scip, std::string _discretization, SCIP_Real _dt, int _nIntermediateSteps, int _nStates, int _nAlgebraic, int _nControls) :
    scip_(_scip)
    ,nStates_(_nStates)
@@ -56,6 +58,11 @@ int ODEintegrator::getNControls()
 int ODEintegrator::getNAlgebraic()
 {
    return nControls_;
+}
+
+void ODEintegrator::setNStates(int states)
+{
+   nStates_ = states;
 }
 
 }

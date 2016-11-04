@@ -24,28 +24,51 @@ PointODEintegrator::PointODEintegrator(SCIP* _scip, std::string _discretization,
    endControls_.resize(nControls_);
 
    /* Factory to get selected rate Evaluator */
+   SimRateEvaluator* temp;
    switch (_rateEvalType)
    {
    case PointRateEvaluator::RATE_EVALUATOR_CONST :
-      rateEvaluator_ = new ConstRateEvaluator(_nStates, _nAlgebraic, _nControls, _scip);
+      rateEvaluator_ = CopyablePointer<PointRateEvaluator>(new ConstRateEvaluator(_nStates, _nAlgebraic, _nControls, _scip));
       break;
    case PointRateEvaluator::RATE_EVALUATOR_SIM :
-      rateEvaluator_ = new SimRateEvaluator(_nStates, _nAlgebraic, _nControls, _scip);
+
+      temp  = new SimRateEvaluator(_nStates, _nAlgebraic, _nControls, _scip);
+      SCIPdbgMsg("created simrateevaluator, name is %s\n", temp->getName().c_str());
+
+      //rateEvaluator_ = CopyablePointer<PointRateEvaluator>(new SimRateEvaluator(_nStates, _nAlgebraic, _nControls, _scip));
+      rateEvaluator_ = CopyablePointer<PointRateEvaluator>(temp);
+      SCIPdbgMsg("horrido\n");
+      SCIPdbgMsg("created copyablepointer, states is %i\n", temp->nStates_);
+
+
+      SCIPdbgMsg("created copyablepointer, name is %s\n", temp->getName().c_str());
+
       break;
    /* Add more Evaluators here */
    default:
       SCIPerrorMessage("Rate Evaluator type %i does not exist\n", _rateEvalType);
    }
    SCIPdebugMessage("Constructed PointODEintegrator, using %s, dt = %f, intermediateSteps = %i, nStates = %i, nControls = %i\n",discretization_.c_str(), dt_, nIntermediateSteps_, nStates_, nControls_);
-   SCIPdbgMsg("rateEvaluator at %i\n", rateEvaluator_);
+   SCIPdbgMsg("rateEvaluator at %i\n", std::string(rateEvaluator_).c_str());
+
+
+
+   SCIPdbgMsg("get name from temp %s\n", temp->getName().c_str());
+
+   SCIPdbgMsg("get name from rateEvaluator is %s\n", rateEvaluator_->getName().c_str());
+
 
 }
 
+#if 0
 PointODEintegrator::~PointODEintegrator()
 {
-   SCIPdbgMsg("Destructing PointODEintegrator, deleting rateEvaluator_ at %i\n", rateEvaluator_);
+   SCIPdbgMsg("Destructing PointODEintegrator with %i states, deleting rateEvaluator_ at %i\n", nStates_, std::string(rateEvaluator_).c_str());
    delete rateEvaluator_;
 }
+
+
+
 
 PointODEintegrator::PointODEintegrator(const ODEintegrator &integrator )
      : ODEintegrator(integrator)
@@ -57,6 +80,8 @@ PointODEintegrator::PointODEintegrator(const PointODEintegrator& integrator)
       : ODEintegrator(integrator)
 {
    std::cout << "copy constructor !\n" << std::endl << std::flush;
+
+
 }
 
 PointODEintegrator& PointODEintegrator::operator=(PointODEintegrator &&)
@@ -66,6 +91,8 @@ PointODEintegrator& PointODEintegrator::operator=(PointODEintegrator &&)
 
 PointODEintegrator& PointODEintegrator::operator=(const PointODEintegrator& integrator)
 {
+   std::cout << "assignment operator!\n" << std::endl << std::flush;
+
    ODEintegrator::operator=(integrator);
    varValues_ = integrator.varValues_;
    tAlgebraic_ = integrator.tAlgebraic_;
@@ -79,11 +106,11 @@ PointODEintegrator& PointODEintegrator::operator=(const PointODEintegrator& inte
    std::cout << "assignment failed!\n" << std::endl << std::flush;
 }
 
+#endif
 
-
-PointRateEvaluator* PointODEintegrator::rateEvaluator()
+CopyablePointer<PointRateEvaluator> PointODEintegrator::rateEvaluator()
 {
-   SCIPdbgMsg("returning rateEvaluator\n");
+   SCIPdbgMsg("returning rateEvaluator with name %s\n",rateEvaluator_->getName().c_str());
    return rateEvaluator_;
 }
 
@@ -263,7 +290,7 @@ void PointODEintegrator::step(SCIP_Real* startParams, SCIP_Real* endParams)
       std::vector<std::vector<SCIP_Real> > kMatrix;
 
       /* k_1 is trivial */
-      SCIPdbgMsg("my rateEvaluator is at %i\n",rateEvaluator_);
+      SCIPdbgMsg("my rateEvaluator is at %i\n",std::string(rateEvaluator_).c_str());
       SCIPdbgMsg("my rateEvaluator is %s\n",rateEvaluator_->getName().c_str());
       rateEvaluator_->getRates(t_, varValues_, startParams);
       //SCIPdbgMsg("called getRates once\n");

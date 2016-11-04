@@ -40,6 +40,11 @@ void PointRateEvaluator::setXdot(SCIP_EXPR** xDot)
    xDot_ = xDot;
 }
 
+std::string PointRateEvaluator::getName() const
+{
+   return std::string("PointRateEvaluator");
+}
+
 SCIP_EXPR* PointRateEvaluator::getXdot(int nDim)
 {
    return xDot_[nDim];

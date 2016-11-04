@@ -21,7 +21,9 @@ public:
    SimRateEvaluator(int _nStates, int _nAlgebraic, int _nControls, SCIP* _scip);
    virtual ~SimRateEvaluator();
 
-   std::string getName();
+   std::string getName() const;
+
+   PointRateEvaluator* clone();
 
    std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> states);
    std::vector<SCIP_Real> getRates(SCIP_Real t, std::vector<SCIP_Real> states, SCIP_Real* params);
