@@ -45,6 +45,11 @@ class CopyablePointer {
 
     /* Destructor */
     ~CopyablePointer() {
+       if (p == nullptr) {
+          SCIPdbgMsg("Deleting nullptr\n");
+       } else {
+          SCIPdbgMsg("deleting rateEvaluator %s\n",p->getName().c_str());
+       }
        delete p;
     }
 

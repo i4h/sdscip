@@ -97,7 +97,7 @@ SCIP_RETCODE runSCIP(
 */
 
    /* Check copying etc of PointODEintegrator */
-
+#if 0
    SCIPdbgMsg("creating integratorA\n");
 
    PointODEintegrator integratorA(scip, std::string("euler"), 0.5, 1, 3, 1, 1, PointRateEvaluator::RATE_EVALUATOR_SIM);
@@ -105,7 +105,7 @@ SCIP_RETCODE runSCIP(
    SCIPdbgMsg("created IntegratorA, \n");
    SCIPdbgMsg("%s\n",integratorA.toString().c_str());
 
-#if 0
+
    CopyablePointer<PointRateEvaluator> temp = integratorA.rateEvaluator();
 
    SCIPdbgMsg("got pointer to rateEvaluator\n");
@@ -123,7 +123,7 @@ SCIP_RETCODE runSCIP(
 #endif
 
 
-   /*for (auto it : tests)
+   for (auto it : tests)
    {
       std::cout << "=========================================" << std::endl;
       std::cout << "Running all tests in class " << *it << std::endl;
@@ -134,22 +134,22 @@ SCIP_RETCODE runSCIP(
       std::cout << std::endl;
       delete it;
 
-   } */
+   }
 
 
 
 /*Test ODEintegrator */
-/*
+
    SCIPdebugMessage("testing ode integrator:\n");
    sdscip::TestODEintegrator test(scip);
-   //test.runSimTests();
-   //test.runSBtests();
-   //test.runPredatorPreySBsimTest();
-   test.runAll();
+   test.runSimTests();
+   test.runSBtests();
+   test.runPredatorPreySBsimTest();
+   //test.runAll();
 
    SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
    assert(false);
-*/
+
 
 /* Test BoundMap operations */
 /*   sdscip::TestBoundMap test;
