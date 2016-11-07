@@ -17,7 +17,7 @@ using BoundMap = SDproblemStructureInterface::BoundMap;
 using BoundKey = SDproblemStructureInterface::BoundKey;
 
 TestBoundMap::TestBoundMap(SCIP* _scip) :
-   BaseTest(_scip)
+   SDSCIPtest(_scip)
 {
    runAll();
 }

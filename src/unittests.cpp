@@ -39,6 +39,7 @@
 #include "TestBoundMap.h"
 #include "TestExprPiecewiseLinear.hpp"
 #include "TestEstimatorTypes.hpp"
+#include "TestStatistics.h"
 
 using namespace scip;
 using namespace std;
@@ -82,48 +83,9 @@ SCIP_RETCODE runSCIP(
 
    //tests.emplace_back( new sdscip::TestBoundMap(scip));
 
+   //tests.emplace_back( new I4H::TestStatistics);
 
 
-   /* Test cloning of rateEvaluators */
-/*
-   PointRateEvaluator* p;
-   PointRateEvaluator* q;
-
-   p = new SimRateEvaluator(1,1,1,scip);
-   SCIPdbgMsg("created p\n");
-   SCIPdbgMsg("p is %s\n",p->getName().c_str());
-
-
-   q = p->clone();
-   SCIPdbgMsg("cloned into q\n");
-   SCIPdbgMsg("q is %s\n",q->getName().c_str());
-*/
-
-   /* Check copying etc of PointODEintegrator */
-#if 0
-   SCIPdbgMsg("creating integratorA\n");
-
-   PointODEintegrator integratorA(scip, std::string("euler"), 0.5, 1, 3, 1, 1, PointRateEvaluator::RATE_EVALUATOR_SIM);
-
-   SCIPdbgMsg("created IntegratorA, \n");
-   SCIPdbgMsg("%s\n",integratorA.toString().c_str());
-
-
-   CopyablePointer<PointRateEvaluator> temp = integratorA.rateEvaluator();
-
-   SCIPdbgMsg("got pointer to rateEvaluator\n");
-
-   SCIPdbgMsg("IntegratorA has rateEvaluator %s\n",temp->getName().c_str());
-
-
-   SCIPdbgMsg("copy creating integratorB\n");
-   PointODEintegrator integratorB(integratorA);
-   integratorB.setNStates(4);
-
-   SCIPdbgMsg("created IntegratorB, \n");
-
-   SCIPdbgMsg("%s\n",integratorB.toString().c_str());
-#endif
 
 
    for (auto it : tests)
@@ -139,40 +101,8 @@ SCIP_RETCODE runSCIP(
    }
 
 
-
-/*Test ODEintegrator */
-/*
-   SCIPdebugMessage("testing ode integrator:\n");
-   sdscip::TestODEintegrator test(scip);
-   test.runSimTests();
-   test.runSBtests();
-   test.runPredatorPreySBsimTest();
-   //test.runAll();
-
-   SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
-   assert(false);
-*/
-
-
-/* Test Statistics class */
-/*
-   I4H::Statistics stats;
-
-   double val(0);
-   for (int i = 0; i < 10001; i++)
-   {
-      stats.addVal(val);
-      val += 0.0001;
-   }
-   SCIPdebugMessage("mean is %f\n", stats.mean());
-   SCIPdebugMessage("max is %f\n", stats.max());
-   SCIPdebugMessage("min is %f\n", stats.min());
-   SCIPdebugMessage("number of values is %i\n", stats.nVals());
-   assert(false);
-*/
-
 /*Test ExprPiecewiseLinear */
-if (false)
+if (true)
 {
 
    sdscip::TestEstimatorTypes test(scip);

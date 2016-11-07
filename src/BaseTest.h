@@ -38,8 +38,6 @@ public:
    /* Number of executed tests */
    int nExecutedTests_;
 
-
-
    friend std::ostream& operator << (std::ostream& os, const BaseTest& derivedTest) {
      return derivedTest.toString(os); // polymorphic print via reference
    }
@@ -47,13 +45,13 @@ public:
    /** Pure virtual toString method  */
    virtual std::ostream& toString(std::ostream&) const = 0;
 
+   /* To be called by every test */
+   void testStart();
+
    /** Output summary of tests */
    std::string summaryString() const;
 
 private:
-
-   int nError_;
-   int nSuccess_;
 
    double epsilon_ = 1e-6;
 

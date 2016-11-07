@@ -5,7 +5,9 @@
  *      Author: bzfvierh
  */
 
-#include "SDSCPItest.h"
+#include "SDSCIPtest.h"
+
+namespace sdscip {
 
 SDSCIPtest::SDSCIPtest()
 {
@@ -13,13 +15,18 @@ SDSCIPtest::SDSCIPtest()
 
 }
 
+SDSCIPtest::SDSCIPtest(SCIP* _scip) :
+   scip_(_scip)
+{ }
+
+
 SDSCIPtest::~SDSCIPtest()
 {
    // TODO Auto-generated destructor stub
 }
 
 /* Overwrites testEqual of BaseTest using scips floating point comparison */
-void BaseTest::testEqual(double a, double b)
+void SDSCIPtest::testEqual(double a, double b)
 {
    // std::cout << "testing equality of " << a << " and " << b << std::endl;
    if (SCIPisEQ(scip_,a,b))
@@ -28,4 +35,6 @@ void BaseTest::testEqual(double a, double b)
       std::cout << "Test " << nSuccess_ + 1 << " failed." << std::endl;
       assert(false);
    }
+}
+
 }

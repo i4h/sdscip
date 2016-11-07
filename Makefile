@@ -108,6 +108,7 @@ UNITTESTSRCPATH =	unittests.cpp \
 			TestODEintegrator.cpp \
 			TestSBrateEvaluator.cpp \
 			TestBoundMap.cpp \
+			TestStatistics.cpp \
 			ConstRateEvaluator.cpp \
 			SimRateEvaluator.cpp \
 			SBrateEvaluator.cpp \

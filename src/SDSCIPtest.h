@@ -17,7 +17,12 @@ class SDSCIPtest : public I4H::BaseTest
 {
 public:
    SDSCIPtest();
+   SDSCIPtest(SCIP*);
+
    virtual ~SDSCIPtest();
+
+   void testEqual(double a, double b);
+
 
    /** Pointer to a SCIP instance, needed for memory management,
      * floating point comparisons, etc.

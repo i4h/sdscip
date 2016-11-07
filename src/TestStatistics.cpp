@@ -12,11 +12,9 @@ namespace I4H
 {
 
 
-TestStatistics::TestStatistics(SCIP* _scip) :
-   BaseTest(_scip)
-{
-   runAll();
-}
+TestStatistics::TestStatistics() :
+   BaseTest()
+{ }
 
 TestStatistics::~TestStatistics()
 {
@@ -39,77 +37,26 @@ int TestStatistics::getNerror()
 
 void TestStatistics::runAll()
 {
-   SCIPdbgMsg("running all\n");
-   testOperations();
-
-   SCIPdebugMessage("Finished running all, %i success, %i errors\n",nSuccess_, nError_);
+   testMean();
 }
 
-/* Tests some oeprations on boundmap */
-void TestStatistics::testOperations()
+void TestStatistics::testMean()
 {
-/*
- * Combinations to check:
- *  (0 No bound known
- *  (1) map1 bound , no map2 bound
- *  (2) map2 bound, no map1 bound
- *  (3) map1 bound, better map2 bound
- *  (4) map2 bound, better map1 bound
- *
- */
-   const std::vector<SCIP_Real> goodBound = {-9.0 , 8.0};
-   const std::vector<SCIP_Real> betterBound = {-4.0 , 5.0};
+   testStart();
 
-   Statistics map1;
-   Statistics map2;
+   I4H::Statistics stats;
 
-   for (int i = 0; i < 2; ++i)
+   double val(0);
+   for (int i = 0; i < 10001; i++)
    {
-      SCIP_BOUNDTYPE type = (SCIP_BOUNDTYPE) i;
-      map1[BoundKey(2, type)] = goodBound[i];
-      map2[BoundKey(3, type)] = goodBound[i];
-      map1[BoundKey(4, type)] = goodBound[i];
-      map2[BoundKey(4, type)] = betterBound[i];
-
-      map2[BoundKey(5, type)] = goodBound[i];
-      map1[BoundKey(5, type)] = betterBound[i];
+      stats.addVal(val);
+      val += 0.0001;
    }
-   printf("map1:");
-   printStatistics(map1);
-   printf("map2:");
-   printStatistics(map2);
-   Statistics mapUnion = getUnion(map1, map2);
-   printf("Created union:\n");
-   printStatistics(mapUnion);
-   /* Evaluate */
-   for (int i = 0; i < 2; ++i)
-   {
-      SCIP_BOUNDTYPE type = (SCIP_BOUNDTYPE) i;
-
-      /* Make sure there are no entries in 1,2,3 */
-      for (int j = 0; j < 3; ++j)
-      {
-         auto it1 = mapUnion.find(BoundKey(j,type));
-         test(it1 == mapUnion.end());
-      }
-
-      /* Make sure 4,5 contain the wider bounds */
-      test(mapUnion[BoundKey(4,type)] == goodBound[i]);
-      test(mapUnion[BoundKey(5,type)] == goodBound[i]);
-   }
-
-   Statistics mapIntersection = getIntersection(map1, map2);
-   printf("Created union:\n");
-   printStatistics(mapIntersection);
-   /* Evaluate */
-   for (int i = 0; i < 2; ++i)
-   {
-      SCIP_BOUNDTYPE type = (SCIP_BOUNDTYPE) i;
-      test(mapIntersection[BoundKey(2,type)] == goodBound[i]);
-      test(mapIntersection[BoundKey(3,type)] == goodBound[i]);
-      test(mapIntersection[BoundKey(4,type)] == betterBound[i]);
-      test(mapIntersection[BoundKey(5,type)] == betterBound[i]);
-   }
+   testEqual(stats.mean(), 0.5);
+   testEqual(stats.max(), 1);
+   testEqual(stats.min(), 0);
 }
+
+
 
 }

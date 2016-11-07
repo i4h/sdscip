@@ -11,7 +11,7 @@
 namespace sdscip {
 
 TestGeom::TestGeom(SCIP* _scip) :
-      BaseTest(_scip)
+      SDSCIPtest(_scip)
       ,eps_(1e-9)
       ,ndim_(0)
 { }

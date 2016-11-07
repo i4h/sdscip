@@ -16,7 +16,7 @@ namespace sdscip
 {
 
 TestODEintegrator::TestODEintegrator(SCIP* scip) :
-   BaseTest(scip)
+   SDSCIPtest(scip)
 {
    SCIPdbgMsg("allocating subscip\n");
    SCIPcreate(&subscip_);

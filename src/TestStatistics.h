@@ -18,14 +18,16 @@ namespace I4H
 class TestStatistics : public BaseTest
 {
 public:
-   TestStatistics(SCIP* _scip);
+   TestStatistics();
    virtual ~TestStatistics();
 
    int getNsuccess();
    int getNerror();
 
    void runAll();
-   void testOperations();
+
+   void testMean();
+
 
    std::ostream& toString(std::ostream& strm) const;
 
