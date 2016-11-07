@@ -48,16 +48,12 @@ PointODEintegrator::PointODEintegrator(SCIP* _scip, std::string _discretization,
    default:
       SCIPerrorMessage("Rate Evaluator type %i does not exist\n", _rateEvalType);
    }
-   SCIPdebugMessage("Constructed PointODEintegrator, using %s, dt = %f, intermediateSteps = %i, nStates = %i, nControls = %i\n",discretization_.c_str(), dt_, nIntermediateSteps_, nStates_, nControls_);
-   SCIPdbgMsg("rateEvaluator at %i\n", std::string(rateEvaluator_).c_str());
-
-
-
-   SCIPdbgMsg("get name from temp %s\n", temp->getName().c_str());
-
-   SCIPdbgMsg("get name from rateEvaluator is %s\n", rateEvaluator_->getName().c_str());
-
-
+   SCIPdebugMessage("Constructed PointODEintegrator, using %s, dt = %f, intermediateSteps = %i, nStates = %i, nControls = %i\n"
+      ,discretization_.c_str()
+      ,dt_
+      ,nIntermediateSteps_
+      ,nStates_
+      ,nControls_);
 }
 
 #if 0
@@ -290,8 +286,6 @@ void PointODEintegrator::step(SCIP_Real* startParams, SCIP_Real* endParams)
       std::vector<std::vector<SCIP_Real> > kMatrix;
 
       /* k_1 is trivial */
-      SCIPdbgMsg("my rateEvaluator is at %i\n",std::string(rateEvaluator_).c_str());
-      SCIPdbgMsg("my rateEvaluator is %s\n",rateEvaluator_->getName().c_str());
       rateEvaluator_->getRates(t_, varValues_, startParams);
       //SCIPdbgMsg("called getRates once\n");
       kMatrix.push_back(rateEvaluator_->getRates(t_, varValues_, startParams));

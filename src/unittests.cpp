@@ -32,6 +32,7 @@
 #include "scip/debug.h"
 
 /* Include unit-testing classes */
+#include "BaseTest.h"
 #include "TestGeom.h"
 #include "TestODEintegrator.h"
 #include "TestSBrateEvaluator.h"
@@ -72,12 +73,14 @@ SCIP_RETCODE runSCIP(
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
 
    /* Create the test classes */
-   std::vector<sdscip::BaseTest*> tests;
+   std::vector<I4H::BaseTest*> tests;
 
-   //tests.push_back( new sdscip::TestGeom(scip));
-   //tests.push_back( new sdscip::TestSBrateEvaluator(scip));
+   //tests.emplace_back( new sdscip::TestGeom(scip));
+   //tests.emplace_back( new sdscip::TestSBrateEvaluator(scip));
 
-   //tests.push_back( new sdscip::TestODEintegrator(scip));
+   //tests.emplace_back( new sdscip::TestODEintegrator(scip));
+
+   //tests.emplace_back( new sdscip::TestBoundMap(scip));
 
 
 
@@ -133,13 +136,12 @@ SCIP_RETCODE runSCIP(
       std::cout << "=========================================" << std::endl;
       std::cout << std::endl;
       delete it;
-
    }
 
 
 
 /*Test ODEintegrator */
-
+/*
    SCIPdebugMessage("testing ode integrator:\n");
    sdscip::TestODEintegrator test(scip);
    test.runSimTests();
@@ -149,11 +151,7 @@ SCIP_RETCODE runSCIP(
 
    SCIPdebugMessage("finished tests, %i success, %i errors:\n", test.getNsuccess(), test.getNerrors());
    assert(false);
-
-
-/* Test BoundMap operations */
-/*   sdscip::TestBoundMap test;
-   assert(false); */
+*/
 
 
 /* Test Statistics class */

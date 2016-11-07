@@ -1,4 +1,3 @@
-#define SCIP_DBG
 /*
  * BaseTest.cpp
  *
@@ -8,16 +7,13 @@
 
 #include "BaseTest.h"
 
-namespace sdscip {
+namespace I4H {
 
-BaseTest::BaseTest(SCIP* _scip) :
-      scip_(_scip)
+BaseTest::BaseTest() :
       ,nSuccess_(0)
       ,nError_(0)
       ,nExecutedTests_(0)
-{
-}
-
+{ }
 
 BaseTest::~BaseTest() {}
 
@@ -27,18 +23,17 @@ void BaseTest::test(bool t)
       ++nSuccess_;
    else {
       std::cout << "Test " << nSuccess_ + 1 << " failed." << std::endl;
-      assert(false);
+      nError_++;
    }
 }
 
 void BaseTest::testEqual(double a, double b)
 {
-   // std::cout << "testing equality of " << a << " and " << b << std::endl;
-   if (SCIPisEQ(scip_,a,b))
+   if (-epsilon_ <= a -b <= epsilon_)
       ++nSuccess_;
    else {
       std::cout << "Test " << nSuccess_ + 1 << " failed." << std::endl;
-      assert(false);
+      nError_++;
    }
 }
 
@@ -46,9 +41,9 @@ std::string BaseTest::summaryString() const
 {
    std::ostringstream oss;
    oss << "Executed " << nExecutedTests_ << " tests " << std::endl;
-   oss << "Asserts passed: " << nSuccess_ << ", Asserts failed : " << nError_;
+   oss << "Assertions passed: " << nSuccess_ << ", Asserts failed : " << nError_;
    return oss.str();
 }
 
 
-} /* namespace sdscip */
+} /* namespace I4H */

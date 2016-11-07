@@ -57,9 +57,8 @@ void TestODEintegrator::runAll()
 {
    SCIPdbgMsg("running all\n");
 
-   //runConstRateEvaluatorTest();
    runSimTests();
-   //runSBtests();
+   runSBtests();
 
    SCIPdebugMessage("Finished running all, %i success, %i errors\n",nSuccess_, nError_);
 }
@@ -67,8 +66,8 @@ void TestODEintegrator::runAll()
 void TestODEintegrator::runSimTests()
 {
    SCIPdbgMsg("running SimTests\n");
-   //runConstRateEvaluatorTest();
-   //runPredatorPreySimTest();
+   runConstRateEvaluatorTest();
+   runPredatorPreySimTest();
    runPredatorPreySimIntermediateStepsTest();
    SCIPdebugMessage("Finished running SimTests, %i success, %i errors\n",nSuccess_, nError_);
 }

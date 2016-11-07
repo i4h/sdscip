@@ -11,27 +11,29 @@
 #include "sdscip.h"
 #include "SDproblemStructureInterface.h"
 #include "BoundMapHelpers.cpp"
+#include "SDSCIPtest.h"
+
 
 
 namespace sdscip
 {
 
-class TestBoundMap
+class TestBoundMap : public SDSCIPtest
 {
 public:
-   TestBoundMap();
+   TestBoundMap(SCIP* _scip);
    virtual ~TestBoundMap();
 
    int getNsuccess();
-   int getNerrors();
+   int getNerror();
 
    void runAll();
-   void testUnion();
    void testOperations();
 
+   std::ostream& toString(std::ostream& strm) const;
+
+
 private:
-   int nSuccess_;
-   int nErrors_;
 };
 
 }

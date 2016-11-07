@@ -22,14 +22,8 @@ class CopyablePointer {
         : p(nullptr)
      { }
 
-    explicit CopyablePointer(T *_p) : p(_p) {
-       SCIPdbgMsg("got pointer to rateEvaluator %i\n",_p);
-       SCIPdbgMsg("name is %s\n",_p->getName().c_str());
-
-
-       SCIPdbgMsg("my pointer is  %i\n",p);
-       SCIPdbgMsg("my evaluators name is %s\n",p->getName().c_str());
-    }
+    explicit CopyablePointer(T *_p) : p(_p)
+    { }
 
     /* Copy constructor */
     CopyablePointer(CopyablePointer const &rhs)
@@ -88,7 +82,7 @@ class CopyablePointer {
     /* other members */
     int address() { return p; }
 
-//private:
+private:
     T* p;
 };
 

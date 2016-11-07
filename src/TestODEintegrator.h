@@ -12,12 +12,12 @@
 #include "PointODEintegrator.h"
 #include "IntervalODEintegrator.h"
 #include "PointRateEvaluator.h"
-#include "BaseTest.h"
+#include "SDSCIPtest.h"
 
 namespace sdscip
 {
 
-class TestODEintegrator : public BaseTest
+class TestODEintegrator : public SDSCIPtest
 {
 public:
    TestODEintegrator(SCIP* scip);
@@ -29,13 +29,16 @@ public:
    int getNerrors();
 
    void runAll();
-   void runSimTests();
-   void runSBtests();
 
+   /* sim tests */
+   void runSimTests();
    void runConstRateEvaluatorTest();
    void runPredatorPreySimTest();
-   void runPredatorPreySBsimTest();
    void runPredatorPreySimIntermediateStepsTest();
+
+   /* sb tests */
+   void runSBtests();
+   void runPredatorPreySBsimTest();
    void runPredatorPreySBcontrolTest();
    void runPredatorPreySBglobalBoundsTest();
    void runPredatorPreySBboundsTest();

@@ -1,5 +1,3 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
 /*
  * TestSBratEvaluator.cpp
  *
@@ -8,40 +6,38 @@
  */
 
 
-#include "TestBoundMap.h"
+#include "TestStatistics.h"
 
-namespace sdscip
+namespace I4H
 {
 
-using BoundMap = SDproblemStructureInterface::BoundMap;
-using BoundKey = SDproblemStructureInterface::BoundKey;
 
-TestBoundMap::TestBoundMap(SCIP* _scip) :
+TestStatistics::TestStatistics(SCIP* _scip) :
    BaseTest(_scip)
 {
    runAll();
 }
 
-TestBoundMap::~TestBoundMap()
+TestStatistics::~TestStatistics()
 {
 }
 
-std::ostream& TestBoundMap::toString(std::ostream& strm) const {
-  return strm << "TestBoundMap";
+std::ostream& TestStatistics::toString(std::ostream& strm) const {
+  return strm << "TestStatistics";
 }
 
 
-int TestBoundMap::getNsuccess()
+int TestStatistics::getNsuccess()
 {
    return nSuccess_;
 }
 
-int TestBoundMap::getNerror()
+int TestStatistics::getNerror()
 {
    return nError_;
 }
 
-void TestBoundMap::runAll()
+void TestStatistics::runAll()
 {
    SCIPdbgMsg("running all\n");
    testOperations();
@@ -50,7 +46,7 @@ void TestBoundMap::runAll()
 }
 
 /* Tests some oeprations on boundmap */
-void TestBoundMap::testOperations()
+void TestStatistics::testOperations()
 {
 /*
  * Combinations to check:
@@ -64,8 +60,8 @@ void TestBoundMap::testOperations()
    const std::vector<SCIP_Real> goodBound = {-9.0 , 8.0};
    const std::vector<SCIP_Real> betterBound = {-4.0 , 5.0};
 
-   BoundMap map1;
-   BoundMap map2;
+   Statistics map1;
+   Statistics map2;
 
    for (int i = 0; i < 2; ++i)
    {
@@ -79,12 +75,12 @@ void TestBoundMap::testOperations()
       map1[BoundKey(5, type)] = betterBound[i];
    }
    printf("map1:");
-   printBoundMap(map1);
+   printStatistics(map1);
    printf("map2:");
-   printBoundMap(map2);
-   BoundMap mapUnion = getUnion(map1, map2);
+   printStatistics(map2);
+   Statistics mapUnion = getUnion(map1, map2);
    printf("Created union:\n");
-   printBoundMap(mapUnion);
+   printStatistics(mapUnion);
    /* Evaluate */
    for (int i = 0; i < 2; ++i)
    {
@@ -102,9 +98,9 @@ void TestBoundMap::testOperations()
       test(mapUnion[BoundKey(5,type)] == goodBound[i]);
    }
 
-   BoundMap mapIntersection = getIntersection(map1, map2);
+   Statistics mapIntersection = getIntersection(map1, map2);
    printf("Created union:\n");
-   printBoundMap(mapIntersection);
+   printStatistics(mapIntersection);
    /* Evaluate */
    for (int i = 0; i < 2; ++i)
    {

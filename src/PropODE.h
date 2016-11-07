@@ -58,6 +58,7 @@ public:
    ,scip_(scip)
       ,scipIsSet_(true)
       ,nStates_(0)
+      ,nAlgebraic_(0)
       ,nControls_(0)
       ,nParams_(0)
       ,intermediateSteps_(0)
@@ -70,6 +71,8 @@ public:
       ,lastNodeNumber_(0)
       ,nLookups_(0)
       ,boundApplyCutoff_(1e10)
+      ,outfilePrefix_(NULL)
+      ,addErrorTerms_(FALSE)
    {
       printf("PropODE Reporting\n");
 

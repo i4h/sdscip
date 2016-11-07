@@ -10,36 +10,24 @@
 
 #include <iostream>
 #include <sstream>
-#include "sdscip.h"
-//#include "Point.h"
-//#include "Vector.h"
-//#include "Orthant.h"
-//#include "OrthantList.h"
-//#include "HyperCube.h"
-//#include "HyperPlane.h"
 
 
-namespace sdscip {
+namespace I4H {
 
 class BaseTest
 {
 public:
-   BaseTest(SCIP* _scip);
+   BaseTest();
    virtual ~BaseTest();
 
    /** Test that expression evaluates to true */
-   void test(bool t);
+   virtual void test(bool t);
 
    /** Test that a and b are equal */
-   void testEqual(double a, double b);
+   virtual void testEqual(double a, double b);
 
    /** Run all tests */
    virtual void runAll() = 0;
-
-   /** Pointer to a SCIP instance, needed for memory management,
-     * floating point comparisons, etc.
-     * */
-   SCIP* scip_;
 
    /* Successful checks while executing tests */
    int nSuccess_;
@@ -64,9 +52,14 @@ public:
 
 private:
 
+   int nError_;
+   int nSuccess_;
+
+   double epsilon_ = 1e-6;
+
 
 };
 
-} /* namespace sdscip */
+} /* namespace I4H */
 
 #endif /* SDSCIP_BASETEST_H_ */

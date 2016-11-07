@@ -16,13 +16,13 @@
 #include "OrthantList.h"
 #include "HyperCube.h"
 #include "HyperPlane.h"
-#include "BaseTest.h"
+#include "SDSCIPtest.h"
 
 
 
 namespace sdscip {
 
-class TestGeom : public BaseTest
+class TestGeom : public SDSCIPtest
 {
 public:
    TestGeom(SCIP* _scip);
