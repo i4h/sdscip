@@ -94,10 +94,9 @@ SCIP_RETCODE estimateSafe(
    SCIP_Real *intercept
    )
 {
-   SCIPdbgMsg("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e)\n (x2,y2) = (%1.3e,%1.3e)\n argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
+   SCIPdebugMessage("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e)\n (x2,y2) = (%1.3e,%1.3e)\n argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
 
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
-   SCIPdbgMsg("old rounding mode was %i\n", oldmode);
 
    /* Decide how to round the slope */
    SCIP_Bool mup; /* If true, round the slope upwards, else round downwards */
@@ -128,7 +127,6 @@ SCIP_RETCODE estimateSafe(
       SCIPintervalSetRoundingModeDownwards();
 
    *coefficient = (y2 - y1) / (x2 - x1);
-   SCIPdbgMsg("Rounded %s, coefficient = %e\n", mup ? "up" : "down", *coefficient);
 
    /* Compute the intercept */
    switch (estimator)
@@ -147,7 +145,7 @@ SCIP_RETCODE estimateSafe(
             SCIPintervalSetRoundingModeUpwards();
             merr = ( (y2 - y1 ) / (x2 - x1)) - *coefficient;
          }
-         SCIPdbgMsg("computed merr: %e\n", merr);
+
          if (overestimate)
             SCIPintervalSetRoundingModeUpwards();
          else
@@ -446,15 +444,12 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    if (lb <= -infinity || ub >= infinity)
       return SCIP_OKAY;
 
-   SCIPdbgMsg("%sestimating lookup %s with bounds [%g,%g], argval = %g\n", overestimate ? "over" : "under" , data->identifier, lb, ub, argvals[0]);
-   SCIPdbgMsg("%sestimating lookup %s with bounds [%1.16e,%1.16e], argval = %1.16e, inf = %e\n", overestimate ? "over" : "under" , data->identifier, lb, ub, argvals[0], infinity);
+   SCIPdebugMessage("%sestimating lookup %s with bounds [%g,%g], argval = %g\n", overestimate ? "over" : "under" , data->identifier, lb, ub, argvals[0]);
+
 
    if( is_equal( lb, ub ) )
    {
       /* Trivial case */
-      //SCIPdbgMsg( "Bounds are equal for lookup arg -> coeff is zero\n" );
-      //SCIPdbgMsg( "bounds of arg = [%.16g,%.16g]\n", lb, ub );
-
       coeffs[0] = 0.0;
       *constant = overestimate ? max : min;
    }
@@ -493,15 +488,14 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
             //coeffs[0] = (y2-y1)/(x2-x1);
 
             SAFE_ESTIMATOR estimator = selectEstimator(overestimate, lb, ub, argvals[0], x1, x2, e5valid, e6valid);
-            SCIPdbgMsg("the best estimator is %i\n", estimator);
+            SCIPdebugMessage("selected safe linear estimator %i\n", estimator);
             SCIP_CALL( estimateSafe(overestimate, lb, ub, argvals[0], x1, x2, y1, y2, estimator, coeffs, constant) );
 
-
             /* Check if we need a safeguard due to numerics */
-            SCIP_Real actualy1 = x1 * coeffs[0] + *constant;
-            SCIP_Real actualy2 = x2 * coeffs[0] + *constant;
-            SCIP_Real safeguard;
-            if (overestimate)
+            //SCIP_Real actualy1 = x1 * coeffs[0] + *constant;
+            //SCIP_Real actualy2 = x2 * coeffs[0] + *constant;
+            //SCIP_Real safeguard;
+            //if (overestimate)
                //safeguard = MAX( );
 
             break;
