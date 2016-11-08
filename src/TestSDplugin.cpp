@@ -14,10 +14,7 @@ namespace sdscip
 {
 
 TestSDplugin::TestSDplugin(SCIP* scip) :
-   scip_(scip)
-   ,nSuccess_(0)
-   ,nErrors_(0)
-   ,nTests_(0)
+   SDSCIPtest(scip)
 {
    SCIPcreate(&subscip_);
    SCIPcreateProbBasic(subscip_, "TestSDplugin memory container");
@@ -30,20 +27,6 @@ TestSDplugin::~TestSDplugin()
    SCIPfree(&subscip_);
 }
 
-int TestSDplugin::getNsuccess()
-{
-   return nSuccess_;
-}
-
-int TestSDplugin::getNerrors()
-{
-   return nErrors_;
-}
-
-int TestSDplugin::getNtests()
-{
-   return nTests_;
-}
 
 
 }

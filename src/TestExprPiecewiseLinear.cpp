@@ -27,6 +27,8 @@ std::string EstimatorTestData::toString(int boundidx)
 TestExprPiecewiseLinear::TestExprPiecewiseLinear(SCIP* scip) :
     TestSDplugin(scip)
    ,tolerance_(1e-9)
+   ,zeroTolerance_(1e-14)
+
 {
 }
 
@@ -106,7 +108,7 @@ void TestExprPiecewiseLinear::runTests()
 
          EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
 
-         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nErrors_, tolerance_))
+         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_))
             //if( sampleEstimation(expr, 50, data.argbounds[i], estimation))
          {
             nSuccess_++;
@@ -117,7 +119,7 @@ void TestExprPiecewiseLinear::runTests()
             //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
          }
 
-         ++nTests_;
+         ++nExecutedTests_;
          break;
       }
       //break;
@@ -438,7 +440,7 @@ bool TestExprPiecewiseLinear::sampleEstimation(SCIP_EXPR* expr, int nPoints, Bou
    }
    else
    {
-      nErrors_ += localErrors;
+      nError_ += localErrors;
       SCIPdebugMessage("Estimation is invalid at %i of %i sampled points first invalid point is x=%f\n", localErrors, nPoints, invalidPoint);
       return false;
    }
@@ -480,6 +482,9 @@ double TestExprPiecewiseLinear::compareEstimationSpline(boost::shared_ptr< splin
 }
 
 
+/** Create an Expression Piecewise Linear in blockmem of subscip_
+ *  SCIPexprFreeDeep must be called to free memory
+ */
 SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData data)
 {
    SCIP_RETCODE retcode;
@@ -488,7 +493,7 @@ SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData 
 
    auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(data.points.first, data.points.second);
 
-   retcode = SCIPexprCreate(SCIPblkmem(scip_), &child, SCIP_EXPR_VARIDX, 0);
+   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
    assert(retcode == SCIP_OKAY);
 
    std::string identifier(data.label);

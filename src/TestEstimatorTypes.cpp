@@ -1,4 +1,4 @@
-//#define SCIP_DBG
+#define SCIP_DBG
 #define SCIP_DEBUG
 /*
  * TestEstimatorTypes.cpp
@@ -22,7 +22,12 @@ TestEstimatorTypes::~TestEstimatorTypes()
    // TODO Auto-generated destructor stub
 }
 
-void TestEstimatorTypes::addE1E3Tests()
+std::ostream& TestEstimatorTypes::toString(std::ostream& strm) const {
+  return strm << "TestEstimatorTypes";
+}
+
+
+void TestEstimatorTypes::addE1E3tests()
 {
    /* A numerically difficult case where lb is -inf. */
    if (true) {
@@ -36,9 +41,7 @@ void TestEstimatorTypes::addE1E3Tests()
      );
       data.overestimate = false;
       data.x1 = -1e14;
-      data.y1 = 1.2;
       data.x2 = 4;
-      data.y2 = 0;
       data.validTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_3, SAFE_ESTIMATOR_TYPE_1});
       /* |\ub x| - |lb x| = 5 - 1e14 \approx - 1e14 <= 3 so E1 should be tighter */
 
@@ -88,9 +91,7 @@ void TestEstimatorTypes::addE1E3Tests()
      );
       data.overestimate = false;
       data.x1 = -4;
-      data.y1 = 0;
       data.x2 = 1e14;
-      data.y2 = 1.2;
       data.validTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_3, SAFE_ESTIMATOR_TYPE_1});
 
       data.argvals = ValVec({3.0});
@@ -130,7 +131,7 @@ void TestEstimatorTypes::addE1E3Tests()
 
 }
 
-void TestEstimatorTypes::addE2E4Tests()
+void TestEstimatorTypes::addE2E4tests()
 {
 
    /* A numerically difficult case where lb is -inf. */
@@ -147,9 +148,7 @@ void TestEstimatorTypes::addE2E4Tests()
      );
       data.overestimate = false;
       data.x1 = -1e14;
-      data.y1 = 1.2;
       data.x2 = -1;
-      data.y2 = 0;
       data.validTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_2, SAFE_ESTIMATOR_TYPE_4});
 
       double base = 5.5;
@@ -196,9 +195,7 @@ void TestEstimatorTypes::addE2E4Tests()
      );
       data.overestimate = false;
       data.x1 = 1;
-      data.y1 = 0;
       data.x2 = 1e14;
-      data.y2 = 1.2;
       data.validTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_4, SAFE_ESTIMATOR_TYPE_2});
 
       data.argvals = ValVec({3.0});
@@ -239,6 +236,114 @@ void TestEstimatorTypes::addE2E4Tests()
 
 }
 
+void TestEstimatorTypes::addE5E6tests()
+{
+
+   /* A numerically difficult case where lb is -inf. */
+   if (true) {
+      /* Underestimating from minus infinity to -2 and checking at -3
+       * Right point is on ub, so E5 is available
+       * we expect to always select E5 */
+
+      EstimatorTypeTestData data;
+      data.label = std::string("e5_safe_estimators_under_under_minusinf");
+      data.points = std::make_pair(
+       std::vector<double>{-4.0, -1.0}
+      ,std::vector<double>{ 1.2,  0.0}
+     );
+      data.overestimate = false;
+      data.x1 = -1e14;
+      data.x2 = -2;
+      data.validTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_2, SAFE_ESTIMATOR_TYPE_4, SAFE_ESTIMATOR_TYPE_5});
+      data.e5valid = true;;
+
+      double base = 5.5;
+      for (int exponent = 0; -1.0*std::pow(base,exponent) >= (-4 - 1e14) + 10; ++exponent) {
+            data.argvals.push_back(-1.0*std::pow(base,exponent ));
+            data.argbounds.push_back(std::make_pair(-1e14, -2));
+            data.bestTypes.push_back(SAFE_ESTIMATOR_TYPE_5);
+      }
+      typeTestsData_.push_back(data);
+
+      /* "Reset" */
+      data.argvals = ValVec({-3.0});
+      data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_5});
+      data.argbounds = BoundVec{ std::make_pair(-1e4, -2) };
+
+      /* Add some tests where lb moves in positive direction */
+      data.x1 = -1e4;
+      data.label = std::string("e5_safe_estimators_under_under_minuslarge");
+      typeTestsData_.push_back(data);
+
+      data.argbounds = BoundVec{ std::make_pair(-10, -2) };
+      data.x1 = -10;
+      data.label = std::string("e5_safe_estimators_under_under_minus10");
+      typeTestsData_.push_back(data);
+
+      data.argbounds = BoundVec{ std::make_pair(-1, -2) };
+      data.x1 = -1;
+      data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_5});
+      data.label = std::string("e5_safe_estimators_under_under_minus1");
+      typeTestsData_.push_back(data);
+
+   }
+
+   /* A numerically difficult case where ub is +inf. */
+   if (true) {
+      /* Underestimating from 2 to infinty and checking at 3
+       * Left point is on lb, so E6 is available
+       * we expect to always select E6 */
+
+      EstimatorTypeTestData data;
+      data.label = std::string("e6_safe_estimators_over_over_plusinf");
+      data.points = std::make_pair(
+       std::vector<double>{1.0, 4.0}
+      ,std::vector<double>{0.0,  1.2}
+     );
+      data.overestimate = false;
+      data.x1 = 1;
+      data.x2 = 1e14;
+      data.validTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_4, SAFE_ESTIMATOR_TYPE_2, SAFE_ESTIMATOR_TYPE_6});
+      data.e6valid = true;
+
+      data.argvals = ValVec({3.0});
+      data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_6});
+      data.argbounds.push_back(std::make_pair(2, 1e14));
+      typeTestsData_.push_back(data);
+
+
+      /* Add some tests where lb moves orders of magnitude in positive direction */
+      double base = 5.5;
+      for (int exponent = 0; std::pow(base,exponent) <= (1e14 - 5) - 10; ++exponent) {
+            data.argvals.push_back(std::pow(base,exponent ));
+            data.argbounds.push_back(std::make_pair(2, 1e14));
+            data.bestTypes.push_back(SAFE_ESTIMATOR_TYPE_6);
+      }
+      typeTestsData_.push_back(data);
+
+      return;
+
+
+      /* "Reset" */
+      data.argvals = ValVec({3.0});
+      data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_3});
+      data.argbounds = BoundVec{ std::make_pair(2, 1e14) };
+
+      /* Add some tests where lb moves in positive direction */
+      data.argbounds = BoundVec{ std::make_pair(2, 1e4) };
+      data.x1 = 1e4;
+      data.label = std::string("e6_safe_estimators_over_over_minuslarge");
+      typeTestsData_.push_back(data);
+
+      data.argbounds = BoundVec{ std::make_pair(2, 10) };
+      data.x1 = 10;
+      data.label = std::string("e6_safe_estimators_over_over_minus10");
+      typeTestsData_.push_back(data);
+
+   }
+
+}
+
 void TestEstimatorTypes::runTests()
 {
    for(auto it = typeTestsData_.begin(); it != typeTestsData_.end(); ++it)
@@ -246,7 +351,7 @@ void TestEstimatorTypes::runTests()
       EstimatorTypeTestData data = *it;
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
-         int oldErrors = nErrors_;
+         int oldErrors = nError_;
          SCIPdebugMessage("======= Testing %s with argval: %e =========\n",data.label.c_str(), *valsIt);
          int i = valsIt - data.argvals.begin();
          //std::cout << data.toString(i);
@@ -278,26 +383,28 @@ void TestEstimatorTypes::runTests()
             assert(retcode == SCIP_OKAY);
 
             /* Sample at points */
-            int localOldErrors = nErrors_;
-            sampleEstimationAtKnots(pcwlin, estimation, data.argbounds[i], nErrors_, tolerance_);
+            int localOldErrors = nError_;
+            sampleEstimationAtKnots(pcwlin, estimation, data.argbounds[i], nError_, tolerance_);
 
             /* Check tightness at argounbd */
             errsAtX[type]  = std::abs(compareEstimationSpline(pcwlin, estimation, data.argvals[i]));
 
-            if (nErrors_ != localOldErrors)
+            if (nError_ != localOldErrors)
             {
                SCIPwarningMessage(scip_, "Estimator %i is INVALID but should be valid\n", type);
             }
+            SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
+
          } /* Close loop over estimator types */
 
          /* Find tightest estimator */
-         SAFE_ESTIMATOR selectedEstimator = selectEstimator(data.overestimate, data.argbounds[0].first, data.argbounds[0].second, data.argvals[0], data.x1, data.x2, false, false );
+         SAFE_ESTIMATOR selectedEstimator = selectEstimator(data.overestimate, data.argbounds[0].first, data.argbounds[0].second, data.argvals[0], data.x1, data.x2, data.e5valid, data.e6valid );
          auto tightestEstimatorIt = findSmallestErrorIt(errsAtX);
 
          SCIPdebugMessage("Tightest estimator is type %i with delta = %e, selected is %i\n", tightestEstimatorIt->first, tightestEstimatorIt->second, selectedEstimator);
          if (data.bestTypes[i] != selectedEstimator)
          {
-            nErrors_++;
+            nError_++;
             SCIPwarningMessage(scip_,"ERROR: Estimator %i was selected, but expected to select %i\n", selectedEstimator, data.bestTypes[i]);
          }
 
@@ -305,16 +412,16 @@ void TestEstimatorTypes::runTests()
          {
             double diffWithTightest = ( errsAtX.find(selectedEstimator) == errsAtX.end() ? 1e20 : (errsAtX[selectedEstimator] - tightestEstimatorIt->second) );
             /* If the difference between estimators is ~0 dont complain */
-            if (std::abs(diffWithTightest) >= tolerance_)
+            if (std::abs(diffWithTightest) >= zeroTolerance_)
             {
-               nErrors_++;
+               nError_++;
                SCIPwarningMessage(scip_,"WARNING: Estimator %i was selected, but tightest estimator was %i (by %e)\n", selectedEstimator, tightestEstimatorIt->first, diffWithTightest);
             }
          }
 
-         if (oldErrors == nErrors_)
+         if (oldErrors == nError_)
             nSuccess_ ++;
-         nTests_++;
+         nExecutedTests_++;
       }  /* Close loop over sets of argbounds/argval */
    }
 }
@@ -329,8 +436,9 @@ std::map<SAFE_ESTIMATOR, double>::const_iterator TestEstimatorTypes::findSmalles
 
 void TestEstimatorTypes::runAll()
 {
-   addE1E3Tests();
-   addE2E4Tests();
+   addE1E3tests();
+   addE2E4tests();
+   addE5E6tests();
 
    runTests();
 }

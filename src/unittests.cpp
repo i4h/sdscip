@@ -111,8 +111,9 @@ if (true)
    SCIPdebugMessage("Testing class-1 estimators :\n");
    test.runAll();
 
-   SCIPdebugMessage("finished %i tests, %i success, %i errors:\n", test.getNtests(), test.getNsuccess(), test.getNerrors());
-   assert(false);
+   //assert(false);
+
+   SCIPdebugMessage("finished %i tests, %i success, %i errors:\n", test.nExecutedTests_, test.nSuccess_, test.nError_);
 }
 
 

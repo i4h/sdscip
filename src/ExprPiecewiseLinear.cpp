@@ -94,7 +94,7 @@ SCIP_RETCODE estimateSafe(
    SCIP_Real *intercept
    )
 {
-   SCIPdebugMessage("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e)\n (x2,y2) = (%1.3e,%1.3e)\n argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
+   SCIPdebugMessage("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e), (x2,y2) = (%1.3e,%1.3e), argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
 
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
 
