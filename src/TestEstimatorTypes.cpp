@@ -84,7 +84,7 @@ void TestEstimatorTypes::addE1E3Tests()
       data.label = std::string("safe_estimators_under_over_plusinf");
       data.points = std::make_pair(
        std::vector<double>{-4.0, 0.0}
-      ,std::vector<double>{0.0,  1.2}
+      ,std::vector<double>{ 0.0, 1.2}
      );
       data.overestimate = false;
       data.x1 = -4;
@@ -247,7 +247,6 @@ void TestEstimatorTypes::runTests()
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
          int oldErrors = nErrors_;
-         SCIPdebugMessage("\n");
          SCIPdebugMessage("======= Testing %s with argval: %e =========\n",data.label.c_str(), *valsIt);
          int i = valsIt - data.argvals.begin();
          //std::cout << data.toString(i);
@@ -257,22 +256,13 @@ void TestEstimatorTypes::runTests()
          /* Get all estimators that are expected to be valid */
          for (SAFE_ESTIMATOR type : data.validTypes)
          {
-            SCIPdebugMessage("Checking out Estimator E_%i ----------------------\n", type);
             EstimationData estimation;
             estimation.overestimate = data.overestimate;
             SCIP_RETCODE retcode;
 
             /* Get piecewise linear for y-values and verification of estimation */
             SCIP_EXPR* expr = createExprPiecewiseLinear(data);
-            SCIPdbgMsg("Points:\n");
-            SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
-            SCIPdbg( SCIPinfoMessage(scip_, NULL, "\n") );
             auto pcwlin = SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr));
-
-            SCIPdbgMsg("(%e, %e) vs. (%e, %e)\n", data.x1, data.y1, data.x1, (*pcwlin)(data.x1));
-            SCIPdbgMsg("(%e, %e) vs. (%e, %e)\n", data.x2, data.y2, data.x2, (*pcwlin)(data.x2));
-
-
 
 
             /* Create estimation (defining points selected by hand) */
@@ -287,26 +277,17 @@ void TestEstimatorTypes::runTests()
             );
             assert(retcode == SCIP_OKAY);
 
-            /* Print estimation and values at defining points */
-            SCIPdbgMsg("estimation: %s\n",estimationToString(estimation).c_str());
-            SCIPdbgMsg("(e(x1), e(x2)) = (%e, %e)\n", evaluateEstimation(estimation, data.argbounds[i].first), evaluateEstimation(estimation, data.argbounds[i].second));
-
-
             /* Sample at points */
             int localOldErrors = nErrors_;
-            SCIPdbgMsg("1 y(x2) =  %e\n", (*pcwlin)(1e14));
             sampleEstimationAtKnots(pcwlin, estimation, data.argbounds[i], nErrors_, tolerance_);
 
             /* Check tightness at argounbd */
             errsAtX[type]  = std::abs(compareEstimationSpline(pcwlin, estimation, data.argvals[i]));
 
-            //SCIPdebugMessage("found %i errors, checked %i knots \n", nErrors_);
             if (nErrors_ != localOldErrors)
             {
-               SCIPdebugMessage("Estimator %i is INVALID but should be valid\n", type);
-               assert(false);
+               SCIPwarningMessage(scip_, "Estimator %i is INVALID but should be valid\n", type);
             }
-            //if (nErrors_)
          } /* Close loop over estimator types */
 
          /* Find tightest estimator */
@@ -317,7 +298,7 @@ void TestEstimatorTypes::runTests()
          if (data.bestTypes[i] != selectedEstimator)
          {
             nErrors_++;
-            SCIPdebugMessage("ERROR: Estimator %i was selected, but expected to select %i\n", selectedEstimator, data.bestTypes[i]);
+            SCIPwarningMessage(scip_,"ERROR: Estimator %i was selected, but expected to select %i\n", selectedEstimator, data.bestTypes[i]);
          }
 
          if (tightestEstimatorIt->first != selectedEstimator)
@@ -326,8 +307,8 @@ void TestEstimatorTypes::runTests()
             /* If the difference between estimators is ~0 dont complain */
             if (std::abs(diffWithTightest) >= tolerance_)
             {
-               SCIPdebugMessage("WARNING: Estimator %i was selected, but tightest estimator was %i (by %e)\n", selectedEstimator, tightestEstimatorIt->first, diffWithTightest);
-               assert(false);
+               nErrors_++;
+               SCIPwarningMessage(scip_,"WARNING: Estimator %i was selected, but tightest estimator was %i (by %e)\n", selectedEstimator, tightestEstimatorIt->first, diffWithTightest);
             }
          }
 
@@ -348,8 +329,7 @@ std::map<SAFE_ESTIMATOR, double>::const_iterator TestEstimatorTypes::findSmalles
 
 void TestEstimatorTypes::runAll()
 {
-   SCIPdbgMsg("running all\n");
-   //addE1E3Tests();
+   addE1E3Tests();
    addE2E4Tests();
 
    runTests();
