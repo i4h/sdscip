@@ -1,5 +1,5 @@
-//#define SCIP_DBG
-//#define SCIP_DEBUG
+#define SCIP_DBG
+#define SCIP_DEBUG
 /*
  * TestExprPiecewiseLinear.cpp
  *
@@ -12,6 +12,24 @@
 namespace sdscip
 {
 
+
+
+TestExprPiecewiseLinear::TestExprPiecewiseLinear(SCIP* scip) :
+    TestSDplugin(scip)
+   ,tolerance_(1e-9)
+   ,zeroTolerance_(1e-14)
+
+{ }
+
+TestExprPiecewiseLinear::~TestExprPiecewiseLinear()
+{ }
+
+
+std::ostream& TestExprPiecewiseLinear::toString(std::ostream& strm) const {
+  return strm << "TestExprPiecewiseLinear";
+}
+
+
 std::string EstimatorTestData::toString(int boundidx)
 {
    std::ostringstream oss;
@@ -23,20 +41,6 @@ std::string EstimatorTestData::toString(int boundidx)
 
    return oss.str();
 }
-
-TestExprPiecewiseLinear::TestExprPiecewiseLinear(SCIP* scip) :
-    TestSDplugin(scip)
-   ,tolerance_(1e-9)
-   ,zeroTolerance_(1e-14)
-
-{
-}
-
-TestExprPiecewiseLinear::~TestExprPiecewiseLinear()
-{
-   // TODO Auto-generated destructor stub
-}
-
 
 /* Creates a series of lookups, and estimations, then tests the validity of the estimation by sampling the considered interval */
 void TestExprPiecewiseLinear::runEstimatorManualTests()

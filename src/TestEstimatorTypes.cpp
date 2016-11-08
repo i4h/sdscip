@@ -14,19 +14,18 @@ namespace sdscip
 
 TestEstimatorTypes::TestEstimatorTypes(SCIP* scip) :
    TestExprPiecewiseLinear(scip)
-{
-}
+{}
 
 TestEstimatorTypes::~TestEstimatorTypes()
-{
-   // TODO Auto-generated destructor stub
-}
+{ }
 
+/** Identify this test */
 std::ostream& TestEstimatorTypes::toString(std::ostream& strm) const {
   return strm << "TestEstimatorTypes";
 }
 
 
+/** Add tests of safe estimators E1 and E3 */
 void TestEstimatorTypes::addE1E3tests()
 {
    /* A numerically difficult case where lb is -inf. */
@@ -131,6 +130,7 @@ void TestEstimatorTypes::addE1E3tests()
 
 }
 
+/** Add tests of safe estimators E2 and E4 */
 void TestEstimatorTypes::addE2E4tests()
 {
 
@@ -236,6 +236,7 @@ void TestEstimatorTypes::addE2E4tests()
 
 }
 
+/** Add tests of safe estimators E5 and E6 */
 void TestEstimatorTypes::addE5E6tests()
 {
 
@@ -344,6 +345,7 @@ void TestEstimatorTypes::addE5E6tests()
 
 }
 
+/** Execute the tests defined in typeTestsData_ vector */
 void TestEstimatorTypes::runTests()
 {
    for(auto it = typeTestsData_.begin(); it != typeTestsData_.end(); ++it)
@@ -426,6 +428,7 @@ void TestEstimatorTypes::runTests()
    }
 }
 
+/** Find the estimator with the smalles errAtX in the map */
 std::map<SAFE_ESTIMATOR, double>::const_iterator TestEstimatorTypes::findSmallestErrorIt(std::map<SAFE_ESTIMATOR, double> errsAtX)
 {
       return std::min_element(errsAtX.begin(), errsAtX.end(),
@@ -433,7 +436,7 @@ std::map<SAFE_ESTIMATOR, double>::const_iterator TestEstimatorTypes::findSmalles
          return p1.second < p2.second; });
 }
 
-
+/** Run all tests */
 void TestEstimatorTypes::runAll()
 {
    addE1E3tests();

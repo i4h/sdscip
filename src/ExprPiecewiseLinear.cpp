@@ -1,5 +1,6 @@
 #define SCIP_DBG
 #define SCIP_DEBUG
+
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
 #include "ExprPiecewiseLinear.h"

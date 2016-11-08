@@ -85,6 +85,11 @@ SCIP_RETCODE runSCIP(
 
    //tests.emplace_back( new I4H::TestStatistics);
 
+   //tests.emplace_back( new sdscip::TestEstimatorTypes(scip));
+
+   tests.emplace_back( new sdscip::TestExprPiecewiseLinear(scip));
+
+
 
 
 
@@ -99,22 +104,6 @@ SCIP_RETCODE runSCIP(
       std::cout << std::endl;
       delete it;
    }
-
-
-/*Test ExprPiecewiseLinear */
-if (true)
-{
-
-   sdscip::TestEstimatorTypes test(scip);
-   //test.runEstimatorManualTests();
-   //test.runEstimatorRandomTests();
-   SCIPdebugMessage("Testing class-1 estimators :\n");
-   test.runAll();
-
-   //assert(false);
-
-   SCIPdebugMessage("finished %i tests, %i success, %i errors:\n", test.nExecutedTests_, test.nSuccess_, test.nError_);
-}
 
 
    /********************
