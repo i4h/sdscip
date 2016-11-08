@@ -1,5 +1,5 @@
-//#define SCIP_DBG
-//#define SCIP_DEBUG
+#define SCIP_DBG
+#define SCIP_DEBUG
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
 #include "ExprPiecewiseLinear.h"
@@ -78,8 +78,6 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
             return SAFE_ESTIMATOR_TYPE_2;
       }
    }
-   SCIPerrorMessage(" ERROR! Unable to pick estimator.\n");
-   return SAFE_ESTIMATOR_TYPE_1;
 }
 
 SCIP_RETCODE estimateSafe(
@@ -96,7 +94,7 @@ SCIP_RETCODE estimateSafe(
    SCIP_Real *intercept
    )
 {
-   SCIPdbgMsg("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e), (x2,y2) = (%1.3e,%1.3e), argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
+   SCIPdbgMsg("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e)\n (x2,y2) = (%1.3e,%1.3e)\n argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
 
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
    SCIPdbgMsg("old rounding mode was %i\n", oldmode);
@@ -188,6 +186,10 @@ SCIP_RETCODE estimateSafe(
             *intercept = y1-(*coefficient)*x1;
          break;
    }
+
+   /* Reset rounding mode */
+   SCIPintervalSetRoundingMode(oldmode);
+
    return SCIP_OKAY;
 }
 
@@ -494,6 +496,14 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
             SCIPdbgMsg("the best estimator is %i\n", estimator);
             SCIP_CALL( estimateSafe(overestimate, lb, ub, argvals[0], x1, x2, y1, y2, estimator, coeffs, constant) );
 
+
+            /* Check if we need a safeguard due to numerics */
+            SCIP_Real actualy1 = x1 * coeffs[0] + *constant;
+            SCIP_Real actualy2 = x2 * coeffs[0] + *constant;
+            SCIP_Real safeguard;
+            if (overestimate)
+               //safeguard = MAX( );
+
             break;
          }
       }
@@ -513,17 +523,17 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    estimation.constant = *constant;
    estimation.overestimate = overestimate;
    int nerrors(0);
-   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors))
+   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-9))
    {
       SCIPdbgMsg("Invalid estimation:\n");
-      SCIPdbgMsg("Estimation: %1.16e * x + %1.16e\n", coeffs[0], *constant);
+      SCIPdbgMsg("Estimation: %1.16e * x + %1.16e\n", coeffs[0], constant);
 
       /* Print lookup points */
-      auto lkpcoeffs = data->lookup->getCoefficients();
+      auto coeffs = data->lookup->getCoefficients();
       std::ostringstream oss;
 
-      for (auto it = lkpcoeffs.begin(); it < lkpcoeffs.end(); ++it) {
-         int i = it - lkpcoeffs.begin();
+      for (auto it = coeffs.begin(); it < coeffs.end(); ++it) {
+         int i = it - coeffs.begin();
          if (i  >= 1)
             oss << ", ";
          oss << std::string("(") << std::to_string(data->lookup->getKnot(i)) << std::string(", ") << std::to_string(*it) << std::string(")");

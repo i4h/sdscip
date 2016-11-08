@@ -25,7 +25,8 @@ std::string EstimatorTestData::toString(int boundidx)
 }
 
 TestExprPiecewiseLinear::TestExprPiecewiseLinear(SCIP* scip) :
-   TestSDplugin(scip)
+    TestSDplugin(scip)
+   ,tolerance_(1e-9)
 {
 }
 
@@ -75,7 +76,7 @@ void TestExprPiecewiseLinear::runEstimatorNumericsTests()
 std::string TestExprPiecewiseLinear::estimationToString(EstimationData estimation)
 {
    std::ostringstream oss;
-   oss << "estimation: " << std::scientific <<  estimation.coefficient << "x + " << estimation.constant;
+   oss << (estimation.overestimate ? "over" : "under") << "estimation: " << std::scientific <<  estimation.coefficient << "x + " << estimation.constant;
    return oss.str();
 }
 
@@ -105,7 +106,7 @@ void TestExprPiecewiseLinear::runTests()
 
          EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
 
-         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nErrors_))
+         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nErrors_, tolerance_))
             //if( sampleEstimation(expr, 50, data.argbounds[i], estimation))
          {
             nSuccess_++;
@@ -132,7 +133,7 @@ void TestExprPiecewiseLinear::runEstimatorRandomTests()
    runTests();
 }
 
-bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, Bound argbound, int &nerrors)
+bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, Bound argbound, int &nerrors, SCIP_Real tolerance)
 {
    int olderrors = nerrors;
    int checkedknots = 0;
@@ -149,8 +150,10 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
       /* If this knot is inside of considered interval */
       if (argval >= argbound.first && argval <= argbound.second)
       {
+         /*
          SCIPdbgMsg("Verfiying at knot %i, x = %f\n",i,argval);
-         SCIP_Real funcval = *it;
+         //SCIP_Real funcval = *it;
+         SCIP_Real funcval = (*pcwlin)(argval);
 
          SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
 
@@ -163,21 +166,32 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
             invalidPoints.push_back(argval);
             ++nerrors;
          }
+         */
+         if (!verifyEstimation(pcwlin, estimation, argval, tolerance))
+         {
+            ++nerrors;
+            invalidPoints.push_back(argval);
+         }
          ++checkedknots;
       }
    }
+   SCIPdbgMsg("2 y(x2) =  %e\n", (*pcwlin)(1e14));
+
+
 
    /* Check at argbounds */
    SCIPdbgMsg("Verifying estimation at lower argbound, x = %e\n", argbound.first);
-   if (!verifyEstimation(pcwlin, estimation, argbound.first))
+   if (!verifyEstimation(pcwlin, estimation, argbound.first, tolerance))
    {
       ++nerrors;
       invalidPoints.push_back(argbound.first);
    }
    ++checkedknots;
+   SCIPdbgMsg("3 y(x2) =  %e\n", (*pcwlin)(1e14));
+
    SCIPdbgMsg("Verifying estimation at upper argbound, x = %e\n",argbound.second);
 
-   if (!verifyEstimation(pcwlin, estimation, argbound.second))
+   if (!verifyEstimation(pcwlin, estimation, argbound.second, tolerance))
    {
       ++nerrors;
       invalidPoints.push_back(argbound.second);
@@ -407,7 +421,7 @@ bool TestExprPiecewiseLinear::sampleEstimation(SCIP_EXPR* expr, int nPoints, Bou
    SCIP_Real invalidPoint = 0;
    for (SCIP_Real argval = argbound.first; argval <= argbound.second; argval += stepsize)
    {
-      if (!verifyEstimation(pcwlin, estimation, argval))
+      if (!verifyEstimation(pcwlin, estimation, argval, tolerance_))
       {
          if (localErrors == 0)
             invalidPoint = argval;
@@ -430,14 +444,13 @@ bool TestExprPiecewiseLinear::sampleEstimation(SCIP_EXPR* expr, int nPoints, Bou
    }
 }
 
-bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval)
+bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval, SCIP_Real tolerance)
 {
-   double tolerance = 1e-9;
+
    /* Evalute estimate*/
    SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
    /* Evalute lookup */
-   spline::BSplineCurve<1, SCIP_Real>::interval_t interval = pcwlin->findInterval( argval );
-   SCIP_Real funcval = pcwlin->evaluate<0>(argval, interval);
+   SCIP_Real funcval = (*pcwlin)(argval);
 
    if (   (estimation.overestimate && funcval > estimationval - tolerance)
       || (!estimation.overestimate && funcval + tolerance < estimationval  )
