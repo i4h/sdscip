@@ -9,3 +9,5 @@ getlastprob.awk
 tmpfile
 results
 run.sh
+*sh
+*awk
