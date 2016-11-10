@@ -8,10 +8,9 @@
  */
 
 
-#include "TestSDplugin.hpp"
+#include "TestSDplugin.h"
 
-namespace sdscip
-{
+namespace sdscip {
 
 TestSDplugin::TestSDplugin(SCIP* scip) :
    SDSCIPtest(scip)
@@ -25,10 +24,6 @@ TestSDplugin::~TestSDplugin()
    // TODO Auto-generated destructor stub
    SCIPfreeProb(subscip_);
    SCIPfree(&subscip_);
-}
-
-
-
 }
 
 int TestSDplugin::getRandInt(int min, int max)
@@ -50,3 +45,4 @@ double TestSDplugin::getRandDouble(double min, double max)
 }
 
 
+}

@@ -95,7 +95,8 @@ SCIP_RETCODE estimateSafe(
    SCIP_Real *intercept
    )
 {
-   SCIPdebugMessage("estimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e), (x2,y2) = (%1.3e,%1.3e), argval = %1.3e, type: %i\n", lb, ub, x1, y1, x2, y2, argval, estimator);
+   SCIPdebugMessage("%sestimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e), (x2,y2) = (%1.3e,%1.3e), argval = %1.3e, type: %i\n",
+      (overestimate ? "over" : "under"), lb, ub, x1, y1, x2, y2, argval, estimator);
 
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
 
@@ -122,12 +123,16 @@ SCIP_RETCODE estimateSafe(
    }
 
    /* Compute the slope */
-   if( mup )
+   if( mup ) {
+      SCIPdbgMsg("slope will be rounded up\n")
       SCIPintervalSetRoundingModeUpwards();
-   else
+   } else {
+      SCIPdbgMsg("slope will be rounded down\n")
       SCIPintervalSetRoundingModeDownwards();
+   }
 
    *coefficient = (y2 - y1) / (x2 - x1);
+   SCIPdbgMsg("coefficient is %e\n", *coefficient);
 
    /* Compute the intercept */
    switch (estimator)
@@ -146,6 +151,7 @@ SCIP_RETCODE estimateSafe(
             SCIPintervalSetRoundingModeUpwards();
             merr = ( (y2 - y1 ) / (x2 - x1)) - *coefficient;
          }
+         SCIPdbgMsg("merr is %e\n", merr);
 
          if (overestimate)
             SCIPintervalSetRoundingModeUpwards();
