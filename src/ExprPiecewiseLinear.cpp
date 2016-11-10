@@ -124,10 +124,13 @@ SCIP_RETCODE estimateSafe(
    }
 
    /* Compute the slope */
-   if( mup ) {
+   if( mup )
+   {
       SCIPdbgMsg("slope will be rounded up\n");
       SCIPintervalSetRoundingModeUpwards();
-   } else {
+   }
+   else
+   {
       SCIPdbgMsg("slope will be rounded down\n");
       SCIPintervalSetRoundingModeDownwards();
    }
@@ -506,12 +509,14 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
             SCIP_Real y1 = it->second;
             SCIP_Real y2 = (it+1)->second;
             /* Check availability of class-2 estimators ( $\underline x = x1 or \bar x = x2$) */
-            if (is_equal(x2, lb)) {
+            if (is_equal(x2, lb))
+            {
                e6valid = TRUE;
                SCIPdbgMsg("(x2,y1) = (%e,%e), ub = %e, e6 available\n", x2, y2, ub);
             }
 
-            if (is_equal(x1, lb)) {
+            if (is_equal(x1, lb))
+            {
                e5valid = TRUE;
                SCIPdbgMsg("(x1,y1) = (%e,%e), lb = %e, e5 available\n", x1, y1, lb);
             }
