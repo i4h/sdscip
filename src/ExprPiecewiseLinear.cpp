@@ -1,5 +1,6 @@
-//#define SCIP_DBG
-//#define SCIP_DEBUG
+#define SCIP_DBG
+#define SCIP_DEBUG
+
 
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
@@ -81,6 +82,56 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
    }
 }
 
+SCIP_RETCODE setRoundingModeFromBool(SCIP_Bool mup)
+{
+   if (mup)
+      SCIPintervalSetRoundingModeDownwards();
+   else
+      SCIPintervalSetRoundingModeUpwards();
+
+   if (mup)
+   {
+      SCIPdbgMsg("Set rounding mode up\n");
+   }
+   else
+   {
+      SCIPdbgMsg("Set rounding mode down\n");
+   }
+
+   return SCIP_OKAY;
+}
+
+/** Computes the closest upwards (downwards) rounded representation of y1 - x1*m
+ *  when mup is true (false)
+ */
+SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y, SCIP_Real x, SCIP_Real m, SCIP_Bool resetmode)
+{
+   SCIP_ROUNDMODE oldmode;
+   if (resetmode)
+      oldmode = SCIPintervalGetRoundingMode();
+
+   SCIP_Real intercept;
+
+   if (mup) {
+      /* If we are supposed to round up, we invert rounding for positive m*x */
+      if (std::signbit(m * x))
+         mup = !mup;
+   }
+   else
+   {
+      /* If we are supposed to round down, we invert rounding for negative m*x  */
+      if (!std::signbit(m * x))
+         mup = !mup;
+   }
+   setRoundingModeFromBool(mup);
+   intercept = y - m*x;
+
+   if (resetmode)
+      SCIPintervalSetRoundingMode(oldmode);
+
+   return intercept;
+}
+
 SCIP_RETCODE estimateSafe(
    SCIP_Bool overestimate,
    SCIP_Real lb,
@@ -96,10 +147,15 @@ SCIP_RETCODE estimateSafe(
 
    )
 {
-   SCIPdebugMessage("%sestimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e), (x2,y2) = (%1.3e,%1.3e), argval = %1.3e, type: %i\n",
-      (overestimate ? "over" : "under"), lb, ub, x1, y1, x2, y2, argval, estimator);
+   SCIPdebugMessage("%sestimating safe: (lb,ub) = (%f,%f)\n",
+      (overestimate ? "over" : "under"), lb, ub);
+   SCIPdebugMessage("(x1,y1 = (%f,%f), (x2,y2) = (%f,%f), argval = %f, type: %i\n",
+      x1, y1, x2, y2, argval, estimator);
+
 
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
+
+   double otherm;
 
    /* Decide how to round the slope */
    SCIP_Bool mup; /* If true, round the slope upwards, else round downwards */
@@ -189,35 +245,136 @@ SCIP_RETCODE estimateSafe(
          SCIPdbgMsg("estimation at x1 = %1.16e = %1.16e\n", x1, x1* (*coefficient) + *intercept);
 
          break;
+#if 0
       case SAFE_ESTIMATOR_TYPE_2:
       case SAFE_ESTIMATOR_TYPE_4:
          /* Simply round the intercept in the right direction */
-            if (overestimate)
+            if (overestimate )
+            {
+               SCIPdbgMsg("computing intercept by rounding up\n");
                SCIPintervalSetRoundingModeUpwards();
+            }
             else
+            {
+               SCIPdbgMsg("computing intercept by rounding down\n");
                SCIPintervalSetRoundingModeDownwards();
+            }
 
-            *intercept = y1-(*coefficient)*x1; //, y2-coeffs[0]*x2);
-            break;
+            /* Use the defining point closer to the origin */
+            switch(estimator) {
+            case SAFE_ESTIMATOR_TYPE_2:
+               SCIPdbgMsg("using y2\n");
+               *intercept = y2-(*coefficient)*x2;
+               break;
+            case SAFE_ESTIMATOR_TYPE_4:
+               *intercept = y1-(*coefficient)*x1;
+               break;
+            default:
+               break;
+            }
+#endif
+
+      case SAFE_ESTIMATOR_TYPE_2:
+      case SAFE_ESTIMATOR_TYPE_4:
+         if (estimator == SAFE_ESTIMATOR_TYPE_2)
+         {
+            /* we know that x2 is negative. If coefficient is positive, rounding up(down) will
+             * lead to a smaller(larger) intercept after subtraction (inverse effect) */
+            if (*coefficient < 0)
+               mup = overestimate;
+            else
+               mup = !overestimate;
+         }
+         else
+         {
+            /* SAFE_ESTIMATOR_TYPE_4: we know that x1 is positive. If coefficient is negative, rounding up(down) will
+             * lead to a smaller(larger) intercept after subtraction (inverse effect)*/
+            if (*coefficient >= 0)
+               mup = overestimate;
+            else
+               mup = !overestimate;
+         }
+
+         if (mup) {
+            SCIPdbgMsg("computing intercept by rounding up\n");
+            SCIPintervalSetRoundingModeUpwards();
+         } else {
+            SCIPdbgMsg("computing intercept by rounding down\n");
+            SCIPintervalSetRoundingModeDownwards();
+         }
+
+         *intercept = y1-(*coefficient)*x1;
+         break;
+
       case SAFE_ESTIMATOR_TYPE_5:
       case SAFE_ESTIMATOR_TYPE_6:
          /* Compute intercept for E5 (E6) from x1 (x2) and y1 (y2) */
-         if (overestimate)
-            SCIPintervalSetRoundingModeUpwards();
-         else
-            SCIPintervalSetRoundingModeDownwards();
+         mup = overestimate;
+         SCIPdbgMsg("mup set to %sestimate\n", mup? "over" : "under");
 
          if( estimator == SAFE_ESTIMATOR_TYPE_5)
+         {
+            /* Invert rounding if minuend in intercept calc is negative */
+            if (std::signbit((*coefficient)*x2) == false)
+            {
+               SCIPdbgMsg("inverting rounding mode\n");
+               mup = !mup;
+            }
+
+            setRoundingModeFromBool(mup);
             *intercept = y2-(*coefficient)*x2;
-         else
+         }
+         else /* SAFE_ESTIMATOR_TYPE_6 */
+         {
+            /* Invert rounding if minuend in intercept calc is negative */
+            if (std::signbit((*coefficient)*x1) == false)
+               mup = !mup;
+
+            setRoundingModeFromBool(mup);
             *intercept = y1-(*coefficient)*x1;
+         }
          break;
    }
 
    /* Reset rounding mode */
    SCIPintervalSetRoundingMode(oldmode);
 
+   /*SCIPdbgMsg("using fixed slope of %1.16e\n", *coefficient);
+   SCIPdbgMsg("trying to make line go through x2,y2\n");
+   SCIP_Real b = (*coefficient)*x2;
+   SCIPdbgMsg("got b = %1.16e\n",b);
+   SCIPdbgMsg("this gives my f(x2) = %1.16e\n", (*coefficient) * x2 + b);
+   SCIPdbgMsg("trying again but rounding down\n");
+   SCIPintervalSetRoundingModeDownwards();
+   b = (*coefficient)*x2;
+   SCIPdbgMsg("got b = %1.16e\n",b);
+   SCIPdbgMsg("this gives my f(x2) = %1.16e\n", (*coefficient) * x2 + b);
+
+   SCIPintervalSetRoundingMode(oldmode);
+   */
+
+
    SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
+   SCIPdbgMsg("checking at x1 = (%1.16e, %1.16e)\n", x1, y1);
+   SCIPdbgMsg("evaluationval at x1 is %1.16e\n", x1* (*coefficient) + *intercept);
+   SCIPdbgMsg("diff is %1.16e\n", y1 - x1* (*coefficient) + *intercept);
+
+   SCIPdbgMsg("checking at x2 = (%1.16e, %1.16e)\n", x2, y2);
+   SCIPdbgMsg("evaluationval at x1 is %1.16e\n", x2* (*coefficient) + *intercept);
+   SCIPdbgMsg("diff is %1.16e\n", y2 - x2* (*coefficient) + *intercept);
+
+
+   if (overestimate)
+   {
+      assert( (x1*(*coefficient) + (*intercept) ) >= y1  );
+      assert( (x2*(*coefficient) + (*intercept) ) >= y2  );
+   }
+   else
+   {
+      assert( (x1*(*coefficient) + (*intercept) ) <= y1  );
+      assert( (x2*(*coefficient) + (*intercept) ) <= y2  );
+   }
+
 
    return SCIP_OKAY;
 }
@@ -322,8 +479,8 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
 
    for( auto i = begin + 2; i <= end; ++i )
    {
-      SCIPdebugMessage("considering interval %li\n",i);
-      SCIPdebugMessage( "pushing into convex  hull: (%f, %f)\n",linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ));
+      SCIPdbgMsg("considering interval %li\n",i);
+      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ));
       convexHull.push_back( std::make_pair( linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ) ) );
       grahamScanCheck<side> ( convexHull );
       std::ostringstream oss;
@@ -331,19 +488,19 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
       {
             oss << "(" << std::to_string(point.first) << "," << std::to_string(point.second) << ")";
       }
-      SCIPdebugMessage("convex hull is %s\n", oss.str().c_str());
+      SCIPdbgMsg("convex hull is %s\n", oss.str().c_str());
    }
 
 
    convexHull.push_back( std::make_pair( ub, linear.evaluate<0>( ub, end ) ) );
-   SCIPdebugMessage( "pushing into convex  hull: (%f, %f)\n",ub, linear.evaluate<0>( ub, end ));
+   SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear.evaluate<0>( ub, end ));
    grahamScanCheck<side> ( convexHull );
 
-   SCIPdebugMessage( "Convex hull from inner points is:\n" );
+   SCIPdbgMsg( "Convex hull from inner points is:\n" );
 
    for( int i = 0; i < convexHull.size(); ++i )
    {
-      SCIPdebugMessage( "(%g,%g)\n", convexHull[i].first, convexHull[i].second );
+      SCIPdbgMsg( "(%g,%g)\n", convexHull[i].first, convexHull[i].second );
    }
 
    return convexHull;

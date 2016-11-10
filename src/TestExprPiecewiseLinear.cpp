@@ -86,7 +86,9 @@ bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplin
    )
    {
       SCIPdebugMessage("!!!!! Estimation cuts off function at %e\n", argval);
+      SCIPdebugMessage("failed:  (argval = %f, funcval = %1.16e, estimationval = %1.16e, delta = %e)\n", argval, funcval, estimationval, funcval - estimationval);
       //SCIPdebugMessage("(funcval = %f, estimationval = %f, delta = %e)\n", funcval, estimationval, funcval - estimationval);
+      assert(false);
       return false;
    }
    else
@@ -129,6 +131,9 @@ EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Re
    estimationData.coefficient = coeffs;
    estimationData.constant = constant;
    estimationData.overestimate = overestimate;
+
+
+   //SCIP_CALL( estimateSafe(overestimate, argbound.first, argbound.second, argvals, argvals[0], x1, x2, y1, y2, estimator, coeffs, constant) );
 
    return estimationData;
 }
@@ -245,21 +250,18 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
 void TestExprPiecewiseLinear::removeCoincidingPoints(ValVec &xvals, ValVec &yvals)
 {
    double mindist = 1e-3;
-   SCIPdbgMsg("removing coinciding points from:\n");
-   SCIPdbgMsg("xvec: %s\n",sdscip::Vector::vec2string(xvals, std::string()).c_str());
-   SCIPdbgMsg("yvec: %s\n",sdscip::Vector::vec2string(yvals, std::string()).c_str());
+   //SCIPdbgMsg("removing coinciding points from:\n");
+   //SCIPdbgMsg("xvec: %s\n",sdscip::Vector::vec2string(xvals, std::string()).c_str());
+   //SCIPdbgMsg("yvec: %s\n",sdscip::Vector::vec2string(yvals, std::string()).c_str());
    double lastx = xvals[0];
    for( auto it = xvals.begin() + 1; it != xvals.end(); /*++it*/)
    {
       int i = it - xvals.begin();
-      SCIPdbgMsg("i = %i, last x was %f, current x is %f, delta = %e\n", i, lastx, *it, *it - lastx);
       if (*it - lastx <= mindist)
       {
-         SCIPdbgMsg("erasing point (%f, %f)\n", *it, yvals[i]);
          it = xvals.erase(it);
          yvals.erase (yvals.begin()+i);
          i = it - xvals.begin();
-         SCIPdbgMsg("done, i = %i, current point  is (%f, %f), delta with lastx = %f is %e\n", i, *it, yvals[i], lastx, *it - lastx);
       }
       else
       {
@@ -596,10 +598,32 @@ void TestExprPiecewiseLinear::runWorldLookup() {
 
 }
 
+/** Test SCIPexprPiecewiseLinearRoundIntercept */
+void TestExprPiecewiseLinear::runTestRoundIntercept()
+{
+   SCIP_Real m = 1;
+   SCIP_Real y1 = 0;
+
+   for (SCIP_Real x1 : { 1.0, -1.0 })
+   {
+      for (bool mup : { false, true })
+      {
+         SCIP_Real nearest =y1 - m *x1;
+         SCIP_Real rounded = SCIPexprPiecewiseLinearRoundIntercept(mup, y1, x1, m, true);
+         if (mup)
+            assert(rounded >= nearest);
+         else
+            assert(rounded <= nearest);
+      }
+   }
+}
+
 void TestExprPiecewiseLinear::runAll()
 {
    SCIPdbgMsg("running all\n");
-   runWorldLookup();
+   //runWorldLookup();
+   //runEstimatorRandomTests();
+   runTestRoundIntercept();
 }
 
 
