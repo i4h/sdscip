@@ -112,12 +112,16 @@ double TestExprPiecewiseLinear::compareEstimationSpline(boost::shared_ptr< splin
 
 EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Real argvals, Bound argbound, bool overestimate)
 {
+
+   SCIP_RETCODE retcode;
    SCIP_Interval argbounds;
    SCIP_Real coeffs;
    SCIP_Real constant;
    SCIP_Bool success;
    argbounds.inf = argbound.first;
    argbounds.sup = argbound.second;
+
+   retcode = SCIPexprEstimateUser(pcwlin, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
 
    SCIPdbgMsg("Got estimation: %f*x + %f\n", coeffs, constant);
 
