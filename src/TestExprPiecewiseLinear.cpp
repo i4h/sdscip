@@ -1,4 +1,4 @@
-#define SCIP_DBG
+//#define SCIP_DBG
 #define SCIP_DEBUG
 /*
  * TestExprPiecewiseLinear.cpp
@@ -30,6 +30,106 @@ std::ostream& TestExprPiecewiseLinear::toString(std::ostream& strm) const {
 }
 
 
+/***********************************************
+ *  Helper methods
+ ***********************************************/
+
+/** check an estimation against a spline by sampling nPoints in argbounds */
+bool TestExprPiecewiseLinear::sampleEstimation(SCIP_EXPR* expr, int nPoints, Bound argbound, EstimationData estimation)
+{
+
+   auto pcwlin = SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr));
+   SCIP_Real stepsize = (argbound.second - argbound.first) / (double) nPoints;
+   if (stepsize < 1e-6)
+      stepsize = 1; /* Sampling only once */
+
+   int localErrors = 0;
+   SCIP_Real invalidPoint = 0;
+   for (SCIP_Real argval = argbound.first; argval <= argbound.second; argval += stepsize)
+   {
+      if (!verifyEstimation(pcwlin, estimation, argval, tolerance_))
+      {
+         if (localErrors == 0)
+            invalidPoint = argval;
+         ++localErrors;
+      }
+   }
+
+   /* Evaluate found problems  */
+   if (localErrors == 0)
+   {
+      ++nSuccess_;
+      SCIPdbgMsg("Estimation is valid at %i sampled points \n", nPoints);
+      return true;
+   }
+   else
+   {
+      nError_ += localErrors;
+      SCIPdebugMessage("Estimation is invalid at %i of %i sampled points first invalid point is x=%f\n", localErrors, nPoints, invalidPoint);
+      return false;
+   }
+}
+
+/** Verify an estimation by comparging it to spline at argval */
+bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval, SCIP_Real tolerance)
+{
+
+   /* Evalute estimate*/
+   SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
+   /* Evalute lookup */
+   SCIP_Real funcval = (*pcwlin)(argval);
+
+   SCIPdbgMsg("verifying (argval = %f, funcval = %1.16e, estimationval = %1.16e, delta = %e)\n", argval, funcval, estimationval, funcval - estimationval);
+
+   if (   (estimation.overestimate && funcval > estimationval + tolerance)
+      || (!estimation.overestimate && funcval + tolerance < estimationval  )
+   )
+   {
+      SCIPdebugMessage("!!!!! Estimation cuts off function at %e\n", argval);
+      //SCIPdebugMessage("(funcval = %f, estimationval = %f, delta = %e)\n", funcval, estimationval, funcval - estimationval);
+      return false;
+   }
+   else
+   {
+      SCIPdbgMsg("Estimation is valid at %f\n", argval);
+      return true;
+   }
+
+}
+
+/** Return difference between estimation and spline function values at argval */
+double TestExprPiecewiseLinear::compareEstimationSpline(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval)
+{
+   /* Evalute estimate*/
+   SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
+   /* Evalute lookup */
+   //@todo: Evaluate properly
+   spline::BSplineCurve<1, SCIP_Real>::interval_t interval = pcwlin->findInterval( argval );
+   SCIP_Real funcval = pcwlin->evaluate<0>(argval, interval);
+   return funcval - estimationval;
+}
+
+
+EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Real argvals, Bound argbound, bool overestimate)
+{
+   SCIP_Interval argbounds;
+   SCIP_Real coeffs;
+   SCIP_Real constant;
+   SCIP_Bool success;
+   argbounds.inf = argbound.first;
+   argbounds.sup = argbound.second;
+
+   SCIPdbgMsg("Got estimation: %f*x + %f\n", coeffs, constant);
+
+   EstimationData estimationData;
+   estimationData.coefficient = coeffs;
+   estimationData.constant = constant;
+   estimationData.overestimate = overestimate;
+
+   return estimationData;
+}
+
+/** Return a string listing the test data for argbounds(boundidx) */
 std::string EstimatorTestData::toString(int boundidx)
 {
    std::ostringstream oss;
@@ -42,43 +142,7 @@ std::string EstimatorTestData::toString(int boundidx)
    return oss.str();
 }
 
-/* Creates a series of lookups, and estimations, then tests the validity of the estimation by sampling the considered interval */
-void TestExprPiecewiseLinear::runEstimatorManualTests()
-{
-   addManualEstimatorTests();
-
-   //std::vector<double> xVals = {0, 0.25, 0.5, 0.75, 1};
-   //std::vector<double> yVals = {0, 0.15, 0.5, 0.85, 1};
-   bool overestimate = true;
-   for(auto data : testsData_)
-   {
-      SCIPdebugMessage("\n\n========================================================\n");
-      SCIPdebugMessage("Running test %s\n", data.label.c_str());
-
-      SCIP_EXPR* expr = createExprPiecewiseLinear(data);
-
-      SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
-
-      for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
-      {
-         int i = valsIt - data.argvals.begin();
-
-         SCIPdebugMessage("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
-
-         EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], overestimate);
-
-         bool valid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
-         assert(valid);
-      }
-   }
-}
-
-void TestExprPiecewiseLinear::runEstimatorNumericsTests()
-{
-   addNumericsEstimatorTests();
-   runTests();
-}
-
+/** Create a std::string describing the estimation */
 std::string TestExprPiecewiseLinear::estimationToString(EstimationData estimation)
 {
    std::ostringstream oss;
@@ -86,59 +150,13 @@ std::string TestExprPiecewiseLinear::estimationToString(EstimationData estimatio
    return oss.str();
 }
 
+/** Evaluate estimation at x */
 SCIP_Real TestExprPiecewiseLinear::evaluateEstimation(EstimationData estimation, SCIP_Real x)
 {
    return estimation.constant + estimation.coefficient * x;
 }
 
-
-void TestExprPiecewiseLinear::runTests()
-{
-   for(auto it = testsData_.begin(); it != testsData_.end(); ++it)
-   {
-      auto data = *it;
-      //SCIPdebugMessage("\n\n========================================================\n");
-      SCIPdebugMessage("Running test %s\n", data.label.c_str());
-
-      SCIP_EXPR* expr = createExprPiecewiseLinear(data);
-
-      //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
-
-      for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
-      {
-         int i = valsIt - data.argvals.begin();
-
-         SCIPdbgMsg("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
-
-         EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
-
-         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_))
-            //if( sampleEstimation(expr, 50, data.argbounds[i], estimation))
-         {
-            nSuccess_++;
-         }
-         else
-         {
-            SCIPdebugMessage("test failed, printing test data:\n%s \n", data.toString(i).c_str());
-            //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
-         }
-
-         ++nExecutedTests_;
-         break;
-      }
-      //break;
-   }
-}
-
-void TestExprPiecewiseLinear::runEstimatorRandomTests()
-{
-   int ntests = 1e5;
-   int argvalspertest = 10;
-
-   addRandomEstimatorTests(ntests, std::make_pair(-100.0, 100.0), std::make_pair(-100.0, 100.0), false, argvalspertest);
-   runTests();
-}
-
+/** Check the given over- or underestimation at all knots of the spline */
 bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, Bound argbound, int &nerrors, SCIP_Real tolerance)
 {
    int olderrors = nerrors;
@@ -217,7 +235,104 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
    }
 }
 
+/** Check the vector of xVals for coinciding points and remove one of two coinciding
+ *  points from xvals and yvals
+  */
+void TestExprPiecewiseLinear::removeCoincidingPoints(ValVec &xvals, ValVec &yvals)
+{
+   double mindist = 1e-3;
+   SCIPdbgMsg("removing coinciding points from:\n");
+   SCIPdbgMsg("xvec: %s\n",sdscip::Vector::vec2string(xvals, std::string()).c_str());
+   SCIPdbgMsg("yvec: %s\n",sdscip::Vector::vec2string(yvals, std::string()).c_str());
+   double lastx = xvals[0];
+   for( auto it = xvals.begin() + 1; it != xvals.end(); /*++it*/)
+   {
+      int i = it - xvals.begin();
+      SCIPdbgMsg("i = %i, last x was %f, current x is %f, delta = %e\n", i, lastx, *it, *it - lastx);
+      if (*it - lastx <= mindist)
+      {
+         SCIPdbgMsg("erasing point (%f, %f)\n", *it, yvals[i]);
+         it = xvals.erase(it);
+         yvals.erase (yvals.begin()+i);
+         i = it - xvals.begin();
+         SCIPdbgMsg("done, i = %i, current point  is (%f, %f), delta with lastx = %f is %e\n", i, *it, yvals[i], lastx, *it - lastx);
+      }
+      else
+      {
+         ++it;
+         lastx = *it;
+      }
+   }
+}
 
+/** Run tests currently in the testData */
+void TestExprPiecewiseLinear::runTests()
+{
+   for(auto it = testsData_.begin(); it != testsData_.end(); ++it)
+   {
+      auto data = *it;
+      //SCIPdebugMessage("\n\n========================================================\n");
+      SCIPdebugMessage("Running test %s\n", data.label.c_str());
+
+      SCIP_EXPR* expr = createExprPiecewiseLinear(data);
+
+      //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+
+      for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
+      {
+         int i = valsIt - data.argvals.begin();
+
+         SCIPdbgMsg("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
+
+         EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
+
+         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_))
+            //if( sampleEstimation(expr, 50, data.argbounds[i], estimation))
+         {
+            nSuccess_++;
+         }
+         else
+         {
+            SCIPdebugMessage("test failed, printing test data:\n%s \n", data.toString(i).c_str());
+            //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+         }
+
+         ++nExecutedTests_;
+         break;
+      }
+      //break;
+   }
+}
+
+/** Create an Expression Piecewise Linear in blockmem of subscip_
+ *  SCIPexprFreeDeep must be called to free memory
+ */
+SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData data)
+{
+   SCIP_RETCODE retcode;
+   SCIP_EXPR* expr;
+   SCIP_EXPR* child;
+
+   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(data.points.first, data.points.second);
+
+   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
+   assert(retcode == SCIP_OKAY);
+
+   std::string identifier(data.label);
+   identifier.resize(10);
+
+   retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
+   assert(retcode == SCIP_OKAY);
+
+   return expr;
+
+}
+
+/***********************************************
+ *  Methods adding tests to testdata
+ ***********************************************/
+
+/** generate random tests and add to testdata */
 void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds)
 {
 
@@ -304,33 +419,7 @@ void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, 
    }
 }
 
-void TestExprPiecewiseLinear::removeCoincidingPoints(ValVec &xvals, ValVec &yvals)
-{
-   double mindist = 1e-3;
-   SCIPdbgMsg("removing coinciding points from:\n");
-   SCIPdbgMsg("xvec: %s\n",sdscip::Vector::vec2string(xvals, std::string()).c_str());
-   SCIPdbgMsg("yvec: %s\n",sdscip::Vector::vec2string(yvals, std::string()).c_str());
-   double lastx = xvals[0];
-   for( auto it = xvals.begin() + 1; it != xvals.end(); /*++it*/)
-   {
-      int i = it - xvals.begin();
-      SCIPdbgMsg("i = %i, last x was %f, current x is %f, delta = %e\n", i, lastx, *it, *it - lastx);
-      if (*it - lastx <= mindist)
-      {
-         SCIPdbgMsg("erasing point (%f, %f)\n", *it, yvals[i]);
-         it = xvals.erase(it);
-         yvals.erase (yvals.begin()+i);
-         i = it - xvals.begin();
-         SCIPdbgMsg("done, i = %i, current point  is (%f, %f), delta with lastx = %f is %e\n", i, *it, yvals[i], lastx, *it - lastx);
-      }
-      else
-      {
-         ++it;
-         lastx = *it;
-      }
-   }
-}
-
+/** Add numerics tests to the testdata */
 void TestExprPiecewiseLinear::addNumericsEstimatorTests()
 {
    /* Problem with rounding errors: underestimating from minus infinity to 4 */
@@ -352,6 +441,7 @@ void TestExprPiecewiseLinear::addNumericsEstimatorTests()
    }
 }
 
+/** Add some manually designed estimator tests to the EstimatorTestData */
 void TestExprPiecewiseLinear::addManualEstimatorTests()
 {
    /* A problem lookup from world2_from70 */
@@ -396,120 +486,61 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
 }
 
 
-EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Real argvals, Bound argbound, bool overestimate)
+/***********************************************
+ *  Methods running tests
+ ***********************************************/
+
+/** Add the manual tests to the testdata and then check estimators by
+ *  sampling points in the interval
+ *  */
+void TestExprPiecewiseLinear::runEstimatorManualTests()
 {
-   SCIP_Interval argbounds;
-   SCIP_Real coeffs;
-   SCIP_Real constant;
-   SCIP_Bool success;
-   argbounds.inf = argbound.first;
-   argbounds.sup = argbound.second;
+   addManualEstimatorTests();
 
-   SCIPdbgMsg("Got estimation: %f*x + %f\n", coeffs, constant);
-
-   EstimationData estimationData;
-   estimationData.coefficient = coeffs;
-   estimationData.constant = constant;
-   estimationData.overestimate = overestimate;
-
-   return estimationData;
-}
-
-bool TestExprPiecewiseLinear::sampleEstimation(SCIP_EXPR* expr, int nPoints, Bound argbound, EstimationData estimation)
-{
-
-   auto pcwlin = SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr));
-   SCIP_Real stepsize = (argbound.second - argbound.first) / (double) nPoints;
-   if (stepsize < 1e-6)
-      stepsize = 1; /* Sampling only once */
-
-   int localErrors = 0;
-   SCIP_Real invalidPoint = 0;
-   for (SCIP_Real argval = argbound.first; argval <= argbound.second; argval += stepsize)
+   //std::vector<double> xVals = {0, 0.25, 0.5, 0.75, 1};
+   //std::vector<double> yVals = {0, 0.15, 0.5, 0.85, 1};
+   bool overestimate = true;
+   for(auto data : testsData_)
    {
-      if (!verifyEstimation(pcwlin, estimation, argval, tolerance_))
+      SCIPdebugMessage("\n\n========================================================\n");
+      SCIPdebugMessage("Running test %s\n", data.label.c_str());
+
+      SCIP_EXPR* expr = createExprPiecewiseLinear(data);
+
+      SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+
+      for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
-         if (localErrors == 0)
-            invalidPoint = argval;
-         ++localErrors;
+         int i = valsIt - data.argvals.begin();
+
+         SCIPdebugMessage("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
+
+         EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], overestimate);
+
+         bool valid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
+         assert(valid);
       }
    }
-
-   /* Evaluate found problems  */
-   if (localErrors == 0)
-   {
-      ++nSuccess_;
-      SCIPdbgMsg("Estimation is valid at %i sampled points \n", nPoints);
-      return true;
-   }
-   else
-   {
-      nError_ += localErrors;
-      SCIPdebugMessage("Estimation is invalid at %i of %i sampled points first invalid point is x=%f\n", localErrors, nPoints, invalidPoint);
-      return false;
-   }
 }
 
-bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval, SCIP_Real tolerance)
+/** add and run the numerics tests */
+void TestExprPiecewiseLinear::runEstimatorNumericsTests()
 {
-
-   /* Evalute estimate*/
-   SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
-   /* Evalute lookup */
-   SCIP_Real funcval = (*pcwlin)(argval);
-
-   if (   (estimation.overestimate && funcval > estimationval - tolerance)
-      || (!estimation.overestimate && funcval + tolerance < estimationval  )
-   )
-   {
-      SCIPdebugMessage("!!!!! Estimation cuts off function at %e\n", argval);
-      SCIPdebugMessage("(funcval = %f, estimationval = %f, delta = %e)\n", funcval, estimationval, funcval - estimationval);
-      return false;
-   }
-   else
-   {
-      SCIPdbgMsg("Estimation is valid at %f\n", argval);
-      SCIPdbgMsg("(argval = %f, funcval = %f, estimationval = %f, delta = %e)\n", argval, funcval, estimationval, funcval - estimationval);
-      return true;
-   }
-
+   addNumericsEstimatorTests();
+   runTests();
 }
 
-double TestExprPiecewiseLinear::compareEstimationSpline(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval)
+/** add and run tests generated using random numbers */
+void TestExprPiecewiseLinear::runEstimatorRandomTests()
 {
-   /* Evalute estimate*/
-   SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
-   /* Evalute lookup */
-   spline::BSplineCurve<1, SCIP_Real>::interval_t interval = pcwlin->findInterval( argval );
-   SCIP_Real funcval = pcwlin->evaluate<0>(argval, interval);
-   return funcval - estimationval;
+   int ntests = 1e5;
+   int argvalspertest = 10;
+
+   addRandomEstimatorTests(ntests, std::make_pair(-100.0, 100.0), std::make_pair(-100.0, 100.0), false, argvalspertest);
+   runTests();
 }
 
-
-/** Create an Expression Piecewise Linear in blockmem of subscip_
- *  SCIPexprFreeDeep must be called to free memory
- */
-SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData data)
-{
-   SCIP_RETCODE retcode;
-   SCIP_EXPR* expr;
-   SCIP_EXPR* child;
-
-   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(data.points.first, data.points.second);
-
-   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
-   assert(retcode == SCIP_OKAY);
-
-   std::string identifier(data.label);
-   identifier.resize(10);
-
-   retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
-   assert(retcode == SCIP_OKAY);
-
-   return expr;
-
-}
-
+/* Check the lookup from world2 model */
 void TestExprPiecewiseLinear::runWorldLookup() {
 
 
@@ -517,6 +548,7 @@ void TestExprPiecewiseLinear::runWorldLookup() {
    SCIP_EXPR* expr;
    SCIP_EXPR* child;
    SCIP_VAR* arg;
+   bool overestimate = true;
 
    std::vector<double> xvals = {0, 0.25, 0.5, 0.75, 1};
    std::vector<double> yvals = {0, 0.15, 0.5, 0.85, 1};
@@ -524,7 +556,7 @@ void TestExprPiecewiseLinear::runWorldLookup() {
    auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(xvals, yvals);
 
    SCIPcreateVarBasic(subscip_, &arg, "argument", -SCIPinfinity(scip_), SCIPinfinity(scip_), 0, SCIP_VARTYPE_CONTINUOUS);
-   retcode = SCIPexprCreate(SCIPblkmem(scip_), &child, SCIP_EXPR_VARIDX, 0);
+   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
    assert(retcode == SCIP_OKAY);
 
    char identifier[7] = "lookup";
@@ -542,11 +574,21 @@ void TestExprPiecewiseLinear::runWorldLookup() {
    argvals = 8.5808151653009102e-01;
 
 
-   retcode = SCIPexprEstimateUser(expr, SCIPinfinity(scip_), &argvals, &argbounds, TRUE, &coeffs, &constant, &success);
+   retcode = SCIPexprEstimateUser(expr, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
+   test(retcode == SCIP_OKAY);
 
-   //(SCIP_Real infinity, SCIP_USEREXPRDATA* data, int nargs, SCIP_Real* argvals, SCIP_INTERVAL* argbounds, SCIP_Bool overestimate, SCIP_Real* coeffs, SCIP_Real* constant, SCIP_Bool *success)
+   EstimationData estimation;
+   estimation.coefficient = coeffs;
+   estimation.constant = constant;
+   estimation.overestimate = overestimate;
+   int nerrors(0);
+   sampleEstimationAtKnots(SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, std::make_pair(SCIPintervalGetInf( argbounds ), SCIPintervalGetSup( argbounds )), nerrors, 0.0);
 
+   ++nExecutedTests_;
+   nError_ += nerrors;
 
+   SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
+   SCIPreleaseVar(subscip_, &arg);
 
 }
 

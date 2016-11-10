@@ -1,5 +1,5 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
@@ -93,6 +93,7 @@ SCIP_RETCODE estimateSafe(
    SAFE_ESTIMATOR estimator,
    SCIP_Real *coefficient,
    SCIP_Real *intercept
+
    )
 {
    SCIPdebugMessage("%sestimating safe: (lb,ub) = (%1.3e,%1.3e), (x1,y1 = (%1.3e,%1.3e), (x2,y2) = (%1.3e,%1.3e), argval = %1.3e, type: %i\n",
@@ -124,22 +125,23 @@ SCIP_RETCODE estimateSafe(
 
    /* Compute the slope */
    if( mup ) {
-      SCIPdbgMsg("slope will be rounded up\n")
+      SCIPdbgMsg("slope will be rounded up\n");
       SCIPintervalSetRoundingModeUpwards();
    } else {
-      SCIPdbgMsg("slope will be rounded down\n")
+      SCIPdbgMsg("slope will be rounded down\n");
       SCIPintervalSetRoundingModeDownwards();
    }
 
    *coefficient = (y2 - y1) / (x2 - x1);
-   SCIPdbgMsg("coefficient is %e\n", *coefficient);
+   SCIPdbgMsg("coefficient is %1.16e\n", *coefficient);
 
    /* Compute the intercept */
    switch (estimator)
    {
       case SAFE_ESTIMATOR_TYPE_1:
       case SAFE_ESTIMATOR_TYPE_3:
-         /* We need err(m) to compute this intercept */
+         /* We need err(m) to compute this intercept
+          * */
          SCIP_Real merr;
          if (mup)
          {
@@ -150,13 +152,22 @@ SCIP_RETCODE estimateSafe(
          {
             SCIPintervalSetRoundingModeUpwards();
             merr = ( (y2 - y1 ) / (x2 - x1)) - *coefficient;
+
          }
-         SCIPdbgMsg("merr is %e\n", merr);
+         //SCIPdbgMsg("merr is %1.16e\n", merr);
 
          if (overestimate)
             SCIPintervalSetRoundingModeUpwards();
          else
             SCIPintervalSetRoundingModeDownwards();
+
+         /*
+         SCIPdbgMsg("b1 is %1.16e\n", b);
+         SCIPdbgMsg("b2 is %1.16e\n", y2-(*coefficient)*x2);
+         SCIPdbgMsg("safeguard is %1.16e\n",merr*ub);
+         SCIPdbgMsg("intercept w/o safeguard %1.16e\n",y1-(*coefficient)*x1);
+         SCIPdbgMsg("intercept w/  safeguard %1.16e\n",y1-(*coefficient)*x1 + merr*ub);
+          */
 
          if( overestimate && estimator == SAFE_ESTIMATOR_TYPE_1)
             *intercept = y1-(*coefficient)*x1 + merr*ub;
@@ -166,6 +177,14 @@ SCIP_RETCODE estimateSafe(
             *intercept = y1-(*coefficient)*x1 - merr*ub;
          else if (!overestimate && estimator == SAFE_ESTIMATOR_TYPE_3)
             *intercept = y1-(*coefficient)*x1 + merr*lb;
+
+
+         SCIPdbgMsg("got estimation %1.16e %+1.16e\n", *coefficient, *intercept);
+         SCIPdbgMsg("left point:  ( %1.16e,  %1.16e)\n", x1, y1);
+         SCIPdbgMsg("right point:  ( %1.16e,  %1.16e)\n", x2, y2);
+
+         SCIPdbgMsg("estimation at x1 = %1.16e = %1.16e\n", x1, x1* (*coefficient) + *intercept);
+
          break;
       case SAFE_ESTIMATOR_TYPE_2:
       case SAFE_ESTIMATOR_TYPE_4:
@@ -194,6 +213,8 @@ SCIP_RETCODE estimateSafe(
 
    /* Reset rounding mode */
    SCIPintervalSetRoundingMode(oldmode);
+
+   SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
 
    return SCIP_OKAY;
 }
@@ -473,6 +494,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 
       assert(!cvxhull.empty());
 
+      /* Loop over segments of convex hull to identify the segment that defines the estimator */
       for( auto it = cvxhull.begin(); it != cvxhull.end()-1; ++it)
       {
          SCIPdbgMsg("considering interval: (%f, %f) -> (%f, %f)\n", it->first, it->second, (it+1)->first, (it+1)->second);
@@ -488,11 +510,11 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
                e6valid = TRUE;
                SCIPdbgMsg("(x2,y1) = (%e,%e), ub = %e, e6 available\n", x2, y2, ub);
             }
+
             if (is_equal(x1, lb)) {
                e5valid = TRUE;
                SCIPdbgMsg("(x1,y1) = (%e,%e), lb = %e, e5 available\n", x1, y1, lb);
             }
-            //coeffs[0] = (y2-y1)/(x2-x1);
 
             SAFE_ESTIMATOR estimator = selectEstimator(overestimate, lb, ub, argvals[0], x1, x2, e5valid, e6valid);
             SCIPdebugMessage("selected safe linear estimator %i\n", estimator);
@@ -524,7 +546,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    estimation.constant = *constant;
    estimation.overestimate = overestimate;
    int nerrors(0);
-   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-9))
+   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 0.0))
    {
       SCIPdbgMsg("Invalid estimation:\n");
       SCIPdbgMsg("Estimation: %1.16e * x + %1.16e\n", coeffs[0], constant);
