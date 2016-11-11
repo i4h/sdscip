@@ -15,6 +15,7 @@ VERBOSE=n
 CLEAN=n
 CLEANONLY=n
 OPTFILE=""
+TARGET=""
 NCORES="8"
 # function definitions 
 function usage {
@@ -25,6 +26,8 @@ function usage {
  echo " -c          make clean first"
  echo " -o          make clean only"
  echo " -j ncores   how many process should be launched"
+ echo " -t target   make target "
+
 
  echo " -h          show this help"
  echo " -v          verbose mode"
@@ -32,7 +35,7 @@ function usage {
  [[ $# -eq 1 ]] && exit $1 || exit $EXIT_FAILURE
 }
 # List of Arguments. Option flags followed by a ":" require an option, flags not followed by an ":" are optionless
-while getopts ':j:vhco' OPTION ; do
+while getopts ':j:t:vhco' OPTION ; do
  case $OPTION in
  v) VERBOSE=y
  ;;
@@ -41,6 +44,8 @@ while getopts ':j:vhco' OPTION ; do
  o) CLEANONLY=y
  ;;
  j) NCORES="$OPTARG"
+ ;;
+ t) TARGET="$OPTARG"
  ;;
  h) usage $EXIT_SUCCESS
  ;;
@@ -85,16 +90,21 @@ echo "Making with "$makeFlags
 # clean if clean flag
 if [[ $CLEAN = y ]] ; then
     make -j $NCORES clean $makeFlags    
+    exit $?
 fi
 
 # clean if cleanonly flag
 if [[ $CLEANONLY = y ]] ; then
     make -j $NCORES clean $makeFlags    
+    exit $?
 fi
 
 # Make if not cleanonly
 if [[ $CLEANONLY = n ]] ; then
-    make -j $NCORES $makeFlags    
+    echo "make -j $NCORES $TARGET $makeFlags "
+
+    make -j $NCORES $TARGET $makeFlags    
+    exit $?
 fi
 
 exit $EXIT_SUCCESS

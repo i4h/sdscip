@@ -85,46 +85,142 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
 SCIP_RETCODE setRoundingModeFromBool(SCIP_Bool mup)
 {
    if (mup)
-      SCIPintervalSetRoundingModeDownwards();
-   else
       SCIPintervalSetRoundingModeUpwards();
+   else
+      SCIPintervalSetRoundingModeDownwards();
 
-   if (mup)
+   /*if (mup)
    {
       SCIPdbgMsg("Set rounding mode up\n");
    }
    else
    {
       SCIPdbgMsg("Set rounding mode down\n");
-   }
+   }*/
 
    return SCIP_OKAY;
 }
 
-/** Computes the closest upwards (downwards) rounded representation of y1 - x1*m
+/** Computes the closest upwards (downwards) rounded representation of y - x*m
  *  when mup is true (false)
  */
-SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y, SCIP_Real x, SCIP_Real m, SCIP_Bool resetmode)
-{
-   SCIP_ROUNDMODE oldmode;
-   if (resetmode)
-      oldmode = SCIPintervalGetRoundingMode();
+#if 0
+   if( mup)
+   {
+      if (std::signbit(m*x))
+      {
+         /* Round up for positive m*x */
+         roundup = true;
 
-   SCIP_Real intercept;
 
-   if (mup) {
-      /* If we are supposed to round up, we invert rounding for positive m*x */
-      if (std::signbit(m * x))
-         mup = !mup;
+      }
+      else
+      {
+         /* Round up for negative m*x */
+         roundup = false;
+
+      }
    }
    else
    {
-      /* If we are supposed to round down, we invert rounding for negative m*x  */
-      if (!std::signbit(m * x))
-         mup = !mup;
+      if (std::signbit(m*x))
+      {
+         /* Round down for positive m*x */
+         roundup = true;
+      }
+      else
+      {
+         /* Round down for negative m*x */
+         roundup = false;
+      }
    }
+#endif
+SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y, SCIP_Real x, SCIP_Real m, SCIP_Bool resetmode)
+{
+
+
+   SCIP_Real refProd = m*x;
+   SCIP_Real refIntercept=  y - m*x;
+   SCIP_Real refIntercept2 =  y - refProd;
+
+
+   assert(refIntercept == refIntercept2);
+
+   SCIP_ROUNDMODE oldmode;
+   SCIP_Real intercept;
+   if (resetmode)
+      oldmode = SCIPintervalGetRoundingMode();
+
+   bool roundup;
+
+   if( mup)
+   {
+      if (!std::signbit(m*x))
+      {
+         /* Round up for positive m*x: Round product downwards */
+         roundup = false;
+      }
+      else
+      {
+         /* Round up for negative m*x: Round product downwards */
+         roundup = false;
+
+      }
+   }
+   else
+   {
+      if (!std::signbit(m*x))
+      {
+          /* Round down for positive m*x: Round product up*/
+         roundup = true;
+      }
+      else
+      {
+         /* Round down for negative m*x: Round product up */
+         roundup = true;
+      }
+   }
+
+
+   setRoundingModeFromBool(roundup);
+   SCIP_Real prod = m*x;
+
    setRoundingModeFromBool(mup);
-   intercept = y - m*x;
+
+   intercept = y - prod;
+
+//   SCIPdebugMessage("Rounding %s %f - %f * %f\n", mup ? "up" : "down", y, m, x);
+
+
+   if (intercept != refIntercept)
+   {
+      SCIPdbgMsg("==============================================================\n");
+      SCIPdbgMsg("Rounding %s %f - %f * %f\n", mup ? "up" : "down", y, m, x);
+
+      SCIPdbgMsg("intercept is %s refIntercept\n", intercept < refIntercept ? "smaller" : (intercept> refIntercept ? "larger" : "equal"));
+
+      /* More output if something went wrong */
+      if (   (mup && intercept < refIntercept)
+         ||  (!mup && intercept > refIntercept))
+      {
+
+         SCIPdbgMsg("product was rounded %s\n", roundup ? "up" : "down");
+         SCIPdbgMsg("difference was rounded %s\n", mup ? "up" : "down");
+
+
+         SCIPdbgMsg("prod is %s refProd by %e\n", prod < refProd ? "smaller" : (prod > refProd ? "larger" : "equal"), std::abs(prod - refProd));
+         SCIPdbgMsg("delta: %e\n", prod - refProd);
+         SCIPdbgMsg("refintercept = %1.16e - %1.16e\n", y, m*x);
+         SCIPdbgMsg("refintercept2 = %1.16e - %1.16e\n", y, refProd);
+         SCIPdbgMsg("intercept = %1.16e - %1.16e\n", y, prod);
+      }
+   }
+
+   if (mup)
+      assert(intercept >= refIntercept);
+   else
+      assert(intercept <= refIntercept);
+
 
    if (resetmode)
       SCIPintervalSetRoundingMode(oldmode);
@@ -147,6 +243,7 @@ SCIP_RETCODE estimateSafe(
 
    )
 {
+   SCIPdebugMessage("\n");
    SCIPdebugMessage("%sestimating safe: (lb,ub) = (%f,%f)\n",
       (overestimate ? "over" : "under"), lb, ub);
    SCIPdebugMessage("(x1,y1 = (%f,%f), (x2,y2) = (%f,%f), argval = %f, type: %i\n",
@@ -156,6 +253,7 @@ SCIP_RETCODE estimateSafe(
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
 
    double otherm;
+   SCIP_Real intercept2;
 
    /* Decide how to round the slope */
    SCIP_Bool mup; /* If true, round the slope upwards, else round downwards */
@@ -229,11 +327,17 @@ SCIP_RETCODE estimateSafe(
           */
 
          if( overestimate && estimator == SAFE_ESTIMATOR_TYPE_1)
-            *intercept = y1-(*coefficient)*x1 + merr*ub;
+         {
+            SCIP_Real b = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y1, x1, *coefficient, true);
+            *intercept = b + merr*ub;
+         }
          else if (overestimate && estimator == SAFE_ESTIMATOR_TYPE_3)
             *intercept = y1-(*coefficient)*x1 - merr*lb;
          else if (!overestimate && estimator == SAFE_ESTIMATOR_TYPE_1)
-            *intercept = y1-(*coefficient)*x1 - merr*ub;
+         {
+            SCIP_Real b = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y2, x2, *coefficient, true);
+            *intercept = b - merr*ub;
+         }
          else if (!overestimate && estimator == SAFE_ESTIMATOR_TYPE_3)
             *intercept = y1-(*coefficient)*x1 + merr*lb;
 
@@ -275,35 +379,15 @@ SCIP_RETCODE estimateSafe(
 #endif
 
       case SAFE_ESTIMATOR_TYPE_2:
+         *intercept = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y2, x2, *coefficient, false);
+         break;
       case SAFE_ESTIMATOR_TYPE_4:
-         if (estimator == SAFE_ESTIMATOR_TYPE_2)
-         {
-            /* we know that x2 is negative. If coefficient is positive, rounding up(down) will
-             * lead to a smaller(larger) intercept after subtraction (inverse effect) */
-            if (*coefficient < 0)
-               mup = overestimate;
-            else
-               mup = !overestimate;
-         }
-         else
-         {
-            /* SAFE_ESTIMATOR_TYPE_4: we know that x1 is positive. If coefficient is negative, rounding up(down) will
-             * lead to a smaller(larger) intercept after subtraction (inverse effect)*/
-            if (*coefficient >= 0)
-               mup = overestimate;
-            else
-               mup = !overestimate;
-         }
+         *intercept = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y1, x1, *coefficient, false);
 
-         if (mup) {
-            SCIPdbgMsg("computing intercept by rounding up\n");
-            SCIPintervalSetRoundingModeUpwards();
-         } else {
-            SCIPdbgMsg("computing intercept by rounding down\n");
-            SCIPintervalSetRoundingModeDownwards();
-         }
+         //intercept2 = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y2, x2, *coefficient, false);
+         //SCIPdbgMsg("intercept - i2 is %e\n", *intercept - intercept2);
 
-         *intercept = y1-(*coefficient)*x1;
+         //*intercept = y1-(*coefficient)*x1;
          break;
 
       case SAFE_ESTIMATOR_TYPE_5:
@@ -313,26 +397,10 @@ SCIP_RETCODE estimateSafe(
          SCIPdbgMsg("mup set to %sestimate\n", mup? "over" : "under");
 
          if( estimator == SAFE_ESTIMATOR_TYPE_5)
-         {
-            /* Invert rounding if minuend in intercept calc is negative */
-            if (std::signbit((*coefficient)*x2) == false)
-            {
-               SCIPdbgMsg("inverting rounding mode\n");
-               mup = !mup;
-            }
-
-            setRoundingModeFromBool(mup);
-            *intercept = y2-(*coefficient)*x2;
-         }
+            *intercept = SCIPexprPiecewiseLinearRoundIntercept(mup, y2, x2, (*coefficient), false);
          else /* SAFE_ESTIMATOR_TYPE_6 */
-         {
-            /* Invert rounding if minuend in intercept calc is negative */
-            if (std::signbit((*coefficient)*x1) == false)
-               mup = !mup;
-
-            setRoundingModeFromBool(mup);
-            *intercept = y1-(*coefficient)*x1;
-         }
+            *intercept = SCIPexprPiecewiseLinearRoundIntercept(mup, y1, x1, (*coefficient), false);
+            //*intercept = y1-(*coefficient)*x1;
          break;
    }
 
@@ -357,11 +425,15 @@ SCIP_RETCODE estimateSafe(
    SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
    SCIPdbgMsg("checking at x1 = (%1.16e, %1.16e)\n", x1, y1);
    SCIPdbgMsg("evaluationval at x1 is %1.16e\n", x1* (*coefficient) + *intercept);
-   SCIPdbgMsg("diff is %1.16e\n", y1 - x1* (*coefficient) + *intercept);
+   //SCIPdbgMsg("evaluationval at x1 with i2 is %1.16e\n", x1* (*coefficient) + intercept2);
+
+   SCIPdbgMsg("diff is %1.16e\n", y1 - (x1* (*coefficient) + *intercept));
 
    SCIPdbgMsg("checking at x2 = (%1.16e, %1.16e)\n", x2, y2);
-   SCIPdbgMsg("evaluationval at x1 is %1.16e\n", x2* (*coefficient) + *intercept);
-   SCIPdbgMsg("diff is %1.16e\n", y2 - x2* (*coefficient) + *intercept);
+   SCIPdbgMsg("evaluationval at x2 is %1.16e\n", x2* (*coefficient) + *intercept);
+   //SCIPdbgMsg("evaluationval at x2 with i2 is %1.16e\n", x2* (*coefficient) + intercept2);
+
+   SCIPdbgMsg("diff is %1.16e\n", y2 - (x2* (*coefficient) + *intercept));
 
 
    if (overestimate)
@@ -470,7 +542,9 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
    SCIPdebugMessage( "intervals for bounds are %li and %li\n", begin, end );
    SCIPdebugMessage( "intervals for upper bound is [%f, %f]\n", linear.getInfimum(end), linear.getSupremum(end));
 
-   if( begin < end ) {
+   if( begin < end )
+   {
+      SCIPdbgMsg("evaluating pcwlin at %1.16e = %1.16e\n", linear.getSupremum(begin), linear(linear.getSupremum(begin)));
       SCIPdebugMessage( "pushing into convex  hull: (%f, %f)\n",linear.getSupremum(begin), linear.evaluate<0>( linear.getSupremum(begin), begin+1 ));
       convexHull.push_back( std::make_pair( linear.getSupremum(begin), linear.evaluate<0>( linear.getSupremum(begin), begin+1 ) ) );
    }
@@ -480,6 +554,7 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
    for( auto i = begin + 2; i <= end; ++i )
    {
       SCIPdbgMsg("considering interval %li\n",i);
+      SCIPdbgMsg("evaluating pcwlin at %1.16e = %1.16e\n", linear.getInfimum(i), linear(linear.getInfimum(i)));
       SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ));
       convexHull.push_back( std::make_pair( linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ) ) );
       grahamScanCheck<side> ( convexHull );
@@ -493,6 +568,7 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
 
 
    convexHull.push_back( std::make_pair( ub, linear.evaluate<0>( ub, end ) ) );
+   SCIPdbgMsg("evaluating pcwlin at %1.16e = %1.16e\n", ub, linear(ub));
    SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear.evaluate<0>( ub, end ));
    grahamScanCheck<side> ( convexHull );
 
@@ -500,7 +576,7 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
 
    for( int i = 0; i < convexHull.size(); ++i )
    {
-      SCIPdbgMsg( "(%g,%g)\n", convexHull[i].first, convexHull[i].second );
+      SCIPdbgMsg( "(%1.16e,%1.16e)\n", convexHull[i].first, convexHull[i].second );
    }
 
    return convexHull;

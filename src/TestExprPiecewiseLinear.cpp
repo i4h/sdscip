@@ -86,7 +86,7 @@ bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplin
    )
    {
       SCIPdebugMessage("!!!!! Estimation cuts off function at %e\n", argval);
-      SCIPdebugMessage("failed:  (argval = %f, funcval = %1.16e, estimationval = %1.16e, delta = %e)\n", argval, funcval, estimationval, funcval - estimationval);
+      SCIPdebugMessage("failed:  (argval = %1.16e, funcval = %1.16e, estimationval = %1.16e, delta = %e)\n", argval, funcval, estimationval, funcval - estimationval);
       //SCIPdebugMessage("(funcval = %f, estimationval = %f, delta = %e)\n", funcval, estimationval, funcval - estimationval);
       assert(false);
       return false;
@@ -124,6 +124,7 @@ EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Re
    argbounds.sup = argbound.second;
 
    retcode = SCIPexprEstimateUser(pcwlin, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
+   assert(retcode == SCIP_OKAY);
 
    SCIPdbgMsg("Got estimation: %f*x + %f\n", coeffs, constant);
 
@@ -286,6 +287,7 @@ void TestExprPiecewiseLinear::runTests()
 
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
+         SCIPdebugMessage("------------------test %i\n", nExecutedTests_);
          int i = valsIt - data.argvals.begin();
 
          SCIPdbgMsg("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
@@ -513,7 +515,7 @@ void TestExprPiecewiseLinear::runEstimatorManualTests()
 
       SCIP_EXPR* expr = createExprPiecewiseLinear(data);
 
-      SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+      SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
 
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
@@ -526,6 +528,7 @@ void TestExprPiecewiseLinear::runEstimatorManualTests()
          bool valid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
          assert(valid);
       }
+      SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
    }
 }
 
@@ -568,7 +571,7 @@ void TestExprPiecewiseLinear::runWorldLookup() {
    char identifier[7] = "lookup";
 
    retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
-   SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+   SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
    assert(retcode == SCIP_OKAY);
    SCIP_Real argvals;
    SCIP_Interval argbounds;
@@ -599,31 +602,116 @@ void TestExprPiecewiseLinear::runWorldLookup() {
 }
 
 /** Test SCIPexprPiecewiseLinearRoundIntercept */
-void TestExprPiecewiseLinear::runTestRoundIntercept()
+void TestExprPiecewiseLinear::runTestRoundInterceptManual()
 {
-   SCIP_Real m = 1;
-   SCIP_Real y1 = 0;
-
-   for (SCIP_Real x1 : { 1.0, -1.0 })
+   for (SCIP_Real m : {-1.038491, 2.9000000000000000e+01, 3.4128840547925953e-01, 1.0, -1.0 , 8.0, 100.0})
    {
-      for (bool mup : { false, true })
+      for (SCIP_Real y : {-7.267569, -2.1557307982166996e+01, 5.1745324985441911e+01, 1.0, -1.0, -2.5, 3.0, 10.0 })
       {
-         SCIP_Real nearest =y1 - m *x1;
-         SCIP_Real rounded = SCIPexprPiecewiseLinearRoundIntercept(mup, y1, x1, m, true);
-         if (mup)
-            assert(rounded >= nearest);
-         else
-            assert(rounded <= nearest);
+         for (SCIP_Real x : {15.239910, -7.4537723325333704e-01, 7.0000000000000000e+00, 1.0, -1.0, 2.0, 3.0, -4.0, -10.0 })
+         {
+            for (bool updown : {false, true})
+            {
+               SCIP_Real nearest = y - m*x;
+               SCIP_Real rounded = SCIPexprPiecewiseLinearRoundIntercept(updown, y, x, m, true);
+               if (rounded == nearest)
+               {
+                  SCIPdbgMsg("numbers are equal\n");
+               }
+
+               if (updown)
+                  assert(rounded >= nearest);
+               else
+                  assert(rounded <= nearest);
+            }
+         }
       }
    }
 }
 
+/** Test SCIPexprPiecewiseLinearRoundIntercept */
+void TestExprPiecewiseLinear::runTestRoundIntercept(bool updown, bool positive, SCIP_Real base)
+{
+   std::vector<SCIP_Real> yvec;
+   std::vector<SCIP_Real> mvec;
+   std::vector<SCIP_Real> xvec;
+
+   SCIPintervalSetRoundingModeToNearest();
+
+
+   for (int exponent = 0; std::pow(base,exponent) <= 1e10; ++exponent)
+   {
+      SCIP_Real val = std::pow(base,exponent);
+      yvec.push_back(val);
+      yvec.push_back(-val);
+      mvec.push_back(val);
+      if (positive)
+         xvec.push_back(val);
+      else
+         xvec.push_back(-val);
+   }
+
+   for (SCIP_Real m : mvec)
+   {
+      for (SCIP_Real y : yvec)
+      {
+         for (SCIP_Real x : xvec)
+         {
+
+            SCIP_Real nearest = y - m*x;
+            SCIP_Real rounded = SCIPexprPiecewiseLinearRoundIntercept(updown, y, x, m, true);
+
+            if (rounded != nearest)
+            {
+               /* Only if numbers are  different we can test something */
+               ++nExecutedTests_;
+               if (updown)
+               {
+                  if (rounded < nearest) {
+                     SCIPdebugMessage("n: %i, supposed to round up but rounded is smaller by %e\n", nExecutedTests_, nearest - rounded);
+                  }
+                  test(rounded >= nearest);
+                  assert(rounded >= nearest);
+               }
+               else
+               {
+                  if (rounded > nearest) {
+                     SCIPdebugMessage("n: %i, supposed to round down but rounded is larger by %e\n", nExecutedTests_, nearest - rounded);
+                  }
+                  test(rounded <= nearest);
+                  assert(rounded <= nearest);
+               }
+            }
+            else
+            {
+               //SCIPdebugMessage("numbers are equal\n");
+            }
+         } /* Close loop over x values */
+      }
+   }
+}
+void TestExprPiecewiseLinear::runAllTestRoundIntercept()
+{
+
+   runTestRoundIntercept(true, true, 1.5);
+   runTestRoundIntercept(true, false, 1.5);
+   runTestRoundIntercept(false, true, 1.5);
+   runTestRoundIntercept(false, false, 1.5);
+   runEstimatorManualTests();
+}
+
+
+
 void TestExprPiecewiseLinear::runAll()
 {
    SCIPdbgMsg("running all\n");
+
+   //runAllTestRoundIntercept();
+
+
    //runWorldLookup();
-   //runEstimatorRandomTests();
-   runTestRoundIntercept();
+
+   runEstimatorRandomTests();
 }
 
 
