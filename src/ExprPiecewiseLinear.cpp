@@ -257,8 +257,18 @@ SCIP_RETCODE estimateSafe(
    SCIPdebugMessage("\n");
    SCIPdebugMessage("%sestimating safe: (lb,ub) = (%f,%f)\n",
       (overestimate ? "over" : "under"), lb, ub);
-   SCIPdebugMessage("(x1,y1 = (%f,%f), (x2,y2) = (%f,%f), argval = %f, type: %i\n",
+   SCIPdebugMessage("(x1,y1 = (%1.17e,%1.17e), (x2,y2) = (%1.17e,%1.17e), argval = %f, type: %i\n",
       x1, y1, x2, y2, argval, estimator);
+
+   SCIPdebugMessage("slope is (%1.17e - %1.17e) / (%1.17e -%1.17e)\n", y2, y1, x2, x1);
+
+   SCIPdebugMessage("intercept from x1 is %1.17e - (%1.17e - %1.17e) / (%1.17e - %1.17e) * %1.17e\n", y1, y2, y1, x2, x1, x1);
+   SCIPdebugMessage("intercept from x1 is %1.17e - (%1.17e - %1.17e) / (%1.17e - %1.17e) * %1.17e\n", y2, y2, y1, x2, x1, x2);
+
+   const SCIP_Interval y1i = {y1, y1};
+   const SCIP_Interval y2i = {y2, y2};
+   const SCIP_Interval x1i = {x1, x1};
+   const SCIP_Interval x2i = {x2, x2};
 
 
 
@@ -344,10 +354,6 @@ SCIP_RETCODE estimateSafe(
    }
    else
    {
-      SCIP_Interval y1i = {y1, y1};
-      SCIP_Interval y2i = {y2, y2};
-      SCIP_Interval x1i = {x1, x1};
-      SCIP_Interval x2i = {x2, x2};
       SCIP_Interval m;
       m = (y2i - y1i) / (x2i-x1i);
       SCIPdbgMsg("m is %1.17e, %1.17e\n", m.inf, m.sup);
@@ -514,17 +520,37 @@ SCIP_RETCODE estimateSafe(
    /* Reset rounding mode */
    SCIPintervalSetRoundingModeToNearest();
 
+   SCIPdbgMsg("checking estimation using intervalarith\n");
+   SCIP_Interval mi = {*coefficient, *coefficient};
+   SCIP_Interval bi = {*intercept, *intercept};
+   SCIP_Interval myy1;
+   SCIP_Interval myy2;
+   SCIP_Interval myy1prod;
+   SCIP_Interval myy2prod;
+
+
+   myy1 = mi * x1i + bi;
+   myy2 = mi * x2i + bi;
+   myy1prod = mi * x1i;
+   myy2prod = mi * x2i;
+
 
    SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
    SCIPdbgMsg("checking at x1 = (%1.17e, %1.17e)\n", x1, y1);
    SCIPdbgMsg("evaluationval at x1 is %1.17e\n", x1* (*coefficient) + *intercept);
    //SCIPdbgMsg("evaluationval at x1 with i2 is %1.17e\n", x1* (*coefficient) + intercept2);
+   SCIPdbgMsg("x1 interval is [%1.17e, %1.17e]\n", myy1.inf, myy1.sup);
+   SCIPdbgMsg("x1prod is [%1.17e, %1.17e]\n", myy1prod.inf, myy1prod.sup);
+
 
    SCIPdbgMsg("diff is %1.17e\n", y1 - (x1* (*coefficient) + *intercept));
 
    SCIPdbgMsg("checking at x2 = (%1.17e, %1.17e)\n", x2, y2);
    SCIPdbgMsg("evaluationval at x2 is %1.17e\n", x2* (*coefficient) + *intercept);
    //SCIPdbgMsg("evaluationval at x2 with i2 is %1.17e\n", x2* (*coefficient) + intercept2);
+   SCIPdbgMsg("x2 interval is [%1.17e, %1.17e]\n", myy2.inf, myy2.sup);
+   SCIPdbgMsg("x2prod is      [%1.17e, %1.17e]\n", myy2prod.inf, myy2prod.sup);
+
 
    SCIPdbgMsg("diff is %1.17e\n", y2 - (x2* (*coefficient) + *intercept));
 
