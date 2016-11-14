@@ -89,8 +89,8 @@ echo "Making with "$makeFlags
 
 # clean if clean flag
 if [[ $CLEAN = y ]] ; then
-    make -j $NCORES clean $makeFlags    
-    exit $?
+    # Exit on fail (can clean fail)
+    make -j $NCORES clean $makeFlags  || exit $?
 fi
 
 # clean if cleanonly flag
