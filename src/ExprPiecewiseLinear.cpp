@@ -191,6 +191,17 @@ SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y, SCIP
 
 //   SCIPdebugMessage("Rounding %s %f - %f * %f\n", mup ? "up" : "down", y, m, x);
 
+   /* compare with interval computation */
+   SCIP_Interval yi = {y,y};
+   SCIP_Interval mi = {m,m};
+   SCIP_Interval xi = {x,x};
+   SCIP_Interval bi;
+   bi = yi - mi * xi;
+
+   SCIPdbgMsg("interval is [%1.16e, %1.16e]\n", bi.inf, bi.sup);
+
+
+
 
    if (intercept != refIntercept)
    {
@@ -210,9 +221,9 @@ SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y, SCIP
 
          SCIPdbgMsg("prod is %s refProd by %e\n", prod < refProd ? "smaller" : (prod > refProd ? "larger" : "equal"), std::abs(prod - refProd));
          SCIPdbgMsg("delta: %e\n", prod - refProd);
-         SCIPdbgMsg("refintercept = %1.16e - %1.16e\n", y, m*x);
-         SCIPdbgMsg("refintercept2 = %1.16e - %1.16e\n", y, refProd);
-         SCIPdbgMsg("intercept = %1.16e - %1.16e\n", y, prod);
+         SCIPdbgMsg("refintercept = %1.17e - %1.17e\n", y, m*x);
+         SCIPdbgMsg("refintercept2 = %1.17e - %1.17e\n", y, refProd);
+         SCIPdbgMsg("intercept = %1.17e - %1.17e\n", y, prod);
       }
    }
 
@@ -250,7 +261,11 @@ SCIP_RETCODE estimateSafe(
       x1, y1, x2, y2, argval, estimator);
 
 
+
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
+   SCIP_Real coefficient2;
+   SCIP_Real coefficient3;
+
 
    double otherm;
    SCIP_Real intercept2;
@@ -290,7 +305,65 @@ SCIP_RETCODE estimateSafe(
    }
 
    *coefficient = (y2 - y1) / (x2 - x1);
-   SCIPdbgMsg("coefficient is %1.16e\n", *coefficient);
+   SCIPdbgMsg("coefficient is %1.17e\n", *coefficient);
+
+
+   /* Compute the slope rounding the other way */
+   if( mup )
+   {
+      SCIPintervalSetRoundingModeDownwards();
+   }
+   else
+   {
+      SCIPintervalSetRoundingModeUpwards();
+   }
+
+   coefficient2 = (y2 - y1) / (x2 - x1);
+   SCIPdbgMsg("coefficient2 is %1.17e\n", coefficient2);
+   if (mup)
+      assert(*coefficient >= coefficient2);
+   else
+      assert(*coefficient <= coefficient2);
+
+   /* Compute the slope as nearest */
+   SCIPintervalSetRoundingModeToNearest();
+   coefficient3 = (y2 - y1) / (x2 - x1);
+   SCIPdbgMsg("coefficient3 is %1.17e\n", coefficient3);
+   if (mup) {
+      assert(*coefficient >= coefficient3);
+      assert(coefficient2 <= coefficient3);
+   } else {
+      assert(*coefficient <= coefficient3);
+      assert(coefficient2 >= coefficient3);
+   }
+
+   /* Compute the slope using intervalarithmetics */
+   if (mup)
+   {
+
+   }
+   else
+   {
+      SCIP_Interval y1i = {y1, y1};
+      SCIP_Interval y2i = {y2, y2};
+      SCIP_Interval x1i = {x1, x1};
+      SCIP_Interval x2i = {x2, x2};
+      SCIP_Interval m;
+      m = (y2i - y1i) / (x2i-x1i);
+      SCIPdbgMsg("m is %1.17e, %1.17e\n", m.inf, m.sup);
+
+      SCIPintervalSetRoundingModeDownwards();
+      SCIP_Real numerator = y2 - y1;
+      SCIPintervalSetRoundingModeUpwards();
+      SCIP_Real denominator = x2 - x1;
+      SCIPintervalSetRoundingModeDownwards();
+      SCIPdbgMsg("by hand %1.17e\n", numerator / denominator);
+
+
+   }
+
+
+
 
    /* Compute the intercept */
    switch (estimator)
@@ -397,15 +470,31 @@ SCIP_RETCODE estimateSafe(
          SCIPdbgMsg("mup set to %sestimate\n", mup? "over" : "under");
 
          if( estimator == SAFE_ESTIMATOR_TYPE_5)
+         {
+            SCIPintervalSetRoundingModeToNearest();
+            SCIP_Real refIntercept = y2 - x2*(*coefficient);
+            SCIPdbgMsg("refIntercept is %1.16e\n", refIntercept);
+            SCIPdbgMsg("refVal at x1 is %1.16e\n", refIntercept + x1 *(*coefficient));
+            SCIPdbgMsg("refVal at x2 is %1.16e\n", refIntercept + x2 *(*coefficient));
             *intercept = SCIPexprPiecewiseLinearRoundIntercept(mup, y2, x2, (*coefficient), false);
+            SCIPdbgMsg("intercept is %1.16e\n", *intercept);
+
+         }
          else /* SAFE_ESTIMATOR_TYPE_6 */
+         {
+            SCIPintervalSetRoundingModeToNearest();
+            SCIP_Real refIntercept = y2 - x2*(*coefficient);
+            SCIPdbgMsg("refIntercept is %1.16e\n", refIntercept);
+            SCIPdbgMsg("refVal at x1 is %1.16e\n", refIntercept + x1 *(*coefficient));
+            SCIPdbgMsg("refVal at x2 is %1.16e\n", refIntercept + x2 *(*coefficient));
             *intercept = SCIPexprPiecewiseLinearRoundIntercept(mup, y1, x1, (*coefficient), false);
+            SCIPdbgMsg("intercept is %1.16e\n", *intercept);
             //*intercept = y1-(*coefficient)*x1;
+         }
          break;
    }
 
-   /* Reset rounding mode */
-   SCIPintervalSetRoundingMode(oldmode);
+
 
    /*SCIPdbgMsg("using fixed slope of %1.16e\n", *coefficient);
    SCIPdbgMsg("trying to make line go through x2,y2\n");
@@ -422,18 +511,22 @@ SCIP_RETCODE estimateSafe(
    */
 
 
+   /* Reset rounding mode */
+   SCIPintervalSetRoundingModeToNearest();
+
+
    SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
-   SCIPdbgMsg("checking at x1 = (%1.16e, %1.16e)\n", x1, y1);
-   SCIPdbgMsg("evaluationval at x1 is %1.16e\n", x1* (*coefficient) + *intercept);
-   //SCIPdbgMsg("evaluationval at x1 with i2 is %1.16e\n", x1* (*coefficient) + intercept2);
+   SCIPdbgMsg("checking at x1 = (%1.17e, %1.17e)\n", x1, y1);
+   SCIPdbgMsg("evaluationval at x1 is %1.17e\n", x1* (*coefficient) + *intercept);
+   //SCIPdbgMsg("evaluationval at x1 with i2 is %1.17e\n", x1* (*coefficient) + intercept2);
 
-   SCIPdbgMsg("diff is %1.16e\n", y1 - (x1* (*coefficient) + *intercept));
+   SCIPdbgMsg("diff is %1.17e\n", y1 - (x1* (*coefficient) + *intercept));
 
-   SCIPdbgMsg("checking at x2 = (%1.16e, %1.16e)\n", x2, y2);
-   SCIPdbgMsg("evaluationval at x2 is %1.16e\n", x2* (*coefficient) + *intercept);
-   //SCIPdbgMsg("evaluationval at x2 with i2 is %1.16e\n", x2* (*coefficient) + intercept2);
+   SCIPdbgMsg("checking at x2 = (%1.17e, %1.17e)\n", x2, y2);
+   SCIPdbgMsg("evaluationval at x2 is %1.17e\n", x2* (*coefficient) + *intercept);
+   //SCIPdbgMsg("evaluationval at x2 with i2 is %1.17e\n", x2* (*coefficient) + intercept2);
 
-   SCIPdbgMsg("diff is %1.16e\n", y2 - (x2* (*coefficient) + *intercept));
+   SCIPdbgMsg("diff is %1.17e\n", y2 - (x2* (*coefficient) + *intercept));
 
 
    if (overestimate)
@@ -446,6 +539,9 @@ SCIP_RETCODE estimateSafe(
       assert( (x1*(*coefficient) + (*intercept) ) <= y1  );
       assert( (x2*(*coefficient) + (*intercept) ) <= y2  );
    }
+
+   /* Reset rounding mode */
+   SCIPintervalSetRoundingMode(oldmode);
 
 
    return SCIP_OKAY;
@@ -544,9 +640,8 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
 
    if( begin < end )
    {
-      SCIPdbgMsg("evaluating pcwlin at %1.16e = %1.16e\n", linear.getSupremum(begin), linear(linear.getSupremum(begin)));
-      SCIPdebugMessage( "pushing into convex  hull: (%f, %f)\n",linear.getSupremum(begin), linear.evaluate<0>( linear.getSupremum(begin), begin+1 ));
-      convexHull.push_back( std::make_pair( linear.getSupremum(begin), linear.evaluate<0>( linear.getSupremum(begin), begin+1 ) ) );
+      SCIPdebugMessage( "pushing into convex  hull: (%f, %f)\n",linear.getSupremum(begin), linear( linear.getSupremum(begin)));
+      convexHull.push_back( std::make_pair( linear.getSupremum(begin), linear( linear.getSupremum(begin) ) ) );
    }
 
    SCIPdebugMessage( "Starting computation of convex hull with %li points (%g,%g) (%g,%g)\n", convexHull.size(), convexHull.front().first, convexHull.front().second, convexHull.back().first, convexHull.back().second );
@@ -554,9 +649,8 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
    for( auto i = begin + 2; i <= end; ++i )
    {
       SCIPdbgMsg("considering interval %li\n",i);
-      SCIPdbgMsg("evaluating pcwlin at %1.16e = %1.16e\n", linear.getInfimum(i), linear(linear.getInfimum(i)));
-      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ));
-      convexHull.push_back( std::make_pair( linear.getInfimum(i), linear.evaluate<0>( linear.getInfimum(i), i ) ) );
+      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",linear.getInfimum(i), linear( linear.getInfimum(i)));
+      convexHull.push_back( std::make_pair( linear.getInfimum(i), linear( linear.getInfimum(i)) ) );
       grahamScanCheck<side> ( convexHull );
       std::ostringstream oss;
       for( auto point : convexHull)
@@ -567,16 +661,16 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
    }
 
 
-   convexHull.push_back( std::make_pair( ub, linear.evaluate<0>( ub, end ) ) );
-   SCIPdbgMsg("evaluating pcwlin at %1.16e = %1.16e\n", ub, linear(ub));
-   SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear.evaluate<0>( ub, end ));
+   convexHull.push_back( std::make_pair( ub, linear( ub ) ) );
+   SCIPdbgMsg("evaluating pcwlin at %1.17e = %1.17e\n", ub, linear(ub));
+   SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear( ub ));
    grahamScanCheck<side> ( convexHull );
 
    SCIPdbgMsg( "Convex hull from inner points is:\n" );
 
    for( int i = 0; i < convexHull.size(); ++i )
    {
-      SCIPdbgMsg( "(%1.16e,%1.16e)\n", convexHull[i].first, convexHull[i].second );
+      SCIPdbgMsg( "(%1.17e,%1.17e)\n", convexHull[i].first, convexHull[i].second );
    }
 
    return convexHull;
@@ -744,14 +838,14 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
             /* Check availability of class-2 estimators ( $\underline x = x1 or \bar x = x2$) */
             if (is_equal(x2, lb))
             {
-               e6valid = TRUE;
-               SCIPdbgMsg("(x2,y1) = (%e,%e), ub = %e, e6 available\n", x2, y2, ub);
+               e5valid = TRUE;
+               SCIPdbgMsg("(x2,y1) = (%e,%e), ub = %e, e5 available\n", x2, y2, ub);
             }
 
             if (is_equal(x1, lb))
             {
-               e5valid = TRUE;
-               SCIPdbgMsg("(x1,y1) = (%e,%e), lb = %e, e5 available\n", x1, y1, lb);
+               e6valid = TRUE;
+               SCIPdbgMsg("(x1,y1) = (%e,%e), lb = %e, e6 available\n", x1, y1, lb);
             }
 
             SAFE_ESTIMATOR estimator = selectEstimator(overestimate, lb, ub, argvals[0], x1, x2, e5valid, e6valid);
@@ -787,7 +881,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 0.0))
    {
       SCIPdbgMsg("Invalid estimation:\n");
-      SCIPdbgMsg("Estimation: %1.16e * x + %1.16e\n", coeffs[0], constant);
+      SCIPdbgMsg("Estimation: %1.17e * x + %1.17e\n", coeffs[0], constant);
 
       /* Print lookup points */
       auto coeffs = data->lookup->getCoefficients();
@@ -800,9 +894,9 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
          oss << std::string("(") << std::to_string(data->lookup->getKnot(i)) << std::string(", ") << std::to_string(*it) << std::string(")");
       }
       SCIPdbgMsg("Points: %s\n", oss.str().c_str());
-      SCIPdbgMsg("argbounds: [%1.16e, %1.16e]\n",SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] ));
-      SCIPdbgMsg("lb/ub: [%1.16e, %1.16e]\n",lb, ub);
-      SCIPdbgMsg("argval: %1.16e\n", argvals[0]);
+      SCIPdbgMsg("argbounds: [%1.17e, %1.17e]\n",SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] ));
+      SCIPdbgMsg("lb/ub: [%1.17e, %1.17e]\n",lb, ub);
+      SCIPdbgMsg("argval: %1.17e\n", argvals[0]);
 
       assert(false);
    }

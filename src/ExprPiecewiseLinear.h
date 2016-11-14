@@ -11,6 +11,7 @@
 #include <nlpi/type_expr.h>
 #include <boost/shared_ptr.hpp>
 #include <fenv.h>
+#include <float.h>
 
 #ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
 #include "TestExprPiecewiseLinear.hpp"
