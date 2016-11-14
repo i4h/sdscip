@@ -329,23 +329,6 @@ SCIP_RETCODE estimateSafe(
    }
 
    coefficient2 = (y2 - y1) / (x2 - x1);
-   SCIPdbgMsg("coefficient2 is %1.17e\n", coefficient2);
-   if (mup)
-      assert(*coefficient >= coefficient2);
-   else
-      assert(*coefficient <= coefficient2);
-
-   /* Compute the slope as nearest */
-   SCIPintervalSetRoundingModeToNearest();
-   coefficient3 = (y2 - y1) / (x2 - x1);
-   SCIPdbgMsg("coefficient3 is %1.17e\n", coefficient3);
-   if (mup) {
-      assert(*coefficient >= coefficient3);
-      assert(coefficient2 <= coefficient3);
-   } else {
-      assert(*coefficient <= coefficient3);
-      assert(coefficient2 >= coefficient3);
-   }
 
    /* Compute the slope using intervalarithmetics */
    if (mup)
@@ -500,70 +483,37 @@ SCIP_RETCODE estimateSafe(
          break;
    }
 
-
-
-   /*SCIPdbgMsg("using fixed slope of %1.16e\n", *coefficient);
-   SCIPdbgMsg("trying to make line go through x2,y2\n");
-   SCIP_Real b = (*coefficient)*x2;
-   SCIPdbgMsg("got b = %1.16e\n",b);
-   SCIPdbgMsg("this gives my f(x2) = %1.16e\n", (*coefficient) * x2 + b);
-   SCIPdbgMsg("trying again but rounding down\n");
-   SCIPintervalSetRoundingModeDownwards();
-   b = (*coefficient)*x2;
-   SCIPdbgMsg("got b = %1.16e\n",b);
-   SCIPdbgMsg("this gives my f(x2) = %1.16e\n", (*coefficient) * x2 + b);
-
-   SCIPintervalSetRoundingMode(oldmode);
-   */
-
-
    /* Reset rounding mode */
    SCIPintervalSetRoundingModeToNearest();
+
 
    SCIPdbgMsg("checking estimation using intervalarith\n");
    SCIP_Interval mi = {*coefficient, *coefficient};
    SCIP_Interval bi = {*intercept, *intercept};
    SCIP_Interval myy1;
    SCIP_Interval myy2;
-   SCIP_Interval myy1prod;
-   SCIP_Interval myy2prod;
-
 
    myy1 = mi * x1i + bi;
    myy2 = mi * x2i + bi;
-   myy1prod = mi * x1i;
-   myy2prod = mi * x2i;
 
 
    SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
    SCIPdbgMsg("checking at x1 = (%1.17e, %1.17e)\n", x1, y1);
-   SCIPdbgMsg("evaluationval at x1 is %1.17e\n", x1* (*coefficient) + *intercept);
-   //SCIPdbgMsg("evaluationval at x1 with i2 is %1.17e\n", x1* (*coefficient) + intercept2);
    SCIPdbgMsg("x1 interval is [%1.17e, %1.17e]\n", myy1.inf, myy1.sup);
-   SCIPdbgMsg("x1prod is [%1.17e, %1.17e]\n", myy1prod.inf, myy1prod.sup);
-
-
-   SCIPdbgMsg("diff is %1.17e\n", y1 - (x1* (*coefficient) + *intercept));
 
    SCIPdbgMsg("checking at x2 = (%1.17e, %1.17e)\n", x2, y2);
-   SCIPdbgMsg("evaluationval at x2 is %1.17e\n", x2* (*coefficient) + *intercept);
-   //SCIPdbgMsg("evaluationval at x2 with i2 is %1.17e\n", x2* (*coefficient) + intercept2);
    SCIPdbgMsg("x2 interval is [%1.17e, %1.17e]\n", myy2.inf, myy2.sup);
-   SCIPdbgMsg("x2prod is      [%1.17e, %1.17e]\n", myy2prod.inf, myy2prod.sup);
-
-
-   SCIPdbgMsg("diff is %1.17e\n", y2 - (x2* (*coefficient) + *intercept));
 
 
    if (overestimate)
    {
-      assert( (x1*(*coefficient) + (*intercept) ) >= y1  );
-      assert( (x2*(*coefficient) + (*intercept) ) >= y2  );
+      assert( myy1.sup >= y1  );
+      assert( myy2.sup >= y2  );
    }
    else
    {
-      assert( (x1*(*coefficient) + (*intercept) ) <= y1  );
-      assert( (x2*(*coefficient) + (*intercept) ) <= y2  );
+      assert( myy1.inf <= y1  );
+      assert( myy2.inf <= y2  );
    }
 
    /* Reset rounding mode */
@@ -904,7 +854,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    estimation.constant = *constant;
    estimation.overestimate = overestimate;
    int nerrors(0);
-   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 0.0))
+   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-14))
    {
       SCIPdbgMsg("Invalid estimation:\n");
       SCIPdbgMsg("Estimation: %1.17e * x + %1.17e\n", coeffs[0], constant);
