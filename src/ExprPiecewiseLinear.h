@@ -62,7 +62,7 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
 /** Computes the closest upwards (downwards) rounded representation of y1 - x1*m
  *  when mup is true (false)
  */
-SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y1, SCIP_Real x1, SCIP_Real m, SCIP_Bool resetmode);
+
 
 #ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
 SCIP_RETCODE estimateSafe(
