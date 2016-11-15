@@ -287,7 +287,7 @@ void TestExprPiecewiseLinear::runTests()
 
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
-         SCIPdebugMessage("------------------test %i\n", nExecutedTests_);
+         SCIPdebugMessage("------------------test %i\n", (nExecutedTests_ - 1) );
          int i = valsIt - data.argvals.begin();
 
          SCIPdbgMsg("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
@@ -295,20 +295,15 @@ void TestExprPiecewiseLinear::runTests()
          EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
 
          if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_))
-            //if( sampleEstimation(expr, 50, data.argbounds[i], estimation))
-         {
             nSuccess_++;
-         }
          else
          {
             SCIPdebugMessage("test failed, printing test data:\n%s \n", data.toString(i).c_str());
-            //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+            SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
          }
-
          ++nExecutedTests_;
-         break;
       }
-      //break;
+      SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
    }
 }
 

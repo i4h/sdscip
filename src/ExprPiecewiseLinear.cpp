@@ -1,5 +1,5 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 
 
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
@@ -143,7 +143,6 @@ SCIP_Real SCIPexprPiecewiseLinearRoundIntercept(SCIP_Bool mup, SCIP_Real y, SCIP
    SCIP_Real refIntercept=  y - m*x;
    SCIP_Real refIntercept2 =  y - refProd;
 
-
    assert(refIntercept == refIntercept2);
 
    SCIP_ROUNDMODE oldmode;
@@ -269,16 +268,10 @@ SCIP_RETCODE estimateSafe(
    const SCIP_Interval y2i = {y2, y2};
    const SCIP_Interval x1i = {x1, x1};
    const SCIP_Interval x2i = {x2, x2};
-
-
+   SCIP_Interval coefficienti = (y2i - y1i) / (x2i - x1i);
 
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
    SCIP_Real coefficient2;
-   SCIP_Real coefficient3;
-
-
-   double otherm;
-   SCIP_Real intercept2;
 
    /* Decide how to round the slope */
    SCIP_Bool mup; /* If true, round the slope upwards, else round downwards */
@@ -330,27 +323,6 @@ SCIP_RETCODE estimateSafe(
 
    coefficient2 = (y2 - y1) / (x2 - x1);
 
-   /* Compute the slope using intervalarithmetics */
-   if (mup)
-   {
-
-   }
-   else
-   {
-      SCIP_Interval m;
-      m = (y2i - y1i) / (x2i-x1i);
-      SCIPdbgMsg("m is %1.17e, %1.17e\n", m.inf, m.sup);
-
-      SCIPintervalSetRoundingModeDownwards();
-      SCIP_Real numerator = y2 - y1;
-      SCIPintervalSetRoundingModeUpwards();
-      SCIP_Real denominator = x2 - x1;
-      SCIPintervalSetRoundingModeDownwards();
-      SCIPdbgMsg("by hand %1.17e\n", numerator / denominator);
-
-
-   }
-
 
 
 
@@ -373,7 +345,9 @@ SCIP_RETCODE estimateSafe(
             merr = ( (y2 - y1 ) / (x2 - x1)) - *coefficient;
 
          }
-         //SCIPdbgMsg("merr is %1.16e\n", merr);
+         SCIPdbgMsg("merr is %1.16e\n", merr);
+         SCIPdbgMsg("merr by interval is %1.16e\n", coefficienti.sup - coefficienti.inf);
+         merr = coefficienti.sup - coefficienti.inf;
 
          if (overestimate)
             SCIPintervalSetRoundingModeUpwards();
@@ -391,7 +365,14 @@ SCIP_RETCODE estimateSafe(
          if( overestimate && estimator == SAFE_ESTIMATOR_TYPE_1)
          {
             SCIP_Real b = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y1, x1, *coefficient, true);
+            SCIPdbgMsg("adding to b %1.17e\n", merr*ub);
             *intercept = b + merr*ub;
+
+            SCIPdbgMsg("intercept is %1.17e\n", *intercept);
+            SCIP_Interval intercepti = y1i - coefficienti*x1i;
+            SCIPdbgMsg("b is %1.17e\n", b);
+            SCIPdbgMsg("ival intercept is [%1.17e, %1.17e]\n", intercepti.inf, intercepti.sup);
+            *intercept = intercepti.sup + merr*ub;
          }
          else if (overestimate && estimator == SAFE_ESTIMATOR_TYPE_3)
             *intercept = y1-(*coefficient)*x1 - merr*lb;
@@ -445,11 +426,6 @@ SCIP_RETCODE estimateSafe(
          break;
       case SAFE_ESTIMATOR_TYPE_4:
          *intercept = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y1, x1, *coefficient, false);
-
-         //intercept2 = SCIPexprPiecewiseLinearRoundIntercept(overestimate, y2, x2, *coefficient, false);
-         //SCIPdbgMsg("intercept - i2 is %e\n", *intercept - intercept2);
-
-         //*intercept = y1-(*coefficient)*x1;
          break;
 
       case SAFE_ESTIMATOR_TYPE_5:
@@ -486,8 +462,10 @@ SCIP_RETCODE estimateSafe(
    /* Reset rounding mode */
    SCIPintervalSetRoundingModeToNearest();
 
+   SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
 
-   SCIPdbgMsg("checking estimation using intervalarith\n");
+#ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
+   SCIPdebugMessage("Checking estimation at defining points\n");
    SCIP_Interval mi = {*coefficient, *coefficient};
    SCIP_Interval bi = {*intercept, *intercept};
    SCIP_Interval myy1;
@@ -496,12 +474,7 @@ SCIP_RETCODE estimateSafe(
    myy1 = mi * x1i + bi;
    myy2 = mi * x2i + bi;
 
-
-   SCIPdebugMessage("Computed safe estimation: y = %f x %+f\n", *coefficient, *intercept);
-   SCIPdbgMsg("checking at x1 = (%1.17e, %1.17e)\n", x1, y1);
    SCIPdbgMsg("x1 interval is [%1.17e, %1.17e]\n", myy1.inf, myy1.sup);
-
-   SCIPdbgMsg("checking at x2 = (%1.17e, %1.17e)\n", x2, y2);
    SCIPdbgMsg("x2 interval is [%1.17e, %1.17e]\n", myy2.inf, myy2.sup);
 
 
@@ -515,6 +488,7 @@ SCIP_RETCODE estimateSafe(
       assert( myy1.inf <= y1  );
       assert( myy2.inf <= y2  );
    }
+#endif
 
    /* Reset rounding mode */
    SCIPintervalSetRoundingMode(oldmode);
@@ -854,7 +828,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    estimation.constant = *constant;
    estimation.overestimate = overestimate;
    int nerrors(0);
-   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-14))
+   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-13))
    {
       SCIPdbgMsg("Invalid estimation:\n");
       SCIPdbgMsg("Estimation: %1.17e * x + %1.17e\n", coeffs[0], constant);
