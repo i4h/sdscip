@@ -18,7 +18,7 @@
 #include "SDproblemStructureInterface.h"
 #include "IntervalODEintegrator.h"
 #include "ProbDataSD.h"
-#include "Statistics.hpp"
+#include "Statistics.h"
 #include <spline/PiecewisePolynomial.hpp>
 #include <nlpi/pub_expr.h>
 #include <nlpi/type_expr.h>

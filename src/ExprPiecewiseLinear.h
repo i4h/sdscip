@@ -2,7 +2,7 @@
 #define _EXPR_PIECWEWISE_LINEAR_H_
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
-#include "TestExprPiecewiseLinear.hpp"
+#include "TestExprPiecewiseLinear.h"
 
 #include <spline/BSplineCurve.hpp>
 #include <scip/type_retcode.h>
@@ -14,7 +14,7 @@
 #include <float.h>
 
 #ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
-#include "TestExprPiecewiseLinear.hpp"
+#include "TestExprPiecewiseLinear.h"
 #endif
 
 enum SAFE_ESTIMATOR

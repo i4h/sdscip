@@ -7,12 +7,10 @@
  *      Author: Ingmar Vierhaus
  */
 
-#include "TestExprPiecewiseLinear.hpp"
+#include "TestExprPiecewiseLinear.h"
 
 namespace sdscip
 {
-
-
 
 TestExprPiecewiseLinear::TestExprPiecewiseLinear(SCIP* scip) :
     TestSDplugin(scip)
@@ -28,7 +26,6 @@ TestExprPiecewiseLinear::~TestExprPiecewiseLinear()
 std::ostream& TestExprPiecewiseLinear::toString(std::ostream& strm) const {
   return strm << "TestExprPiecewiseLinear";
 }
-
 
 /***********************************************
  *  Helper methods
@@ -111,7 +108,7 @@ double TestExprPiecewiseLinear::compareEstimationSpline(boost::shared_ptr< splin
    return funcval - estimationval;
 }
 
-
+/** Compute the estimation and return it */
 EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Real argvals, Bound argbound, bool overestimate)
 {
 
@@ -185,23 +182,6 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
       /* If this knot is inside of considered interval */
       if (argval >= argbound.first && argval <= argbound.second)
       {
-         /*
-         SCIPdbgMsg("Verfiying at knot %i, x = %f\n",i,argval);
-         //SCIP_Real funcval = *it;
-         SCIP_Real funcval = (*pcwlin)(argval);
-
-         SCIP_Real estimationval = estimation.constant + estimation.coefficient * argval;
-
-         if (   (estimation.overestimate && funcval > estimationval + 1e-12)
-            || (!estimation.overestimate && funcval + 1e-12 < estimationval  )
-         )
-         {
-            SCIPdebugMessage("!!!!! Estimation cuts off function at %f, \n(funcval = %f, estimationval = %f, delta = %e)\n", argval, funcval, estimationval, funcval - estimationval);
-
-            invalidPoints.push_back(argval);
-            ++nerrors;
-         }
-         */
          if (!verifyEstimation(pcwlin, estimation, argval, tolerance))
          {
             ++nerrors;
@@ -210,9 +190,6 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
          ++checkedknots;
       }
    }
-   SCIPdbgMsg("2 y(x2) =  %e\n", (*pcwlin)(1e14));
-
-
 
    /* Check at argbounds */
    SCIPdbgMsg("Verifying estimation at lower argbound, x = %e\n", argbound.first);
@@ -365,7 +342,6 @@ SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData 
 /** generate random tests and add to testdata */
 void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds)
 {
-
    srand (1);
    int maxnpoints = 10;
    double xwidth = xrange.second - xrange.second;
@@ -522,7 +498,6 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
    }
 }
 
-
 /***********************************************
  *  Methods running tests
  ***********************************************/
@@ -554,9 +529,8 @@ void TestExprPiecewiseLinear::runEstimatorRandomTests()
 }
 
 /* Check the lookup from world2 model */
-void TestExprPiecewiseLinear::runWorldLookup() {
-
-
+void TestExprPiecewiseLinear::runWorldLookup()
+{
    SCIP_RETCODE retcode;
    SCIP_EXPR* expr;
    SCIP_EXPR* child;
@@ -605,9 +579,7 @@ void TestExprPiecewiseLinear::runWorldLookup() {
 
 }
 
-
-
-
+/** Method running all tests of this class */
 void TestExprPiecewiseLinear::runAll()
 {
    runWorldLookup();
@@ -615,6 +587,5 @@ void TestExprPiecewiseLinear::runAll()
    runEstimatorNumericsTests();
    runEstimatorRandomTests();
 }
-
 
 }

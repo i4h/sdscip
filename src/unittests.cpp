@@ -27,7 +27,7 @@
 #include "PropODE.h"
 #include "ReaderVOP.h"
 #include "PresolConsGraph.h"
-#include "Statistics.hpp"
+#include "Statistics.h"
 #include "scip/scipdefplugins.h"
 #include "scip/debug.h"
 
@@ -37,8 +37,8 @@
 #include "TestODEintegrator.h"
 #include "TestSBrateEvaluator.h"
 #include "TestBoundMap.h"
-#include "TestExprPiecewiseLinear.hpp"
-#include "TestEstimatorTypes.hpp"
+#include "TestExprPiecewiseLinear.h"
+#include "TestEstimatorTypes.h"
 #include "TestStatistics.h"
 
 using namespace scip;

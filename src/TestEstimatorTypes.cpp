@@ -7,7 +7,7 @@
  *      Author: Ingmar Vierhaus
  */
 
-#include "TestEstimatorTypes.hpp"
+#include "TestEstimatorTypes.h"
 
 namespace sdscip
 {

@@ -5,7 +5,7 @@
  *      Author: Ingmar Vierhaus
  */
 
-#include "Statistics.hpp"
+#include "Statistics.h"
 
 namespace I4H {
 

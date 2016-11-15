@@ -27,7 +27,7 @@
 
 #include "ReaderVOP.h"
 #include "PresolConsGraph.h"
-#include "Statistics.hpp"
+#include "Statistics.h"
 #include "scip/scipdefplugins.h"
 #include "scip/debug.h"
 

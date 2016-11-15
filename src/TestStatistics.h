@@ -8,7 +8,7 @@
 #ifndef I4H_TESTSTATISTICS_H_
 #define I4H_TESTSTATISTICS_H_
 
-#include "Statistics.hpp"
+#include "Statistics.h"
 #include "BaseTest.h"
 
 

@@ -33,7 +33,7 @@
 #include "ProbDataSD.h"
 #include "SDproblemStructureInterface.h"
 #include "ReduceODEintegrator.hpp"
-#include "Statistics.hpp"
+#include "Statistics.h"
 
 
 
