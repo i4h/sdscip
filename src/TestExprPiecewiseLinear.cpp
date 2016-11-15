@@ -143,6 +143,7 @@ EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Re
 std::string EstimatorTestData::toString(int boundidx)
 {
    std::ostringstream oss;
+   oss << "Test " << label << std::endl;
    oss << "xvals:        " << sdscip::Vector::vec2string(points.first,std::string()) << std::endl;
    oss << "yvals:        " << sdscip::Vector::vec2string(points.second,std::string()) << std::endl;
    oss << "argbounds:    (" << std::to_string(argbounds[boundidx].first) << ", " << std::to_string(argbounds[boundidx].second) << ")" << std::endl;
@@ -268,6 +269,22 @@ void TestExprPiecewiseLinear::removeCoincidingPoints(ValVec &xvals, ValVec &yval
       {
          ++it;
          lastx = *it;
+      }
+   }
+}
+
+/** Print the tests currently in the testData */
+void TestExprPiecewiseLinear::printTests()
+{
+   SCIPinfoMessage(scip_, NULL,  "Printing Tests in Testdata\n");
+
+   for(auto it = testsData_.begin(); it != testsData_.end(); ++it)
+   {
+      auto data = *it;
+      for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
+      {
+         int i = valsIt - data.argvals.begin();
+         SCIPinfoMessage(scip_, NULL,  "%s\n", it->toString(i).c_str());
       }
    }
 }
@@ -451,7 +468,7 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
    if( true )
    {
       EstimatorTestData data;
-      data.label = std::string("concave_two_lines");
+      data.label = std::string("world2_from70");
       data.points = std::make_pair(
           std::vector<double>{0,0.25,0.5,0.75,1}
          ,std::vector<double>{0,0.15,0.5,0.85,1}
