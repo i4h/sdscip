@@ -311,6 +311,8 @@ void TestExprPiecewiseLinear::runTests()
 
          EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
 
+         //bool valid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
+
          if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_))
             nSuccess_++;
          else
@@ -517,31 +519,7 @@ void TestExprPiecewiseLinear::runEstimatorManualTests()
 {
    addManualEstimatorTests();
 
-   //std::vector<double> xVals = {0, 0.25, 0.5, 0.75, 1};
-   //std::vector<double> yVals = {0, 0.15, 0.5, 0.85, 1};
-   bool overestimate = true;
-   for(auto data : testsData_)
-   {
-      SCIPdebugMessage("\n\n========================================================\n");
-      SCIPdebugMessage("Running test %s\n", data.label.c_str());
-
-      SCIP_EXPR* expr = createExprPiecewiseLinear(data);
-
-      SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
-
-      for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
-      {
-         int i = valsIt - data.argvals.begin();
-
-         SCIPdebugMessage("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
-
-         EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], overestimate);
-
-         bool valid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
-         assert(valid);
-      }
-      SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
-   }
+   runTests();
 }
 
 /** add and run the numerics tests */
@@ -620,12 +598,15 @@ void TestExprPiecewiseLinear::runAll()
 {
    SCIPdbgMsg("running all\n");
 
-   //runAllTestRoundIntercept();
 
 
    //runWorldLookup();
 
-   runEstimatorRandomTests();
+
+   runEstimatorManualTests();
+   //runEstimatorNumericsTests();
+
+   //runEstimatorRandomTests();
 }
 
 
