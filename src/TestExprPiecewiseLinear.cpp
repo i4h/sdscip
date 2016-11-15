@@ -1,5 +1,5 @@
 //#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DEBUG
 /*
  * TestExprPiecewiseLinear.cpp
  *
@@ -236,7 +236,7 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
    /* Evaluate found problems  */
    if (nerrors == olderrors)
    {
-      SCIPdebugMessage("Estimation is valid at %i sampled knots\n", checkedknots);
+      SCIPdbgMsg("Estimation is valid at %i sampled knots\n", checkedknots);
       return true;
    }
    else
@@ -289,6 +289,12 @@ void TestExprPiecewiseLinear::printTests()
    }
 }
 
+/** Delete all tests from the test data */
+void TestExprPiecewiseLinear::clearTests()
+{
+   testsData_.clear();
+}
+
 /** Run tests currently in the testData */
 void TestExprPiecewiseLinear::runTests()
 {
@@ -300,20 +306,21 @@ void TestExprPiecewiseLinear::runTests()
 
       SCIP_EXPR* expr = createExprPiecewiseLinear(data);
 
-      //SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+      SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
 
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
       {
-         SCIPdebugMessage("------------------test %i\n", (nExecutedTests_ - 1) );
          int i = valsIt - data.argvals.begin();
-
          SCIPdbgMsg("Considering argval %f, argbounds [%f,%f]\n", *valsIt, data.argbounds[i].first, data.argbounds[i].second);
 
          EstimationData estimation = getEstimation(expr, *valsIt, data.argbounds[i], data.overestimate);
 
-         //bool valid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
+         SCIPdbgMsg("got estimation %s\n", estimationToString(estimation).c_str());
 
-         if (sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_))
+         bool sampleValid = sampleEstimation(expr, 50, data.argbounds[i], estimation);
+         bool knotsValid = sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, data.argbounds[i], nError_, tolerance_);
+
+         if( sampleValid && knotsValid )
             nSuccess_++;
          else
          {
@@ -324,6 +331,7 @@ void TestExprPiecewiseLinear::runTests()
       }
       SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
    }
+   clearTests();
 }
 
 /** Create an Expression Piecewise Linear in blockmem of subscip_
@@ -470,7 +478,7 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
    if( true )
    {
       EstimatorTestData data;
-      data.label = std::string("world2_from70");
+      data.label = std::string("world2_from70_overest");
       data.points = std::make_pair(
           std::vector<double>{0,0.25,0.5,0.75,1}
          ,std::vector<double>{0,0.15,0.5,0.85,1}
@@ -480,13 +488,18 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
                    std::make_pair(-4.9835643974591581e-01,8.5808151653009113e-01)
       };
       data.argvals = ValVec{8.5808151653009102e-01};
+      data.overestimate = true;
 
+      testsData_.push_back(data);
+
+      data.overestimate = false;
+      data.label = std::string("world2_from70_underest");
       testsData_.emplace_back(data);
    }
 
 
    /* Simple concave function with two lines */
-   if( true )
+   if( false )
    {
       EstimatorTestData data;
       data.label = std::string("concave_two_lines");
@@ -502,6 +515,8 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
                   ,std::make_pair(-2, 2.5) */
       };
       data.argvals = ValVec{0};
+      data.overestimate = false;
+
 
       testsData_.emplace_back(data);
    }
@@ -518,7 +533,6 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
 void TestExprPiecewiseLinear::runEstimatorManualTests()
 {
    addManualEstimatorTests();
-
    runTests();
 }
 
@@ -596,17 +610,10 @@ void TestExprPiecewiseLinear::runWorldLookup() {
 
 void TestExprPiecewiseLinear::runAll()
 {
-   SCIPdbgMsg("running all\n");
-
-
-
-   //runWorldLookup();
-
-
+   runWorldLookup();
    runEstimatorManualTests();
-   //runEstimatorNumericsTests();
-
-   //runEstimatorRandomTests();
+   runEstimatorNumericsTests();
+   runEstimatorRandomTests();
 }
 
 

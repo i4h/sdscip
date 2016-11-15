@@ -287,7 +287,7 @@ SCIP_Real determinant(
    std::pair<SCIP_Real, SCIP_Real>& C  /**< Point C */
 )
 {
-   SCIPdebugMessage("Computing determinante of points (%f,%f), (%f,%f), (%f,%f) = %f\n", A.first, A.second, B.first, B.second, C.first, C.second,
+   SCIPdbgMsg("Computing determinante of points (%f,%f), (%f,%f), (%f,%f) = %f\n", A.first, A.second, B.first, B.second, C.first, C.second,
       ( B.first - A.first )  * ( C.second - A.second ) - ( C.first - A.first ) * ( B.second - A.second ));
 
    return ( B.first - A.first )  * ( C.second - A.second ) - ( C.first - A.first ) * ( B.second - A.second );
@@ -313,7 +313,7 @@ void grahamScanCheck(
 
       if( ( side == UPPER && T >= 0.0 ) || ( side == LOWER && T <= 0.0 ) )
       {
-         SCIPdebugMessage("erasing point (%f, %f)\n", (convexHull.end()-2)->first, (convexHull.end()-2)->second);
+         SCIPdbgMsg("erasing point (%f, %f)\n", (convexHull.end()-2)->first, (convexHull.end()-2)->second);
          convexHull.erase( convexHull.end() - 2 );
       }
       else
@@ -585,6 +585,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 
    /* Use TestExprPiecewiseLinear to check the estimation by sampling the interval */
 #ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
+   SCIPdebugMessage("Verifying computed estimation\n");
    EstimationData estimation;
    estimation.coefficient = coeffs[0];
    estimation.constant = *constant;
@@ -593,7 +594,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-13))
    {
       SCIPdbgMsg("Invalid estimation:\n");
-      SCIPdbgMsg("Estimation: %1.17e * x + %1.17e\n", coeffs[0], constant);
+      SCIPdbgMsg("Estimation: %1.17e * x + %1.17e\n", coeffs[0], *constant);
 
       /* Print lookup points */
       auto coeffs = data->lookup->getCoefficients();
