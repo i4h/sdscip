@@ -1,4 +1,3 @@
-SCIP_DEBUG
 /*
  * TestGeom.h
  *
@@ -47,7 +46,6 @@ public:
 private:
    double eps_;
    int ndim_;
-   dbgOut out_;
 };
 
 }

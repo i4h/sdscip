@@ -103,6 +103,7 @@ void TestSBrateEvaluator::runBoundTests()
          ++nSuccess_;
       else
          nError_ += myErrors;
+      ++nExecutedTests_;
    }
 }
 

@@ -79,22 +79,21 @@ SCIP_RETCODE runSCIP(
 
    /* Add test classes */
    tests.emplace_back( new sdscip::TestGeom(scip));
-   /*tests.emplace_back( new sdscip::TestSBrateEvaluator(scip));
+   tests.emplace_back( new sdscip::TestSBrateEvaluator(scip));
    tests.emplace_back( new sdscip::TestODEintegrator(scip));
    tests.emplace_back( new sdscip::TestBoundMap(scip));
    tests.emplace_back( new I4H::TestStatistics);
    tests.emplace_back( new sdscip::TestEstimatorTypes(scip));
    tests.emplace_back( new sdscip::TestExprPiecewiseLinear(scip));
-*/
+
    /* Run all tests of all test classes */
    for (auto it : tests)
    {
-      std::cout << "=========================================" << std::endl;
+      std::cout << "==========================================================" << std::endl;
       std::cout << "Running all tests in class " << *it << std::endl;
       it->runAll();
-      std::cout << " ----------------------------------------" << std::endl;
-      std::cout << " " << it->summaryString() << std::endl;
-      std::cout << "=========================================" << std::endl;
+      std::cout << it->summaryString() << std::endl;
+      std::cout << "==========================================================" << std::endl;
       std::cout << std::endl;
       delete it;
    }

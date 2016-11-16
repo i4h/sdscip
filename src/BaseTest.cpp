@@ -46,8 +46,8 @@ void BaseTest::testStart()
 std::string BaseTest::summaryString() const
 {
    std::ostringstream oss;
-   oss << "Executed " << nExecutedTests_ << " tests " << std::endl;
-   oss << "Assertions passed: " << nSuccess_ << ", Asserts failed : " << nError_;
+   oss << "Executed " << nExecutedTests_ << " tests. ";
+   oss << "Assertions: " << nSuccess_ << " passed, " << nError_ << " failed.";
    return oss.str();
 }
 

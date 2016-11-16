@@ -249,6 +249,7 @@ void TestODEintegrator::runConstRateEvaluatorTest()
             nError_ += (myErrors != 0);
             nSuccess_ += (myErrors == 0);
          }
+         nExecutedTests_++;
       }
    }
 }
@@ -320,6 +321,7 @@ void TestODEintegrator::runPredatorPreySimTest()
          else
             nError_ += myErrors;
       }
+      ++nExecutedTests_;
    }
    SCIPdbgMsg("Finished Testing SimRateEvaluator\n");
 }
@@ -395,6 +397,7 @@ void TestODEintegrator::runPredatorPreySimIntermediateStepsTest()
          }
       }
       SCIPdbgMsg("x_master(%f) = %s\n",masterIntegrator.getT(), masterIntegrator.statesToString().c_str());
+      ++nExecutedTests_;
    }
    nError_ += myErrors;
    nSuccess_ += mySuccesses;
@@ -486,6 +489,7 @@ void TestODEintegrator::runPredatorPreySBsimTest()
       }
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
       SCIPdbgMsg("pointIntegrator: %s\n",pointIntegrator.statesToString().c_str());
+      ++nExecutedTests_;
    }
    nError_ += myErrors;
    nSuccess_ += mySuccesses;
@@ -565,6 +569,7 @@ void TestODEintegrator::runPredatorPreySBcontrolTest()
       }
       SCIPdbgMsg("pointIntegrator: %s\n",pointIntegrator.statesToString().c_str());
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
+      ++nExecutedTests_;
    }
    nError_ += myErrors;
    nSuccess_ += mySuccesses;
@@ -648,6 +653,7 @@ void TestODEintegrator::runPredatorPreySBglobalBoundsTest()
       }
       SCIPdbgMsg("boundedIntegrator: %s\n",boundedIntegrator.statesToString().c_str());
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
+      ++nExecutedTests_;
    }
    nError_ += myErrors;
    nSuccess_ += mySuccesses;
@@ -736,6 +742,7 @@ void TestODEintegrator::runPredatorPreySBboundsTest()
       }
       SCIPdbgMsg("boundedIntegrator: %s\n",boundedIntegrator.statesToString().c_str());
       SCIPdbgMsg("intervalIntegrator: %s\n",integrator.statesToString().c_str());
+      ++nExecutedTests_;
    }
    nError_ += myErrors;
    nSuccess_ += mySuccesses;

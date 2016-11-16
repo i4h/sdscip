@@ -78,13 +78,8 @@ void TestBoundMap::testOperations()
       map2[BoundKey(5, type)] = goodBound[i];
       map1[BoundKey(5, type)] = betterBound[i];
    }
-   //printf("map1:");
-   //printBoundMap(map1);
-   //printf("map2:");
-   //printBoundMap(map2);
    BoundMap mapUnion = getUnion(map1, map2);
-   //printf("Created union:\n");
-   //printBoundMap(mapUnion);
+
    /* Evaluate */
    for (int i = 0; i < 2; ++i)
    {
@@ -114,6 +109,7 @@ void TestBoundMap::testOperations()
       test(mapIntersection[BoundKey(4,type)] == betterBound[i]);
       test(mapIntersection[BoundKey(5,type)] == betterBound[i]);
    }
+   ++nExecutedTests_;
 }
 
 }
