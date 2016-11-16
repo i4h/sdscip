@@ -124,6 +124,8 @@ SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
 SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 {
    /* No probdata, no heurSimODE (maybe called by subscip) */
+   *result = SCIP_DIDNOTFIND;
+
    if( SCIPgetProbData(scip) == NULL)
       return SCIP_OKAY;
 
@@ -356,6 +358,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
          //SCIPdebugMessage("Solution%s stored!\n", (stored ? "" : " NOT"));
          finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
          assert(stored  || (SCIPgetBestSol(scip_) != NULL));
+         if (stored)
+            *result = SCIP_FOUNDSOL;
 
          SCIPstopClock(scip_, clock);
 
@@ -376,24 +380,6 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
             (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
             solTime, SCIPclockGetTime(clock));
       }
-
-
-#if 0
-      if (*result == SCIP_CUTOFF)
-      {
-         SCIPdbgMsg("applyPropODE: returning  with result cutoff\n");
-      }
-      else if (*nchgbds == 0)
-      {
-         SCIPdbgMsg("applyPropODE: returning  with result didnotfind\n");
-         *result = SCIP_DIDNOTFIND;
-      }
-      else
-      {
-         SCIPdbgMsg("applyPropODE: returning with result reduceddom\n");
-         *result = SCIP_REDUCEDDOM;
-      }
-#endif
 
    } /* End loop over reduction modes */
 
