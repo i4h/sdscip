@@ -108,7 +108,7 @@ PointODEintegrator& PointODEintegrator::operator=(const PointODEintegrator& inte
  *  - The state of the RateEvaluator used by this PointODEintegrator can not be altered
  *    using this function.
  */
-CopyablePointer<PointRateEvaluator>& PointODEintegrator::rateEvaluator()
+CopyablePointer<PointRateEvaluator> PointODEintegrator::rateEvaluator()
 {
    SCIPdbgMsg("returning rateEvaluator with name %s\n",rateEvaluator_->getName().c_str());
    return rateEvaluator_;
