@@ -36,7 +36,8 @@ HyperCube TestGeom::unitCube() const {
 
 
 void TestGeom::testContains() {
-   std::cout << "   Testing cube.contains(vector)" << std::endl;
+   SCIPdebugMessage("   Testing cube.contains(vector)
+");
    HyperCube cube;
    cube = unitCube();
    Vector vec(ndim_);
@@ -55,7 +56,8 @@ void TestGeom::testContains() {
 }
 
 void TestGeom::testIsOnFace() {
-   std::cout << "   Testing cube.isOnFace(vector)" << std::endl;
+   SCIPdebugMessage("   Testing cube.isOnFace(vector)
+");
    HyperCube cube;
    cube = unitCube();
    Vector vec(ndim_);
@@ -80,7 +82,8 @@ void TestGeom::testIsOnFace() {
 }
 
 void TestGeom::testIsOnVertex() {
-   std::cout << "   Testing cube.isOnVertex(vector)" << std::endl;
+   SCIPdebugMessage("   Testing cube.isOnVertex(vector)
+");
    HyperCube cube;
    cube = unitCube();
    Vector vec(ndim_);
@@ -109,7 +112,8 @@ void TestGeom::testIsOnVertex() {
 
 
 void TestGeom::testFindSeveredVertex() {
-      std::cout << "   Testing cube.findSeveredVertex(plane)" << std::endl;
+      SCIPdebugMessage("   Testing cube.findSeveredVertex(plane)
+");
       {
          HyperCube cube;
          cube = unitCube();
@@ -171,7 +175,8 @@ void TestGeom::testFindSeveredVertex() {
 }
 
 void TestGeom::testVectorOperators() {
-   std::cout << "   Testing Vector operators " << std::endl;
+   SCIPdebugMessage("   Testing Vector operators 
+");
    {
       sdscip::Vector a(1,2,3);
       sdscip::Vector b(-1,-2,-3);
@@ -196,7 +201,8 @@ void TestGeom::testVectorOperators() {
 }
 
 void TestGeom::testIntersection() {
-   std::cout << "   Testing line::intersection(plane)" << std::endl;
+   SCIPdebugMessage("   Testing line::intersection(plane)
+");
    {
       sdscip::Line line(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
       sdscip::HyperPlane plane(sdscip::Vector(0,1.0),sdscip::Vector(2,1.0));
@@ -222,7 +228,8 @@ void TestGeom::testIntersection() {
 
 
 void TestGeom::testGetSeparatedVolume() {
-      std::cout << "   Testing cube.getSeparatedVolume(plane)" << std::endl;
+      SCIPdebugMessage("   Testing cube.getSeparatedVolume(plane)
+");
       if (true) {
          HyperCube cube;
          cube = unitCube();
@@ -246,11 +253,11 @@ void TestGeom::testGetSeparatedVolume() {
          }
          HyperPlane plane(vec,point);
          double vol(cube.getSeparatedVolume(&plane));
-         //std::cout << "Volume is " << vol << std::endl;
+         //SCIPdebugMessage("Volume is " << vol << std::endl;
          vol = cube.getRelativeSeparatedVolume(&plane);
-         //std::cout << "Rel. Volume is " << vol << std::endl;
+         //SCIPdebugMessage("Rel. Volume is " << vol << std::endl;
          test(vol >= 0.125 || (ndim_ >= 5 && vol == 0 && cube.intersects(plane)));
-         //std::cout << "Relative Volume is " << vol << std::endl;
+         //SCIPdebugMessage("Relative Volume is " << vol << std::endl;
       }
 
       {
@@ -263,15 +270,16 @@ void TestGeom::testGetSeparatedVolume() {
          }
          HyperPlane plane(vec,point);
          //double vol(cube.getSeparatedVolume(&plane));
-         //std::cout << "Volume is " << vol << std::endl;
+         //SCIPdebugMessage("Volume is " << vol << std::endl;
          //vol = cube.getRelativeSeparatedVolume(&plane);
-         //std::cout << "Relative Volume is " << vol << std::endl;
+         //SCIPdebugMessage("Relative Volume is " << vol << std::endl;
       }
 
 }
 
 void TestGeom::testHyperCubeIntersects() {
-   std::cout << "   Testing cube.intersects(plane)" << std::endl;
+   SCIPdebugMessage("   Testing cube.intersects(plane)
+");
    HyperCube cube;
    cube = unitCube();
    {
@@ -322,7 +330,8 @@ void TestGeom::testHyperCubeIntersects() {
 }
 
 void TestGeom::testVectorLength() {
-   std::cout << "   Testing Vector Length" << std::endl;
+   SCIPdebugMessage("   Testing Vector Length
+");
    {
       sdscip::Vector a(1,2,3);
       sdscip::Vector b(-1,-2,-3);
@@ -343,7 +352,7 @@ void TestGeom::runAll() {
    out_ << "Running all";
    return;
    for (int ndim = 2; ndim <= 5; ++ndim) {
-      std::cout << "  Running tests for D = " << ndim << std::endl;
+      SCIPdebugMessage("  Running tests for D = " << ndim << std::endl;
       ndim_ = ndim;
 
       testContains();
@@ -370,7 +379,8 @@ void TestGeom::runAll() {
       testHyperCubeIntersects();
       nExecutedTests_++;
 
-      std::cout << "All tests for D =" << ndim_ << " finished" << std::endl;
+      SCIPdebugMessage("All tests for D =" << ndim_ << " finished
+");
    }
 }
 
@@ -382,7 +392,8 @@ void TestGeom::runCurrent() {
    ndim_ = 3;
    testVectorLength();
 
-   std::cout << "Current tests finished" << std::endl;
+   SCIPdebugMessage("Current tests finished
+");
 
 }
 
