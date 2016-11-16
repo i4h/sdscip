@@ -168,12 +168,10 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
       ReduceODEintegrator integrator(scip_, discretization , structure->getTstep(), 1, nStates_, nAlgebraic_, nControls_);
       SCIPdbgMsg("setting xDots\n");
-      integrator.rateEvaluator()->setXdot(structure->getXdotAlgebraic());
-      integrator.rateEvaluator()->setAlgebraicExpressions(structure->getAlgebraicExpressions());
+      integrator.setXdots(structure->getXdotAlgebraic());
+      integrator.setAlgebraicExpressions(structure->getAlgebraicExpressions());
       integrator.setReductionMode(mode);
-      SCIPdbgMsg("done\n");
       SCIPdbg(integrator.rateEvaluator()->printXdotAlgebraic() );
-
 	   /* Prepare out file */
 
 	   SCIP_CALL( prepareOutFile(structure->getStateVarNames(), integrator.getReductionModeString()));

@@ -37,12 +37,9 @@ PointODEintegrator::PointODEintegrator(SCIP* _scip, std::string _discretization,
 
       //rateEvaluator_ = CopyablePointer<PointRateEvaluator>(new SimRateEvaluator(_nStates, _nAlgebraic, _nControls, _scip));
       rateEvaluator_ = CopyablePointer<PointRateEvaluator>(temp);
-      SCIPdbgMsg("horrido\n");
+
       SCIPdbgMsg("created copyablepointer, states is %i\n", temp->nStates_);
-
-
       SCIPdbgMsg("created copyablepointer, name is %s\n", temp->getName().c_str());
-
       break;
    /* Add more Evaluators here */
    default:
@@ -104,11 +101,19 @@ PointODEintegrator& PointODEintegrator::operator=(const PointODEintegrator& inte
 
 #endif
 
-CopyablePointer<PointRateEvaluator> PointODEintegrator::rateEvaluator()
+
+
+/** This function returns a pointer to A COPY of the integrators RateEvaluator.
+ *  - The pointer can be used to gain information on the state of the rateEvaluator
+ *  - The state of the RateEvaluator used by this PointODEintegrator can not be altered
+ *    using this function.
+ */
+CopyablePointer<PointRateEvaluator>& PointODEintegrator::rateEvaluator()
 {
    SCIPdbgMsg("returning rateEvaluator with name %s\n",rateEvaluator_->getName().c_str());
    return rateEvaluator_;
 }
+
 
 std::string PointODEintegrator::toString()
 {
@@ -204,6 +209,18 @@ void PointODEintegrator::setXdots(std::vector<SCIP_EXPR*> &xDot)
 {
    rateEvaluator_->setXdot(xDot);
 }
+
+void PointODEintegrator::setXdots(SCIP_EXPR** xDot)
+{
+   rateEvaluator_->setXdot(xDot);
+}
+
+void PointODEintegrator::setAlgebraicExpressions(SCIP_EXPR** algebraicExpressions)
+{
+   rateEvaluator_->setAlgebraicExpressions(algebraicExpressions);
+}
+
+
 
 void PointODEintegrator::setInitial(SCIP_Real t, std::vector<SCIP_Real> states)
 {

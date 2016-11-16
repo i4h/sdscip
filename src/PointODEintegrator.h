@@ -74,6 +74,8 @@ public:
    void writeStates(std::ofstream& outFile);
    std::string controlsToString();
    void setXdots(std::vector<SCIP_EXPR*> &xDot);
+   void setXdots(SCIP_EXPR** xDot);
+   void setAlgebraicExpressions(SCIP_EXPR** algebraicExpressions);
    void printXdot();
 
    void computeAlgebraic(SCIP_Real* params);
