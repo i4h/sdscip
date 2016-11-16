@@ -82,7 +82,9 @@ MAINSRCPATH	=	cppmain.cpp \
 			SDproblemStructureV1.cpp \
 			SDproblemStructureFactory.cpp \
 			SDVarBasic.cpp \
-			SDCons.cpp\
+			BaseTest.cpp \
+			SDCons.cpp \
+			SDSCIPtest.cpp \
 			TestSDplugin.cpp \
 			TestExprPiecewiseLinear.cpp \
 			CopyablePointer.cpp\
