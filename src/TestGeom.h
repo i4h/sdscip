@@ -1,3 +1,4 @@
+SCIP_DEBUG
 /*
  * TestGeom.h
  *
@@ -9,6 +10,7 @@
 #define SDSCIP_TESTGEOM_H_
 
 #include <iostream>
+#include <sstream>
 #include "sdscip.h"
 #include "Point.h"
 #include "Vector.h"
@@ -45,6 +47,7 @@ public:
 private:
    double eps_;
    int ndim_;
+   dbgOut out_;
 };
 
 }

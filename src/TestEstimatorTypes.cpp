@@ -1,5 +1,5 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 /*
  * TestEstimatorTypes.cpp
  *
@@ -175,7 +175,7 @@ void TestEstimatorTypes::addE2E4tests()
       typeTestsData_.push_back(data);
 
       data.argbounds = BoundVec{ std::make_pair(-1, -2) };
-      data.x1 = -1;
+      data.x1 = -2;
       data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_2});
       data.label = std::string("safe_estimators_under_under_minus1");
       typeTestsData_.push_back(data);
@@ -213,23 +213,20 @@ void TestEstimatorTypes::addE2E4tests()
       }
       typeTestsData_.push_back(data);
 
-      return;
-
-
       /* "Reset" */
       data.argvals = ValVec({3.0});
-      data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_3});
+      data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_4});
       data.argbounds = BoundVec{ std::make_pair(2, 1e14) };
 
-      /* Add some tests where lb moves in positive direction */
-      data.argbounds = BoundVec{ std::make_pair(2, 1e4) };
+      /* Add some tests where lb moves in negative direction */
+      data.argbounds = BoundVec{ std::make_pair(1e4, 1e14) };
       data.x1 = 1e4;
-      data.label = std::string("safe_estimators_over_over_minuslarge");
+      data.label = std::string("safe_estimators_over_over_pluslarge");
       typeTestsData_.push_back(data);
 
-      data.argbounds = BoundVec{ std::make_pair(2, 10) };
+      data.argbounds = BoundVec{ std::make_pair( 10, 1e14) };
       data.x1 = 10;
-      data.label = std::string("safe_estimators_over_over_minus10");
+      data.label = std::string("safe_estimators_over_over_plus10");
       typeTestsData_.push_back(data);
 
    }
@@ -281,8 +278,8 @@ void TestEstimatorTypes::addE5E6tests()
       data.label = std::string("e5_safe_estimators_under_under_minus10");
       typeTestsData_.push_back(data);
 
-      data.argbounds = BoundVec{ std::make_pair(-1, -2) };
-      data.x1 = -1;
+      data.argbounds = BoundVec{ std::make_pair(-3, -2) };
+      data.x1 = -3;
       data.bestTypes = std::vector<SAFE_ESTIMATOR>({SAFE_ESTIMATOR_TYPE_5});
       data.label = std::string("e5_safe_estimators_under_under_minus1");
       typeTestsData_.push_back(data);
@@ -356,10 +353,9 @@ void TestEstimatorTypes::runTests()
          int oldErrors = nError_;
          SCIPdebugMessage("======= Testing %s with argval: %e =========\n",data.label.c_str(), *valsIt);
          int i = valsIt - data.argvals.begin();
-         //std::cout << data.toString(i);
+         SCIPdbg( std::cout << data.toString(i) );
          std::map<SAFE_ESTIMATOR, double> errsAtX;
-         /* Get all valid esimators and validate. Check hat the selected one is the tightest */
-         /* for (int j = 1; j <= 4; j++) */
+
          /* Get all estimators that are expected to be valid */
          for (SAFE_ESTIMATOR type : data.validTypes)
          {
@@ -369,7 +365,11 @@ void TestEstimatorTypes::runTests()
 
             /* Get piecewise linear for y-values and verification of estimation */
             SCIP_EXPR* expr = createExprPiecewiseLinear(data);
+            SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
             auto pcwlin = SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr));
+
+            SCIPdbgMsg("evaluating at x1: f( %f) = %f\n", data.x1, (*pcwlin)(data.x1));
+            SCIPdbgMsg("evaluating at x2: f( %f) = %f\n", data.x2, (*pcwlin)(data.x2));
 
 
             /* Create estimation (defining points selected by hand) */
@@ -383,6 +383,8 @@ void TestEstimatorTypes::runTests()
                &estimation.constant
             );
             assert(retcode == SCIP_OKAY);
+
+            SCIPdbgMsg("Got estimation %s\n", estimationToString(estimation).c_str());
 
             /* Sample at points */
             int localOldErrors = nError_;
@@ -440,7 +442,9 @@ std::map<SAFE_ESTIMATOR, double>::const_iterator TestEstimatorTypes::findSmalles
 void TestEstimatorTypes::runAll()
 {
    addE1E3tests();
+
    addE2E4tests();
+
    addE5E6tests();
 
    runTests();

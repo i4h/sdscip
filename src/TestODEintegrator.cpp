@@ -1,5 +1,5 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 /*
  * TestODEintegrator.cpp
  *
@@ -398,7 +398,7 @@ void TestODEintegrator::runPredatorPreySimIntermediateStepsTest()
    }
    nError_ += myErrors;
    nSuccess_ += mySuccesses;
-   printf("Finished Testing Intermediate steps\n");
+   SCIPdbgMsg("Finished Testing Intermediate steps\n");
 }
 
 void TestODEintegrator::runPredatorPreySBsimTest()

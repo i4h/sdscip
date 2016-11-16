@@ -54,13 +54,14 @@ SCIP_RETCODE runSCIP(
 {
    SCIP* scip = NULL;
 
-
    /*********
     * Setup *
     *********/
 
-   /* initialize SCIP */
+   /* initialize SD-SCIP */
    SCIP_CALL ( SCIPcreate ( &scip ) );
+
+
 
    SCIP_CALL ( SCIPincludeDialogSDinit ( scip ) );
    SCIP_CALL ( SCIPincludeDialogSDprintStructure( scip ) );
@@ -73,26 +74,19 @@ SCIP_RETCODE runSCIP(
    /* include default SCIP plugins */
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
 
-   /* Create the test classes */
+   /* Create container for test classes */
    std::vector<I4H::BaseTest*> tests;
 
-   //tests.emplace_back( new sdscip::TestGeom(scip));
-   //tests.emplace_back( new sdscip::TestSBrateEvaluator(scip));
-
-   //tests.emplace_back( new sdscip::TestODEintegrator(scip));
-
-   //tests.emplace_back( new sdscip::TestBoundMap(scip));
-
-   //tests.emplace_back( new I4H::TestStatistics);
-
-   //tests.emplace_back( new sdscip::TestEstimatorTypes(scip));
-
+   /* Add test classes */
+   tests.emplace_back( new sdscip::TestGeom(scip));
+   /*tests.emplace_back( new sdscip::TestSBrateEvaluator(scip));
+   tests.emplace_back( new sdscip::TestODEintegrator(scip));
+   tests.emplace_back( new sdscip::TestBoundMap(scip));
+   tests.emplace_back( new I4H::TestStatistics);
+   tests.emplace_back( new sdscip::TestEstimatorTypes(scip));
    tests.emplace_back( new sdscip::TestExprPiecewiseLinear(scip));
-
-
-
-
-
+*/
+   /* Run all tests of all test classes */
    for (auto it : tests)
    {
       std::cout << "=========================================" << std::endl;
@@ -104,7 +98,6 @@ SCIP_RETCODE runSCIP(
       std::cout << std::endl;
       delete it;
    }
-
 
    /********************
     * Deinitialization *

@@ -13,7 +13,7 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/**@file   scip.h
+/**@file   sdscip.h
  * @ingroup PUBLICMETHODS
  * @brief  SD-SCIP common includes
  * @author Ingmar Vierhaus

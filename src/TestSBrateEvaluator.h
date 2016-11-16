@@ -10,15 +10,18 @@
 
 #include "sdscip.h"
 #include "SBrateEvaluator.h"
+#include "SDSCIPtest.h"
 
 namespace sdscip
 {
 
-class TestSBrateEvaluator
+class TestSBrateEvaluator : public SDSCIPtest
 {
 public:
    TestSBrateEvaluator(SCIP* scip);
    virtual ~TestSBrateEvaluator();
+
+   std::ostream& toString(std::ostream& strm) const;
 
    int getNsuccess();
    int getNerrors();
@@ -27,9 +30,6 @@ public:
    void runBoundTests();
 
 private:
-   SCIP* scip_;
-   int nSuccess_;
-   int nErrors_;
 };
 
 }

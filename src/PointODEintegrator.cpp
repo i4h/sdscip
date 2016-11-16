@@ -1,5 +1,5 @@
-#define SCIP_DEBUG
-#define SCIP_DBG
+//#define SCIP_DEBUG
+//#define SCIP_DBG
 
 /*
  * PointODEintegrator.cpp

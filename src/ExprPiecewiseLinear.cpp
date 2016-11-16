@@ -33,9 +33,8 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
 {
    /* If only one class2 estimator is available, we use it */
    if ((e5valid || e6valid) & !(e5valid && e6valid) )
-   {
       return (e5valid ? SAFE_ESTIMATOR_TYPE_5 : SAFE_ESTIMATOR_TYPE_6);
-   }
+
    /* If we get here, e5valid = e6valid (both or none) */
 
    /* Pick the estimator by distinguishing between signs of lb and ub */
@@ -49,7 +48,12 @@ SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real u
          else
             return SAFE_ESTIMATOR_TYPE_4;
       }
-      /* else lb >=0, ub < 0 can not happen since ub >= lb */
+      else
+      {
+         /* else lb >=0, ub < 0
+          * this should not happen but the return avoids compiler warning */
+         return SAFE_ESTIMATOR_TYPE_1;
+      }
    }
    else
    {
@@ -152,10 +156,14 @@ SCIP_RETCODE estimateSafe(
 
    )
 {
+
+   assert(x2 - x1 > 1e-9);
+
    SCIPdebugMessage("\n");
    SCIPdebugMessage("%sestimating safe: (lb,ub) = (%f,%f)\n",
       (overestimate ? "over" : "under"), lb, ub);
-   SCIPdebugMessage("(x1,y1 = (%1.17e,%1.17e), (x2,y2) = (%1.17e,%1.17e), argval = %f, type: %i\n",
+   //SCIPdebugMessage("(x1,y1 = (%1.17e,%1.17e), (x2,y2) = (%1.17e,%1.17e), argval = %f, type: %i\n",
+   SCIPdebugMessage("(x1,y1 = (%f,%f), (x2,y2) = (%f,%f), argval = %f, type: %i\n",
       x1, y1, x2, y2, argval, estimator);
 
    const SCIP_Interval y1i = {y1, y1};
@@ -163,6 +171,7 @@ SCIP_RETCODE estimateSafe(
    const SCIP_Interval x1i = {x1, x1};
    const SCIP_Interval x2i = {x2, x2};
    SCIP_Interval coefficienti = (y2i - y1i) / (x2i - x1i);
+   SCIPdbgMsg("coefficienti = [%f, %f]\n", coefficienti.inf, coefficienti.sup);
    SCIP_ROUNDMODE oldmode = SCIPintervalGetRoundingMode();
    SCIP_Real merr = coefficienti.sup - coefficienti.inf;
 

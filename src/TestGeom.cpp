@@ -339,8 +339,11 @@ void TestGeom::testVectorLength() {
 
 
 void TestGeom::runAll() {
+
+   out_ << "Running all";
+   return;
    for (int ndim = 2; ndim <= 5; ++ndim) {
-      std::cout << "  Running tests for d = " << ndim << std::endl;
+      std::cout << "  Running tests for D = " << ndim << std::endl;
       ndim_ = ndim;
 
       testContains();
@@ -367,9 +370,11 @@ void TestGeom::runAll() {
       testHyperCubeIntersects();
       nExecutedTests_++;
 
-      std::cout << "All tests for D=" << ndim_ << " finished" << std::endl;
+      std::cout << "All tests for D =" << ndim_ << " finished" << std::endl;
    }
 }
+
+
 
 
 

@@ -1,5 +1,5 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 /*
  * TestSBratEvaluator.cpp
  *
@@ -78,13 +78,13 @@ void TestBoundMap::testOperations()
       map2[BoundKey(5, type)] = goodBound[i];
       map1[BoundKey(5, type)] = betterBound[i];
    }
-   printf("map1:");
-   printBoundMap(map1);
-   printf("map2:");
-   printBoundMap(map2);
+   //printf("map1:");
+   //printBoundMap(map1);
+   //printf("map2:");
+   //printBoundMap(map2);
    BoundMap mapUnion = getUnion(map1, map2);
-   printf("Created union:\n");
-   printBoundMap(mapUnion);
+   //printf("Created union:\n");
+   //printBoundMap(mapUnion);
    /* Evaluate */
    for (int i = 0; i < 2; ++i)
    {
@@ -103,8 +103,8 @@ void TestBoundMap::testOperations()
    }
 
    BoundMap mapIntersection = getIntersection(map1, map2);
-   printf("Created union:\n");
-   printBoundMap(mapIntersection);
+   //printf("Created union:\n");
+   //printBoundMap(mapIntersection);
    /* Evaluate */
    for (int i = 0; i < 2; ++i)
    {

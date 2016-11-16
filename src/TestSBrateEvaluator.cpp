@@ -1,5 +1,5 @@
-#define SCIP_DBG
-#define SCIP_DEBUG
+//#define SCIP_DBG
+//#define SCIP_DEBUG
 /*
  * TestSBratEvaluator.cpp
  *
@@ -14,14 +14,17 @@ namespace sdscip
 {
 
 TestSBrateEvaluator::TestSBrateEvaluator(SCIP* scip) :
-   scip_(scip)
-   ,nSuccess_(0)
-   ,nErrors_(0)
+   SDSCIPtest(scip)
 { }
 
 TestSBrateEvaluator::~TestSBrateEvaluator()
 {
 }
+
+std::ostream& TestSBrateEvaluator::toString(std::ostream& strm) const {
+  return strm << "TestSBrateEvaluator";
+}
+
 
 int TestSBrateEvaluator::getNsuccess()
 {
@@ -30,15 +33,9 @@ int TestSBrateEvaluator::getNsuccess()
 
 int TestSBrateEvaluator::getNerrors()
 {
-   return nErrors_;
+   return nError_;
 }
 
-void TestSBrateEvaluator::runAll()
-{
-   SCIPdbgMsg("running all\n");
-
-   SCIPdebugMessage("Finished running all, %i success, %i errors\n",nSuccess_, nErrors_);
-}
 
 
 /*
@@ -105,9 +102,15 @@ void TestSBrateEvaluator::runBoundTests()
       if( myErrors == 0)
          ++nSuccess_;
       else
-         nErrors_ += myErrors;
+         nError_ += myErrors;
    }
 }
+
+void TestSBrateEvaluator::runAll()
+{
+   runBoundTests();
+}
+
 
 
 }
