@@ -51,14 +51,9 @@ public:
    using BoundKey = SDproblemStructureInterface::BoundKey;
    using BoundMap = SDproblemStructureInterface::BoundMap;
 
-
-
-
-   //using REDUCTION_MODE_LOWER = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER;
-
    int                ncalls_;            /**< number of calls of the heuristic since the last solution was found */
    SCIP_SOL*          sol_;               /**< current solution */
-   int                timesCalled_;            /**< number of calls to the heuristic*/
+   int                timesCalled_;       /**< number of calls to the heuristic*/
 
    /** default constructor */
    HeurSimODE(
@@ -90,8 +85,6 @@ public:
              "Path of file to write calculated bounds to. The current node id and a .dat file extension "
              "will be added to the end of the given string",
              NULL, FALSE, "simODEbounds", NULL, NULL);
-
-
    }
 
    /** destructor */
@@ -123,8 +116,6 @@ public:
     */
    virtual SCIP_DECL_HEUREXITSOL(scip_exitsol);
 
-
-
    /** execution method of primal heuristic
     *
     *  Searches for feasible primal solutions. The method is called in the node processing loop.
@@ -151,12 +142,17 @@ private:
    SCIP_RETCODE prepareOutFile(std::vector<std::string>  stateVarNames, std::string reductionModeString);
    SCIP_RETCODE finalizeOutFile(std::string message);
 
+   /* Dimension of state space */
    int nStates_;
+
+   /* Dimension of control space */
    int nControls_;
+
+   /* Number of algebraic variables */
    int nAlgebraic_;
 
+   /* File resource for solution output */
    std::ofstream outFile_;
-
 };
 
 }

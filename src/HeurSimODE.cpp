@@ -80,6 +80,7 @@ SCIP_DECL_HEUREXITSOL(HeurSimODE::scip_exitsol)
    return SCIP_OKAY;
 }
 
+/** Open file and write header if writesols parameter is true */
 SCIP_RETCODE HeurSimODE::prepareOutFile(std::vector<std::string>  stateVarNames, std::string reductionModeString)
 {
    /* Prepare output file */
@@ -101,6 +102,7 @@ SCIP_RETCODE HeurSimODE::prepareOutFile(std::vector<std::string>  stateVarNames,
    return SCIP_OKAY;
 }
 
+/** Close the outfile */
 SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
 {
    if (outFile_.is_open())
@@ -119,7 +121,6 @@ SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
 }
 
 /** execution method of primal heuristic MaxCtrl */
-//TODO: _SD rework this, the strategies and trackbacks are almost useless when limited to one constraint */
 SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 {
    /* No probdata, no heurSimODE (maybe called by subscip) */
@@ -142,7 +143,6 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    nAlgebraic_ = structure->getNAlgebraic();
    SCIPdbgMsg("set nAlgebraic_ to %i\n", nAlgebraic_);
 
-
    /** Create integrator **/
    char* discretization;
    SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
@@ -157,8 +157,6 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       SCIP_Bool violatedBounds(false);
       SCIP_Bool infiniteBound(false); /* Know internally if a bound went to infinity */
 
-
-
 	   /* Start clock */
 	   SCIPclockSetTime(clock,0);
 	   SCIPstartClock(scip, clock);
@@ -166,14 +164,15 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 	   /* Create solution */
 	   SCIPcreateOrigSol(scip_, &sol_, heur);
 
+	   /* Initialize integrator */
       ReduceODEintegrator integrator(scip_, discretization , structure->getTstep(), 1, nStates_, nAlgebraic_, nControls_);
       SCIPdbgMsg("setting xDots\n");
       integrator.setXdots(structure->getXdotAlgebraic());
       integrator.setAlgebraicExpressions(structure->getAlgebraicExpressions());
       integrator.setReductionMode(mode);
       SCIPdbg(integrator.rateEvaluator()->printXdotAlgebraic() );
-	   /* Prepare out file */
 
+	   /* Prepare out file */
 	   SCIP_CALL( prepareOutFile(structure->getStateVarNames(), integrator.getReductionModeString()));
 
       /* Start timeIteration in structure to initialize integrator */
@@ -200,8 +199,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       SCIPdbgMsg("integrator states: %s\n",integrator.statesToString().c_str());
       SCIPdbgMsg("integrator controls: %s\n",integrator.controlsToString().c_str());
 
-
-      /** Start integration loop */
+      /* Start integration loop */
       int tStep(0);
       SCIP_Bool doingFine = TRUE;
 
@@ -210,13 +208,13 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
       for (currentTime = structure->incrementTime(); structure->timesLeft() && doingFine ; currentTime = structure->incrementTime())
       {
-
          SCIPdbgMsg("----Integrating to currentTime %i -----\n",currentTime);
          /* Set control intervals from variables */
          /* TODO _SD: cycleControls missing? */
          integrator.setEndControls(structure->getControlBounds());
          SCIPdbgMsg("set integrator controls to %s\n",integrator.controlsToString().c_str());
          BoundMap currentStateBounds = structure->getStateBoundsMap();
+
          /* Step integrator with state bounds and parameters */
          integrator.step( structure->getXdotParams(currentTime - 1), structure->getXdotParams(currentTime) );
          tStep++;
@@ -348,11 +346,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
          }
       }
 
-
       SCIP_Bool stored  = FALSE;
       SCIP_Real solTime = SCIPclockGetTime(clock);
-
-      //SCIPprintSol(scip_, sol_, NULL, TRUE);
 
       if (doingFine)
       {
