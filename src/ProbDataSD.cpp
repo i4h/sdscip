@@ -628,7 +628,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
    int sdVarIdTmp = 0;
    assert(scip != NULL);
 
-   //Get propdata
+   /* Get propdata */
    probdata = SCIPgetProbData(scip);
    assert(probdata != NULL);
    sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
@@ -636,7 +636,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
    SCIPdbgMsg("entered SDrefreshStructure, got probdata and structure\n");
    //SCIPprintTransProblem(scip,NULL,"cip",false);
 
-   //Empty everything
+   /* Empty everything */
    structure->clear();
 
    // Iterate over all constraints and look for time tags

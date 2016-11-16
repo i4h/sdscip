@@ -27,14 +27,9 @@
 #include <string>
 #include <sstream>
 #include <vector>
-
-
 #include "HeurSimODE.h"
 
 using namespace sdscip;
-
-
-
 
 /** destructor of primal heuristic to free user data (called when SCIP is exiting) */
 SCIP_DECL_HEURFREE(HeurSimODE::scip_free)
@@ -80,6 +75,7 @@ SCIP_DECL_HEUREXITSOL(HeurSimODE::scip_exitsol)
    return SCIP_OKAY;
 }
 
+
 /** Open file and write header if writesols parameter is true */
 SCIP_RETCODE HeurSimODE::prepareOutFile(std::vector<std::string>  stateVarNames, std::string reductionModeString)
 {
@@ -102,6 +98,7 @@ SCIP_RETCODE HeurSimODE::prepareOutFile(std::vector<std::string>  stateVarNames,
    return SCIP_OKAY;
 }
 
+
 /** Close the outfile */
 SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
 {
@@ -119,6 +116,7 @@ SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
 
    return SCIP_OKAY;
 }
+
 
 /** execution method of primal heuristic MaxCtrl */
 SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
@@ -388,6 +386,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
    return SCIP_OKAY;
 }
+
 
 /** clone method which will be used to copy a objective plugin */
 SCIP_DECL_HEURCLONE(scip::ObjCloneable* HeurSimODE::clone)
