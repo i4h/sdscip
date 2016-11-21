@@ -215,8 +215,8 @@ test:           $(MAINFILE)
 		$(CONTINUE) $(LOCK) $(VERSION) $(LPS) $(VALGRIND) $(CLIENTTMPDIR) $(REOPT) $(OPTCOMMAND) $(SETCUTOFF) $(MAXJOBS) $(VISUALIZE) $(PERMUTE) $(SEEDS) ;
 
 unittest:           $(UNITTESTFILE) $(UNITTESTSHORTLINK)
-#		cd unittest; \
-#		../bin/unittest ;
+		cd unittest; \
+		../bin/unittest ;
 
 $(MAINSHORTLINK):	$(MAINFILE)
 		@rm -f $@
