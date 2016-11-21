@@ -1,10 +1,3 @@
-/*
- * BaseTest.cpp
- *
- *  Created on: 31.10.2016
- *      Author: bzfvierh
- */
-
 #include "BaseTest.h"
 
 namespace I4H {
