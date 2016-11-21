@@ -1,9 +1,23 @@
-/*
- * SDproblemStructureFactory.h
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*                  This file is part the SCIP-Extension                     */
+/*                     System Dynamics SCIP (SD-SCIP)                        */
+/*                         Homepage: sdscip.zib.de                           */
+/*                                                                           */
+/*    Copyright (C) 20016     Ingmar Vierhaus <mail@ingmar-vierhaus.de>      */
+/*                                                                           */
+/*                                                                           */
+/*  SD-SCIP is distributed under the terms of the GNU Public License (GPL)   */
+/*                                                                           */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/**@file    SDproblemStructureFactory.h
+ * @brief   @todo
+ * @author  Ingmar Vierhaus
  *
- *  Created on: 05.02.2015
- *      Author: bzfvierh
  */
+
 
 #ifndef SDPROBLEMSTRUCTUREFACTORY_H_
 #define SDPROBLEMSTRUCTUREFACTORY_H_

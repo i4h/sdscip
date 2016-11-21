@@ -1,10 +1,23 @@
-/*
- * Statistics.h
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*                  This file is part the SCIP-Extension                     */
+/*                     System Dynamics SCIP (SD-SCIP)                        */
+/*                         Homepage: sdscip.zib.de                           */
+/*                                                                           */
+/*    Copyright (C) 20016     Ingmar Vierhaus <mail@ingmar-vierhaus.de>      */
+/*                                                                           */
+/*                                                                           */
+/*  SD-SCIP is distributed under the terms of the GNU Public License (GPL)   */
+/*                                                                           */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
+/**@file    Statistics.h
+ * @brief   @todo
+ * @author  Ingmar Vierhaus
  *
- *  Created on: 2015/06/15
- *      Author: Ingmar Vierhaus
  */
+
 
 #ifndef I4H_STATISTICS_H_
 #define I4H_STATISTICS_H_

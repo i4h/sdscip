@@ -1,9 +1,23 @@
-/*
- * Point.h
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*                  This file is part the SCIP-Extension                     */
+/*                     System Dynamics SCIP (SD-SCIP)                        */
+/*                         Homepage: sdscip.zib.de                           */
+/*                                                                           */
+/*    Copyright (C) 20016     Ingmar Vierhaus <mail@ingmar-vierhaus.de>      */
+/*                                                                           */
+/*                                                                           */
+/*  SD-SCIP is distributed under the terms of the GNU Public License (GPL)   */
+/*                                                                           */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/**@file    Point.h
+ * @brief   @todo
+ * @author  Ingmar Vierhaus
  *
- *  Created on: 24.01.2014
- *      Author: bzfvierh
  */
+
 
 #ifndef SD_GEOM_POINT_H_
 #define SD_GEOM_POINT_H_

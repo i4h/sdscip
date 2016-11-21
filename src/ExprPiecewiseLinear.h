@@ -1,3 +1,24 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*                  This file is part the SCIP-Extension                     */
+/*                     System Dynamics SCIP (SD-SCIP)                        */
+/*                         Homepage: sdscip.zib.de                           */
+/*                                                                           */
+/*    Copyright (C) 20016     Ingmar Vierhaus <mail@ingmar-vierhaus.de>      */
+/*                                                                           */
+/*                                                                           */
+/*  SD-SCIP is distributed under the terms of the GNU Public License (GPL)   */
+/*                                                                           */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/**@file    ExprPiecewiseLinear.h
+ * @brief   @todo
+ * @author  Ingmar Vierhaus
+ *
+ */
+
+
 #ifndef _EXPR_PIECWEWISE_LINEAR_H_
 #define _EXPR_PIECWEWISE_LINEAR_H_
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS

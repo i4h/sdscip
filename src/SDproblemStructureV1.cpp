@@ -1,11 +1,23 @@
-//#define SCIP_DEBUG
-#define SCIP_DBG
-/*
- * SDproblemStructureV1.cpp
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*                  This file is part the SCIP-Extension                     */
+/*                     System Dynamics SCIP (SD-SCIP)                        */
+/*                         Homepage: sdscip.zib.de                           */
+/*                                                                           */
+/*    Copyright (C) 20016     Ingmar Vierhaus <mail@ingmar-vierhaus.de>      */
+/*                                                                           */
+/*                                                                           */
+/*  SD-SCIP is distributed under the terms of the GNU Public License (GPL)   */
+/*                                                                           */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/**@file    SDproblemStructureV1.cpp
+ * @brief   @todo
+ * @author  Ingmar Vierhaus
  *
- *  Created on: 03.02.2015
- *      Author: bzfvierh
  */
+
 
 #include "SDproblemStructureV1.h"
 #include "ProbDataSD.h"

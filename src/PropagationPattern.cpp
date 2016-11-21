@@ -1,12 +1,23 @@
-//#define SCIP_DEBUG
-//#define SCIP_DBG
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+/*                                                                           */
+/*                  This file is part the SCIP-Extension                     */
+/*                     System Dynamics SCIP (SD-SCIP)                        */
+/*                         Homepage: sdscip.zib.de                           */
+/*                                                                           */
+/*    Copyright (C) 20016     Ingmar Vierhaus <mail@ingmar-vierhaus.de>      */
+/*                                                                           */
+/*                                                                           */
+/*  SD-SCIP is distributed under the terms of the GNU Public License (GPL)   */
+/*                                                                           */
+/*                                                                           */
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/*
- * PropagationPattern.cpp
+/**@file    PropagationPattern.cpp
+ * @brief   @todo
+ * @author  Ingmar Vierhaus
  *
- *  Created on: 30.04.2014
- *      Author: bzfvierh
  */
+
 
 #include "PropagationPattern.h"
 #include "HyperCube.h"
