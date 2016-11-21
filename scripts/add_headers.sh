@@ -13,11 +13,14 @@ EXIT_BUG=10
 # Initialize Variables defined by option switches
 VERBOSE=n
 OPTFILE=""
-TEMPFILE=.delete_before_include.tmp
+TEMPFILE=.add_headers.tmp
+SCRIPTDIR=`dirname $0`
+HEADER=$SCRIPTDIR"/../templates/header.cpp"
+FILEHEADER=$SCRIPTDIR"/../templates/fileheader.cpp"
 # function definitions 
 function usage {
  echo "Usage: $SCRIPTNAME [-h] [-v] [-o arg] file ..." >&2
- echo "Deletes everything before the first #include in given files"
+ echo "Adds headers to all files using tempaltes/header.cpp and templates/fileeheader.cpp"
  echo ""
  echo "Options: "
  echo " -h        show this help"
@@ -65,21 +68,34 @@ for ARG ; do
     echo -n "Argument: "
     echo $ARG
 
-    # search markers of code starting
-    search="#include\\|#ifdef\\|#ifndef\\|@file"
-    line=`grep -n "$search" $ARG  | head -n 1 | cut -d ":" -f 1`
+    # Check if file already has a @file header somewhere in the first 50 lines
+    filemarker=`head -n 50 $ARG | grep  "@file"  | wc -l`
+    # Filemarker is 0 if no @file was found 
 
-    if [ $line = "" ] ; then
-	echo "None of the markers found in file $ARG, leaving"
-	exit
+    # Move original file 
+    mv $ARG $TEMPFILE
+
+    # Add header
+    cp $HEADER $ARG
+
+    echo $filemarker
+    
+    # Add file header
+    if [ $filemarker = "0" ] ; then
+	echo "cattting"
+	sedstring="s/{file}/$ARG/"
+	cat $FILEHEADER | sed "$sedstring" >> $ARG
     fi
 
-    if [ $line != "1" ] ; then
-	line=$((line-1))
-	sedstring="1,"$line"d"
-	sed -i $sedstring $ARG
-    fi
+    cat $TEMPFILE >> $ARG
+
+    rm $TEMPFILE
+
+    echo "done"
+
 done
+
+
 
 
 
