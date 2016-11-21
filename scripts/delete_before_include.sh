@@ -66,13 +66,17 @@ for ARG ; do
     echo $ARG
 
     # find first #include# 
-    includeline=`grep -n "#include" $ARG  | head -n 1 | cut -d ":" -f 1`
+
     # find guard
     guardline=`grep -n "#ifndef" $ARG  | head -n 1 | cut -d ":" -f 1`
+    search="#include\\|#ifdef\\|#ifndef\\|@file"
 
-    line=$((includeline > guardline ? includeline : guardline))
+    line=`grep -n "$search" $ARG  | head -n 1 | cut -d ":" -f 1`
 
-    echo $line
+    if [ $line = "" ] ; then
+	echo "None of the markers found in file $i, leaving"
+	exit
+    fi
 
     if [ $line != "1" ] ; then
 	line=$((line-1))
