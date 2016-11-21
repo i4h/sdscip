@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDproblemStructureV1.h
- * @brief   @todo
+ * @brief   SDO problem structure version used by ReaderVOP
  * @author  Ingmar Vierhaus
  *
  */

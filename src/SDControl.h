@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDControl.h
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   class representing sd control variable
+ * @author  Robert L. Gottwald
  *
  */
 

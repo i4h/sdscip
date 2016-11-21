@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestExprPiecewiseLinear.h
- * @brief   @todo
+ * @brief   Test for ExprPiecewiseLinear
  * @author  Ingmar Vierhaus
  *
  */

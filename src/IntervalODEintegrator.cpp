@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    IntervalODEintegrator.cpp
- * @brief   @todo
+ * @brief   Integrator vor interval valued ODEs
  * @author  Ingmar Vierhaus
  *
  */

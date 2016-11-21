@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ConstRateEvaluator.h
- * @brief   @todo
+ * @brief   Rate evaluator for constant rates (used for testing)
  * @author  Ingmar Vierhaus
  *
  */

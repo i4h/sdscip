@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Vector.cpp
- * @brief   @todo
+ * @brief   Vector Class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */

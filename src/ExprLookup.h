@@ -13,7 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ExprLookup.h
- * @brief   @todo
+ * @brief   User Expression for univariate lookup functions
+ * @author  Robert L. Gottwald
  * @author  Ingmar Vierhaus
  *
  */

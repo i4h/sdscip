@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestStatistics.cpp
- * @brief   @todo
+ * @brief   Test class for basic statistics class
  * @author  Ingmar Vierhaus
  *
  */

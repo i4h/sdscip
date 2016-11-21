@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    PointODEintegrator.h
- * @brief   @todo
+ * @brief   ODE integrator class for scalar ODEs
  * @author  Ingmar Vierhaus
  *
  */

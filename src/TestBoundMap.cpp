@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestBoundMap.cpp
- * @brief   @todo
+ * @brief   Test class for BoundMap
  * @author  Ingmar Vierhaus
  *
  */

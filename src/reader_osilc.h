@@ -12,19 +12,28 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
-/**@file   reader_osilc.h
+/**@file   reader_osilc.c
  * @ingroup FILEREADERS
  * @brief  OS instance language (OSiL) format file reader
- * @author Stefan Vigerske
+ * @author Ingmar Vierhaus
  *
- * This reader allows to parse OSiL files with linear and nonlinear constraints and objective.
- * Writing is not implemented yet.
+ * This reader is for the most part identical to the original osil reader.
+ * Differences are:
+ * - The SOS2 Constraint reader assumes that that constraints and variables follow
+ *   the syntax used for gams control problems, i.e.
+ *   - SOS2-Variables must be named variablename_[level]_8(t,sos2index)
+ *   - Constraints must be named: consname_[level]_8_[v/k/n](t)
+ *     with the meanings:
+ *     - v: constraint defining the function value via the lamba values
+ *     - a: constraint defining the argument of the function via the lambda values
+ *     - n: Norm-Constraint, ( \sum_k lambda_k = 1 )
+ *   - The SOS2 Constraint will then receive the name: SOS2-n_[level]_8_sos(t) with a running number n.
+ *   The level describes the order, in which the equations need to be solved in the simulation case.
  *
- * The OSiL format is an XML based format to represent a broad class of mathematical programming instances, see http://www.coin-or.org/OS/OSiL.html .
+ *   CF ProbDataSD.cpp
  */
 
-/*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
+
 
 #ifndef __SCIP_READER_OSILC_H__
 #define __SCIP_READER_OSILC_H__

@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    LookupConsHdlr.cpp
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Constraint Handler for univariate lookup functions
+ * @author  Robert L. Gottwald
  *
  */
 
@@ -56,7 +56,7 @@ enum Side {
 
 
 /**
- * Computs determinant to check whether the point C is left/right/on the
+ * Computes determinant to check whether the point C is left/right/on the
  * line segment that starts in A and goes to B denoted by AB.
  * The result is:
  *  < 0    if C is right of AB

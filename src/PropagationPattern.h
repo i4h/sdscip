@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    PropagationPattern.h
- * @brief   @todo
+ * @brief   Propgation pattern used by PropOBRA
  * @author  Ingmar Vierhaus
  *
  */

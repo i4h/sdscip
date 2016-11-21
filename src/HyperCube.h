@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    HyperCube.h
- * @brief   @todo
+ * @brief   Hypercube class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */

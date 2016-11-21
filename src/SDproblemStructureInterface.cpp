@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDproblemStructureInterface.cpp
- * @brief   @todo
+ * @brief   Interface for implementations of SDO problem structure
  * @author  Ingmar Vierhaus
  *
  */

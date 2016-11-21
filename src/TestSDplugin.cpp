@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestSDplugin.cpp
- * @brief   @todo
+ * @brief   Base class for tests of SCIP plugins used by SD-SCIP
  * @author  Ingmar Vierhaus
  *
  */

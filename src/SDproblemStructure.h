@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDproblemStructure.h
- * @brief   @todo
+ * @brief   Old version of problem structure
  * @author  Ingmar Vierhaus
  *
  */

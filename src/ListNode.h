@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ListNode.h
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Node in variable list
+ * @author  Robert L. Gottwald
  *
  */
 

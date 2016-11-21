@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    LookupConsHdlr.h
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Constraint Handler for univariate lookup functions
+ * @author  Robert L. Gottwald
  *
  */
 

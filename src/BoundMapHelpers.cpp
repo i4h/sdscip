@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    BoundMapHelpers.cpp
- * @brief   @todo
+ * @brief   Helper methods for BoundMaps
  * @author  Ingmar Vierhaus
  *
  */

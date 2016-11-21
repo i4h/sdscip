@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Point.h
- * @brief   @todo
+ * @brief   Point class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */

@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestBoundMap.h
- * @brief   @todo
+ * @brief   Test class for BoundMap
  * @author  Ingmar Vierhaus
  *
  */

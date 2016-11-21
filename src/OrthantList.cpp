@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    OrthantList.cpp
- * @brief   @todo
+ * @brief   Class representing list of orthants
  * @author  Ingmar Vierhaus
  *
  */

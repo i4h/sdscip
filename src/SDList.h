@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDList.h
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   List for problem structure used by sdscip
+ * @author  Robert L. Gottwald
  *
  */
 

@@ -12,10 +12,9 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
 /**@file   PresolConsGraph.h
  * @brief  Creates a Graph that represents the structure of Constraints and Variables of the NLP-Problem
- * @author Ingmar Vierhaus <vierhaus@zib.de>
+ * @author Ingmar Vierhaus
  */
 
 /*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/

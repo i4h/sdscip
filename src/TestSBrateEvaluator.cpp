@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestSBrateEvaluator.cpp
- * @brief   @todo
+ * @brief   Test class for Scott, Barton rate evaluator
  * @author  Ingmar Vierhaus
  *
  */

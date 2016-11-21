@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestEstimatorTypes.h
- * @brief   @todo
+ * @brief   Test for safe estimator types
  * @author  Ingmar Vierhaus
  *
  */

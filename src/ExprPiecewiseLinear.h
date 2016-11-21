@@ -13,7 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ExprPiecewiseLinear.h
- * @brief   @todo
+ * @brief   User Expression for univariate piecewise linear functions
+ * @author  Robert L. Gottwald
  * @author  Ingmar Vierhaus
  *
  */

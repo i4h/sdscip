@@ -14,7 +14,7 @@
 
 //#include
 /**@file   HeurMaxCtrl.cpp
- * @brief  Maximum Control Heuristic
+ * @brief  Heuristic simulating sdo problems while fixing control variables
  * @author Ingmar Vierhaus
  */
 

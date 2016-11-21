@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ReduceODEintegrator.cpp
- * @brief   @todo
+ * @brief   ODE integrator for scalar ODEs, reducing interval rates to points
  * @author  Ingmar Vierhaus
  *
  */

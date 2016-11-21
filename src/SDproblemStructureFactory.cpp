@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDproblemStructureFactory.cpp
- * @brief   @todo
+ * @brief   Factory for generation of problem structure depending on scip parameters
  * @author  Ingmar Vierhaus
  *
  */

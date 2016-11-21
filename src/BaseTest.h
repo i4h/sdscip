@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    BaseTest.h
- * @brief   @todo
+ * @brief   Base class for unit tests
  * @author  Ingmar Vierhaus
  *
  */

@@ -13,11 +13,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Vector.h
- * @brief   @todo
+ * @brief   Vector Class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */
-
 
 #ifndef SD_GEOM_VECTOR_H_
 #define SD_GEOM_VECTOR_H_

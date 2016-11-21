@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestODEintegrator.h
- * @brief   @todo
+ * @brief   Test class for ODEintegrator
  * @author  Ingmar Vierhaus
  *
  */

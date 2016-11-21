@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    MdlExpressionTranslator.cpp
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Expression Transtor for mdl files
+ * @author  Robert L. Gottwald
  *
  */
 

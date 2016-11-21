@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SBrateEvaluator.cpp
- * @brief   @todo
+ * @brief   Rateevaluator implementing rate collapsing as described in Scott, Barton 2012
  * @author  Ingmar Vierhaus
  *
  */

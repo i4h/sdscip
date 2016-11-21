@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Orthant.h
- * @brief   @todo
+ * @brief   Orthant class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */

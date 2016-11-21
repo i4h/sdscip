@@ -14,7 +14,7 @@
 
 //#include
 /**@file   BranchControlFirst.h
- * @brief  C++ Control First Branching rule for SDO Problems
+ * @brief  Branching rule for SDO problems, selecting control variables first
  * @author Ingmar Vierhaus
  */
 

@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Statistics.h
- * @brief   @todo
+ * @brief   Basic statistics class
  * @author  Ingmar Vierhaus
  *
  */

@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Line.cpp
- * @brief   @todo
+ * @brief   Line class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */

@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDListTraits.h
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Traits for SDList
+ * @author  Robert L. Gottwald
  *
  */
 

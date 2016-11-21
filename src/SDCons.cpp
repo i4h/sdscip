@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDCons.cpp
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   class representing sd constraint
+ * @author  Robert L. Gottwald
  *
  */
 

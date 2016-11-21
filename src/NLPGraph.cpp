@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    NLPGraph.cpp
- * @brief   @todo
+ * @brief   Class for visual representation of nlp constraint dependencies
  * @author  Ingmar Vierhaus
  *
  */

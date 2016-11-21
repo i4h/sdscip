@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    Statistics.cpp
- * @brief   @todo
+ * @brief   Basic statistics class
  * @author  Ingmar Vierhaus
  *
  */

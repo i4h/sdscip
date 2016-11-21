@@ -12,14 +12,11 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                           */
 /**@file   PropOBRA.cpp
- * @brief  Propagating bounds of control problems by solving auxiliary OBRAs, implementing Scott, Barton 2012
+ * @brief  Propagating bounds of control problems by solving auxiliary OBRAs
  * @author Ingmar Vierhaus
  */
-/*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
+
 
 #include "PropOBRA.h"
 

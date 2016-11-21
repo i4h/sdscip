@@ -12,11 +12,11 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
-/**@file
- * @brief
+/**@file   ProbDataSD.cpp
+ * @brief  Problem data for SD-SCIP
+ * @author Ingmar Vierhaus
  *
- * This defines the Problem Data for System Dynamics Optimization problems. The problem structure is read
+ * This class defines the Problem Data for System Dynamics Optimization problems. The problem structure is read
  * from the names of constraints and variables through regular expressions. The conventions are as follows:
  *
  * Constraints:

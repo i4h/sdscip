@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    TestGeom.h
- * @brief   @todo
+ * @brief   Test for geometry classes used in SD-SCIP
  * @author  Ingmar Vierhaus
  *
  */

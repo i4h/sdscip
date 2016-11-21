@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SimRateEvaluator.h
- * @brief   @todo
+ * @brief   Rate evaluator for solution of ODEs without degrees of freedom
  * @author  Ingmar Vierhaus
  *
  */

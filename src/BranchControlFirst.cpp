@@ -12,11 +12,8 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                           */
-/**@file   HeurMaxCtrl.cpp
- * @brief  Control First Branching Rule
+/**@file   BranchControlFirst.cpp
+ * @brief  Branching rule for SDO problems, selecting control variables first
  * @author Ingmar Vierhaus
  */
 

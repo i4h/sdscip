@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDproblemStructureExtendedInterface.h
- * @brief   @todo
+ * @brief   Extended Interface for SDO problem structure
  * @author  Ingmar Vierhaus
  *
  */

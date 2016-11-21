@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDVariable.h
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Class representing SD variable
+ * @author  Robert L. Gottwald
  *
  */
 

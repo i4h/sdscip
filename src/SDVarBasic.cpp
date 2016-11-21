@@ -13,8 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDVarBasic.cpp
- * @brief   @todo
- * @author  Ingmar Vierhaus
+ * @brief   Class representing basic SD variable
+ * @author  Robert L. Gottwald
  *
  */
 

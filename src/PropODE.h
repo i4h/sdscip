@@ -12,17 +12,11 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-/*                                                                           */
 /**@file   Propode.h
- * @brief  Propagating bounds of control problems by solving auxiliary ODEs, implementing Scott, Barton 2013
- *
+ * @brief  Propagating bounds of control problems using interval valued odes, implementing Scott, Barton 2012
  * @author Ingmar Vierhaus
+ *
  */
-/*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
-
-/*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
 
 #ifndef __PropODE_H__
 #define __PropODE_H__

@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    CopyablePointer.h
- * @brief   @todo
+ * @brief   Smart pointer that copies the resource when pointer is copied
  * @author  Ingmar Vierhaus
  *
  */

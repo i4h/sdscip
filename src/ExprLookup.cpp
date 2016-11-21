@@ -13,7 +13,8 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ExprLookup.cpp
- * @brief   @todo
+ * @brief   User Expression for univariate lookup functions
+ * @author  Robert L. Gottwald
  * @author  Ingmar Vierhaus
  *
  */
@@ -53,7 +54,7 @@ struct SCIP_UserExprData
 inline static
 SCIP_Real pointInsideInterval(
    SCIP_Real infinity,             /**< value of infinity */
-   SCIPInterval interval        /**< the interval that the returned value should be contained in */
+   SCIPInterval interval           /**< the interval that the returned value should be contained in */
 )
 {
    SCIP_Real inf = SCIPintervalGetInf( interval );
@@ -225,7 +226,7 @@ SCIP_DECL_USEREXPRCURV( checkLookupCurvature )
       return SCIP_OKAY;
    }
 
-   //ifargument nonlinear but convex or concave we need to check whether the lookup is non-increasing or non-decreasing
+   //if the argument is nonlinear but convex or concave we need to check whether the lookup is non-increasing or non-decreasing
    //in order to conclude that the whole expression is convex/concave
 
    auto derivative1 = spline::differentiate(*(data->lookup));

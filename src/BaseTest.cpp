@@ -13,11 +13,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    BaseTest.cpp
- * @brief   @todo
+ * @brief   Base class for unit tests
  * @author  Ingmar Vierhaus
  *
  */
-
 
 #include "BaseTest.h"
 

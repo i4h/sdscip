@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    ODEintegrator.h
- * @brief   @todo
+ * @brief   Base class for ODE integrators
  * @author  Ingmar Vierhaus
  *
  */

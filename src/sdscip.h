@@ -12,7 +12,6 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
 /**@file   sdscip.h
  * @ingroup PUBLICMETHODS
  * @brief  SD-SCIP common includes

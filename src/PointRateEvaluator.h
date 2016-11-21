@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    PointRateEvaluator.h
- * @brief   @todo
+ * @brief   Rate evaluator for scalar rates
  * @author  Ingmar Vierhaus
  *
  */

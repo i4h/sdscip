@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    SDSCIPtest.cpp
- * @brief   @todo
+ * @brief   Base class for SD-SCIP unit tests
  * @author  Ingmar Vierhaus
  *
  */

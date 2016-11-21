@@ -13,7 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file    HyperPlane.h
- * @brief   @todo
+ * @brief   Hyperplane class used by sdscip
  * @author  Ingmar Vierhaus
  *
  */

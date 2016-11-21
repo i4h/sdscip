@@ -13,6 +13,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file   reader_osilc.c
+ * @ingroup FILEREADERS
  * @brief  OS instance language (OSiL) format file reader
  * @author Ingmar Vierhaus
  *
@@ -31,8 +32,6 @@
  *
  *   CF ProbDataSD.cpp
  */
-
-/*---+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
 
 #include <assert.h>
 #include <string.h>
