@@ -82,7 +82,6 @@ PropagationPattern::~PropagationPattern()
 void PropagationPattern::clearVars()
 {
    vars_.clear();
-   structs_.clear();
    configurationLoaded_ = false;
    hyperCubeLoaded_ = false;
 }
@@ -117,10 +116,6 @@ void PropagationPattern::addVar(SCIP_VAR * scipVar, SCIP_VAR * subscipVar)
 	vars_.push_back(VarPair(scipVar, subscipVar));
 }
 
-void PropagationPattern::addStruct(test_struct * var)
-{
-   structs_.push_back(var);
-}
 
 /*
  * Gets the pattern for the current number of added variables,

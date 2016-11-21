@@ -90,10 +90,6 @@ enum SDSCIP_PropDir
 typedef enum SDSCIP_PropDir SDSCIP_PROPDIR;           /**< return code for SCIP method */
 
 
-struct test_struct
-{
-   unsigned int          eventqueueimpl:1;   /**< is an IMPLADDED event on this variable currently in the event queue? */
-};
 
 struct Statistics
 {
@@ -140,9 +136,7 @@ public:
    PropagationPattern(int _confType);
    virtual ~PropagationPattern();
 
-   //void addVar(SCIP_VAR *);
    void addVar(SCIP_VAR * scipVar, SCIP_VAR * subscipVar);
-   void addStruct(test_struct *);
    bool configurationsLeft() const;
    bool fetchPattern(int ndim);
    void clearVars();
@@ -177,8 +171,6 @@ public:
 
 private:
    VarPairVec vars_; /* Contains Varpairs: <scipVar, subscipVar> */
-   std::vector<test_struct *> structs_;
-   std::vector<double> testVec_;
    int currentDim_;
    int currentConfiguration_;
    int currentTime_;
