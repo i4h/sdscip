@@ -62,7 +62,7 @@ SCIP_RETCODE SCIPexprCreateLookup(
    BMS_BLKMEM           *blkmem,                 /**< block memory data structure */
    SCIP_EXPR           **expr,                   /**< pointer to buffer for expression address */
    SCIP_EXPR            *child,                  /**< child of lookup expression, i.e. argument to lookup */
-   const boost::shared_ptr< spline::BSplineCurve<3, SCIP_Real> > &spline
+   const boost::shared_ptr< spline::BSplineCurve<3, SCIP_Real> > &spline /**< Pointer to BSplineCurve representing the lookup */
 );
 #if 0
    const spline::PiecewiseLinear &model,         /**< piecewise linear function that is approximated by given piecewise cubic function */

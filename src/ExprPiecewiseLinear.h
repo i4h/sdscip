@@ -78,10 +78,10 @@ enum SAFE_ESTIMATOR
  */
 SCIP_RETCODE SCIPexprCreatePiecewiseLinear(
    BMS_BLKMEM           *blkmem,                 /**< block memory data structure */
-   SCIP_EXPR           **expr,                   /**< pointer to buffer for expression address */
+   SCIP_EXPR            **expr,                  /**< pointer to buffer for expression address */
    SCIP_EXPR            *child,                  /**< child of lookup expression, i.e. argument to lookup */
-   const boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > &pcwlin,
-   std::string           identifier
+   const boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > &pcwlin, /**< Pointer to the (linear) BSplineCurve representing the function */
+   std::string          identifier               /**< string that can be used to identify the expression */
 );
 #if 0
    const spline::PiecewiseLinear &model,         /**< piecewise linear function that is approximated by given piecewise cubic function */

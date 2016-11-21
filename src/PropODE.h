@@ -34,7 +34,7 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/**@file   Propode.h
+/**@file   PropODE.h
  * @brief  Propagating bounds of control problems using interval valued odes, implementing Scott, Barton 2012
  * @author Ingmar Vierhaus
  *

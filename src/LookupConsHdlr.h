@@ -330,8 +330,8 @@ SCIP_RETCODE SCIPcreateConsLookup (
      SCIP*                 scip,               /**< SCIP data structure */
      SCIP_CONS**           cons,               /**< pointer to hold the created constraint */
      const char*           name,               /**< name of constraint */
-     SCIP_VAR*             forwardVar,
-     SCIP_VAR*             arg,
+     SCIP_VAR*             forwardVar,         /**< pointer to the forward variable */
+     SCIP_VAR*             arg,                /**< variable that is the argument of the lookup */
      const boost::shared_ptr<spline::PiecewiseLinear>      &linearModel,             /**< the piecewise linear function approximated by the smooth lookup */
      const boost::shared_ptr<spline::PiecewisePolynomial<3> >      &lookup,             /**< the lookup function */
      const boost::shared_ptr<spline::PiecewisePolynomial<2> >      &deriv             /**< the lookup functions derivate */

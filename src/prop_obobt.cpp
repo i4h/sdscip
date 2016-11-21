@@ -36,7 +36,7 @@
 
 //#include
 
-/**@file    prop_obobt.c
+/**@file    prop_obobt.cpp
  * @ingroup PROPAGATORS
  * @brief   optimization-based bound tightening propagator
  * @author  Stefan Weltge

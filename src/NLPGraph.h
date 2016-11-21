@@ -183,7 +183,7 @@ public:
    *
    * This function is the only function that should be used to add variables to the graph.
    *
-   * @param SCIP_VAR* _varPointer The Pointer to the SCIP-Variable
+   * @param _varPointer The Pointer to the SCIP-Variable
    *
    */
   Node showVar(SCIP_VAR* _varPointer) {

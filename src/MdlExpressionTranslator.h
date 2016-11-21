@@ -149,9 +149,9 @@ public:
    /**
     * Create a MdlExpressionTranslator object
     *
-    * \param scip         pointer to scip
-    * \param exprGraph    reference to expression graph where the nodes belong to
-    * \param lkpMap       reference to a map storing an approximation for the lookup functions
+    * \param _scip         pointer to scip
+    * \param _exprGraph    reference to expression graph where the nodes belong to
+    * \param _lkpMap       reference to a map storing an approximation for the lookup functions
     *                     in the expression graph. If an entry in this map is empty then a
     *                     piecewise linear expression will be created from the lookup directly
     */

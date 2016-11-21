@@ -35,7 +35,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 //#include
-/**@file   HeurMaxCtrl.cpp
+/**@file   HeurSimODE.cpp
  * @brief  Heuristic simulating sdo problems while fixing control variables
  * @author Ingmar Vierhaus
  */

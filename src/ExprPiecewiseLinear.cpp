@@ -1084,7 +1084,7 @@ SCIP_RETCODE SCIPexprCreatePiecewiseLinear(
    SCIP_EXPR**           expr,                   /**< pointer to buffer for expression address */
    SCIP_EXPR*            child,                  /**< child of lookup expression, i.e. argument to lookup */
    const shared_ptr< spline::BSplineCurve<1, SCIP_Real> > &pcwlin, /**< second derivate of piecewise cubic lookup */
-   std::string           identifier
+   std::string           identifier               /**< string that can be used to identify the expression */
 
 )
 {

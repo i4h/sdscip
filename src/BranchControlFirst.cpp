@@ -56,7 +56,7 @@ SCIP_DECL_BRANCHEXECLP(BranchruleControlFirst::scip_execlp)
 
 /** branching execution method for external candidates
  *
- *  @see SCIP_DECL_BRANCHEXECEXT(x) in @ref type_branch.h
+ *  @see SCIP_DECL_BRANCHEXECEXT(x) in type_branch.h of SCIP
  */
 SCIP_DECL_BRANCHEXECEXT(BranchruleControlFirst::scip_execext)
 {  /*lint --e{715}*/
@@ -129,7 +129,7 @@ SCIP_DECL_BRANCHEXECEXT(BranchruleControlFirst::scip_execext)
 
 	/** branching execution method for not completely fixed pseudo solutions
 	 *
-	 *  @see SCIP_DECL_BRANCHEXECPS(x) in @ref type_branch.h
+	 *  @see SCIP_DECL_BRANCHEXECPS(x) in type_branch.h of SCIP
 	 */
 	SCIP_DECL_BRANCHEXECPS(BranchruleControlFirst::scip_execps)
 {  /*lint --e{715}*/

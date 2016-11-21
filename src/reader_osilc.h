@@ -48,7 +48,7 @@
  *     with the meanings:
  *     - v: constraint defining the function value via the lamba values
  *     - a: constraint defining the argument of the function via the lambda values
- *     - n: Norm-Constraint, ( \sum_k lambda_k = 1 )
+ *     - n: Norm-Constraint, ( \f$\sum_k lambda_k = 1\f$ )
  *   - The SOS2 Constraint will then receive the name: SOS2-n_[level]_8_sos(t) with a running number n.
  *   The level describes the order, in which the equations need to be solved in the simulation case.
  *

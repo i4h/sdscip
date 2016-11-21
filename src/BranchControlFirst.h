@@ -34,7 +34,6 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-//#include
 /**@file   BranchControlFirst.h
  * @brief  Branching rule for SDO problems, selecting control variables first
  * @author Ingmar Vierhaus
