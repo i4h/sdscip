@@ -171,6 +171,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_MIDPOINT; mode = mode + 1)
    for( ReduceODEintegrator::REDUCTION_MODE mode : ReduceODEintegrator::getReductionModeVector())
    {
+      SCIPdebugMessage("Simulating in %s mode\n",ReduceODEintegrator::getReductionModeString(mode).c_str());
+
       /* Declare internal flags */
       SCIP_Bool infeasible(false); /* Know internally if we found infeasibility */
       SCIP_Bool violatedBounds(false);
