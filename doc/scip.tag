@@ -910,70 +910,6 @@
     <filename>PresolConsGraph_8h</filename>
   </compound>
   <compound kind="file">
-    <name>PresolCppMin.cpp</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>PresolCppMin_8cpp</filename>
-    <includes id="PresolCppMin_8h" name="PresolCppMin.h" local="yes" imported="no">PresolCppMin.h</includes>
-    <member kind="define">
-      <type>#define</type>
-      <name>PRESOL_NAME</name>
-      <anchorfile>PresolCppMin_8cpp.shtml</anchorfile>
-      <anchor>a285550aa0594c4c2826a42f769de63cc</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>PRESOL_DESC</name>
-      <anchorfile>PresolCppMin_8cpp.shtml</anchorfile>
-      <anchor>afb9e88e58ce104f4d248c85983b37a2f</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>PRESOL_PRIORITY</name>
-      <anchorfile>PresolCppMin_8cpp.shtml</anchorfile>
-      <anchor>a843930ba9a9b28a2392957fe9f554aa0</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>PRESOL_MAXROUNDS</name>
-      <anchorfile>PresolCppMin_8cpp.shtml</anchorfile>
-      <anchor>ae2d39da34a44d64d7854b43b08434108</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="define">
-      <type>#define</type>
-      <name>PRESOL_DELAY</name>
-      <anchorfile>PresolCppMin_8cpp.shtml</anchorfile>
-      <anchor>a897c2ad2a660e966992d98344041f5cf</anchor>
-      <arglist></arglist>
-    </member>
-    <member kind="function">
-      <type></type>
-      <name>SCIP_DECL_PRESOLEXEC</name>
-      <anchorfile>PresolCppMin_8cpp.shtml</anchorfile>
-      <anchor>aa31a4871ec8523033b4de50bacce2609</anchor>
-      <arglist>(PresolCppMin::scip_exec)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>PresolCppMin.h</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>PresolCppMin_8h</filename>
-  </compound>
-  <compound kind="file">
-    <name>ProbDataCtrl.cpp</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>ProbDataCtrl_8cpp</filename>
-    <includes id="ProbDataCtrl_8h" name="ProbDataCtrl.h" local="yes" imported="no">ProbDataCtrl.h</includes>
-  </compound>
-  <compound kind="file">
-    <name>ProbDataCtrl.h</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>ProbDataCtrl_8h</filename>
-  </compound>
-  <compound kind="file">
     <name>ProbDataSD.cpp</name>
     <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
     <filename>ProbDataSD_8cpp</filename>
@@ -1635,25 +1571,6 @@
     </member>
   </compound>
   <compound kind="file">
-    <name>PropCtrlOBBT.cpp</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>PropCtrlOBBT_8cpp</filename>
-    <includes id="PropCtrlOBBT_8h" name="PropCtrlOBBT.h" local="yes" imported="no">PropCtrlOBBT.h</includes>
-    <includes id="ProbDataSD_8h" name="ProbDataSD.h" local="yes" imported="no">ProbDataSD.h</includes>
-    <member kind="function">
-      <type></type>
-      <name>SCIP_DECL_PROPEXEC</name>
-      <anchorfile>PropCtrlOBBT_8cpp.shtml</anchorfile>
-      <anchor>a7ac9aa2eac91e9fece2e498b3045956d</anchor>
-      <arglist>(PropCtrlOBBT::scip_exec)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>PropCtrlOBBT.h</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>PropCtrlOBBT_8h</filename>
-  </compound>
-  <compound kind="file">
     <name>PropOBRA.cpp</name>
     <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
     <filename>PropOBRA_8cpp</filename>
@@ -1749,25 +1666,6 @@
     <includes id="IntervalODEintegrator_8h" name="IntervalODEintegrator.h" local="yes" imported="no">IntervalODEintegrator.h</includes>
     <includes id="ProbDataSD_8h" name="ProbDataSD.h" local="yes" imported="no">ProbDataSD.h</includes>
     <includes id="Statistics_8h" name="Statistics.h" local="yes" imported="no">Statistics.h</includes>
-  </compound>
-  <compound kind="file">
-    <name>PropProbingObjTest.cpp</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>PropProbingObjTest_8cpp</filename>
-    <includes id="PropProbingObjTest_8h" name="PropProbingObjTest.h" local="yes" imported="no">PropProbingObjTest.h</includes>
-    <includes id="ProbDataSD_8h" name="ProbDataSD.h" local="yes" imported="no">ProbDataSD.h</includes>
-    <member kind="function">
-      <type></type>
-      <name>SCIP_DECL_PROPEXEC</name>
-      <anchorfile>PropProbingObjTest_8cpp.shtml</anchorfile>
-      <anchor>acf87730fd2aec074cf98fb8762726846</anchor>
-      <arglist>(PropProbingObjTest::scip_exec)</arglist>
-    </member>
-  </compound>
-  <compound kind="file">
-    <name>PropProbingObjTest.h</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>PropProbingObjTest_8h</filename>
   </compound>
   <compound kind="file">
     <name>pub_message_sd.h</name>
@@ -2275,19 +2173,6 @@
     <includes id="IntervalODEintegrator_8h" name="IntervalODEintegrator.h" local="yes" imported="no">IntervalODEintegrator.h</includes>
     <includes id="PointRateEvaluator_8h" name="PointRateEvaluator.h" local="yes" imported="no">PointRateEvaluator.h</includes>
     <includes id="SDSCIPtest_8h" name="SDSCIPtest.h" local="yes" imported="no">SDSCIPtest.h</includes>
-  </compound>
-  <compound kind="file">
-    <name>TestPropagationPattern.cpp</name>
-    <path>/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/src/</path>
-    <filename>TestPropagationPattern_8cpp</filename>
-    <includes id="PropagationPattern_8h" name="PropagationPattern.h" local="yes" imported="no">PropagationPattern.h</includes>
-    <member kind="function">
-      <type>int</type>
-      <name>main</name>
-      <anchorfile>TestPropagationPattern_8cpp.shtml</anchorfile>
-      <anchor>ae66f6b31b5ad750f1fe042a706a4e3d4</anchor>
-      <arglist>()</arglist>
-    </member>
   </compound>
   <compound kind="file">
     <name>TestSBrateEvaluator.cpp</name>
@@ -3059,31 +2944,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>PresolCppMin</name>
-    <filename>classPresolCppMin.shtml</filename>
-    <member kind="function">
-      <type></type>
-      <name>PresolCppMin</name>
-      <anchorfile>classPresolCppMin.shtml</anchorfile>
-      <anchor>aab781b31d9d461948b3b84cfc67d66bd</anchor>
-      <arglist>(SCIP *scip)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~PresolCppMin</name>
-      <anchorfile>classPresolCppMin.shtml</anchorfile>
-      <anchor>a4920b133bc9678aab3f60617c74e9874</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>SCIP_DECL_PRESOLEXEC</name>
-      <anchorfile>classPresolCppMin.shtml</anchorfile>
-      <anchor>a287eafa4a81ef69dcc0caa05e122b48f</anchor>
-      <arglist>(scip_exec)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>PropagationPattern</name>
     <filename>classPropagationPattern.shtml</filename>
     <member kind="function">
@@ -3113,13 +2973,6 @@
       <anchorfile>classPropagationPattern.shtml</anchorfile>
       <anchor>a8dc329a329fda869e25e4d9c895fba92</anchor>
       <arglist>(SCIP_VAR *scipVar, SCIP_VAR *subscipVar)</arglist>
-    </member>
-    <member kind="function">
-      <type>void</type>
-      <name>addStruct</name>
-      <anchorfile>classPropagationPattern.shtml</anchorfile>
-      <anchor>ad12f74dd2ec439d57c0e31ac29e4d0a1</anchor>
-      <arglist>(test_struct *)</arglist>
     </member>
     <member kind="function">
       <type>bool</type>
@@ -4589,17 +4442,6 @@
       <arglist></arglist>
     </member>
   </compound>
-  <compound kind="struct">
-    <name>test_struct</name>
-    <filename>structtest__struct.shtml</filename>
-    <member kind="variable">
-      <type>unsigned int</type>
-      <name>eventqueueimpl</name>
-      <anchorfile>structtest__struct.shtml</anchorfile>
-      <anchor>a88afc79f4a2c85edddebd7a771588ea1</anchor>
-      <arglist></arglist>
-    </member>
-  </compound>
   <compound kind="namespace">
     <name>I4H</name>
     <filename>namespaceI4H.shtml</filename>
@@ -4956,11 +4798,8 @@
     <class kind="class">sdscip::Point</class>
     <class kind="class">sdscip::PointODEintegrator</class>
     <class kind="class">sdscip::PointRateEvaluator</class>
-    <class kind="class">sdscip::ProbDataCtrl</class>
-    <class kind="class">sdscip::PropCtrlOBBT</class>
     <class kind="class">sdscip::PropOBRA</class>
     <class kind="class">sdscip::PropODE</class>
-    <class kind="class">sdscip::PropProbingObjTest</class>
     <class kind="class">sdscip::ReduceODEintegrator</class>
     <class kind="class">sdscip::SBrateEvaluator</class>
     <class kind="class">sdscip::SDproblemStructure</class>
@@ -6927,91 +6766,6 @@
     </member>
   </compound>
   <compound kind="class">
-    <name>sdscip::ProbDataCtrl</name>
-    <filename>classsdscip_1_1ProbDataCtrl.shtml</filename>
-    <member kind="function">
-      <type></type>
-      <name>ProbDataCtrl</name>
-      <anchorfile>classsdscip_1_1ProbDataCtrl.shtml</anchorfile>
-      <anchor>adbf187fc64052f38030e09a05c4dddc8</anchor>
-      <arglist>(GRAPH *g)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~ProbDataCtrl</name>
-      <anchorfile>classsdscip_1_1ProbDataCtrl.shtml</anchorfile>
-      <anchor>a6a4d5468b0bea457b80182e51b50b08d</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SCIP_RETCODE</type>
-      <name>scip_copy</name>
-      <anchorfile>classsdscip_1_1ProbDataCtrl.shtml</anchorfile>
-      <anchor>ad76592b7aa09040eec9bbed9dbc4b10a</anchor>
-      <arglist>(SCIP *scip, SCIP *sourcescip, SCIP_HASHMAP *varmap, SCIP_HASHMAP *consmap, ObjProbData **objprobdata, SCIP_Bool global, SCIP_RESULT *result)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SCIP_RETCODE</type>
-      <name>scip_delorig</name>
-      <anchorfile>classsdscip_1_1ProbDataCtrl.shtml</anchorfile>
-      <anchor>af143b9553b78d9806147805a7c8f3e15</anchor>
-      <arglist>(SCIP *scip)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SCIP_RETCODE</type>
-      <name>scip_deltrans</name>
-      <anchorfile>classsdscip_1_1ProbDataCtrl.shtml</anchorfile>
-      <anchor>a08a407c695f9a0242879f725d757d182</anchor>
-      <arglist>(SCIP *scip)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual SCIP_RETCODE</type>
-      <name>scip_trans</name>
-      <anchorfile>classsdscip_1_1ProbDataCtrl.shtml</anchorfile>
-      <anchor>af3d8cb6a2554645952a8ee6560067470</anchor>
-      <arglist>(SCIP *scip, ObjProbData **objprobdata, SCIP_Bool *deleteobject)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>sdscip::PropCtrlOBBT</name>
-    <filename>classsdscip_1_1PropCtrlOBBT.shtml</filename>
-    <member kind="function">
-      <type></type>
-      <name>PropCtrlOBBT</name>
-      <anchorfile>classsdscip_1_1PropCtrlOBBT.shtml</anchorfile>
-      <anchor>a40c6c6b3d325217d7eae7fc529bdc556</anchor>
-      <arglist>(SCIP *scip)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~PropCtrlOBBT</name>
-      <anchorfile>classsdscip_1_1PropCtrlOBBT.shtml</anchorfile>
-      <anchor>ac0c2cffcdc8c54155b694c186be83fec</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>SCIP_DECL_PROPEXEC</name>
-      <anchorfile>classsdscip_1_1PropCtrlOBBT.shtml</anchorfile>
-      <anchor>a80ebf96d2ab72f3216306257211cca52</anchor>
-      <arglist>(scip_exec)</arglist>
-    </member>
-    <member kind="function">
-      <type>SCIP_RETCODE</type>
-      <name>applyObbt</name>
-      <anchorfile>classsdscip_1_1PropCtrlOBBT.shtml</anchorfile>
-      <anchor>a6972881bd72d8fd7142376197757b5c0</anchor>
-      <arglist>(SCIP *scip, SCIP_PROPDATA *propdata, SCIP_Longint itlimit, SCIP_RESULT *result)</arglist>
-    </member>
-    <member kind="function">
-      <type>SCIP_RETCODE</type>
-      <name>findNewBounds</name>
-      <anchorfile>classsdscip_1_1PropCtrlOBBT.shtml</anchorfile>
-      <anchor>a855917543bdd91e3cd8cd95e55ca92fe</anchor>
-      <arglist>(SCIP *scip, SCIP_PROPDATA *propdata, SCIP_Longint itlimit)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
     <name>sdscip::PropOBRA</name>
     <filename>classsdscip_1_1PropOBRA.shtml</filename>
     <member kind="function">
@@ -7087,45 +6841,6 @@
       <anchorfile>classsdscip_1_1PropODE.shtml</anchorfile>
       <anchor>a7ebb57b5604c59761188364fd1b6d5fa</anchor>
       <arglist>(scip_presol)</arglist>
-    </member>
-  </compound>
-  <compound kind="class">
-    <name>sdscip::PropProbingObjTest</name>
-    <filename>classsdscip_1_1PropProbingObjTest.shtml</filename>
-    <member kind="function">
-      <type></type>
-      <name>PropProbingObjTest</name>
-      <anchorfile>classsdscip_1_1PropProbingObjTest.shtml</anchorfile>
-      <anchor>ac2e956e0678d16d9dea3817df2f5c440</anchor>
-      <arglist>(SCIP *scip)</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>~PropProbingObjTest</name>
-      <anchorfile>classsdscip_1_1PropProbingObjTest.shtml</anchorfile>
-      <anchor>ad611053a2e0ffdba02254d2db04475a5</anchor>
-      <arglist>()</arglist>
-    </member>
-    <member kind="function" virtualness="virtual">
-      <type>virtual</type>
-      <name>SCIP_DECL_PROPEXEC</name>
-      <anchorfile>classsdscip_1_1PropProbingObjTest.shtml</anchorfile>
-      <anchor>a7d90309ae3a8aa3f98006418dabe0b00</anchor>
-      <arglist>(scip_exec)</arglist>
-    </member>
-    <member kind="function">
-      <type>SCIP_RETCODE</type>
-      <name>applyObbt</name>
-      <anchorfile>classsdscip_1_1PropProbingObjTest.shtml</anchorfile>
-      <anchor>a7241ae90863c2f669c75ba32d63d1056</anchor>
-      <arglist>(SCIP *scip, SCIP_PROPDATA *propdata, SCIP_Longint itlimit, SCIP_RESULT *result)</arglist>
-    </member>
-    <member kind="function">
-      <type>SCIP_RETCODE</type>
-      <name>findNewBounds</name>
-      <anchorfile>classsdscip_1_1PropProbingObjTest.shtml</anchorfile>
-      <anchor>a45fe9021559ad70397b3886b77587f9a</anchor>
-      <arglist>(SCIP *scip, SCIP_PROPDATA *propdata, SCIP_Longint itlimit)</arglist>
     </member>
   </compound>
   <compound kind="class">
@@ -11527,24 +11242,16 @@
     <file>PointRateEvaluator.h</file>
     <file>PresolConsGraph.cpp</file>
     <file>PresolConsGraph.h</file>
-    <file>PresolCppMin.cpp</file>
-    <file>PresolCppMin.h</file>
-    <file>ProbDataCtrl.cpp</file>
-    <file>ProbDataCtrl.h</file>
     <file>ProbDataSD.cpp</file>
     <file>ProbDataSD.h</file>
     <file>prop_obobt.cpp</file>
     <file>prop_obobt.h</file>
     <file>PropagationPattern.cpp</file>
     <file>PropagationPattern.h</file>
-    <file>PropCtrlOBBT.cpp</file>
-    <file>PropCtrlOBBT.h</file>
     <file>PropOBRA.cpp</file>
     <file>PropOBRA.h</file>
     <file>PropODE.cpp</file>
     <file>PropODE.h</file>
-    <file>PropProbingObjTest.cpp</file>
-    <file>PropProbingObjTest.h</file>
     <file>pub_message_sd.h</file>
     <file>reader_osilc.c</file>
     <file>reader_osilc.h</file>
@@ -11589,7 +11296,6 @@
     <file>TestGeom.h</file>
     <file>TestODEintegrator.cpp</file>
     <file>TestODEintegrator.h</file>
-    <file>TestPropagationPattern.cpp</file>
     <file>TestSBrateEvaluator.cpp</file>
     <file>TestSBrateEvaluator.h</file>
     <file>TestSDplugin.cpp</file>
