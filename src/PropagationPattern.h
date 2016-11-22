@@ -38,7 +38,28 @@
  * @brief   Propgation pattern used by PropOBRA
  * @author  Ingmar Vierhaus
  *
+ *
+ * This class is owned by the PropOBRA (Optimization Based Reachability Analysis) plugin.
+ * OBRA solves series of optimization problems corresponding to the dimensions and directions
+ * of the state space of an SDO at a constant time.
+ *
+ * A PropagationPattern defines several configurations of objective function values, and the order in which
+ * the resulting problems should be solved.
+ *
+ * In terms of containers, a pattern is a vector of configurations of objective function values, which is a vector of doubles.
+ * If we have a problem with two objective variables, each objectiveValuesVec will have two elements.
+ *
+ * Variable pointers to the variables are set via setVars. With the call to start(), the pattern for the current dimension of the
+ * state space is fetched by the class and the objective values for the first configuration in the pattern are set.
+ * With each call to next() the next configuration is set. When there are no configurations left, patternsLeft() returns false. This allows
+ * to iterate all patterns for a constant time with the following for loop:
+ *    for (pattern_.start(); pattern_.patternsLeft(); pattern_.next())
+ *    {
+ *       //Solve the scip and evaluate results
+ *    }
+ *
  */
+
 
 
 #ifndef PROPAGATIONPATTERN_H_
@@ -60,21 +81,6 @@
 #include <map>
 #include <algorithm>
 
-/* A pattern defines several configurations of objective function values, and the order in which
- * the resulting problems should be solved.
- *
- * In terms of Containers, a pattern is a vector configurations of objective function values, which is a vector of doubles.
- * If we have a problem with two objective variables, each objectiveValuesVec will have two elements.
- *
- * Variable pointers to the variables are set via setVars. With the call to start(), the pattern for the current number of variable
- * is fetched by the class and the objective values for the first configuration in the pattern are set.
- * With each call to next() the next configuration is set. When there are no configurations left, patternsLeft() returns false. This allows
- * to iterate with the following for loop after setting the variables:
- *    for (pattern_.start(); pattern_.patternsLeft(); pattern_.next())
- *    {
- *       //Solve the scip and evaluate results
- *    }
- */
 
 
 typedef std::vector<double> ObjectiveValuesVec;
