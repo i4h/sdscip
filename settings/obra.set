@@ -3,6 +3,8 @@
 presolving/donotaggr = true
 presolving/donotmultaggr = true
 
+constraints/nonlinear/reformulate = false
+
 # obra
 propagating/obra/maxprerounds = 1
 propagating/obra/historicCons = 5

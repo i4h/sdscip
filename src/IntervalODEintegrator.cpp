@@ -1,3 +1,5 @@
+#define SCIP_DEBUG
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /*                  This file is part the SCIP-Extension                     */

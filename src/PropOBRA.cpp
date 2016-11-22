@@ -1,3 +1,6 @@
+#define SCIP_DEBUG
+#define SCIP_DBG
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /*                  This file is part the SCIP-Extension                     */
@@ -244,7 +247,7 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, S
  *
  *  These tasks are divided into 6 smaller steps, see comments in code and SCIPdebugMessages
  *
- *  If historicCons is set to 0 this method amounts to (inefficient) conventional bound propagation for variables at a given time
+ *  If historicCons is set to 0 this method works similar to conventional bound propagation for variables at a given time
  *
  */
 SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int historicCons, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge)
@@ -354,6 +357,9 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
          }
       }
    }
+
+   SCIP_CALL( SCIPprintOrigProblem(subscip, NULL, "cip", FALSE) );
+   assert(false);
 
    /*
     * 5: Propagate algebraic constraints
@@ -557,7 +563,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
  *  problem is set to the solution of the subscipObjectiveVar in the minimization (maximization) problem.
  *  The resulting bounds are also set in the subscip for subscipObjectiveVar
  *
- *  Except for setting the optimization sense, the subscip is not altered before solutions which means that the
+ *  Except for setting the optimization sense, the subscip is not altered before solvingwhich means that the
  *  objectives of all values have to be set appropriately,
  *  i.e. var->obj = 1 if( var = subscipObjectiveVar ), else 0
  *
@@ -652,9 +658,12 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
          SCIPsetSolVal(subscip, subscipSol, iter->first, iter->second);
 
       SCIP_Bool success;
-      SCIPtrySolFree(subscip, &subscipSol, FALSE, TRUE, TRUE, TRUE, TRUE, &success);
+      SCIPtrySolFree(subscip, &subscipSol, TRUE, TRUE, TRUE, TRUE, TRUE, &success);
       if( !success)
+      {
          SCIPwarningMessage(scip, "Solution was not accepted in subscip\n");
+         assert(false);
+      }
 
       SDsetIsReformulated( subscip, false );
       SCIP_CALL( SCIPsolve( subscip ) );
@@ -1105,13 +1114,13 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
             break;
          }
 
-      } /*Close stop iteration at given time*/
+      } /* Close stop iteration at given time */
       else if( currentTime_ == breakTime)
       {
          SCIPdebugMessage("breaking for breakTime\n");
       }
       printProgress();
-   } /*/Close iteration over times */
+   } /* Close iteration over times */
 
    SCIPclockStop( propClock, scip->set );
 

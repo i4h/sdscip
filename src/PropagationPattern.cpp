@@ -1,3 +1,5 @@
+#define SCIP_DEBUG
+#define SCIP_DBG
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /*                  This file is part the SCIP-Extension                     */
