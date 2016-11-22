@@ -403,6 +403,8 @@ SCIP_Bool IntervalODEintegrator::checkBounds(const BoundMap& bounds) const
           || (type == SCIP_BOUNDTYPE_UPPER && varValues_[varId].sup > value)
       )
       {
+         SCIPdebugMessage("Interval of state %i [%f, %f] violates strict %s bound of %f\n",
+            varId, varValues_[varId].inf, varValues_[varId].sup, (type == SCIP_BOUNDTYPE_LOWER ? "lower" : "upper"), value);
          return false;
       }
    }

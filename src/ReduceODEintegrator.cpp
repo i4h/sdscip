@@ -145,7 +145,12 @@ std::string ReduceODEintegrator::getSolveModeString()
 
 std::string ReduceODEintegrator::getReductionModeString()
 {
-	switch (reductionMode_) {
+   return getReductionModeString(reductionMode_);
+}
+
+std::string ReduceODEintegrator::getReductionModeString(REDUCTION_MODE mode)
+{
+	switch (mode) {
 		case REDUCTION_MODE::REDUCTION_MODE_LOWER:
 			return std::string("Lower");
 			break;

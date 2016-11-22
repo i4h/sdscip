@@ -99,6 +99,8 @@ public:
    std::string toString();
    std::string getSolveModeString();
    std::string getReductionModeString();
+   static std::string getReductionModeString(REDUCTION_MODE mode);
+
 
 private:
    SCIP_Real reduce(const SCIP_Interval& interval);
