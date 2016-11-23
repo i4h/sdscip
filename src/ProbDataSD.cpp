@@ -1362,12 +1362,15 @@ SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip
    SCIP_VAR** consvars;
    SCIP_Bool success;
    SCIP_CONS* targetcons = NULL;
+   SCIP_SOL* scipSol;
 
    assert(currentCons != NULL);
    assert(scip != NULL);
    assert(subscip != NULL);
    assert(varmap != NULL);
    assert(consmap != NULL);
+
+   scipSol = SCIPgetBestSol(scip);
 
    SCIPdebugMessage("adding cons with Vars from scip in stage %i\n",SCIPgetStage(scip));
 
@@ -1407,6 +1410,13 @@ SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip
 
       if (noObj)
          SCIP_CALL( SCIPchgVarObj(subscip,targetvar,0) );
+
+      if (scipSol != NULL && copysol == TRUE)
+      {
+         SCIP_Real solVal = SCIPgetSolVal(scip,scipSol,consvars[v]);
+         (*solMap)[targetvar] = solVal;
+      }
+
    }
    SCIPfreeBufferArray(scip, &consvars); //TODO _SD allocating buffer outside of loop could increase performance?
 
