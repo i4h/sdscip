@@ -1,5 +1,3 @@
-#define SCIP_DEBUG
-#define SCIP_DBG
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
@@ -357,9 +355,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
          }
       }
    }
-
-   SCIP_CALL( SCIPprintOrigProblem(subscip, NULL, "cip", FALSE) );
-   assert(false);
 
    /*
     * 5: Propagate algebraic constraints
