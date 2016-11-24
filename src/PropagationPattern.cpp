@@ -573,6 +573,7 @@ SCIP_RETCODE PropagationPattern::setAddCuts(SCIP_Bool addCuts)
 
 SCIP_RETCODE PropagationPattern::setSolMap( std::map<SCIP_VAR*, SCIP_Real>* solMap)
 {
+   SCIPdbgMsg("set solMap with %i elements\n",solMap->size());
    solMap_ = solMap;
    return SCIP_OKAY;
 }
@@ -664,8 +665,16 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
          if (success == FALSE)
          {
             SCIPdebugMessage("  primal solution not accepted in subscip\n");
+            assert(false);
          }
 		}
+		else
+		{
+		   SCIPdebugMessage("solmap empty?\n");
+		   assert(false);
+		}
+
+
 
 		SDsetIsReformulated(this->subscip_,false);
 		SCIP_CALL( SCIPsolve(this->subscip_) );

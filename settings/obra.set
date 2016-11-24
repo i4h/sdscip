@@ -3,6 +3,8 @@
 presolving/donotaggr = true
 presolving/donotmultaggr = true
 
+constraints/nonlinear/reformulate = false
+
 
 # obra
 propagating/obra/maxprerounds = 1
@@ -17,12 +19,14 @@ propagating/obra/addCuts = false
 propagating/obra/addMultiTimeCuts = false
 propagating/obra/multiTimeCutLookback = 2
 propagating/obra/useUnitCuts = false
-propagating/obra/writeSubscips = false
+propagating/obra/writeSubscips = true
+propagating/obra/writeFreq = 1
+
 propagating/obra/cutConf3d = 2
 
 propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
 
-propagating/obra/muteSubscip = true
+propagating/obra/muteSubscip = false
 #propagating/obra/breakTime = 300
 
 

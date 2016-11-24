@@ -1371,6 +1371,10 @@ SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip
    assert(consmap != NULL);
 
    scipSol = SCIPgetBestSol(scip);
+   if (scipSol != NULL)
+   {
+      SCIPdbgMsg("got scip sol\n");
+   }
 
    SCIPdebugMessage("adding cons with Vars from scip in stage %i\n",SCIPgetStage(scip));
 
@@ -1414,6 +1418,8 @@ SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip
       if (scipSol != NULL && copysol == TRUE)
       {
          SCIP_Real solVal = SCIPgetSolVal(scip,scipSol,consvars[v]);
+         SCIPdbgMsg("solval is %f\n",solVal);
+         SCIPdbgMsg("targetvar is %s\n",SCIPvarGetName(targetvar));
          (*solMap)[targetvar] = solVal;
       }
 
