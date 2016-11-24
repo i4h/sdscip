@@ -1,5 +1,3 @@
-#define SCIP_DEBUG
-
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /*                  This file is part the SCIP-Extension                     */
@@ -665,9 +663,13 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
 
 
       SCIP_Bool success;
+<<<<<<< HEAD
 
 
       SCIPtrySolFree(subscip, &subscipSol, TRUE, TRUE, TRUE, TRUE, TRUE, &success);
+=======
+      SCIPtrySolFree(subscip, &subscipSol, FALSE, TRUE, TRUE, TRUE, TRUE, &success);
+>>>>>>> Removed dbg stuff
       if( !success)
       {
          SCIPwarningMessage(scip, "Solution was not accepted in subscip\n");
