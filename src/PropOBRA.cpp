@@ -359,6 +359,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
    /*
     * 5: Propagate algebraic constraints
     */
+   //@todo: Use a propagation pattern for this as well
    if( propagateAlgebraic && (currentTime_ -1 >= 0) )
    {
       SCIPdebugMessage(" Step 5: Propagating bounds to forward algebraic variables at t=%i\n",currentTime_ - 1);
