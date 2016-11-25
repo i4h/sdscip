@@ -1,3 +1,5 @@
+#define SCIP_DEBUG
+#define SCIP_DBG
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /*                  This file is part the SCIP-Extension                     */
@@ -707,6 +709,24 @@ static SCIP_DECL_USEREXPRINTEVAL( intervalEvaluateLookup )
    SCIP_Real min;
    SCIP_Real max;
    auto& linear = *(data->lookup);
+
+#ifdef SCIP_DBG
+   if (argvals[0].inf < -1e100 && argvals[0].sup > 1e100)
+   {
+      SCIPdbgMsg("intervalEvaluateLookup %s in [%e,%e]\n", data->identifier, argmin, argmax);
+      auto coeffs = data->lookup->getCoefficients();
+      for (auto it = coeffs.begin(); it < coeffs.end(); ++it) {
+         int i = it - coeffs.begin();
+         if (i  >= 1)
+            SCIPdbgMsg(",");
+         SCIPdbgMsg("(%f,%f)",data->lookup->getKnot(i), *it);
+      }
+      SCIPdbgMsg("\n");
+   }
+#endif
+
+
+
    SCIP_CALL( findMinMaxPiecewiseLinear(linear, argvals, argmin, argmax, min, max) );
    SCIPintervalSetBounds(funcvalue, min, max);
    SCIPdebugMessage("interval [%g, %g] evaluated to [%g, %g]\n", SCIPintervalGetInf(argvals[0]), SCIPintervalGetSup(argvals[0]), funcvalue->inf, funcvalue->sup);
