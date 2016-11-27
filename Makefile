@@ -248,8 +248,17 @@ depend:		$(SCIPDIR)
 		$(SHELL) -ec '$(DCXX) $(FLAGS) $(DFLAGS) $(MAINSRC) \
 		| sed '\''s|^\([0-9A-Za-z\_]\{1,\}\)\.o *: *$(SRCDIR)/\([0-9A-Za-z\_]*\).cpp|$$\(OBJDIR\)/\2.o: $(SRCDIR)/\2.cpp|g'\'' \
 		>$(MAINDEP)'
+		$(SHELL) -ec '$(DCXX) $(FLAGS) $(DFLAGS) $(UNITTESTSRC) \
+		| sed '\''s|^\([0-9A-Za-z\_]\{1,\}\)\.o *: *$(SRCDIR)/\([0-9A-Za-z\_]*\).cpp|$$\(OBJDIR\)/\2.o: $(SRCDIR)/\2.cpp|g'\'' \
+		>$(UNITTESTDEP)'
 
 -include	$(MAINDEP)
+-include	$(UNITTESTDEP)
+
+
+$(info $$UNITTESTDEP is [${UNITTESTDEP}])
+
+
 
 $(MAINFILE):	$(BINDIR) $(OBJDIR) $(SCIPLIBFILE) $(LPILIBFILE) $(NLPILIBFILE) $(MAINOBJFILES)
 		@echo "-> linking $@"
