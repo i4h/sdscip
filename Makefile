@@ -105,6 +105,7 @@ UNITTESTSRCPATH =	unittests.cpp \
 			BaseTest.cpp \
 			SDSCIPtest.cpp \
 			TestSDplugin.cpp \
+			TestBSplineCurve.cpp \
 			TestExprPiecewiseLinear.cpp \
 			TestEstimatorTypes.cpp \
 			TestODEintegrator.cpp \
