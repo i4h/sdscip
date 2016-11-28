@@ -613,52 +613,6 @@ void TestExprPiecewiseLinear::runWorldLookup()
 
 }
 
-/* Check the lookup from world2 model */
-void TestExprPiecewiseLinear::runEvalWorldLookup()
-{
-   SCIP_RETCODE retcode;
-   SCIP_EXPR* expr;
-   SCIP_EXPR* child;
-   SCIP_VAR* arg;
-   bool overestimate = true;
-
-   std::vector<double> xvals = {0, 1, 2, 3, 4} ;
-
-   std::vector<double> yvals = {0, 1, 1.8, 2.4, 2.7};
-
-   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(xvals, yvals);
-
-   SCIPcreateVarBasic(subscip_, &arg, "argument", -SCIPinfinity(scip_), SCIPinfinity(scip_), 0, SCIP_VARTYPE_CONTINUOUS);
-   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
-   assert(retcode == SCIP_OKAY);
-
-   char identifier[7] = "lookup";
-
-   retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
-   SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
-   assert(retcode == SCIP_OKAY);
-   SCIP_Real argvals;
-   SCIP_Interval argbounds;
-   SCIP_Real coeffs;
-   SCIP_Real constant;
-   SCIP_Bool success;
-   argbounds.inf = -1e100;
-   argbounds.sup = 1e100;
-   SCIP_Interval val;
-
-   retcode = SCIPexprEvalInt(expr, SCIPinfinity(scip_), &argbounds, NULL, &val);
-   SCIPdbgMsg("Evaluated lookup in [%e,%e], returned [%f, %f]\n", argbounds.inf, argbounds.sup, val.inf, val.sup);
-   assert(retcode == SCIP_OKAY);
-
-   testEqual(val.inf, 0 );
-   testEqual(val.sup, 2.7 );
-
-
-   ++nExecutedTests_;
-   SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
-   SCIPreleaseVar(subscip_, &arg);
-}
-
 /** Method running all tests of this class */
 void TestExprPiecewiseLinear::runAll()
 {

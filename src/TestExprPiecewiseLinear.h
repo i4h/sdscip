@@ -127,11 +127,8 @@ public:
    /* Tests */
    void runEstimatorManualTests();
    void runWorldLookup();
-
    void runEstimatorRandomTests();
    void runEstimatorNumericsTests();
-
-   void runEvalWorldLookup();
 
 
 

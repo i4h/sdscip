@@ -460,7 +460,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
       }
    }
 
-
    /*
     * 7_2: propagation of states 'vertically', 'horizontally' and 'diagonally'
     */
@@ -650,34 +649,15 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
 
       SCIP_SOL* subscipSol;
       SCIP_CALL(SCIPcreateSol(subscip,&subscipSol,NULL));
-      //SCIPdbgMsg("Created solution \n");
-      //SCIPprintSol(subscip, subscipSol, NULL, TRUE);
       for( auto iter = solMap->begin(); iter != solMap->end(); ++iter)
-      {
-         SCIPdbgMsg("Setting solval on %s\n",SCIPvarGetName(iter->first));
          SCIPsetSolVal(subscip, subscipSol, iter->first, iter->second);
-      }
-
-      //SCIPdbgMsg("Filled solution \n");
-      //SCIPprintSol(subscip, subscipSol, NULL, TRUE);
-
 
       SCIP_Bool success;
-<<<<<<< HEAD
-
-
-      SCIPtrySolFree(subscip, &subscipSol, TRUE, TRUE, TRUE, TRUE, TRUE, &success);
-=======
       SCIPtrySolFree(subscip, &subscipSol, FALSE, TRUE, TRUE, TRUE, TRUE, &success);
->>>>>>> Removed dbg stuff
       if( !success)
       {
          SCIPwarningMessage(scip, "Solution was not accepted in subscip\n");
-         if (currentTime_ >= 1)
-         {
-            SCIP_CALL( SCIPprintOrigProblem(subscip, NULL, "cip", FALSE) );
-            assert(false);
-         }
+         assert(false);
       }
 
       SDsetIsReformulated( subscip, false );
