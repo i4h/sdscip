@@ -1,0 +1,122 @@
+#!/bin/bash
+# Bash script template, based on http://www.pro-linux.de/artikel/2/111/ein-shellskript-template.html
+# modifications by Ingmar Vierhaus <mail@ingmar-vierhaus.de>
+set -o nounset
+set -o errexit
+# Script: new_script
+# Global variables
+SCRIPTNAME=$(basename $0 .sh)
+EXIT_SUCCESS=0
+EXIT_FAILURE=1
+EXIT_ERROR=2
+EXIT_BUG=10
+# Initialize Variables defined by option switches
+VERBOSE=n
+FORCE=n
+OPTFILE=""
+TARGET=$HOME"/lib/sdotools"
+# function definitions 
+function usage {
+ echo "Usage: $SCRIPTNAME [-h] [-v] [-o arg] file ..." >&2
+ echo "Creates a clean install of sdotools"
+ echo ""
+ echo "Options: "
+ echo " -h        show this help"
+ echo " -v        verbose mode"
+ echo " -t        prefix used for install [~/lib/sdotools]"
+ echo " -f        delete all repositories, and clone them again"
+ [[ $# -eq 1 ]] && exit $1 || exit $EXIT_FAILURE
+}
+# List of Arguments. Option flags followed by a ":" require an option, flags not followed by an ":" are optionless
+while getopts ':o:t:vhf' OPTION ; do
+ case $OPTION in
+ v) VERBOSE=y
+ ;;
+ f) FORCE=y
+ ;;
+ o) OPTFILE="$OPTARG"
+ ;;
+ t) TARGET="$OPTARG"
+ ;;
+ h) usage $EXIT_SUCCESS
+ ;;
+ \?) echo "Option \"-$OPTARG\" not recognized." >&2
+ usage $EXIT_ERROR
+ ;;
+ :) echo "Option \"-$OPTARG\" requires an argument." >&2
+ usage $EXIT_ERROR
+ ;;
+ *) echo "Something impossible happened, stand by for implosion of space time continuum."
+>&2
+ usage $EXIT_BUG
+ ;;
+ esac
+done
+# Shift over used up arguments
+shift $(( OPTIND - 1 ))
+# Test for valid number of arguments
+if (( $# < 0 )) ; then
+ echo "Executing unreachable code." >&2
+ usage $EXIT_ERROR
+fi
+# Loop over all arguments
+for ARG ; do
+ if [[ $VERBOSE = y ]] ; then
+     echo -n "Argument: "
+     echo $ARG
+ fi
+done
+
+if [ $# = 0 ] ; then
+    list="libsdo simd cpplsq spline"
+else
+    list=$1
+fi
+
+# Delete repositories
+if [ $FORCE = "y" ] ; then
+    echo "I will delete the directories $list"
+    echo "Changes that were not pushed will be lost"
+    read -p "Are you sure?." -n 1 -r
+    echo    # (optional) move to a new line
+    if [[ $REPLY =~ ^[Yy]$ ]]
+    then
+	for i in $list ; do
+	    rm -rf $i;
+	done
+    fi
+fi
+
+#Clean and pull/clone repositories
+for i in $list; do
+    echo "Cleaning and pulling $i"
+    if [ -d "$i" ] ; then
+	cd $i
+	rm -rf build
+	git pull 
+	cd -
+    else
+	mkdir $i;
+	cd $i;
+	git clone "https://github.com/rgottwald/"$i".git" .
+	cd -
+    fi
+done
+
+
+for i in $list; do
+    echo "Building $i"
+    cd $i
+    pwd
+    git pull 
+    mkdir build
+    cd build
+#    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=~/lib/sdotools  .. 
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX:PATH=$TARGET  .. 
+    make -j 
+    make install
+    cd ../..
+done
+
+
+exit $EXIT_SUCCESS
