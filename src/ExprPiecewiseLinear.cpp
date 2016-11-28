@@ -510,7 +510,23 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 {
    assert( nargs == 1 );
    assert(argvals[0] >= SCIPintervalGetInf(argbounds[0]));
+
+   if (!(argvals[0] <= SCIPintervalGetSup(argbounds[0])))
+   {
+      printf("Hit It !!");
+      printf("estimateLookup called with strange arguments:\n");
+      printf("argval: %1.17e\n", argvals[0]);
+      printf("argbounds: [%1.17e, %1.17e]\n", SCIPintervalGetInf(argbounds[0]), SCIPintervalGetSup(argbounds[0]));
+      printf("overestimate: %s\n", (overestimate ? "true" : "false"));
+      printf("Setting argvals[0] to sup");
+      argvals[0] = SCIPintervalGetSup(argbounds[0]);
+      fflush(stdout);
+   }
+
    assert(argvals[0] <= SCIPintervalGetSup(argbounds[0]));
+
+
+
 
    *success = false;
 
