@@ -1,0 +1,23 @@
+#numerics/feastol = 1e-7
+
+#heuristics/maxCtrl/freq = -1 fix
+heuristics/undercover/freq = -1 fix
+#constraints/nonlinear/reformulate = false
+misc/printreason = true
+
+#constraints/SOS2/maxprerounds = 0 
+
+limits/gap = 0.05
+
+#numerics/lpfeastol = 1e-09
+	
+#propagating/dualfix/freq = 0
+
+
+#presolving/maxrounds = 1
+
+#presolving/donotaggr = true fix
+#presolving/donotmultaggr = true fix
+
+
+display/verblevel = 5

@@ -1,0 +1,49 @@
+# SCIP version 2.0.0
+
+presolving/donotaggr = true
+presolving/donotmultaggr = true
+
+
+# obra
+propagating/obra/maxprerounds = 1
+propagating/obra/historicCons = 5
+#propagating/obra/subscipTimeLimit = 1e20
+#propagating/obra/subscipNodeLimit = 1000
+
+propagating/obra/propagateControls = false
+propagating/obra/propagateAlgebraic = true
+propagating/obra/propagateStates = true
+propagating/obra/addCuts = false
+propagating/obra/addMultiTimeCuts = false
+propagating/obra/multiTimeCutLookback = 2
+propagating/obra/useUnitCuts = false
+propagating/obra/writeSubscips = true
+propagating/obra/writeAfterProp = true
+propagating/obra/writeFreq = 1
+
+propagating/obra/cutConf3d = 2
+
+propagating/obra/subscipSetFile = "../settings/obra_subscip_gap.set"
+
+propagating/obra/muteSubscip = false
+#propagating/obra/breakTime = 300
+
+
+
+
+
+
+#limits/gap = 0.01
+### vopreader
+
+reading/vopreader/checkStructure = true
+reading/vopreader/printSummary = true
+
+
+
+
+
+
+
+
+
