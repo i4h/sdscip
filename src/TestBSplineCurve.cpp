@@ -68,7 +68,7 @@ std::ostream& TestBSplineCurve::toString(std::ostream& strm) const {
  ***********************************************/
 
 /* Check the lookup from world2 model */
-void TestExprPiecewiseLinear::runEvalWorldLookup()
+void TestBSplineCurve::runEvalWorldLookup()
 {
    SCIP_RETCODE retcode;
    SCIP_EXPR* expr;
