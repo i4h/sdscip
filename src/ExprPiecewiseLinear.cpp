@@ -41,6 +41,9 @@
  *
  */
 
+/* Workaround: Feastol is not included in estimator callback */
+#define SCIP_FEASTOL 1e-6
+
 #define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
 #include "ExprPiecewiseLinear.h"
@@ -509,31 +512,15 @@ static SCIP_RETCODE findMinMaxPiecewiseLinear(
 static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 {
    assert( nargs == 1 );
-   assert(argvals[0] >= SCIPintervalGetInf(argbounds[0]));
-
-   if (!(argvals[0] <= SCIPintervalGetSup(argbounds[0])))
-   {
-      printf("Hit It !!");
-      printf("estimateLookup called with strange arguments:\n");
-      printf("argval: %1.17e\n", argvals[0]);
-      printf("argbounds: [%1.17e, %1.17e]\n", SCIPintervalGetInf(argbounds[0]), SCIPintervalGetSup(argbounds[0]));
-      printf("overestimate: %s\n", (overestimate ? "true" : "false"));
-      printf("Setting argvals[0] to sup");
-      argvals[0] = SCIPintervalGetSup(argbounds[0]);
-      fflush(stdout);
-   }
-
-   assert(argvals[0] <= SCIPintervalGetSup(argbounds[0]));
-
-
-
-
-   *success = false;
+   assert(argvals[0] + SCIP_FEASTOL >= SCIPintervalGetInf(argbounds[0]));
+   assert(argvals[0] - SCIP_FEASTOL <= SCIPintervalGetSup(argbounds[0]));
 
    /* Bounds on the x-axis */
    SCIP_Real lb = SCIPintervalGetInf( argbounds[0] );
    SCIP_Real ub = SCIPintervalGetSup( argbounds[0] );
-   
+
+   *success = false;
+
    /* Argument values at maximum and minimum reached in interval */
    SCIP_Real argmin;
    SCIP_Real argmax;
@@ -542,7 +529,25 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    SCIP_Real min;
    SCIP_Real max;
 
-   SCIP_CALL( findMinMaxPiecewiseLinear(*(data->lookup), argbounds, argmin, argmax, min, max) );
+   /* If argval is within feastol smaller than lower argbound (because of feastol), move lower argbound to argval */
+   if ( !(argvals[0] >= SCIPintervalGetInf(argbounds[0])) )
+   {
+      lb = argvals[0];
+      printf("Warning: Lowered lb by %e before estimating \n", lb - SCIPintervalGetInf(argbounds[0]));
+   }
+
+   /* If argval is greater than upper argbound (because of feastol), move upper argbound to argval */
+
+   if( !(argvals[0] <= SCIPintervalGetSup(argbounds[0])) )
+   {
+      ub = argvals[0];
+      printf("Warning: Increased ub by %e before estimating \n", ub - SCIPintervalGetSup(argbounds[0]));
+   }
+   
+   SCIP_Interval newargbounds = {lb, ub};
+
+
+   SCIP_CALL( findMinMaxPiecewiseLinear(*(data->lookup), &newargbounds, argmin, argmax, min, max) );
 
 
 #if 0
@@ -594,9 +599,9 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
       std::vector<std::pair<SCIP_Real, SCIP_Real>> cvxhull;
 
       if(overestimate)
-         cvxhull = computeConvexHull<UPPER>(infinity, *argbounds, *(data->lookup));
+         cvxhull = computeConvexHull<UPPER>(infinity, newargbounds, *(data->lookup));
       else
-         cvxhull = computeConvexHull<LOWER>(infinity, *argbounds, *(data->lookup));
+         cvxhull = computeConvexHull<LOWER>(infinity, newargbounds, *(data->lookup));
 
       assert(!cvxhull.empty());
 
@@ -655,7 +660,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    estimation.constant = *constant;
    estimation.overestimate = overestimate;
    int nerrors(0);
-   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] )), nerrors, 1e-13))
+   if ( !TestExprPiecewiseLinear::sampleEstimationAtKnots(data->lookup, estimation, std::make_pair(lb, ub), nerrors, 1e-13))
    {
       SCIPdbgMsg("Invalid estimation:\n");
       SCIPdbgMsg("Estimation: %1.17e * x + %1.17e\n", coeffs[0], *constant);
@@ -671,7 +676,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
          oss << std::string("(") << std::to_string(data->lookup->getKnot(i)) << std::string(", ") << std::to_string(*it) << std::string(")");
       }
       SCIPdbgMsg("Points: %s\n", oss.str().c_str());
-      SCIPdbgMsg("argbounds: [%1.17e, %1.17e]\n",SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] ));
+      SCIPdbgMsg("original argbounds: [%1.17e, %1.17e]\n",SCIPintervalGetInf( argbounds[0] ), SCIPintervalGetSup( argbounds[0] ));
       SCIPdbgMsg("lb/ub: [%1.17e, %1.17e]\n",lb, ub);
       SCIPdbgMsg("argval: %1.17e\n", argvals[0]);
 
