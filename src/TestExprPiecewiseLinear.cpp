@@ -188,7 +188,7 @@ std::string EstimatorTestData::toString(int boundidx)
 std::string TestExprPiecewiseLinear::estimationToString(EstimationData estimation)
 {
    std::ostringstream oss;
-   oss << (estimation.overestimate ? "over" : "under") << "estimation: " << std::scientific <<  estimation.coefficient << "x + " << estimation.constant;
+   oss << (estimation.overestimate ? "over" : "under") << "estimation: " << estimation.coefficient << "x + " << estimation.constant;
    return oss.str();
 }
 
@@ -602,6 +602,7 @@ void TestExprPiecewiseLinear::runWorldLookup()
    estimation.coefficient = coeffs;
    estimation.constant = constant;
    estimation.overestimate = overestimate;
+   SCIPdebugMessage("Estimation: %s\n", estimationToString(estimation).c_str());
    int nerrors(0);
    sampleEstimationAtKnots(SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, std::make_pair(SCIPintervalGetInf( argbounds ), SCIPintervalGetSup( argbounds )), nerrors, 0.0);
 
@@ -613,10 +614,83 @@ void TestExprPiecewiseLinear::runWorldLookup()
 
 }
 
+/* Check the lookup from world2 model with an argval abover argbounds by 1e-7 */
+void TestExprPiecewiseLinear::runWorldLookupFeastol()
+{
+   SCIP_RETCODE retcode;
+   SCIP_EXPR* expr;
+   SCIP_EXPR* child;
+   SCIP_VAR* arg;
+   bool overestimate = true;
+   SCIP_Real feasDiff = 1e-7;
+
+   std::vector<double> xvals = {0, 0.25, 0.5, 0.75, 1};
+   std::vector<double> yvals = {0, 0.15, 0.5, 0.85, 1};
+
+   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(xvals, yvals);
+
+   SCIPcreateVarBasic(subscip_, &arg, "argument", -SCIPinfinity(scip_), SCIPinfinity(scip_), 0, SCIP_VARTYPE_CONTINUOUS);
+   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
+   assert(retcode == SCIP_OKAY);
+
+   char identifier[7] = "lookup";
+
+   retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
+   SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
+   assert(retcode == SCIP_OKAY);
+   SCIP_Real argvals;
+   SCIP_Interval argbounds;
+   SCIP_Real coeffs;
+   SCIP_Real constant;
+   SCIP_Bool success;
+   int nerrors(0);
+   EstimationData estimation;
+
+   /* Test an argval slightly larger than uppper argbound */
+   argbounds.inf = -4.9835643974591581e-01;
+   argbounds.sup = 8.5808151653009113e-01;
+   argvals = argbounds.sup + feasDiff;
+
+   retcode = SCIPexprEstimateUser(expr, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
+   test(retcode == SCIP_OKAY);
+
+   estimation.coefficient = coeffs;
+   estimation.constant = constant;
+   estimation.overestimate = overestimate;
+   SCIPdebugMessage("Estimation: %s\n", estimationToString(estimation).c_str());
+
+   sampleEstimationAtKnots(SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, std::make_pair(SCIPintervalGetInf( argbounds ), SCIPintervalGetSup( argbounds )), nerrors, 0.0);
+   test(nerrors == 0);
+   ++nExecutedTests_;
+
+   /* Test an argval slightly smaller than uppper argbound */
+   argvals = argbounds.inf - feasDiff;
+
+   retcode = SCIPexprEstimateUser(expr, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
+   test(retcode == SCIP_OKAY);
+
+   estimation.coefficient = coeffs;
+   estimation.constant = constant;
+   estimation.overestimate = overestimate;
+   SCIPdebugMessage("Estimation: %s\n", estimationToString(estimation).c_str());
+
+   sampleEstimationAtKnots(SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, std::make_pair(SCIPintervalGetInf( argbounds ), SCIPintervalGetSup( argbounds )), nerrors, 0.0);
+   test(nerrors == 0);
+   ++nExecutedTests_;
+
+
+
+   /* Deinitialization */
+   SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
+   SCIPreleaseVar(subscip_, &arg);
+
+}
+
 /** Method running all tests of this class */
 void TestExprPiecewiseLinear::runAll()
 {
    runWorldLookup();
+   runWorldLookupFeastol();
    runEstimatorManualTests();
    runEstimatorNumericsTests();
    runEstimatorRandomTests();
