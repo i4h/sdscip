@@ -44,7 +44,6 @@
 
 #ifndef _EXPR_PIECWEWISE_LINEAR_H_
 #define _EXPR_PIECWEWISE_LINEAR_H_
-#define EXPR_PCW_LIN_TEST_ESTIMATIONS
 
 #include "TestExprPiecewiseLinear.h"
 
@@ -103,12 +102,7 @@ void SCIPexprPiecewiseLinearPrintPoints(SCIP_USEREXPRDATA* data, SCIP_MESSAGEHDL
 
 SAFE_ESTIMATOR selectEstimator(SCIP_Bool overestimate, SCIP_Real lb, SCIP_Real ub, SCIP_Real argval, SCIP_Real x1, SCIP_Real x2, SCIP_Bool e5valid, SCIP_Bool e6valid);
 
-/** Computes the closest upwards (downwards) rounded representation of y1 - x1*m
- *  when mup is true (false)
- */
-
-
-#ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
+/** Computes numerically safe estimators  */
 SCIP_RETCODE estimateSafe(
    SCIP_Bool overestimate,
    SCIP_Real lb,
@@ -122,7 +116,7 @@ SCIP_RETCODE estimateSafe(
    SCIP_Real *coefficient,
    SCIP_Real *intercept
    );
-#endif
+
 
 boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > SCIPexprPiecewiseLinearGetSpline(SCIP_USEREXPRDATA* data);
 
