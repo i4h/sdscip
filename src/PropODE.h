@@ -105,8 +105,6 @@ public:
       ,outfilePrefix_(NULL)
       ,addErrorTerms_(FALSE)
    {
-      printf("PropODE Reporting\n");
-
       SCIPaddBoolParam(scip,
              "propagating/propODE/writeBounds",
              "Write calculated bounds to file",

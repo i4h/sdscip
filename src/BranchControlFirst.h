@@ -70,9 +70,7 @@ public:
     		   	   	   	   	   	   	   	   	   	   	   *  (0.0: only on current best node, 1.0: on all nodes)
     		   	   	   	   	   	   	   	   	   	   	   */
       )
-   {
-      printf("BranchControlFirst Reporting\n");
-   }
+   { }
 
    /** destructor */
    virtual ~BranchruleControlFirst()

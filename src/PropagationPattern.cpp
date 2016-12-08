@@ -68,7 +68,6 @@ PropagationPattern::PropagationPattern() :
 
 PropagationPattern::PropagationPattern(int _confType) : PropagationPattern()
 {
-	std::cout << "Constructing pattern, conftype is " << _confType << std::endl;
 	PropagationPattern();
 	patternType_ = _confType;
 }
