@@ -21,11 +21,17 @@ SDSCIPLIBDIR	=	lib
 
 SCIPDIR		= 	$(SDSCIPDIR)/lib/scip
 
+SDSCIPGITHASH	=	$(shell git describe --always --dirty  | sed 's/^.*-g//')
+
+OLDSDSCIPGITHASH =	$(shell cat  $(SDSCIPGITHASHFILE) | sed 's/\#define SDSCIP_GITHASH //' )
+
+SDSCIPGITHASHFILE =       $(SDSCIPDIR)/src/githash.c
+
+
 # check whether SCIPDIR exists
 ifeq ("$(wildcard $(SCIPDIR))","")
 $(error Please add a soft-link to the SCIP directory as $(SDSCIPDIR)/lib/scip)
 endif
-
 
 #-----------------------------------------------------------------------------
 # include default project Makefile from SCIP
@@ -88,7 +94,8 @@ MAINSRCPATH	=	cppmain.cpp \
 			TestSDplugin.cpp \
 			TestExprPiecewiseLinear.cpp \
 			CopyablePointer.cpp\
-			ExprPiecewiseLinear.cpp
+			ExprPiecewiseLinear.cpp \
+			SDSCIPgitHash.cpp 
 
 UNITTESTSRCPATH =	unittests.cpp \
 			MdlExpressionTranslator.cpp \
@@ -134,8 +141,9 @@ UNITTESTSRCPATH =	unittests.cpp \
 			SDproblemStructureFactory.cpp \
 			SDVarBasic.cpp \
 			SDCons.cpp\
-			CopyablePointer.cpp\
-			ExprPiecewiseLinear.cpp
+			CopyablePointer.cpp \
+			ExprPiecewiseLinear.cpp \
+			SDSCIPgitHash.cpp 
 
 
 MAINSRC		= 	$(addprefix $(SRCDIR)/,$(MAINSRCPATH))
@@ -200,6 +208,14 @@ doc:
 		@-(cd doc && ln -fs $(SCIPDIR)/doc/scip.css);
 		cd doc; $(DOXY) $(MAINNAME).dxy
 
+.PHONY: githash
+githash:
+		@$(SHELL) -ec ' \
+			if test $(SDSCIPGITHASH) != $(OLDSDSCIPGITHASH) ; then  \
+				echo "#define SDSCIP_GITHASH \"$(SDSCIPGITHASH)\"" > $(SDSCIPGITHASHFILE); \
+			fi \
+			'
+
 .PHONY: test
 test:           $(MAINFILE)
 		@-(cd check && ln -fs $(SCIPDIR)/check/check.sh);
@@ -258,9 +274,7 @@ depend:		$(SCIPDIR)
 
 $(info $$UNITTESTDEP is [${UNITTESTDEP}])
 
-
-
-$(MAINFILE):	$(BINDIR) $(OBJDIR) $(SCIPLIBFILE) $(LPILIBFILE) $(NLPILIBFILE) $(MAINOBJFILES)
+$(MAINFILE):	githash $(BINDIR) $(OBJDIR) $(SCIPLIBFILE) $(LPILIBFILE) $(NLPILIBFILE) $(MAINOBJFILES)
 		@echo "-> linking $@"
 		$(LINKCXX) $(MAINOBJFILES) \
 		$(LINKCXX_L)$(SCIPDIR)/lib $(LINKCXX_l)$(SCIPLIB)$(LINKLIBSUFFIX) \

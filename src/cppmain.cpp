@@ -35,19 +35,20 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /**@file   cppmain.cpp
- * @brief  main file for SD-SCIP
+ * @brief  main file for SD-SCIP, based on SCIP's TSP-Example
  * @author Ingmar Vierhaus
  *
  */
 
-/*--+----1----+----2----+----3----+----4----+----5----+----6----+----7----+----8----+----9----+----0----+----1----+----2*/
+#define SCIP_DBG
 
 #include <iostream>
 
 /* include SCIP components */
 #include "objscip/objscip.h"
 #include "objscip/objscipdefplugins.h"
-
+#include "scip/scipdefplugins.h"
+#include "scip/debug.h"
 
 /* include SD-SCIP components */
 #include "reader_osilc.h"
@@ -61,14 +62,44 @@
 #include "ReaderVOP.h"
 #include "PresolConsGraph.h"
 #include "Statistics.h"
-#include "scip/scipdefplugins.h"
-#include "scip/debug.h"
+#include "SDSCIPgitHash.h"
 
 using namespace scip;
 using namespace std;
 
 
-/** creates and runs a SCIP instance with default and TSP plugins */
+/** prints a version information line to a file stream via the message handler system
+ *
+ *  @note If the message handler is set to a NULL pointer nothing will be printed
+ *  @note Based on SCIPprintVersion
+ */
+void SDSCIPprintVersion(
+   SCIP*                 scip,               /**< SCIP data structure */
+   FILE*                 file                /**< output file (or NULL for standard output) */
+   )
+{
+   assert( scip != NULL );
+
+   SCIPmessageFPrintInfo(scip->messagehdlr, file, "SDSCIP version 0.9.0");
+
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, " [precision: %d byte]", (int)sizeof(SCIP_Real));
+
+#ifndef BMS_NOBLOCKMEM
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, " [memory: block]");
+#else
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, " [memory: standard]");
+#endif
+#ifndef NDEBUG
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, " [mode: debug]");
+#else
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, " [mode: optimized]");
+#endif
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, " [GitHash: %s]", SDSCIPgitHash::getHash().c_str());
+   SCIPmessageFPrintInfo(scip->messagehdlr, NULL, ", Using: \n");
+}
+
+
+/** creates and runs a SCIP instance with default and SD-SCIP plugins */
 static
 SCIP_RETCODE runSCIP(
    int                        argc,          /**< number of arguments from the shell */
@@ -111,12 +142,13 @@ SCIP_RETCODE runSCIP(
 
    SCIP_CALL( SCIPaddParamsSD(scip));
 
+   SDSCIPprintVersion(scip, NULL);
+
+
    /**********************************
     * Process command line arguments *
     **********************************/
-
-
-    SCIP_CALL( SCIPprocessShellArguments(scip, argc, argv, "sdscip.set") );
+   SCIP_CALL( SCIPprocessShellArguments(scip, argc, argv, "sdscip.set") );
 
    /********************
     * Deinitialization *
@@ -129,7 +161,8 @@ SCIP_RETCODE runSCIP(
    return SCIP_OKAY;
 }
 
-/** main method starting TSP code */
+
+/** main method starting SD-SCIP */
 int main(
    int                        argc,          /**< number of arguments from the shell */
    char**                     argv           /**< array of shell arguments */
