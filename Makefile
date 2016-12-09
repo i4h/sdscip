@@ -27,6 +27,8 @@ OLDSDSCIPGITHASH = 	$(shell if test -e $(SDSCIPGITHASHFILE) ; then cat  $(SDSCIP
 
 SDSCIPGITHASHFILE =       $(SDSCIPDIR)/src/githash.c
 
+GITHASHCLASS     =      $(SDSCIPDIR)/src/SDSCIPgitHash.cpp
+
 
 # check whether SCIPDIR exists
 ifeq ("$(wildcard $(SCIPDIR))","")
@@ -210,11 +212,19 @@ doc:
 
 .PHONY: githash
 githash:
+		$(info making githash)
+		$(info SDSCIPGITHASH is $(SDSCIPGITHASH))
+		$(info OLDSDSCIPGITHASH is $(OLDSDSCIPGITHASH))
+
+
 		@$(SHELL) -ec ' \
 			if test \"$(SDSCIPGITHASH)\" != \"$(OLDSDSCIPGITHASH)\" ; then  \
+				echo "Writing new " ;\
 				echo "#define SDSCIP_GITHASH \"$(SDSCIPGITHASH)\"" > $(SDSCIPGITHASHFILE); \
-			fi \
-			'
+			fi ';
+
+		$(info GITHASHCLASS is $(GITHASHCLASS))
+		@-touch $(GITHASHCLASS);
 
 .PHONY: test
 test:           $(MAINFILE)
