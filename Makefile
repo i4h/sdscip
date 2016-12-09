@@ -23,7 +23,7 @@ SCIPDIR		= 	$(SDSCIPDIR)/lib/scip
 
 SDSCIPGITHASH	=	$(shell git describe --always --dirty  | sed 's/^.*-g//')
 
-OLDSDSCIPGITHASH =	$(shell cat  $(SDSCIPGITHASHFILE) | sed 's/\#define SDSCIP_GITHASH //' )
+OLDSDSCIPGITHASH = 	$(shell if test -e $(SDSCIPGITHASHFILE) ; then cat  $(SDSCIPGITHASHFILE) | sed 's/\#define SDSCIP_GITHASH //'; fi )
 
 SDSCIPGITHASHFILE =       $(SDSCIPDIR)/src/githash.c
 
@@ -211,7 +211,7 @@ doc:
 .PHONY: githash
 githash:
 		@$(SHELL) -ec ' \
-			if test $(SDSCIPGITHASH) != $(OLDSDSCIPGITHASH) ; then  \
+			if test \"$(SDSCIPGITHASH)\" != \"$(OLDSDSCIPGITHASH)\" ; then  \
 				echo "#define SDSCIP_GITHASH \"$(SDSCIPGITHASH)\"" > $(SDSCIPGITHASHFILE); \
 			fi \
 			'
