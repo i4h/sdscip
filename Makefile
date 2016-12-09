@@ -40,13 +40,8 @@ endif
 #-----------------------------------------------------------------------------
 include $(SCIPDIR)/make/make.project
 
-$(info $$PERMUTE is [${PERMUTE}])
-$(info $$VERSION is [${VERSION}])
-
 # include install/uninstall targets
 -include make/make.install
-
-# $(info $$SCIPDIR is ${SCIPDIR})
 
 VERSION		=	0.9.0
 
@@ -212,18 +207,10 @@ doc:
 
 .PHONY: githash
 githash:
-		$(info making githash)
-		$(info SDSCIPGITHASH is $(SDSCIPGITHASH))
-		$(info OLDSDSCIPGITHASH is $(OLDSDSCIPGITHASH))
-
-
 		@$(SHELL) -ec ' \
 			if test \"$(SDSCIPGITHASH)\" != \"$(OLDSDSCIPGITHASH)\" ; then  \
-				echo "Writing new " ;\
 				echo "#define SDSCIP_GITHASH \"$(SDSCIPGITHASH)\"" > $(SDSCIPGITHASHFILE); \
 			fi ';
-
-		$(info GITHASHCLASS is $(GITHASHCLASS))
 		@-touch $(GITHASHCLASS);
 
 .PHONY: test
