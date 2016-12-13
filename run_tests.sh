@@ -15,6 +15,7 @@ VERBOSE=n
 FORCE=n
 QUICK=n
 OPTFILE=""
+TMPFILE=".run_tests.tmp"
 # function definitions 
 function usage {
  echo "Usage: $SCRIPTNAME [-h] [-v] [-o arg] file ..." >&2
@@ -97,7 +98,9 @@ fi
 
 # Write repo status to log
 echo "Getting repo_summary"
-sd_repo_summary.sh | tee $log
+# TMPFILE needed to not change the repo status by writing to logfile
+sd_repo_summary.sh | tee $TMPFILE
+mv $TMPFILE $log
 
 make test TEST=simulate SETTINGS=simulate $FLAGS | tee -a $log
 #read -p "Done with testset __simulate__. Press enter to continue" yn
