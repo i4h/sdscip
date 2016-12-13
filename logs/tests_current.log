@@ -1,90 +1,15 @@
-sdscip:         ccba8ce          
-scip:           4ca8bc1          
-systemzoo:      039c7b3          
-models:         395024d          (dirty)
+sdscip:         2baee8b          
+scip:           1c1d018          
+systemzoo:      039c7b3          (dirty)
+models:         395024d          
 runs:           0d667e1          (dirty)
 $PERMUTE is [0]
 $VERSION is []
--> compiling obj/O.linux.x86_64.gnu.dbg/cppmain.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/cppmain.cpp -o obj/O.linux.x86_64.gnu.dbg/cppmain.o
--> compiling obj/O.linux.x86_64.gnu.dbg/MdlExpressionTranslator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/MdlExpressionTranslator.cpp -o obj/O.linux.x86_64.gnu.dbg/MdlExpressionTranslator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ReaderVOP.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ReaderVOP.cpp -o obj/O.linux.x86_64.gnu.dbg/ReaderVOP.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ExprLookup.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ExprLookup.cpp -o obj/O.linux.x86_64.gnu.dbg/ExprLookup.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ProbDataSD.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ProbDataSD.cpp -o obj/O.linux.x86_64.gnu.dbg/ProbDataSD.o
--> compiling obj/O.linux.x86_64.gnu.dbg/PropOBRA.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/PropOBRA.cpp -o obj/O.linux.x86_64.gnu.dbg/PropOBRA.o
--> compiling obj/O.linux.x86_64.gnu.dbg/HeurSimODE.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/HeurSimODE.cpp -o obj/O.linux.x86_64.gnu.dbg/HeurSimODE.o
--> compiling obj/O.linux.x86_64.gnu.dbg/PropODE.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/PropODE.cpp -o obj/O.linux.x86_64.gnu.dbg/PropODE.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ODEintegrator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ODEintegrator.cpp -o obj/O.linux.x86_64.gnu.dbg/ODEintegrator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/PointODEintegrator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/PointODEintegrator.cpp -o obj/O.linux.x86_64.gnu.dbg/PointODEintegrator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ReduceODEintegrator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ReduceODEintegrator.cpp -o obj/O.linux.x86_64.gnu.dbg/ReduceODEintegrator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/IntervalODEintegrator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/IntervalODEintegrator.cpp -o obj/O.linux.x86_64.gnu.dbg/IntervalODEintegrator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ConstRateEvaluator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ConstRateEvaluator.cpp -o obj/O.linux.x86_64.gnu.dbg/ConstRateEvaluator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SimRateEvaluator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SimRateEvaluator.cpp -o obj/O.linux.x86_64.gnu.dbg/SimRateEvaluator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SBrateEvaluator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SBrateEvaluator.cpp -o obj/O.linux.x86_64.gnu.dbg/SBrateEvaluator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/PointRateEvaluator.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/PointRateEvaluator.cpp -o obj/O.linux.x86_64.gnu.dbg/PointRateEvaluator.o
--> compiling obj/O.linux.x86_64.gnu.dbg/BranchControlFirst.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/BranchControlFirst.cpp -o obj/O.linux.x86_64.gnu.dbg/BranchControlFirst.o
--> compiling obj/O.linux.x86_64.gnu.dbg/PropagationPattern.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/PropagationPattern.cpp -o obj/O.linux.x86_64.gnu.dbg/PropagationPattern.o
--> compiling obj/O.linux.x86_64.gnu.dbg/Orthant.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/Orthant.cpp -o obj/O.linux.x86_64.gnu.dbg/Orthant.o
--> compiling obj/O.linux.x86_64.gnu.dbg/OrthantList.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/OrthantList.cpp -o obj/O.linux.x86_64.gnu.dbg/OrthantList.o
--> compiling obj/O.linux.x86_64.gnu.dbg/HyperCube.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/HyperCube.cpp -o obj/O.linux.x86_64.gnu.dbg/HyperCube.o
--> compiling obj/O.linux.x86_64.gnu.dbg/HyperPlane.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/HyperPlane.cpp -o obj/O.linux.x86_64.gnu.dbg/HyperPlane.o
--> compiling obj/O.linux.x86_64.gnu.dbg/Vector.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/Vector.cpp -o obj/O.linux.x86_64.gnu.dbg/Vector.o
--> compiling obj/O.linux.x86_64.gnu.dbg/Point.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/Point.cpp -o obj/O.linux.x86_64.gnu.dbg/Point.o
--> compiling obj/O.linux.x86_64.gnu.dbg/Line.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/Line.cpp -o obj/O.linux.x86_64.gnu.dbg/Line.o
--> compiling obj/O.linux.x86_64.gnu.dbg/Statistics.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/Statistics.cpp -o obj/O.linux.x86_64.gnu.dbg/Statistics.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDproblemStructureInterface.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDproblemStructureInterface.cpp -o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureInterface.o
--> compiling obj/O.linux.x86_64.gnu.dbg/BoundMapHelpers.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/BoundMapHelpers.cpp -o obj/O.linux.x86_64.gnu.dbg/BoundMapHelpers.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDproblemStructure.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDproblemStructure.cpp -o obj/O.linux.x86_64.gnu.dbg/SDproblemStructure.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDproblemStructureV1.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDproblemStructureV1.cpp -o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureV1.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDproblemStructureFactory.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDproblemStructureFactory.cpp -o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureFactory.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDVarBasic.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDVarBasic.cpp -o obj/O.linux.x86_64.gnu.dbg/SDVarBasic.o
--> compiling obj/O.linux.x86_64.gnu.dbg/BaseTest.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/BaseTest.cpp -o obj/O.linux.x86_64.gnu.dbg/BaseTest.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDCons.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDCons.cpp -o obj/O.linux.x86_64.gnu.dbg/SDCons.o
--> compiling obj/O.linux.x86_64.gnu.dbg/SDSCIPtest.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDSCIPtest.cpp -o obj/O.linux.x86_64.gnu.dbg/SDSCIPtest.o
--> compiling obj/O.linux.x86_64.gnu.dbg/TestSDplugin.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/TestSDplugin.cpp -o obj/O.linux.x86_64.gnu.dbg/TestSDplugin.o
--> compiling obj/O.linux.x86_64.gnu.dbg/TestExprPiecewiseLinear.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/TestExprPiecewiseLinear.cpp -o obj/O.linux.x86_64.gnu.dbg/TestExprPiecewiseLinear.o
--> compiling obj/O.linux.x86_64.gnu.dbg/CopyablePointer.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/CopyablePointer.cpp -o obj/O.linux.x86_64.gnu.dbg/CopyablePointer.o
--> compiling obj/O.linux.x86_64.gnu.dbg/ExprPiecewiseLinear.o
-g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/ExprPiecewiseLinear.cpp -o obj/O.linux.x86_64.gnu.dbg/ExprPiecewiseLinear.o
+$UNITTESTDEP is [src/depend.unittest.dbg]
+-> compiling obj/O.linux.x86_64.gnu.dbg/SDSCIPgitHash.o
+g++  -O0 -g   -pedantic -Wno-long-long -Wall -W -Wpointer-arith -Wcast-align -Wwrite-strings -Wshadow -Wno-unknown-pragmas -Wno-unused-parameter -Wredundant-decls -Wdisabled-optimization -Wctor-dtor-privacy -Wnon-virtual-dtor -Wreorder -Woverloaded-virtual -Wsign-promo -Wsynth -Wcast-qual -Wno-unused-parameter -Wno-strict-overflow -funit-at-a-time -m64  -Isrc -DWITH_SCIPDEF -I/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/src -DROUNDING_FE  -DNPARASCIP -DWITH_ZLIB  -DWITH_GMP  -DWITH_READLINE  -Ilib/ipopt.linux.x86_64.gnu.opt/include/coin  -I /home/optimi/bzfvierh/lib/lemon/include -L /home/optimi/bzfvierh/lib/lemon/lib -I /home/optimi/bzfvierh/lib/sdotools/include -lemon -msse4.1 -std=c++11 -Wno-shadow -c src/SDSCIPgitHash.cpp -o obj/O.linux.x86_64.gnu.dbg/SDSCIPgitHash.o
 -> linking bin/sdscip.linux.x86_64.gnu.dbg.cpx
-g++ obj/O.linux.x86_64.gnu.dbg/cppmain.o obj/O.linux.x86_64.gnu.dbg/MdlExpressionTranslator.o obj/O.linux.x86_64.gnu.dbg/ReaderVOP.o obj/O.linux.x86_64.gnu.dbg/ExprLookup.o obj/O.linux.x86_64.gnu.dbg/ProbDataSD.o obj/O.linux.x86_64.gnu.dbg/PropOBRA.o obj/O.linux.x86_64.gnu.dbg/HeurSimODE.o obj/O.linux.x86_64.gnu.dbg/PropODE.o obj/O.linux.x86_64.gnu.dbg/ODEintegrator.o obj/O.linux.x86_64.gnu.dbg/PointODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ReduceODEintegrator.o obj/O.linux.x86_64.gnu.dbg/IntervalODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ConstRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SimRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SBrateEvaluator.o obj/O.linux.x86_64.gnu.dbg/PointRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/BranchControlFirst.o obj/O.linux.x86_64.gnu.dbg/PropagationPattern.o obj/O.linux.x86_64.gnu.dbg/Orthant.o obj/O.linux.x86_64.gnu.dbg/OrthantList.o obj/O.linux.x86_64.gnu.dbg/HyperCube.o obj/O.linux.x86_64.gnu.dbg/HyperPlane.o obj/O.linux.x86_64.gnu.dbg/Vector.o obj/O.linux.x86_64.gnu.dbg/Point.o obj/O.linux.x86_64.gnu.dbg/Line.o obj/O.linux.x86_64.gnu.dbg/Statistics.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureInterface.o obj/O.linux.x86_64.gnu.dbg/BoundMapHelpers.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructure.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureV1.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureFactory.o obj/O.linux.x86_64.gnu.dbg/SDVarBasic.o obj/O.linux.x86_64.gnu.dbg/BaseTest.o obj/O.linux.x86_64.gnu.dbg/SDCons.o obj/O.linux.x86_64.gnu.dbg/SDSCIPtest.o obj/O.linux.x86_64.gnu.dbg/TestSDplugin.o obj/O.linux.x86_64.gnu.dbg/TestExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/CopyablePointer.o obj/O.linux.x86_64.gnu.dbg/ExprPiecewiseLinear.o \
+g++ obj/O.linux.x86_64.gnu.dbg/cppmain.o obj/O.linux.x86_64.gnu.dbg/MdlExpressionTranslator.o obj/O.linux.x86_64.gnu.dbg/ReaderVOP.o obj/O.linux.x86_64.gnu.dbg/ExprLookup.o obj/O.linux.x86_64.gnu.dbg/ProbDataSD.o obj/O.linux.x86_64.gnu.dbg/PropOBRA.o obj/O.linux.x86_64.gnu.dbg/HeurSimODE.o obj/O.linux.x86_64.gnu.dbg/PropODE.o obj/O.linux.x86_64.gnu.dbg/ODEintegrator.o obj/O.linux.x86_64.gnu.dbg/PointODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ReduceODEintegrator.o obj/O.linux.x86_64.gnu.dbg/IntervalODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ConstRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SimRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SBrateEvaluator.o obj/O.linux.x86_64.gnu.dbg/PointRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/BranchControlFirst.o obj/O.linux.x86_64.gnu.dbg/PropagationPattern.o obj/O.linux.x86_64.gnu.dbg/Orthant.o obj/O.linux.x86_64.gnu.dbg/OrthantList.o obj/O.linux.x86_64.gnu.dbg/HyperCube.o obj/O.linux.x86_64.gnu.dbg/HyperPlane.o obj/O.linux.x86_64.gnu.dbg/Vector.o obj/O.linux.x86_64.gnu.dbg/Point.o obj/O.linux.x86_64.gnu.dbg/Line.o obj/O.linux.x86_64.gnu.dbg/Statistics.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureInterface.o obj/O.linux.x86_64.gnu.dbg/BoundMapHelpers.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructure.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureV1.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureFactory.o obj/O.linux.x86_64.gnu.dbg/SDVarBasic.o obj/O.linux.x86_64.gnu.dbg/BaseTest.o obj/O.linux.x86_64.gnu.dbg/SDCons.o obj/O.linux.x86_64.gnu.dbg/SDSCIPtest.o obj/O.linux.x86_64.gnu.dbg/TestSDplugin.o obj/O.linux.x86_64.gnu.dbg/TestExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/CopyablePointer.o obj/O.linux.x86_64.gnu.dbg/ExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/SDSCIPgitHash.o \
 		-L/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/lib -lscip.linux.x86_64.gnu.dbg \
                 -lobjscip.linux.x86_64.gnu.dbg -llpicpx.linux.x86_64.gnu.dbg -lnlpi.cppad.ipopt.linux.x86_64.gnu.dbg \
                  -O0 -g  -lcplex.linux.x86_64.gnu -lpthread -ldl \
@@ -93,10 +18,8 @@ cd check; \
 		bash ./check.sh simulate bin/sdscip.linux.x86_64.gnu.dbg.cpx simulate sdscip.linux.x86_64.gnu.dbg.cpx 3600 2100000000 6144 1 default 10000 \
 		false false 0.9.0 cpx false /tmp false optimize 0 1 false 0 0 ;
 Solving instance /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/predator_prey_unlimited/predator_prey_unlimited_sim.vop with settings simulate, hard time 7800, hard mem 7022592
-Constructing pattern, conftype is 1
-BranchControlFirst Reporting
-PropODE Reporting
-SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 4ca8bc1]
+SDSCIP version 0.9.0 [precision: 8 byte] [memory: block] [mode: debug] [GitHash: 2baee8b-dirty], Using: 
+SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 1c1d018]
 Copyright (C) 2002-2016 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
 External codes: 
@@ -156,10 +79,10 @@ presolving (1 rounds: 1 fast, 0 medium, 0 exhaustive):
  2 deleted vars, 0 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 0 changed sides, 0 changed coefficients
  0 implications, 0 cliques
 transformed 1/1 original solutions to the transformed problem space
-Presolving Time: 0.44
+Presolving Time: 0.42
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 0.45
+Solving Time (sec) : 0.43
 Solving Nodes      : 0
 Primal Bound       : -4.62649628000656e+02 (1 solutions)
 Dual Bound         : -4.62649628000656e+02
@@ -168,10 +91,10 @@ Gap                : 0.00 %
 SCIP> display statistics
 
 SCIP Status        : problem is solved [optimal solution found]
-Total Time         :       0.45
-  solving          :       0.45
-  presolving       :       0.44 (included in solving)
-  reading          :       0.00
+Total Time         :       0.44
+  solving          :       0.43
+  presolving       :       0.42 (included in solving)
+  reading          :       0.01
   copying          :       0.00 (0 times copied the problem)
 Original Problem   :
   Problem name     : /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/predator_prey_unlimited/predator_prey_unlimited_sim.vop
@@ -315,10 +238,10 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   rounding         :       0.00       0.00          0          0          0
   shiftandpropagate:       0.00       0.00          0          0          0
   shifting         :       0.00       0.00          0          0          0
-  simODE           :       0.16       0.00          1          1          1
+  simODE           :       0.15       0.00          1          1          1
   simplerounding   :       0.00       0.00          0          0          0
   subnlp           :       0.00       0.00          0          0          0
-  trivial          :       0.14       0.00          1          0          0
+  trivial          :       0.13       0.00          1          0          0
   trivialnegation  :       0.00       0.00          0          0          0
   trysol           :       0.00       0.00          0          0          0
   twoopt           :       0.00       0.00          0          0          0
@@ -388,10 +311,8 @@ solution is feasible in original problem
 SCIP> quit
 
 Solving instance /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/miniworld/miniworld_sim.vop with settings simulate, hard time 7800, hard mem 7022592
-Constructing pattern, conftype is 1
-BranchControlFirst Reporting
-PropODE Reporting
-SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 4ca8bc1]
+SDSCIP version 0.9.0 [precision: 8 byte] [memory: block] [mode: debug] [GitHash: 2baee8b-dirty], Using: 
+SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 1c1d018]
 Copyright (C) 2002-2016 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
 External codes: 
@@ -445,20 +366,20 @@ SCIP> optimize
 HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.
 HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.
 HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.
-feasible solution found by simODE heuristic after 2.8 seconds, objective value 2.494626e+03
+feasible solution found by simODE heuristic after 2.7 seconds, objective value 2.494626e+03
 presolving:
 presolving (1 rounds: 1 fast, 1 medium, 1 exhaustive):
  404 deleted vars, 1200 deleted constraints, 0 added constraints, 0 tightened bounds, 0 added holes, 0 changed sides, 0 changed coefficients
  0 implications, 0 cliques
 presolved problem has 0 variables (0 bin, 0 int, 0 impl, 0 cont) and 0 constraints
-Presolving Time: 3.71
+Presolving Time: 3.60
 transformed 1/1 original solutions to the transformed problem space
 
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
-  3.7s|     1 |     0 |     0 |     - |4927k|   0 |   - |   0 |   0 |   0 |   0 |   0 |   0 |   0 | 2.494626e+03 | 2.494626e+03 |   0.00%
+  3.6s|     1 |     0 |     0 |     - |4927k|   0 |   - |   0 |   0 |   0 |   0 |   0 |   0 |   0 | 2.494626e+03 | 2.494626e+03 |   0.00%
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 3.73
+Solving Time (sec) : 3.62
 Solving Nodes      : 1
 Primal Bound       : +2.49462629969731e+03 (1 solutions)
 Dual Bound         : +2.49462629969731e+03
@@ -467,9 +388,9 @@ Gap                : 0.00 %
 SCIP> display statistics
 
 SCIP Status        : problem is solved [optimal solution found]
-Total Time         :       3.75
-  solving          :       3.73
-  presolving       :       3.71 (included in solving)
+Total Time         :       3.64
+  solving          :       3.62
+  presolving       :       3.60 (included in solving)
   reading          :       0.02
   copying          :       0.00 (0 times copied the problem)
 Original Problem   :
@@ -503,7 +424,7 @@ Presolvers         :   ExecTime  SetupTime  Calls  FixedVars   AggrVars   ChgTyp
   probing          :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
   propODE          :       0.02       0.00      1          0          0          0          0          0          0          0          0          0
   pseudoobj        :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
-  nonlinear        :       0.88       0.01      1          0          0          0          0          0       1200          0          0          0
+  nonlinear        :       0.86       0.00      1          0          0          0          0          0       1200          0          0          0
   root node        :          -          -      -          0          -          -          0          -          -          -          -          -
 Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #EnfoPS     #Check   #ResProp    Cutoffs    DomReds       Cuts    Applied      Conss   Children
   integral         :          0          0          0          0          0          0          8          0          0          0          0          0          0          0
@@ -612,10 +533,10 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   rounding         :       0.00       0.00          0          0          0
   shiftandpropagate:       0.00       0.00          0          0          0
   shifting         :       0.00       0.00          0          0          0
-  simODE           :       1.43       0.00          1          1          1
+  simODE           :       1.40       0.00          1          1          1
   simplerounding   :       0.00       0.00          0          0          0
   subnlp           :       0.00       0.00          0          0          0
-  trivial          :       1.37       0.00          2          0          0
+  trivial          :       1.32       0.00          2          0          0
   trivialnegation  :       0.00       0.00          0          0          0
   trysol           :       0.00       0.00          0          0          0
   twoopt           :       0.00       0.00          0          0          0
@@ -675,7 +596,7 @@ Solution           :
   Primal Bound     : +2.49462629969731e+03   (in run 1, after 0 nodes, 0.03 seconds, depth 0, found by <simODE>)
   Dual Bound       : +2.49462629969731e+03
   Gap              :       0.00 %
-  Avg. Gap         :     100.00 % (373.00 primal-dual integral)
+  Avg. Gap         :     100.00 % (362.00 primal-dual integral)
 
 SCIP> checksol
 
@@ -692,28 +613,33 @@ Solver   sdscip
 ------------------+------+--- Original --+-- Presolved --+----------------+----------------+------+---------+--------+-------+--------
 Name              | Type | Conss |  Vars | Conss |  Vars |   Dual Bound   |  Primal Bound  | Gap% |  Iters  |  Nodes |  Time |       
 ------------------+------+-------+-------+-------+-------+----------------+----------------+------+---------+--------+-------+--------
-r_prey_unlimited_s     --     500     502     500       0      -462.649628      -462.649628    0.0         0        0     0.5 ok
-miniworld_sim          --    1200    1604       0       0        2494.6263        2494.6263    0.0         0        1     3.7 ok
+r_prey_unlimited_s     --     500     502     500       0      -462.649628      -462.649628    0.0         0        0     0.4 ok
+miniworld_sim          --    1200    1604       0       0        2494.6263        2494.6263    0.0         0        1     3.6 ok
 ------------------+------+-------+-------+-------+-------+----------------+----------------+------+---------+--------+-------+--------
 
 ------------------------------[Nodes]---------------[Time]------
   Cnt  Pass  Time  Fail  total(k)     geom.     total     geom.
 ----------------------------------------------------------------
-    2     2     0     0         0       1.0       4.2       1.9 
- shifted geom. [  100/ 10.0]            0.5                 2.0 
+    2     2     0     0         0       1.0       4.0       1.9 
+ shifted geom. [  100/ 10.0]            0.5                 1.9 
 ----------------------------------------------------------------
 @02 timelimit: 3600
-@01 SCIP(3.2.1.2)cpx(12.6.0.0):simulate [GitHash: 4ca8bc1]
+@01 SCIP(3.2.1.2)cpx(12.6.0.0):simulate [GitHash: 1c1d018]
 $PERMUTE is [0]
 $VERSION is []
+$UNITTESTDEP is [src/depend.unittest.dbg]
+-> linking bin/sdscip.linux.x86_64.gnu.dbg.cpx
+g++ obj/O.linux.x86_64.gnu.dbg/cppmain.o obj/O.linux.x86_64.gnu.dbg/MdlExpressionTranslator.o obj/O.linux.x86_64.gnu.dbg/ReaderVOP.o obj/O.linux.x86_64.gnu.dbg/ExprLookup.o obj/O.linux.x86_64.gnu.dbg/ProbDataSD.o obj/O.linux.x86_64.gnu.dbg/PropOBRA.o obj/O.linux.x86_64.gnu.dbg/HeurSimODE.o obj/O.linux.x86_64.gnu.dbg/PropODE.o obj/O.linux.x86_64.gnu.dbg/ODEintegrator.o obj/O.linux.x86_64.gnu.dbg/PointODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ReduceODEintegrator.o obj/O.linux.x86_64.gnu.dbg/IntervalODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ConstRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SimRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SBrateEvaluator.o obj/O.linux.x86_64.gnu.dbg/PointRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/BranchControlFirst.o obj/O.linux.x86_64.gnu.dbg/PropagationPattern.o obj/O.linux.x86_64.gnu.dbg/Orthant.o obj/O.linux.x86_64.gnu.dbg/OrthantList.o obj/O.linux.x86_64.gnu.dbg/HyperCube.o obj/O.linux.x86_64.gnu.dbg/HyperPlane.o obj/O.linux.x86_64.gnu.dbg/Vector.o obj/O.linux.x86_64.gnu.dbg/Point.o obj/O.linux.x86_64.gnu.dbg/Line.o obj/O.linux.x86_64.gnu.dbg/Statistics.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureInterface.o obj/O.linux.x86_64.gnu.dbg/BoundMapHelpers.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructure.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureV1.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureFactory.o obj/O.linux.x86_64.gnu.dbg/SDVarBasic.o obj/O.linux.x86_64.gnu.dbg/BaseTest.o obj/O.linux.x86_64.gnu.dbg/SDCons.o obj/O.linux.x86_64.gnu.dbg/SDSCIPtest.o obj/O.linux.x86_64.gnu.dbg/TestSDplugin.o obj/O.linux.x86_64.gnu.dbg/TestExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/CopyablePointer.o obj/O.linux.x86_64.gnu.dbg/ExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/SDSCIPgitHash.o \
+		-L/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/lib -lscip.linux.x86_64.gnu.dbg \
+                -lobjscip.linux.x86_64.gnu.dbg -llpicpx.linux.x86_64.gnu.dbg -lnlpi.cppad.ipopt.linux.x86_64.gnu.dbg \
+                 -O0 -g  -lcplex.linux.x86_64.gnu -lpthread -ldl \
+		-lm -Wl,--no-as-needed  -m64  -lz -lgmp -lreadline -lncurses -L/home/optimi/bzfvierh/o/programs/Ipopt-3.12.6/build/lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. -lipopt -ldl -lcoinhsl -llapack -lblas -lgfortran -lm -lquadmath -lcoinmetis   -Wl,-rpath,\$ORIGIN/../lib/ipopt.linux.x86_64.gnu.opt/lib -Wl,-rpath,\$ORIGIN/../lib -lpthread -lboost_regex -lboost_system -lboost_filesystem -lboost_serialization -L/home/optimi/bzfvierh/lib/sdotools/lib -lsdo -lcpplsq -lboost_locale -lblas -fopenmp -o bin/sdscip.linux.x86_64.gnu.dbg.cpx
 cd check; \
 		bash ./check.sh propODE bin/sdscip.linux.x86_64.gnu.dbg.cpx propODE sdscip.linux.x86_64.gnu.dbg.cpx 10 2100000000 6144 1 default 10000 \
 		false false 0.9.0 cpx false /tmp false optimize 0 1 false 0 0 ;
 Solving instance /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/predator_prey_unlimited/predator_prey_unlimited_short.vop with settings propODE, hard time 620, hard mem 7022592
-Constructing pattern, conftype is 1
-BranchControlFirst Reporting
-PropODE Reporting
-SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 4ca8bc1]
+SDSCIP version 0.9.0 [precision: 8 byte] [memory: block] [mode: debug] [GitHash: 2baee8b-dirty], Using: 
+SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 1c1d018]
 Copyright (C) 2002-2016 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
 External codes: 
@@ -794,7 +720,7 @@ presolving (3 rounds: 3 fast, 1 medium, 1 exhaustive):
 presolved problem has 899 variables (0 bin, 0 int, 0 impl, 899 cont) and 599 constraints
       3 constraints of type <linear>
     596 constraints of type <quadratic>
-Presolving Time: 0.36
+Presolving Time: 0.35
 
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
   0.5s|     1 |     0 |  1356 |     - |5478k|   0 |   0 | 899 | 599 | 899 |2278 |   0 |   0 |   0 |-3.170239e+03 |-4.796770e+02 | 560.91%
@@ -805,14 +731,14 @@ This program contains Ipopt, a library for large-scale nonlinear optimization.
          For more information visit http://projects.coin-or.org/Ipopt
 ******************************************************************************
 
-  9.6s|     1 |     0 | 14916 |     - |7220k|   0 |   0 | 899 | 599 | 899 |2278 |   0 |   0 |   0 |-3.170239e+03 |-4.796770e+02 | 560.91%
-  9.6s|     1 |     0 | 14959 |     - |7249k|   0 |   0 | 899 | 599 | 899 |2322 |  44 |   0 |   0 |-3.167083e+03 |-4.796770e+02 | 560.25%
+  9.8s|     1 |     0 | 14916 |     - |7220k|   0 |   0 | 899 | 599 | 899 |2278 |   0 |   0 |   0 |-3.170239e+03 |-4.796770e+02 | 560.91%
+  9.8s|     1 |     0 | 14959 |     - |7249k|   0 |   0 | 899 | 599 | 899 |2322 |  44 |   0 |   0 |-3.167083e+03 |-4.796770e+02 | 560.25%
  10.0s|     1 |     0 | 14959 |     - |7249k|   0 |   - | 899 | 599 | 899 |2322 |  44 |   0 |   0 |-3.167083e+03 |-4.796770e+02 | 560.25%
 (node 1) LP solver hit time limit in LP 554 -- using pseudo solution instead
  10.0s|     1 |     2 | 14959 |     - |7250k|   0 |   - | 899 | 599 | 899 |2322 |  44 |   0 |   0 |-3.167083e+03 |-4.796770e+02 | 560.25%
 
 SCIP Status        : solving was interrupted [time limit reached]
-Solving Time (sec) : 10.03
+Solving Time (sec) : 10.04
 Solving Nodes      : 1
 Primal Bound       : -4.79677012652899e+02 (3 solutions)
 Dual Bound         : -3.16708283404999e+03
@@ -821,11 +747,11 @@ Gap                : 560.25 %
 SCIP> display statistics
 
 SCIP Status        : solving was interrupted [time limit reached]
-Total Time         :      10.04
-  solving          :      10.03
-  presolving       :       0.36 (included in solving)
+Total Time         :      10.05
+  solving          :      10.04
+  presolving       :       0.35 (included in solving)
   reading          :       0.01
-  copying          :       0.02 (1 #copies) (minimal 0.02, maximal 0.02, average 0.02)
+  copying          :       0.01 (1 #copies) (minimal 0.01, maximal 0.01, average 0.01)
 Original Problem   :
   Problem name     : /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/predator_prey_unlimited/predator_prey_unlimited_short.vop
   Variables        : 903 (0 binary, 0 integer, 0 implicit integer, 903 continuous)
@@ -857,8 +783,8 @@ Presolvers         :   ExecTime  SetupTime  Calls  FixedVars   AggrVars   ChgTyp
   probing          :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
   propODE          :       0.02       0.00      3          0          0          0       1179          0          0          0          0          0
   pseudoobj        :       0.00       0.00      2          0          0          0          0          0          0          0          0          0
-  linear           :       0.00       0.00      3          1          0          0          4          0          1          0          0          0
-  quadratic        :       0.01       0.01      4          0          0          0        503          0          0          0          0          0
+  linear           :       0.01       0.00      3          1          0          0          4          0          1          0          0          0
+  quadratic        :       0.01       0.00      4          0          0          0        503          0          0          0          0          0
   nonlinear        :       0.01       0.00      1          0          0          0          0          0          0          0          0          0
   root node        :          -          -      -          0          -          -        410          -          -          -          -          -
 Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #EnfoPS     #Check   #ResProp    Cutoffs    DomReds       Cuts    Applied      Conss   Children
@@ -869,7 +795,7 @@ Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #
 Constraint Timings :  TotalTime  SetupTime   Separate  Propagate     EnfoLP     EnfoPS      Check    ResProp    SB-Prop
   integral         :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
   linear           :       0.01       0.00       0.00       0.01       0.00       0.00       0.00       0.00       0.00
-  quadratic        :       0.26       0.01       0.00       0.25       0.00       0.00       0.00       0.00       0.00
+  quadratic        :       0.31       0.00       0.02       0.28       0.01       0.00       0.00       0.00       0.00
   countsols        :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
 Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   dualfix          :          1          0          0          0
@@ -884,8 +810,8 @@ Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   vbounds          :       7643          0          0          0
 Propagator Timings :  TotalTime  SetupTime   Presolve  Propagate    ResProp    SB-Prop
   dualfix          :       0.00       0.00       0.00       0.00       0.00       0.00
-  genvbounds       :       0.02       0.00       0.00       0.02       0.00       0.00
-  obbt             :       6.87       0.00       0.00       6.87       0.00       0.00
+  genvbounds       :       0.01       0.00       0.00       0.01       0.00       0.00
+  obbt             :       7.03       0.00       0.00       7.03       0.00       0.00
   obra             :       0.00       0.00       0.00       0.00       0.00       0.00
   probing          :       0.00       0.00       0.00       0.00       0.00       0.00
   propODE          :       0.02       0.00       0.02       0.00       0.00       0.00
@@ -972,14 +898,14 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   rounding         :       0.00       0.00          0          0          0
   shiftandpropagate:       0.00       0.00          0          0          0
   shifting         :       0.00       0.00          0          0          0
-  simODE           :       0.31       0.00          1          3          1
+  simODE           :       0.30       0.00          1          3          1
   simplerounding   :       0.00       0.00          0          0          0
-  subnlp           :       0.55       0.00          2          0          0
-  trivial          :       0.01       0.00          2          0          0
+  subnlp           :       0.42       0.01          2          0          0
+  trivial          :       0.00       0.00          2          0          0
   trivialnegation  :       0.00       0.00          0          0          0
   trysol           :       0.00       0.00          0          0          0
   twoopt           :       0.00       0.00          0          0          0
-  undercover       :       2.13       0.00          1          0          0
+  undercover       :       2.12       0.00          1          0          0
   vbounds          :       0.00       0.00          0          0          0
   veclendiving     :       0.00       0.00          0          0          0
   zeroobj          :       0.00       0.00          0          0          0
@@ -999,7 +925,7 @@ LP                 :       Time      Calls Iterations  Iter/call   Iter/sec  Tim
   dual LP          :       0.06          3       1399     699.50   23316.67       0.00          1
   lex dual LP      :       0.00          0          0       0.00          -
   barrier LP       :       0.00          0          0       0.00          -       0.00          0
-  diving/probing LP:       6.46        552      13560      24.57    2099.07
+  diving/probing LP:       6.73        552      13560      24.57    2014.86
   strong branching :       0.00          0          0       0.00          -          -          -          0
     (at root node) :          -          0          0       0.00          -
   conflict analysis:       0.00          0          0       0.00          -
@@ -1031,13 +957,13 @@ Root Node          :
   Root LP Estimate :                     -
 Solution           :
   Solutions found  :          3 (1 improvements)
-  First Solution   : -4.79677012652899e+02   (in run 1, after 0 nodes, 0.02 seconds, depth 0, found by <simODE>)
+  First Solution   : -4.79677012652899e+02   (in run 1, after 0 nodes, 0.01 seconds, depth 0, found by <simODE>)
   Gap First Sol.   :   infinite
   Gap Last Sol.    :   infinite
-  Primal Bound     : -4.79677012652899e+02   (in run 1, after 0 nodes, 0.02 seconds, depth 0, found by <simODE>)
+  Primal Bound     : -4.79677012652899e+02   (in run 1, after 0 nodes, 0.01 seconds, depth 0, found by <simODE>)
   Dual Bound       : -3.16708283404999e+03
   Gap              :     560.25 %
-  Avg. Gap         :      85.46 % (857.19 primal-dual integral)
+  Avg. Gap         :      85.43 % (857.75 primal-dual integral)
 
 SCIP> checksol
 
@@ -1047,10 +973,8 @@ solution is feasible in original problem
 SCIP> quit
 
 Solving instance /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/miniworld/miniworld_short.vop with settings propODE, hard time 620, hard mem 7022592
-Constructing pattern, conftype is 1
-BranchControlFirst Reporting
-PropODE Reporting
-SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 4ca8bc1]
+SDSCIP version 0.9.0 [precision: 8 byte] [memory: block] [mode: debug] [GitHash: 2baee8b-dirty], Using: 
+SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 1c1d018]
 Copyright (C) 2002-2016 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
 External codes: 
@@ -1158,7 +1082,7 @@ presolved problem has 316 variables (0 bin, 0 int, 0 impl, 316 cont) and 286 con
      31 constraints of type <linear>
     226 constraints of type <quadratic>
      29 constraints of type <nonlinear>
-Presolving Time: 0.04
+Presolving Time: 0.03
 
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
   0.1s|     1 |     0 |   406 |     - |1987k|   0 |   0 | 316 | 286 | 316 | 993 |   0 |   0 |   0 | 4.527518e+01 | 4.399049e+01 |   2.92%
@@ -1169,41 +1093,41 @@ This program contains Ipopt, a library for large-scale nonlinear optimization.
          For more information visit http://projects.coin-or.org/Ipopt
 ******************************************************************************
 
-  0.4s|     1 |     0 |   436 |     - |2399k|   0 |   0 | 316 | 286 | 316 |1023 |  30 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
-y 0.4s|     1 |     0 |   436 |     - |2399k|   0 |   0 | 316 | 286 | 316 |1023 |  30 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
-  0.4s|     1 |     0 |   438 |     - |2400k|   0 |   0 | 316 | 286 | 316 |1025 |  32 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
-  0.4s|     1 |     0 |   439 |     - |2401k|   0 |   0 | 316 | 286 | 316 |1026 |  33 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
-  0.4s|     1 |     0 |   441 |     - |2401k|   0 |   0 | 316 | 286 | 316 |1027 |  34 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
-  0.4s|     1 |     0 |   442 |     - |2402k|   0 |   0 | 316 | 286 | 316 |1028 |  35 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
-  0.4s|     1 |     0 |   443 |     - |2403k|   0 |   0 | 316 | 286 | 316 |1029 |  36 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+  0.3s|     1 |     0 |   436 |     - |2399k|   0 |   0 | 316 | 286 | 316 |1023 |  30 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+y 0.3s|     1 |     0 |   436 |     - |2399k|   0 |   0 | 316 | 286 | 316 |1023 |  30 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+  0.3s|     1 |     0 |   438 |     - |2400k|   0 |   0 | 316 | 286 | 316 |1025 |  32 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+  0.3s|     1 |     0 |   439 |     - |2401k|   0 |   0 | 316 | 286 | 316 |1026 |  33 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+  0.3s|     1 |     0 |   441 |     - |2401k|   0 |   0 | 316 | 286 | 316 |1027 |  34 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+  0.3s|     1 |     0 |   442 |     - |2402k|   0 |   0 | 316 | 286 | 316 |1028 |  35 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
+  0.3s|     1 |     0 |   443 |     - |2403k|   0 |   0 | 316 | 286 | 316 |1029 |  36 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
   0.9s|     1 |     0 |  5443 |     - |2401k|   0 |   0 | 316 | 286 | 316 |1029 |  36 |   0 |   0 | 4.473173e+01 | 4.399049e+01 |   1.69%
   0.9s|     1 |     0 |  5492 |     - |2432k|   0 |   0 | 316 | 286 | 316 |1078 |  85 |   0 |   0 | 4.470827e+01 | 4.399049e+01 |   1.63%
-  1.0s|     1 |     0 |  5492 |     - |2432k|   0 |   0 | 316 | 286 | 316 |1078 |  85 |   0 |   0 | 4.470827e+01 | 4.399049e+01 |   1.63%
-  1.0s|     1 |     0 |  5549 |     - |2465k|   0 |   0 | 316 | 286 | 316 |1135 | 142 |   0 |   0 | 4.444225e+01 | 4.399049e+01 |   1.03%
+  0.9s|     1 |     0 |  5492 |     - |2432k|   0 |   0 | 316 | 286 | 316 |1078 |  85 |   0 |   0 | 4.470827e+01 | 4.399049e+01 |   1.63%
+  0.9s|     1 |     0 |  5549 |     - |2465k|   0 |   0 | 316 | 286 | 316 |1135 | 142 |   0 |   0 | 4.444225e+01 | 4.399049e+01 |   1.03%
   1.5s|     1 |     0 | 11039 |     - |2468k|   0 |   0 | 316 | 286 | 316 |1135 | 142 |   0 |   0 | 4.444225e+01 | 4.399049e+01 |   1.03%
   1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
   1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
-  1.6s|     1 |     0 | 11229 |     - |2587k|   0 |   0 | 316 | 286 | 316 |1333 | 340 |   0 |   0 | 4.405782e+01 | 4.399049e+01 |   0.15%
-  1.6s|     1 |     0 | 11235 |     - |2209k|   0 |   0 | 316 | 286 | 316 | 597 | 346 |   0 |   0 | 4.405773e+01 | 4.399049e+01 |   0.15%
-  1.6s|     1 |     0 | 11236 |     - |2209k|   0 |   0 | 316 | 286 | 316 | 598 | 347 |   0 |   0 | 4.405773e+01 | 4.399049e+01 |   0.15%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11096 |     - |2507k|   0 |   0 | 316 | 286 | 316 |1200 | 207 |   0 |   0 | 4.432035e+01 | 4.399049e+01 |   0.75%
+  1.5s|     1 |     0 | 11229 |     - |2587k|   0 |   0 | 316 | 286 | 316 |1333 | 340 |   0 |   0 | 4.405782e+01 | 4.399049e+01 |   0.15%
+  1.5s|     1 |     0 | 11235 |     - |2209k|   0 |   0 | 316 | 286 | 316 | 597 | 346 |   0 |   0 | 4.405773e+01 | 4.399049e+01 |   0.15%
+  1.5s|     1 |     0 | 11236 |     - |2209k|   0 |   0 | 316 | 286 | 316 | 598 | 347 |   0 |   0 | 4.405773e+01 | 4.399049e+01 |   0.15%
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
-  1.6s|     1 |     2 | 11236 |     - |2210k|   0 |   0 | 316 | 286 | 316 | 598 | 347 |   0 |   0 | 4.405773e+01 | 4.399049e+01 |   0.15%
+  1.5s|     1 |     2 | 11236 |     - |2210k|   0 |   0 | 316 | 286 | 316 | 598 | 347 |   0 |   0 | 4.405773e+01 | 4.399049e+01 |   0.15%
 
 SCIP Status        : solving was interrupted [gap limit reached]
-Solving Time (sec) : 1.57
+Solving Time (sec) : 1.53
 Solving Nodes      : 1
 Primal Bound       : +4.39904934353008e+01 (4 solutions)
 Dual Bound         : +4.40577306956140e+01
@@ -1212,9 +1136,9 @@ Gap                : 0.15 %
 SCIP> display statistics
 
 SCIP Status        : solving was interrupted [gap limit reached]
-Total Time         :       1.58
-  solving          :       1.57
-  presolving       :       0.04 (included in solving)
+Total Time         :       1.54
+  solving          :       1.53
+  presolving       :       0.03 (included in solving)
   reading          :       0.01
   copying          :       0.00 (0 times copied the problem)
 Original Problem   :
@@ -1261,8 +1185,8 @@ Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #
 Constraint Timings :  TotalTime  SetupTime   Separate  Propagate     EnfoLP     EnfoPS      Check    ResProp    SB-Prop
   integral         :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
   linear           :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
-  quadratic        :       0.08       0.00       0.01       0.06       0.01       0.00       0.00       0.00       0.00
-  nonlinear        :       0.04       0.00       0.04       0.00       0.00       0.00       0.00       0.00       0.00
+  quadratic        :       0.05       0.00       0.01       0.04       0.00       0.00       0.00       0.00       0.00
+  nonlinear        :       0.02       0.00       0.02       0.00       0.00       0.00       0.00       0.00       0.00
   countsols        :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
 Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   dualfix          :         15          0          0          0
@@ -1277,8 +1201,8 @@ Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   vbounds          :        432          0          0          0
 Propagator Timings :  TotalTime  SetupTime   Presolve  Propagate    ResProp    SB-Prop
   dualfix          :       0.00       0.00       0.00       0.00       0.00       0.00
-  genvbounds       :       0.00       0.00       0.00       0.00       0.00       0.00
-  obbt             :       1.11       0.00       0.00       1.11       0.00       0.00
+  genvbounds       :       0.01       0.00       0.00       0.01       0.00       0.00
+  obbt             :       1.10       0.00       0.00       1.10       0.00       0.00
   obra             :       0.00       0.00       0.00       0.00       0.00       0.00
   probing          :       0.00       0.00       0.00       0.00       0.00       0.00
   propODE          :       0.00       0.00       0.00       0.00       0.00       0.00
@@ -1367,8 +1291,8 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   shifting         :       0.00       0.00          0          0          0
   simODE           :       0.01       0.00          1          3          2
   simplerounding   :       0.00       0.00          0          0          0
-  subnlp           :       0.09       0.00          2          0          0
-  trivial          :       0.01       0.00          2          0          0
+  subnlp           :       0.08       0.01          2          0          0
+  trivial          :       0.00       0.00          2          0          0
   trivialnegation  :       0.00       0.00          0          0          0
   trysol           :       0.00       0.00          1          1          1
   twoopt           :       0.00       0.00          0          0          0
@@ -1388,16 +1312,16 @@ Diving Statistics  :      Calls      Nodes   LP Iters Backtracks   MinDepth   Ma
   pscostdiving     :          0          -          -          -          -          -          -          -          -          -          -
   veclendiving     :          0          -          -          -          -          -          -          -          -          -          -
 LP                 :       Time      Calls Iterations  Iter/call   Iter/sec  Time-0-It Calls-0-It    ItLimit
-  primal LP        :       0.00          1          0       0.00          -       0.00          1
-  dual LP          :       0.03         29        746      57.38   24866.67       0.00         16
+  primal LP        :       0.01          1          0       0.00       0.00       0.01          1
+  dual LP          :       0.01         29        746      57.38   74600.00       0.00         16
   lex dual LP      :       0.00          0          0       0.00          -
   barrier LP       :       0.00          0          0       0.00          -       0.00          0
-  diving/probing LP:       1.11        204      10490      51.42    9450.45
+  diving/probing LP:       1.06        204      10490      51.42    9896.23
   strong branching :       0.00          0          0       0.00          -          -          -          0
     (at root node) :          -          0          0       0.00          -
   conflict analysis:       0.00          0          0       0.00          -
 NLP                :       Time      Calls
-  all NLPs         :       0.03          1
+  all NLPs         :       0.02          1
 B&B Tree           :
   number of runs   :          1
   nodes            :          1 (1 internal, 0 leaves)
@@ -1427,10 +1351,10 @@ Solution           :
   First Solution   : +4.19451655541902e+01   (in run 1, after 0 nodes, 0.00 seconds, depth 0, found by <simODE>)
   Gap First Sol.   :   infinite
   Gap Last Sol.    :       1.69 %
-  Primal Bound     : +4.39904934353008e+01   (in run 1, after 1 nodes, 0.36 seconds, depth 0, found by <trysol>)
+  Primal Bound     : +4.39904934353008e+01   (in run 1, after 1 nodes, 0.33 seconds, depth 0, found by <trysol>)
   Dual Bound       : +4.40577306956140e+01
   Gap              :       0.15 %
-  Avg. Gap         :       4.79 % (7.52 primal-dual integral)
+  Avg. Gap         :       4.21 % (6.44 primal-dual integral)
 
 SCIP> checksol
 
@@ -1448,27 +1372,32 @@ Solver   sdscip
 Name              | Type | Conss |  Vars | Conss |  Vars |   Dual Bound   |  Primal Bound  | Gap% |  Iters  |  Nodes |  Time |       
 ------------------+------+-------+-------+-------+-------+----------------+----------------+------+---------+--------+-------+--------
 prey_unlimited_sho    QCP     600     903     599     899      -3167.08283      -479.677013  560.3      1399        1    10.0 timeout
-miniworld_short       NLP      90     124     286     316       44.0577307       43.9904934    0.2       746        1     1.6 better
+miniworld_short       NLP      90     124     286     316       44.0577307       43.9904934    0.2       746        1     1.5 better
 ------------------+------+-------+-------+-------+-------+----------------+----------------+------+---------+--------+-------+--------
 
 ------------------------------[Nodes]---------------[Time]------
   Cnt  Pass  Time  Fail  total(k)     geom.     total     geom.
 ----------------------------------------------------------------
-    2     0     2     0         0       1.0      11.6       4.0 
+    2     0     2     0         0       1.0      11.5       3.9 
  shifted geom. [  100/ 10.0]            1.0                 5.2 
 ----------------------------------------------------------------
 @02 timelimit: 10
-@01 SCIP(3.2.1.2)cpx(12.6.0.0):propODE [GitHash: 4ca8bc1]
+@01 SCIP(3.2.1.2)cpx(12.6.0.0):propODE [GitHash: 1c1d018]
 $PERMUTE is [0]
 $VERSION is []
+$UNITTESTDEP is [src/depend.unittest.dbg]
+-> linking bin/sdscip.linux.x86_64.gnu.dbg.cpx
+g++ obj/O.linux.x86_64.gnu.dbg/cppmain.o obj/O.linux.x86_64.gnu.dbg/MdlExpressionTranslator.o obj/O.linux.x86_64.gnu.dbg/ReaderVOP.o obj/O.linux.x86_64.gnu.dbg/ExprLookup.o obj/O.linux.x86_64.gnu.dbg/ProbDataSD.o obj/O.linux.x86_64.gnu.dbg/PropOBRA.o obj/O.linux.x86_64.gnu.dbg/HeurSimODE.o obj/O.linux.x86_64.gnu.dbg/PropODE.o obj/O.linux.x86_64.gnu.dbg/ODEintegrator.o obj/O.linux.x86_64.gnu.dbg/PointODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ReduceODEintegrator.o obj/O.linux.x86_64.gnu.dbg/IntervalODEintegrator.o obj/O.linux.x86_64.gnu.dbg/ConstRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SimRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/SBrateEvaluator.o obj/O.linux.x86_64.gnu.dbg/PointRateEvaluator.o obj/O.linux.x86_64.gnu.dbg/BranchControlFirst.o obj/O.linux.x86_64.gnu.dbg/PropagationPattern.o obj/O.linux.x86_64.gnu.dbg/Orthant.o obj/O.linux.x86_64.gnu.dbg/OrthantList.o obj/O.linux.x86_64.gnu.dbg/HyperCube.o obj/O.linux.x86_64.gnu.dbg/HyperPlane.o obj/O.linux.x86_64.gnu.dbg/Vector.o obj/O.linux.x86_64.gnu.dbg/Point.o obj/O.linux.x86_64.gnu.dbg/Line.o obj/O.linux.x86_64.gnu.dbg/Statistics.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureInterface.o obj/O.linux.x86_64.gnu.dbg/BoundMapHelpers.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructure.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureV1.o obj/O.linux.x86_64.gnu.dbg/SDproblemStructureFactory.o obj/O.linux.x86_64.gnu.dbg/SDVarBasic.o obj/O.linux.x86_64.gnu.dbg/BaseTest.o obj/O.linux.x86_64.gnu.dbg/SDCons.o obj/O.linux.x86_64.gnu.dbg/SDSCIPtest.o obj/O.linux.x86_64.gnu.dbg/TestSDplugin.o obj/O.linux.x86_64.gnu.dbg/TestExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/CopyablePointer.o obj/O.linux.x86_64.gnu.dbg/ExprPiecewiseLinear.o obj/O.linux.x86_64.gnu.dbg/SDSCIPgitHash.o \
+		-L/nfs/OPTI/bzfvierh/repos/sd-scip/sdscip/lib/scip/lib -lscip.linux.x86_64.gnu.dbg \
+                -lobjscip.linux.x86_64.gnu.dbg -llpicpx.linux.x86_64.gnu.dbg -lnlpi.cppad.ipopt.linux.x86_64.gnu.dbg \
+                 -O0 -g  -lcplex.linux.x86_64.gnu -lpthread -ldl \
+		-lm -Wl,--no-as-needed  -m64  -lz -lgmp -lreadline -lncurses -L/home/optimi/bzfvierh/o/programs/Ipopt-3.12.6/build/lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8 -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../x86_64-linux-gnu -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../../../lib -L/lib/../lib -L/usr/lib/../lib -L/usr/lib/gcc/x86_64-linux-gnu/4.8/../../.. -lipopt -ldl -lcoinhsl -llapack -lblas -lgfortran -lm -lquadmath -lcoinmetis   -Wl,-rpath,\$ORIGIN/../lib/ipopt.linux.x86_64.gnu.opt/lib -Wl,-rpath,\$ORIGIN/../lib -lpthread -lboost_regex -lboost_system -lboost_filesystem -lboost_serialization -L/home/optimi/bzfvierh/lib/sdotools/lib -lsdo -lcpplsq -lboost_locale -lblas -fopenmp -o bin/sdscip.linux.x86_64.gnu.dbg.cpx
 cd check; \
 		bash ./check.sh obra bin/sdscip.linux.x86_64.gnu.dbg.cpx obra sdscip.linux.x86_64.gnu.dbg.cpx 3600 2100000000 6144 1 default 10000 \
 		false false 0.9.0 cpx false /tmp false optimize 0 1 false 0 0 ;
 Solving instance /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/predator_prey_unlimited/predator_prey_unlimited_short.vop with settings obra, hard time 7800, hard mem 7022592
-Constructing pattern, conftype is 1
-BranchControlFirst Reporting
-PropODE Reporting
-SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 4ca8bc1]
+SDSCIP version 0.9.0 [precision: 8 byte] [memory: block] [mode: debug] [GitHash: 2baee8b-dirty], Using: 
+SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 1c1d018]
 Copyright (C) 2002-2016 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
 External codes: 
@@ -1535,8 +1464,10 @@ presolving/donotmultaggr = TRUE
 presolving/donotaggr = TRUE
 propagating/obra/propagateControls = FALSE
 propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
+propagating/obra/writeFreq = 1
 propagating/obra/addCuts = FALSE
 propagating/obra/cutConf3d = 2
+propagating/obra/writeSubscips = TRUE
 propagating/obra/useUnitCuts = FALSE
 propagating/obra/maxprerounds = 1
 reading/vopreader/printSummary = TRUE
@@ -1559,12 +1490,12 @@ This program contains Ipopt, a library for large-scale nonlinear optimization.
 -------------------------------------------------------------------------------------------------------------------------------------------------
 | CtrlDifferential General Statistics in depth     0                    |
 | HistoricCons parameter:          5                                    |
-| Total time elapsed:             1.98880e+02 s                         |
+| Total time elapsed:             2.05390e+02 s                         |
 | Last propagated Time:           301                                   |
 | Number of solved Subscips:       2400                                 |
-| Total Solving Time:              2.61200e+01 s                        |
-| Avrg Time per Subscip:           1.08833e-02 s                        |
-| Time solving subscips [%]:       13.13                                |
+| Total Solving Time:              2.67900e+01 s                        |
+| Avrg Time per Subscip:           1.11625e-02 s                        |
+| Time solving subscips [%]:       13.04                                |
 -------------------------------------------------------------------------
 | Constant Time Statistics - Direct Bounds                              |
 | Number of considered bounds:     1200                                 |
@@ -1575,8 +1506,8 @@ This program contains Ipopt, a library for large-scale nonlinear optimization.
 | Average Remaining Bounds:        4.16590e+00                          |
 | Aggregated Bound Reduction:      2.10000e+21                          |
 | Bound Reduction per Variable:    8.75001e+17                          |
-| Aggregated Bounds Solving Time:  2.61200e+01 s                        |
-| Bounds Solving Time per subscip: 2.17667e-02 s                        |
+| Aggregated Bounds Solving Time:  2.67900e+01 s                        |
+| Bounds Solving Time per subscip: 2.23250e-02 s                        |
 -------------------------------------------------------------------------
 (round 1, fast)       3 del vars, 0 del conss, 0 add conss, 1179 chg bounds, 0 chg sides, 0 chg coeffs, 600 upgd conss, 0 impls, 0 clqs
 (round 2, fast)       4 del vars, 1 del conss, 0 add conss, 1179 chg bounds, 0 chg sides, 0 chg coeffs, 602 upgd conss, 0 impls, 0 clqs
@@ -1586,27 +1517,27 @@ presolving (3 rounds: 3 fast, 1 medium, 1 exhaustive):
 presolved problem has 899 variables (0 bin, 0 int, 0 impl, 899 cont) and 599 constraints
       3 constraints of type <linear>
     596 constraints of type <quadratic>
-Presolving Time: 199.24
+Presolving Time: 205.73
 
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
-  199s|     1 |     0 |  1750 |     - |5549k|   0 |   0 | 899 | 599 | 899 |2387 |   0 |   0 |   0 |-2.186524e+03 |-4.796770e+02 | 355.83%
-  209s|     1 |     0 | 19250 |     - |5699k|   0 |   0 | 899 | 599 | 899 |2387 |   0 |   0 |   0 |-2.186524e+03 |-4.796770e+02 | 355.83%
-  209s|     1 |     0 | 19310 |     - |5738k|   0 |   0 | 899 | 599 | 899 |2446 |  59 |   0 |   0 |-2.182040e+03 |-4.796770e+02 | 354.90%
-  209s|     1 |     0 | 19310 |     - |5738k|   0 |   0 | 899 | 599 | 899 |2446 |  59 |   0 |   0 |-2.182040e+03 |-4.796770e+02 | 354.90%
-  209s|     1 |     0 | 19452 |     - |5822k|   0 |   0 | 899 | 599 | 899 |2585 | 198 |   0 |   0 |-2.164242e+03 |-4.796770e+02 | 351.19%
-  218s|     1 |     0 | 32379 |     - |5836k|   0 |   0 | 899 | 599 | 899 |2585 | 198 |   0 |   0 |-2.164228e+03 |-4.796770e+02 | 351.18%
-  218s|     1 |     0 | 32724 |     - |6002k|   0 |   0 | 899 | 599 | 899 |2865 | 478 |   0 |   0 |-2.028915e+03 |-4.796770e+02 | 322.98%
-  218s|     1 |     0 | 32724 |     - |6002k|   0 |   0 | 899 | 599 | 899 |2865 | 478 |   0 |   0 |-2.028915e+03 |-4.796770e+02 | 322.98%
-  218s|     1 |     0 | 33178 |     - |6097k|   0 |   0 | 899 | 599 | 899 |3021 | 634 |   0 |   0 |-1.723334e+03 |-4.796770e+02 | 259.27%
-  218s|     1 |     0 | 33224 |     - |6120k|   0 |   0 | 899 | 599 | 899 |3061 | 674 |   0 |   0 |-1.708545e+03 |-4.796770e+02 | 256.19%
-  218s|     1 |     0 | 33225 |     - |6121k|   0 |   0 | 899 | 599 | 899 |3062 | 675 |   0 |   0 |-1.708538e+03 |-4.796770e+02 | 256.19%
-  218s|     1 |     0 | 33229 |     - |6122k|   0 |   0 | 899 | 599 | 899 |3064 | 677 |   0 |   0 |-1.708341e+03 |-4.796770e+02 | 256.14%
-  218s|     1 |     0 | 33230 |     - |6123k|   0 |   0 | 899 | 599 | 899 |3065 | 678 |   0 |   0 |-1.708320e+03 |-4.796770e+02 | 256.14%
-  218s|     1 |     2 | 33230 |     - |6123k|   0 |   0 | 899 | 599 | 899 |3065 | 678 |   0 |   0 |-1.708320e+03 |-4.796770e+02 | 256.14%
-l 452s|  2150 |   335 |720304 | 333.9 |  51M|  40 |   0 | 899 | 599 | 899 |2252 | 318k|   0 |   0 |-5.670675e+02 |-4.811039e+02 |  17.87%
+  206s|     1 |     0 |  1750 |     - |5549k|   0 |   0 | 899 | 599 | 899 |2387 |   0 |   0 |   0 |-2.186524e+03 |-4.796770e+02 | 355.83%
+  215s|     1 |     0 | 19250 |     - |5699k|   0 |   0 | 899 | 599 | 899 |2387 |   0 |   0 |   0 |-2.186524e+03 |-4.796770e+02 | 355.83%
+  215s|     1 |     0 | 19310 |     - |5738k|   0 |   0 | 899 | 599 | 899 |2446 |  59 |   0 |   0 |-2.182040e+03 |-4.796770e+02 | 354.90%
+  215s|     1 |     0 | 19310 |     - |5738k|   0 |   0 | 899 | 599 | 899 |2446 |  59 |   0 |   0 |-2.182040e+03 |-4.796770e+02 | 354.90%
+  215s|     1 |     0 | 19452 |     - |5822k|   0 |   0 | 899 | 599 | 899 |2585 | 198 |   0 |   0 |-2.164242e+03 |-4.796770e+02 | 351.19%
+  224s|     1 |     0 | 32379 |     - |5836k|   0 |   0 | 899 | 599 | 899 |2585 | 198 |   0 |   0 |-2.164228e+03 |-4.796770e+02 | 351.18%
+  224s|     1 |     0 | 32724 |     - |6002k|   0 |   0 | 899 | 599 | 899 |2865 | 478 |   0 |   0 |-2.028915e+03 |-4.796770e+02 | 322.98%
+  224s|     1 |     0 | 32724 |     - |6002k|   0 |   0 | 899 | 599 | 899 |2865 | 478 |   0 |   0 |-2.028915e+03 |-4.796770e+02 | 322.98%
+  224s|     1 |     0 | 33178 |     - |6097k|   0 |   0 | 899 | 599 | 899 |3021 | 634 |   0 |   0 |-1.723334e+03 |-4.796770e+02 | 259.27%
+  224s|     1 |     0 | 33224 |     - |6120k|   0 |   0 | 899 | 599 | 899 |3061 | 674 |   0 |   0 |-1.708545e+03 |-4.796770e+02 | 256.19%
+  224s|     1 |     0 | 33225 |     - |6121k|   0 |   0 | 899 | 599 | 899 |3062 | 675 |   0 |   0 |-1.708538e+03 |-4.796770e+02 | 256.19%
+  224s|     1 |     0 | 33229 |     - |6122k|   0 |   0 | 899 | 599 | 899 |3064 | 677 |   0 |   0 |-1.708341e+03 |-4.796770e+02 | 256.14%
+  224s|     1 |     0 | 33230 |     - |6123k|   0 |   0 | 899 | 599 | 899 |3065 | 678 |   0 |   0 |-1.708320e+03 |-4.796770e+02 | 256.14%
+  224s|     1 |     2 | 33230 |     - |6123k|   0 |   0 | 899 | 599 | 899 |3065 | 678 |   0 |   0 |-1.708320e+03 |-4.796770e+02 | 256.14%
+l 432s|  2150 |   335 |720304 | 333.9 |  51M|  40 |   0 | 899 | 599 | 899 |2252 | 318k|   0 |   0 |-5.670675e+02 |-4.811039e+02 |  17.87%
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 780.78
+Solving Time (sec) : 671.56
 Solving Nodes      : 5121
 Primal Bound       : -4.81103898952607e+02 (4 solutions)
 Dual Bound         : -4.81103898952607e+02
@@ -1615,10 +1546,10 @@ Gap                : 0.00 %
 SCIP> display statistics
 
 SCIP Status        : problem is solved [optimal solution found]
-Total Time         :     780.79
-  solving          :     780.78
-  presolving       :     199.24 (included in solving)
-  reading          :       0.01
+Total Time         :     671.58
+  solving          :     671.56
+  presolving       :     205.73 (included in solving)
+  reading          :       0.02
   copying          :       0.00 (0 times copied the problem)
 Original Problem   :
   Problem name     : /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/predator_prey_unlimited/predator_prey_unlimited_short.vop
@@ -1647,9 +1578,9 @@ Presolvers         :   ExecTime  SetupTime  Calls  FixedVars   AggrVars   ChgTyp
   tworowbnd        :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
   dualfix          :       0.00       0.00      3          1          0          0          0          0          0          0          0          0
   genvbounds       :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
-  obra             :     198.88       0.00      1          0          0          0          0          0          0          0          0          0
+  obra             :     205.39       0.00      1          0          0          0          0          0          0          0          0          0
   probing          :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
-  propODE          :       0.04       0.00      3          0          0          0       1179          0          0          0          0          0
+  propODE          :       0.03       0.00      3          0          0          0       1179          0          0          0          0          0
   pseudoobj        :       0.00       0.00      1          0          0          0          0          0          0          0          0          0
   linear           :       0.00       0.00      3          0          0          0          0          0          1          0          0          0
   quadratic        :       0.00       0.01      4          0          0          0          0          0          0          0          0          0
@@ -1661,9 +1592,9 @@ Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #
   quadratic        :        596        596      17423     261600      34386          0        939          0        421    1251298     768414     707561          0          0
   countsols        :          0          0          0          0       2562          0         59          0          0          0          0          0          0          0
 Constraint Timings :  TotalTime  SetupTime   Separate  Propagate     EnfoLP     EnfoPS      Check    ResProp    SB-Prop
-  integral         :       0.01       0.00       0.00       0.00       0.01       0.00       0.00       0.00       0.00
-  linear           :       0.04       0.00       0.00       0.04       0.00       0.00       0.00       0.00       0.00
-  quadratic        :     137.30       0.01      41.64      19.71      75.56       0.00       0.38       0.00       0.00
+  integral         :       0.06       0.00       0.00       0.00       0.06       0.00       0.00       0.00       0.00
+  linear           :       0.10       0.00       0.00       0.10       0.00       0.00       0.00       0.00       0.00
+  quadratic        :     110.87       0.01      33.53      16.22      60.87       0.00       0.24       0.00       0.00
   countsols        :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
 Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   dualfix          :          4          0          0          0
@@ -1678,18 +1609,18 @@ Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   vbounds          :     269668          0          0          0
 Propagator Timings :  TotalTime  SetupTime   Presolve  Propagate    ResProp    SB-Prop
   dualfix          :       0.00       0.00       0.00       0.00       0.00       0.00
-  genvbounds       :       4.46       0.00       0.00       4.46       0.00       0.00
-  obbt             :      17.69       0.00       0.00      17.69       0.00       0.00
-  obra             :     198.88       0.00     198.88       0.00       0.00       0.00
+  genvbounds       :       3.94       0.00       0.00       3.94       0.00       0.00
+  obbt             :      17.65       0.00       0.00      17.65       0.00       0.00
+  obra             :     205.39       0.00     205.39       0.00       0.00       0.00
   probing          :       0.00       0.00       0.00       0.00       0.00       0.00
-  propODE          :       9.22       0.00       0.04       9.18       0.00       0.00
-  pseudoobj        :       7.52       0.00       0.00       7.52       0.00       0.00
-  redcost          :       0.03       0.00       0.00       0.03       0.00       0.00
-  rootredcost      :       0.03       0.00       0.00       0.03       0.00       0.00
-  vbounds          :       0.07       0.00       0.00       0.07       0.00       0.00
+  propODE          :       7.15       0.00       0.03       7.12       0.00       0.00
+  pseudoobj        :       3.87       0.00       0.00       3.87       0.00       0.00
+  redcost          :       0.02       0.00       0.00       0.02       0.00       0.00
+  rootredcost      :       0.08       0.00       0.00       0.08       0.00       0.00
+  vbounds          :       0.01       0.00       0.00       0.01       0.00       0.00
 Conflict Analysis  :       Time      Calls    Success    DomReds  Conflicts   Literals    Reconvs ReconvLits   LP Iters
   propagation      :       0.00          0          0          -          0        0.0          0        0.0          -
-  infeasible LP    :       0.12        407          2          -          2        2.0          0        0.0          0
+  infeasible LP    :       0.08        407          2          -          2        2.0          0        0.0          0
   bound exceed. LP :       0.00          0          0          -          0        0.0          0        0.0          0
   strong branching :       0.00          0          0          -          0        0.0          0        0.0          0
   pseudo solution  :       0.00          0          0          -          0        0.0          0        0.0          -
@@ -1725,7 +1656,7 @@ Branching Rules    :   ExecTime  SetupTime   BranchLP  BranchExt   BranchPS    C
   mostinf          :       0.00       0.00          0          0          0          0          0          0          0          0
   multaggr         :       0.00       0.00          0          0          0          0          0          0          0          0
   nodereopt        :       0.00       0.00          0          0          0          0          0          0          0          0
-  pscost           :       1.28       0.00          0       2562          0          0          0          0          0       5124
+  pscost           :       0.96       0.00          0       2562          0          0          0          0          0       5124
   random           :       0.00       0.00          0          0          0          0          0          0          0          0
   relpscost        :       0.00       0.00          0          0          0          0          0          0          0          0
 Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
@@ -1735,7 +1666,7 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   actconsdiving    :       0.00       0.00          0          0          0
   bound            :       0.00       0.00          0          0          0
   clique           :       0.00       0.00          0          0          0
-  coefdiving       :       0.14       0.00        160          0          0
+  coefdiving       :       0.09       0.00        160          0          0
   completesol      :       0.00       0.00          0          0          0
   crossover        :       0.00       0.00          0          0          0
   dins             :       0.00       0.00          0          0          0
@@ -1743,12 +1674,12 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   dualval          :       0.00       0.00          0          0          0
   feaspump         :       0.00       0.00          0          0          0
   fixandinfer      :       0.00       0.00          0          0          0
-  fracdiving       :       0.16       0.00        161          0          0
+  fracdiving       :       0.08       0.00        161          0          0
   guideddiving     :       0.00       0.00          0          0          0
-  indicator        :       0.02       0.00          0          0          0
+  indicator        :       0.01       0.00          0          0          0
   intdiving        :       0.00       0.00          0          0          0
   intshifting      :       0.00       0.00          0          0          0
-  linesearchdiving :       0.16       0.00        146          0          0
+  linesearchdiving :       0.12       0.00        146          0          0
   localbranching   :       0.00       0.00          0          0          0
   mutation         :       0.00       0.00          0          0          0
   nlpdiving        :       0.00       0.00          0          0          0
@@ -1761,23 +1692,23 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   randrounding     :       0.00       0.00          0          0          0
   rens             :       0.00       0.00          0          0          0
   reoptsols        :       0.00       0.00          0          0          0
-  rins             :       0.02       0.00          0          0          0
+  rins             :       0.00       0.00          0          0          0
   rootsoldiving    :       0.00       0.00          0          0          0
-  rounding         :       0.10       0.00          0          0          0
+  rounding         :       0.03       0.00          0          0          0
   shiftandpropagate:       0.00       0.00          0          0          0
   shifting         :       0.00       0.00          0          0          0
-  simODE           :      16.33       0.00       5121          3          1
-  simplerounding   :       0.03       0.00          0          0          0
-  subnlp           :       0.96       0.00          7          1          1
-  trivial          :       0.01       0.00          2          0          0
+  simODE           :      12.96       0.00       5121          3          1
+  simplerounding   :       0.01       0.00          0          0          0
+  subnlp           :       0.86       0.01          7          1          1
+  trivial          :       0.00       0.00          2          0          0
   trivialnegation  :       0.00       0.00          0          0          0
-  trysol           :       0.00       0.00          0          0          0
+  trysol           :       0.01       0.00          0          0          0
   twoopt           :       0.00       0.00          0          0          0
-  undercover       :       0.21       0.00          1          0          0
+  undercover       :       0.20       0.00          1          0          0
   vbounds          :       0.00       0.00          0          0          0
   veclendiving     :       0.00       0.00          0          0          0
   zeroobj          :       0.00       0.00          0          0          0
-  zirounding       :       0.00       0.00          0          0          0
+  zirounding       :       0.01       0.00          0          0          0
   other solutions  :          -          -          -          0          -
 Diving Statistics  :      Calls      Nodes   LP Iters Backtracks   MinDepth   MaxDepth   AvgDepth  NLeafSols  MinSolDpt  MaxSolDpt  AvgSolDpt
   actconsdiving    :          0          -          -          -          -          -          -          -          -          -          -
@@ -1789,11 +1720,11 @@ Diving Statistics  :      Calls      Nodes   LP Iters Backtracks   MinDepth   Ma
   pscostdiving     :          0          -          -          -          -          -          -          -          -          -          -
   veclendiving     :          0          -          -          -          -          -          -          -          -          -          -
 LP                 :       Time      Calls Iterations  Iter/call   Iter/sec  Time-0-It Calls-0-It    ItLimit
-  primal LP        :     103.23       4157          0       0.00       0.00     103.23       4157
-  dual LP          :     226.84      56090    1296230      27.18    5714.29      58.09       8397
+  primal LP        :      83.26       4157          0       0.00       0.00      83.26       4157
+  dual LP          :     179.16      56090    1296230      27.18    7235.04      45.73       8397
   lex dual LP      :       0.00          0          0       0.00          -
   barrier LP       :       0.00          0          0       0.00          -       0.00          0
-  diving/probing LP:      16.97       1081      30425      28.15    1792.87
+  diving/probing LP:      17.00       1081      30425      28.15    1789.71
   strong branching :       0.00          0          0       0.00          -          -          -          0
     (at root node) :          -          0          0       0.00          -
   conflict analysis:       0.00          0          0       0.00          -
@@ -1815,7 +1746,7 @@ B&B Tree           :
   delayed cutoffs  :          0
   repropagations   :          2 (0 domain reductions, 0 cutoffs)
   avg switch length:      12.26
-  switching time   :      74.28
+  switching time   :      58.96
 Root Node          :
   First LP value   : -2.18652397904845e+03
   First LP Iters   :       1750 (21875.00 Iter/sec)
@@ -1828,10 +1759,10 @@ Solution           :
   First Solution   : -4.79677012652899e+02   (in run 1, after 0 nodes, 0.01 seconds, depth 0, found by <simODE>)
   Gap First Sol.   :   infinite
   Gap Last Sol.    :      17.87 %
-  Primal Bound     : -4.81103898952607e+02   (in run 1, after 2150 nodes, 451.99 seconds, depth 23, found by <linesearchdiving>)
+  Primal Bound     : -4.81103898952607e+02   (in run 1, after 2150 nodes, 431.62 seconds, depth 23, found by <linesearchdiving>)
   Dual Bound       : -4.81103898952607e+02
   Gap              :       0.00 %
-  Avg. Gap         :      39.48 % (30828.82 primal-dual integral)
+  Avg. Gap         :      45.20 % (30355.88 primal-dual integral)
 
 SCIP> checksol
 
@@ -1841,10 +1772,8 @@ solution is feasible in original problem
 SCIP> quit
 
 Solving instance /home/optimi/bzfvierh/repos/sd-scip/sdscip/check/../problems/miniworld/miniworld_short.vop with settings obra, hard time 7800, hard mem 7022592
-Constructing pattern, conftype is 1
-BranchControlFirst Reporting
-PropODE Reporting
-SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 4ca8bc1]
+SDSCIP version 0.9.0 [precision: 8 byte] [memory: block] [mode: debug] [GitHash: 2baee8b-dirty], Using: 
+SCIP version 3.2.1.2 [precision: 8 byte] [memory: block] [mode: debug] [LP solver: CPLEX 12.6.0.0] [GitHash: 1c1d018]
 Copyright (C) 2002-2016 Konrad-Zuse-Zentrum fuer Informationstechnik Berlin (ZIB)
 
 External codes: 
@@ -1916,8 +1845,10 @@ presolving/donotmultaggr = TRUE
 presolving/donotaggr = TRUE
 propagating/obra/propagateControls = FALSE
 propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
+propagating/obra/writeFreq = 1
 propagating/obra/addCuts = FALSE
 propagating/obra/cutConf3d = 2
+propagating/obra/writeSubscips = TRUE
 propagating/obra/useUnitCuts = FALSE
 propagating/obra/maxprerounds = 1
 reading/vopreader/printSummary = TRUE
@@ -1941,12 +1872,12 @@ This program contains Ipopt, a library for large-scale nonlinear optimization.
 ------------------------------------------------------------------------------------------------------------------------------------------------------
 | CtrlDifferential General Statistics in depth     0                    |
 | HistoricCons parameter:          5                                    |
-| Total time elapsed:             3.66300e+01 s                         |
+| Total time elapsed:             3.67700e+01 s                         |
 | Last propagated Time:           31                                    |
 | Number of solved Subscips:       360                                  |
-| Total Solving Time:              1.01900e+01 s                        |
-| Avrg Time per Subscip:           2.83056e-02 s                        |
-| Time solving subscips [%]:       27.82                                |
+| Total Solving Time:              1.01200e+01 s                        |
+| Avrg Time per Subscip:           2.81111e-02 s                        |
+| Time solving subscips [%]:       27.52                                |
 -------------------------------------------------------------------------
 | Constant Time Statistics - Direct Bounds                              |
 | Number of considered bounds:     180                                  |
@@ -1957,8 +1888,8 @@ This program contains Ipopt, a library for large-scale nonlinear optimization.
 | Average Remaining Bounds:        5.60908e-01                          |
 | Aggregated Bound Reduction:      2.87195e+01                          |
 | Bound Reduction per Variable:    7.97763e-02                          |
-| Aggregated Bounds Solving Time:  1.01900e+01 s                        |
-| Bounds Solving Time per subscip: 5.66111e-02 s                        |
+| Aggregated Bounds Solving Time:  1.01200e+01 s                        |
+| Bounds Solving Time per subscip: 5.62222e-02 s                        |
 -------------------------------------------------------------------------
 (round 1, fast)       4 del vars, 0 del conss, 0 add conss, 180 chg bounds, 0 chg sides, 0 chg coeffs, 2 upgd conss, 0 impls, 0 clqs
 (round 2, fast)       6 del vars, 2 del conss, 0 add conss, 182 chg bounds, 0 chg sides, 0 chg coeffs, 4 upgd conss, 0 impls, 0 clqs
@@ -1973,32 +1904,32 @@ presolved problem has 316 variables (0 bin, 0 int, 0 impl, 316 cont) and 286 con
      31 constraints of type <linear>
     226 constraints of type <quadratic>
      29 constraints of type <nonlinear>
-Presolving Time: 36.66
+Presolving Time: 36.81
 
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
- 36.7s|     1 |     0 |   519 |     - |1987k|   0 |   0 | 316 | 286 | 316 | 993 |   0 |   0 |   0 | 4.410597e+01 | 4.399049e+01 |   0.26%
- 37.0s|     1 |     0 |   613 |     - |2574k|   0 |   0 | 316 | 286 | 316 |1058 |  65 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
-y37.0s|     1 |     0 |   613 |     - |2574k|   0 |   0 | 316 | 286 | 316 |1058 |  65 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
- 37.0s|     1 |     0 |   624 |     - |2579k|   0 |   0 | 316 | 286 | 316 |1068 |  75 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
- 37.7s|     1 |     0 |  6864 |     - |2579k|   0 |   0 | 316 | 286 | 316 |1068 |  75 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
- 37.7s|     1 |     0 |  6871 |     - |2584k|   0 |   0 | 316 | 286 | 316 |1075 |  82 |   0 |   0 | 4.399412e+01 | 4.399049e+01 |   0.01%
- 37.8s|     1 |     0 |  6872 |     - |2584k|   0 |   0 | 316 | 286 | 316 |1075 |  82 |   0 |   0 | 4.399412e+01 | 4.399049e+01 |   0.01%
- 37.8s|     1 |     0 |  6879 |     - |2586k|   0 |   0 | 316 | 286 | 316 |1079 |  86 |   0 |   0 | 4.399406e+01 | 4.399049e+01 |   0.01%
- 38.3s|     1 |     0 | 10379 |     - |2591k|   0 |   0 | 316 | 286 | 316 |1079 |  86 |   0 |   0 | 4.399406e+01 | 4.399049e+01 |   0.01%
- 38.3s|     1 |     0 | 10385 |     - |2591k|   0 |   0 | 316 | 286 | 316 |1079 |  86 |   0 |   0 | 4.399287e+01 | 4.399049e+01 |   0.01%
- 38.3s|     1 |     0 | 10389 |     - |2593k|   0 |   0 | 316 | 286 | 316 |1083 |  90 |   0 |   0 | 4.399286e+01 | 4.399049e+01 |   0.01%
- 38.3s|     1 |     0 | 10435 |     - |2620k|   0 |   0 | 316 | 286 | 316 |1126 | 133 |   0 |   0 | 4.399061e+01 | 4.399049e+01 |   0.00%
- 38.3s|     1 |     0 | 10440 |     - |2623k|   0 |   0 | 316 | 286 | 316 |1131 | 138 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
- 38.3s|     1 |     0 | 10441 |     - |2624k|   0 |   0 | 316 | 286 | 316 |1132 | 139 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
- 38.3s|     1 |     0 | 10442 |     - |2624k|   0 |   0 | 316 | 286 | 316 |1133 | 140 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
+ 36.8s|     1 |     0 |   519 |     - |1987k|   0 |   0 | 316 | 286 | 316 | 993 |   0 |   0 |   0 | 4.410597e+01 | 4.399049e+01 |   0.26%
+ 37.1s|     1 |     0 |   613 |     - |2574k|   0 |   0 | 316 | 286 | 316 |1058 |  65 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
+y37.1s|     1 |     0 |   613 |     - |2574k|   0 |   0 | 316 | 286 | 316 |1058 |  65 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
+ 37.1s|     1 |     0 |   624 |     - |2579k|   0 |   0 | 316 | 286 | 316 |1068 |  75 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
+ 37.8s|     1 |     0 |  6864 |     - |2579k|   0 |   0 | 316 | 286 | 316 |1068 |  75 |   0 |   0 | 4.399824e+01 | 4.399049e+01 |   0.02%
+ 37.8s|     1 |     0 |  6871 |     - |2584k|   0 |   0 | 316 | 286 | 316 |1075 |  82 |   0 |   0 | 4.399412e+01 | 4.399049e+01 |   0.01%
+ 37.9s|     1 |     0 |  6872 |     - |2584k|   0 |   0 | 316 | 286 | 316 |1075 |  82 |   0 |   0 | 4.399412e+01 | 4.399049e+01 |   0.01%
+ 37.9s|     1 |     0 |  6879 |     - |2586k|   0 |   0 | 316 | 286 | 316 |1079 |  86 |   0 |   0 | 4.399406e+01 | 4.399049e+01 |   0.01%
+ 38.4s|     1 |     0 | 10379 |     - |2591k|   0 |   0 | 316 | 286 | 316 |1079 |  86 |   0 |   0 | 4.399406e+01 | 4.399049e+01 |   0.01%
+ 38.4s|     1 |     0 | 10385 |     - |2591k|   0 |   0 | 316 | 286 | 316 |1079 |  86 |   0 |   0 | 4.399287e+01 | 4.399049e+01 |   0.01%
+ 38.4s|     1 |     0 | 10389 |     - |2593k|   0 |   0 | 316 | 286 | 316 |1083 |  90 |   0 |   0 | 4.399286e+01 | 4.399049e+01 |   0.01%
+ 38.4s|     1 |     0 | 10435 |     - |2620k|   0 |   0 | 316 | 286 | 316 |1126 | 133 |   0 |   0 | 4.399061e+01 | 4.399049e+01 |   0.00%
+ 38.4s|     1 |     0 | 10440 |     - |2623k|   0 |   0 | 316 | 286 | 316 |1131 | 138 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
+ 38.4s|     1 |     0 | 10441 |     - |2624k|   0 |   0 | 316 | 286 | 316 |1132 | 139 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
+ 38.4s|     1 |     0 | 10442 |     - |2624k|   0 |   0 | 316 | 286 | 316 |1133 | 140 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
  time | node  | left  |LP iter|LP it/n| mem |mdpt |frac |vars |cons |cols |rows |cuts |confs|strbr|  dualbound   | primalbound  |  gap   
- 38.3s|     1 |     0 | 10443 |     - |2625k|   0 |   0 | 316 | 286 | 316 |1134 | 141 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
- 38.3s|     1 |     2 | 10443 |     - |2626k|   0 |   0 | 316 | 286 | 316 |1134 | 141 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
-*38.5s|     6 |     2 | 10462 |1951.8 |2231k|   5 |   - | 316 | 286 | 316 | 293 | 159 |   0 |   0 | 4.399059e+01 | 4.399052e+01 |   0.00%
-*38.7s|    34 |    14 | 10528 | 297.7 |2298k|  11 |   - | 316 | 286 | 316 | 299 | 214 |   0 |   0 | 4.399059e+01 | 4.399052e+01 |   0.00%
+ 38.4s|     1 |     0 | 10443 |     - |2625k|   0 |   0 | 316 | 286 | 316 |1134 | 141 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
+ 38.4s|     1 |     2 | 10443 |     - |2626k|   0 |   0 | 316 | 286 | 316 |1134 | 141 |   0 |   0 | 4.399059e+01 | 4.399049e+01 |   0.00%
+*38.7s|     6 |     2 | 10462 |1951.8 |2231k|   5 |   - | 316 | 286 | 316 | 293 | 159 |   0 |   0 | 4.399059e+01 | 4.399052e+01 |   0.00%
+*38.8s|    34 |    14 | 10528 | 297.7 |2298k|  11 |   - | 316 | 286 | 316 | 299 | 214 |   0 |   0 | 4.399059e+01 | 4.399052e+01 |   0.00%
 
 SCIP Status        : problem is solved [optimal solution found]
-Solving Time (sec) : 38.90
+Solving Time (sec) : 39.03
 Solving Nodes      : 122
 Primal Bound       : +4.39905238838267e+01 (6 solutions)
 Dual Bound         : +4.39905238838267e+01
@@ -2007,9 +1938,9 @@ Gap                : 0.00 %
 SCIP> display statistics
 
 SCIP Status        : problem is solved [optimal solution found]
-Total Time         :      38.90
-  solving          :      38.90
-  presolving       :      36.66 (included in solving)
+Total Time         :      39.03
+  solving          :      39.03
+  presolving       :      36.81 (included in solving)
   reading          :       0.00
   copying          :       0.00 (0 times copied the problem)
 Original Problem   :
@@ -2039,12 +1970,12 @@ Presolvers         :   ExecTime  SetupTime  Calls  FixedVars   AggrVars   ChgTyp
   tworowbnd        :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
   dualfix          :       0.00       0.00      7          1          0          0          0          0          0          0          0          0
   genvbounds       :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
-  obra             :      36.63       0.00      1          0          0          0          0          0          0          0          0          0
+  obra             :      36.77       0.00      1          0          0          0          0          0          0          0          0          0
   probing          :       0.00       0.00      0          0          0          0          0          0          0          0          0          0
   propODE          :       0.01       0.00      5          0          0          0        180          0          0          0          0          0
   pseudoobj        :       0.00       0.00      1          0          0          0          2          0          0          0          0          0
   linear           :       0.00       0.00      7          0          0          0         58          0          2          0          0          0
-  quadratic        :       0.00       0.00      5          0          0          0        396          0          0          0          0          0
+  quadratic        :       0.01       0.00      5          0          0          0        396          0          0          0          0          0
   nonlinear        :       0.00       0.00      9          0          0          0          0          0          0        198          0          0
   root node        :          -          -      -          0          -          -       1280          -          -          -          -          -
 Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #EnfoPS     #Check   #ResProp    Cutoffs    DomReds       Cuts    Applied      Conss   Children
@@ -2056,8 +1987,8 @@ Constraints        :     Number  MaxNumber  #Separate #Propagate    #EnfoLP    #
 Constraint Timings :  TotalTime  SetupTime   Separate  Propagate     EnfoLP     EnfoPS      Check    ResProp    SB-Prop
   integral         :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
   linear           :       0.01       0.00       0.00       0.01       0.00       0.00       0.00       0.00       0.00
-  quadratic        :       0.16       0.00       0.07       0.05       0.04       0.00       0.00       0.00       0.00
-  nonlinear        :       0.06       0.00       0.05       0.00       0.01       0.00       0.00       0.00       0.00
+  quadratic        :       0.14       0.00       0.04       0.09       0.01       0.00       0.00       0.00       0.00
+  nonlinear        :       0.04       0.00       0.04       0.00       0.00       0.00       0.00       0.00       0.00
   countsols        :       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00
 Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   dualfix          :         20          0          0          0
@@ -2072,12 +2003,12 @@ Propagators        : #Propagate   #ResProp    Cutoffs    DomReds
   vbounds          :       1020          0          0          0
 Propagator Timings :  TotalTime  SetupTime   Presolve  Propagate    ResProp    SB-Prop
   dualfix          :       0.00       0.00       0.00       0.00       0.00       0.00
-  genvbounds       :       0.01       0.00       0.00       0.01       0.00       0.00
+  genvbounds       :       0.02       0.00       0.00       0.02       0.00       0.00
   obbt             :       1.23       0.00       0.00       1.23       0.00       0.00
-  obra             :      36.63       0.00      36.63       0.00       0.00       0.00
+  obra             :      36.77       0.00      36.77       0.00       0.00       0.00
   probing          :       0.00       0.00       0.00       0.00       0.00       0.00
   propODE          :       0.01       0.00       0.01       0.00       0.00       0.00
-  pseudoobj        :       0.01       0.00       0.00       0.01       0.00       0.00
+  pseudoobj        :       0.00       0.00       0.00       0.00       0.00       0.00
   redcost          :       0.00       0.00       0.00       0.00       0.00       0.00
   rootredcost      :       0.00       0.00       0.00       0.00       0.00       0.00
   vbounds          :       0.00       0.00       0.00       0.00       0.00       0.00
@@ -2160,14 +2091,14 @@ Primal Heuristics  :   ExecTime  SetupTime      Calls      Found       Best
   rounding         :       0.00       0.00          0          0          0
   shiftandpropagate:       0.00       0.00          0          0          0
   shifting         :       0.00       0.00          0          0          0
-  simODE           :       0.02       0.00        122          3          2
+  simODE           :       0.07       0.00        122          3          2
   simplerounding   :       0.00       0.00          0          0          0
-  subnlp           :       0.40       0.01          8          0          0
+  subnlp           :       0.39       0.01          8          0          0
   trivial          :       0.00       0.00          2          0          0
   trivialnegation  :       0.00       0.00          0          0          0
   trysol           :       0.00       0.00          1          1          1
   twoopt           :       0.00       0.00          0          0          0
-  undercover       :       0.21       0.00          1          0          0
+  undercover       :       0.22       0.00          1          0          0
   vbounds          :       0.00       0.00          0          0          0
   veclendiving     :       0.00       0.00          0          0          0
   zeroobj          :       0.00       0.00          0          0          0
@@ -2183,16 +2114,16 @@ Diving Statistics  :      Calls      Nodes   LP Iters Backtracks   MinDepth   Ma
   pscostdiving     :          0          -          -          -          -          -          -          -          -          -          -
   veclendiving     :          0          -          -          -          -          -          -          -          -          -          -
 LP                 :       Time      Calls Iterations  Iter/call   Iter/sec  Time-0-It Calls-0-It    ItLimit
-  primal LP        :       0.01          6          0       0.00       0.00       0.01          6
-  dual LP          :       0.12        230        977       5.92    8141.67       0.03         65
+  primal LP        :       0.00          6          0       0.00          -       0.00          6
+  dual LP          :       0.09        230        977       5.92   10855.56       0.02         65
   lex dual LP      :       0.00          0          0       0.00          -
   barrier LP       :       0.00          0          0       0.00          -       0.00          0
-  diving/probing LP:       1.16        350       9740      27.83    8396.55
+  diving/probing LP:       1.11        350       9740      27.83    8774.77
   strong branching :       0.00          0          0       0.00          -          -          -          0
     (at root node) :          -          0          0       0.00          -
   conflict analysis:       0.00          0          0       0.00          -
 NLP                :       Time      Calls
-  all NLPs         :       0.03          1
+  all NLPs         :       0.02          1
 B&B Tree           :
   number of runs   :          1
   nodes            :        122 (62 internal, 60 leaves)
@@ -2219,13 +2150,13 @@ Root Node          :
   Root LP Estimate : +4.39902221502337e+01
 Solution           :
   Solutions found  :          6 (5 improvements)
-  First Solution   : +4.19451655541902e+01   (in run 1, after 0 nodes, 0.01 seconds, depth 0, found by <simODE>)
+  First Solution   : +4.19451655541902e+01   (in run 1, after 0 nodes, 0.00 seconds, depth 0, found by <simODE>)
   Gap First Sol.   :   infinite
   Gap Last Sol.    :       0.00 %
-  Primal Bound     : +4.39905238838267e+01   (in run 1, after 34 nodes, 38.66 seconds, depth 11, found by <relaxation>)
+  Primal Bound     : +4.39905238838267e+01   (in run 1, after 34 nodes, 38.78 seconds, depth 11, found by <relaxation>)
   Dual Bound       : +4.39905238838267e+01
   Gap              :       0.00 %
-  Avg. Gap         :      94.30 % (3668.10 primal-dual integral)
+  Avg. Gap         :      94.34 % (3682.10 primal-dual integral)
 
 SCIP> checksol
 
@@ -2242,15 +2173,15 @@ Solver   sdscip
 ------------------+------+--- Original --+-- Presolved --+----------------+----------------+------+---------+--------+-------+--------
 Name              | Type | Conss |  Vars | Conss |  Vars |   Dual Bound   |  Primal Bound  | Gap% |  Iters  |  Nodes |  Time |       
 ------------------+------+-------+-------+-------+-------+----------------+----------------+------+---------+--------+-------+--------
-prey_unlimited_sho    QCP     600     903     599     899      -481.103899      -481.103899    0.0   1296230     5121   780.8 ok
-miniworld_short       NLP      90     124     286     316       43.9905239       43.9905239    0.0       977      122    38.9 ok
+prey_unlimited_sho    QCP     600     903     599     899      -481.103899      -481.103899    0.0   1296230     5121   671.6 ok
+miniworld_short       NLP      90     124     286     316       43.9905239       43.9905239    0.0       977      122    39.0 ok
 ------------------+------+-------+-------+-------+-------+----------------+----------------+------+---------+--------+-------+--------
 
 ------------------------------[Nodes]---------------[Time]------
   Cnt  Pass  Time  Fail  total(k)     geom.     total     geom.
 ----------------------------------------------------------------
-    2     2     0     0         5     790.4     819.7     174.3 
- shifted geom. [  100/ 10.0]          976.6               186.6 
+    2     2     0     0         5     790.4     710.6     161.9 
+ shifted geom. [  100/ 10.0]          976.6               172.8 
 ----------------------------------------------------------------
 @02 timelimit: 3600
-@01 SCIP(3.2.1.2)cpx(12.6.0.0):obra [GitHash: 4ca8bc1]
+@01 SCIP(3.2.1.2)cpx(12.6.0.0):obra [GitHash: 1c1d018]
