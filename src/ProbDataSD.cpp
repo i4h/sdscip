@@ -382,10 +382,6 @@ SCIP_DECL_DIALOGEXEC(dialogExecSDdisable)
    return SCIP_OKAY;
 }
 
-
-
-
-
 SCIP_RETCODE SDinit(SCIP* scip) {
 
    SCIP_PROBDATA* probdata;
@@ -410,7 +406,6 @@ SCIP_RETCODE SDinit(SCIP* scip) {
    //TODO: _SD set remaining function pointers
 
    return SCIP_OKAY;
-
 }
 
 SCIP_RETCODE SDensureValidStructure(SCIP* scip) {
