@@ -106,7 +106,7 @@ public:
       SCIPaddIntParam(scip,
              "propagating/obra/historicCons",
              "Number of historic Constraints to be used in bound propagation (0: conventional bound propagation)",
-             &historicCons, FALSE, 5, 0, 1000, NULL, NULL);
+             &historicCons_, FALSE, 5, 0, 1000, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateAlgebraic",
@@ -229,14 +229,14 @@ private:
 
    SCIP_RETCODE printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars);
    SCIP_RETCODE printProgress();
-   SCIP_RETCODE printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, int historicCons, SCIP_CLOCK* propClock);
-   SCIP_RETCODE writeAfterProp(SCIP* scip, int breakTime, int historicCons);
+   SCIP_RETCODE printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock);
+   SCIP_RETCODE writeAfterProp(SCIP* scip, int breakTime);
 
    SCIP_RETCODE applyOBRA(SCIP* scip, SCIP_RESULT* result);
    SCIP_RETCODE prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
    SCIP_RETCODE prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_VAR* lastVar, SCIP_HASHMAP* varmap);
    SCIP_RETCODE createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap);
-   SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int historicCons, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
+   SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
    //SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
    SCIP_RETCODE propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP* subscip, SCIP_VAR* subscipObjectiveVar, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge, std::map<SCIP_VAR*, SCIP_Real>* solMap );
    SCIP_RETCODE propagateDifferentialWithPattern(SCIP* scip, SCIP* subscip, int* nNewCons, SCIP_Bool * boundsDiverge);
@@ -255,7 +255,7 @@ private:
 
    /* Parameters */
    SCIP_Real subscipGapLimit_;
-   int historicCons;
+   int historicCons_;
    int breakTime;
    SCIP_Real subscipTimeLimit_;
    SCIP_Longint subscipNodeLimit_;

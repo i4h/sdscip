@@ -104,14 +104,14 @@ SCIP_RETCODE PropOBRA::printProgress()
    return SCIP_OKAY;
 }
 
-SCIP_RETCODE PropOBRA::printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, int historicCons, SCIP_CLOCK* propClock)
+SCIP_RETCODE PropOBRA::printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock)
 {
    std::multimap<int, std::string> dst;
    std::map<int, std::string>::iterator iter;
 
    SCIPinfoMessage( scip, NULL, "-------------------------------------------------------------------------\n" );
    SCIPinfoMessage(scip,NULL,"| CtrlDifferential General Statistics in depth %5i                    |\n",SCIPgetDepth(scip));
-   SCIPinfoMessage(scip,NULL,"| HistoricCons parameter:          %-4i                                 |\n",historicCons);
+   SCIPinfoMessage(scip,NULL,"| HistoricCons parameter:          %-4i                                 |\n",historicCons_);
    SCIPinfoMessage( scip, NULL, "| Total time elapsed:             %1.5e s                         |\n", SCIPclockGetTime( propClock ) );
    SCIPinfoMessage( scip, NULL, "| Last propagated Time:           %-4i                                  |\n", ( breakTime < 0 ? currentTime_ : breakTime - 1 ) );
    SCIPinfoMessage(scip,NULL,"| Number of solved Subscips:       %-5i                                |\n",nSubscips);
@@ -165,7 +165,7 @@ SCIP_RETCODE PropOBRA::printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolv
    return SCIP_OKAY;
 }
 
-SCIP_RETCODE PropOBRA::writeAfterProp(SCIP* scip, int breakTime, int historicCons)
+SCIP_RETCODE PropOBRA::writeAfterProp(SCIP* scip, int breakTime)
 {
    SCIP_Bool writeAfterPropParam;
    if( SCIPgetBoolParam( scip, "propagating/obra/writeAfterProp", &writeAfterPropParam ) && writeAfterPropParam )
@@ -174,11 +174,11 @@ SCIP_RETCODE PropOBRA::writeAfterProp(SCIP* scip, int breakTime, int historicCon
       std::ostringstream oss,bndoss;
       SCIPgetStringParam( scip, "propagating/obra/outFile", &outfilestr );
       SCIPgetStringParam( scip, "propagating/obra/outDir", &outdirstr );
-      oss << outdirstr << outfilestr << "_" << historicCons << "_" << ( breakTime < 0 ? currentTime_ : breakTime - 1 ) << ".cip";
+      oss << outdirstr << outfilestr << "_" << historicCons_ << "_" << ( breakTime < 0 ? currentTime_ : breakTime - 1 ) << ".cip";
 
       SCIPdebugMessage( "WRITING transformed problem to file %s at t=%i\n", oss.str().c_str(), currentTime_ );
       SCIPwriteTransProblem(scip, oss.str().c_str(),"cip", false);
-      bndoss << outdirstr << outfilestr << "_" << historicCons << "_" << currentTime_ << ".bnd";
+      bndoss << outdirstr << outfilestr << "_" << historicCons_ << "_" << currentTime_ << ".bnd";
       SCIPdebugMessage("WRITING bounds to file %s at t=%i\n",bndoss.str().c_str(),currentTime_);
       SCIPwriteTransProblem(scip, bndoss.str().c_str(), "bnd", false);
 
@@ -238,13 +238,11 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
    SCIPclockStart(propClock,scip->set);
 
    /* Get parameters on how to run */
-   int historicCons;
    int breakTime;
    int writeFreq;
    SCIP_Bool addCuts;
    SCIP_Bool addMultiTimeCuts;
    int cutFreq;
-   SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/historicCons", &historicCons ) );
    SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/breakTime", &breakTime ) );
    SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/writeFreq", &writeFreq ) );
    SCIP_CALL( SCIPgetBoolParam( scip, "propagating/obra/addCuts", &addCuts ) );
@@ -282,7 +280,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
             std::ostringstream oss;
             SCIPgetStringParam(scip,"propagating/obra/outFile",&paramstr);
             SCIPgetStringParam(scip,"propagating/obra/outDir",&paramstr2);
-            oss << paramstr2 << paramstr << "_" << historicCons << "_" << currentTime_ << ".cip";
+            oss << paramstr2 << paramstr << "_" << historicCons_ << "_" << currentTime_ << ".cip";
             SCIPdebugMessage("WRITING transformed problem to file %s at t=%i\n",oss.str().c_str(),currentTime_);
             SCIPwriteTransProblem(scip, oss.str().c_str(), "cip", false);
          }
@@ -298,7 +296,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
 
          SCIP_Bool boundsDiverge(false);
          SCIPdbgMsg("calling propBoundsAtTwithSubscip, currentTime = %i\n",currentTime_);
-         SCIP_CALL( propBoundsAtTwithSubscip(scip,subscip,historicCons,varmap,consmap, &nPropagatedVars, &nchgbds, &totalBoundReduction, &boundsDiverge));
+         SCIP_CALL( propBoundsAtTwithSubscip(scip, subscip, varmap, consmap, &nPropagatedVars, &nchgbds, &totalBoundReduction, &boundsDiverge));
 
          /* Clean up allocated maps, empty subscip */
          SCIPcppDbgMsg("Freeing hashmaps" << std::endl);
@@ -328,9 +326,9 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
    SCIP_Real aggSolvingTime    = constTimePattern_.stats_.aggSolutionTime    + multiTimePattern_.stats_.aggSolutionTime;
 
    /* Display the summary of this obra run */
-   printSummary(scip, nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime, historicCons, propClock);
+   printSummary(scip, nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime, propClock);
 
-   SCIP_CALL( writeAfterProp(scip, breakTime, historicCons) );
+   SCIP_CALL( writeAfterProp(scip, breakTime) );
 
    SCIPclockFree( &propClock );
 
@@ -343,15 +341,13 @@ SCIP_RETCODE PropOBRA::prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, S
 {
    ConsVarVec::iterator pairIt;
    VarVec subscipVars;
-   SCIP_Bool addCuts;
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/addCuts",&addCuts) );
 
    /* Configure pattern */
    constTimePattern_.clearVars();
    constTimePattern_.setScip(scip);
    constTimePattern_.setSubscip(subscip);
    constTimePattern_.setCurrentTime(currentTime_);
-   SCIP_CALL( constTimePattern_.setAddCuts(addCuts) );
+   SCIP_CALL( constTimePattern_.setAddCuts(addCuts_) );
 
    /* Iterate over variables that will create the space of the linear cut */
    for( structure_->startDiffConsIteration(); structure_->diffConsLeft(); structure_->incrementDiffCons())
@@ -376,8 +372,6 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, S
 {
 
    VarVec subscipVars;
-   int multiTimecutLookback;
-   SCIP_CALL( SCIPgetIntParam(scip,"propagating/obra/multiTimeCutLookback",&multiTimecutLookback) );
 
    if( lastVar == NULL)
    {
@@ -391,7 +385,7 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, S
    multiTimePattern_.setSubscip(subscip);
    multiTimePattern_.setCurrentTime(currentTime_);
 
-   std::vector<SCIP_VAR*> lastVars(structure_->getDiffConsLastVars(multiTimecutLookback));
+   std::vector<SCIP_VAR*> lastVars(structure_->getDiffConsLastVars(multiTimeCutLookback_));
 
    /* Add the scip and subscip variables corresponding the the differential variable */
    SCIPdbgMsg("adding variable %s\n",SCIPvarGetName(lastVar));
@@ -408,7 +402,7 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, S
    std::string varTypeString(matches[4].first,matches[4].second);
 
    /* Iterate over previous variables of the same state and add to pattern */
-   for( int i=1; i <= multiTimecutLookback - 1; ++i)
+   for( int i=1; i <= multiTimeCutLookback_ - 1; ++i)
    {
       SCIP_VAR* var;
       std::ostringstream oss;
@@ -503,20 +497,9 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SC
  *  These tasks are divided into 6 smaller steps, see comments in code and SCIPdebugMessages
  *
  */
-SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int historicCons, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge)
+SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge)
 {
 
-   /* Get parameters on what to propagate */
-   SCIP_Bool propagateAlgebraic;
-   SCIP_Bool propagateStates;
-   SCIP_Bool propagateControls;
-   SCIP_Bool addMultiTimeCuts;
-   int multiTimecutLookback;
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/propagateAlgebraic",&propagateAlgebraic) );
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/propagateStates",&propagateStates) );
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/propagateControls",&propagateControls) );
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/addMultiTimeCuts",&addMultiTimeCuts) );
-   SCIP_CALL( SCIPgetIntParam(scip,"propagating/obra/multiTimeCutLookback",&multiTimecutLookback) );
 
    SCIPdbgMsg("Entering propBoundsAtTWithSubscip, currentTime_ is %i\n",currentTime_);
 
@@ -539,7 +522,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
     */
    {
       int addTime;
-      int firstAddTime(currentTime_ - 1 - historicCons);
+      int firstAddTime(currentTime_ - 1 - historicCons_);
       if( firstAddTime < 0)
          firstAddTime = 0;
       SCIPdebugMessage(" Step 2: Adding algebraic constraints and variables for t=%i,...,%i\n",firstAddTime,currentTime_ - 1);
@@ -570,7 +553,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
     */
    {
       int addTime;
-      int firstAddTime(currentTime_ - historicCons);
+      int firstAddTime(currentTime_ - historicCons_);
       if( firstAddTime < 0 )
          firstAddTime = 0;
       SCIPdebugMessage(" Step 3: Adding historic differential constraints to subscip at t=%i,...,%i\n",firstAddTime, currentTime_ - 1);
@@ -591,7 +574,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
     */
    {
       int addTime;
-      int firstAddTime(currentTime_ - historicCons);
+      int firstAddTime(currentTime_ - historicCons_);
       if( firstAddTime < 0 )
          firstAddTime = 0;
       SCIPdebugMessage(" Step 4: Adding state cut constraints to subscip at t=%i,...,%i\n",firstAddTime, currentTime_ - 1);
@@ -613,7 +596,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
     * 5: Propagate algebraic constraints
     */
    //@todo: Use a propagation pattern for this as well
-   if( propagateAlgebraic && (currentTime_ -1 >= 0) )
+   if( propagateAlgebraic_ && (currentTime_ -1 >= 0) )
    {
       SCIPdebugMessage(" Step 5: Propagating bounds to forward algebraic variables at t=%i\n",currentTime_ - 1);
       SCIP_VAR* subscipLastVar = NULL;
@@ -714,7 +697,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
    /*
     * 7_1: propagation of states 'vertically', 'horizontally' and 'diagonally'
     */
-   if(  currentTime_ >= 1 && propagateStates && !(*boundsDiverge) )
+   if(  currentTime_ >= 1 && propagateStates_ && !(*boundsDiverge) )
    {
       SCIPdebugMessage("#### Step 7_2: Propagating bounds to differential variables at t=%i\n",currentTime_);
       ConsVarVec::iterator pairIt;
@@ -731,10 +714,10 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
    /*
     * 7_2: Propagation of states from different times
     */
-   if( currentTime_ >= 1 && addMultiTimeCuts && !(*boundsDiverge) )
+   if( currentTime_ >= 1 && addMultiTimeCuts_ && !(*boundsDiverge) )
    {
-      SCIPdbgMsg("multitimelookback = %i\n",multiTimecutLookback);
-      SCIPdebugMessage("#### Step 7_3: Propagating bounds to differential variables at t=%i...%i\n",currentTime_ - multiTimecutLookback + 1,currentTime_);
+      SCIPdbgMsg("multitimelookback = %i\n",multiTimeCutLookback_);
+      SCIPdebugMessage("#### Step 7_3: Propagating bounds to differential variables at t=%i...%i\n",currentTime_ - multiTimeCutLookback_ + 1,currentTime_);
       ConsVarVec::iterator pairIt;
 
       for( structure_->startDiffConsIteration(); structure_->diffConsLeft(); structure_->incrementDiffCons())
@@ -758,7 +741,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int h
     * 8: Propagation of control variables
     */
 
-   if( propagateControls )
+   if( propagateControls_ )
    {
 	   SCIPdebugMessage(" Step 8: Propagating bounds to control variables at t=%i\n",currentTime_);
 	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )
@@ -833,10 +816,9 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
    changedBounds[0] = false;
    changedBounds[1] = false;
 
-   int historicCons( 0 );
    int i;
 
-   SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/historicCons", &historicCons ) );
+   SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/historicCons", &historicCons_ ) );
    std::string origVarFullName( SCIPvarGetName( origVar ) );
 
    *boundsDiverge = false;
@@ -876,7 +858,7 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
       if( writeSubscips )
       {
          std::ostringstream oss;
-         oss << paramstr2 << paramstr << "_" << historicCons << "_" << currentTime_ << "_algebraic_subscip_" << SCIPvarGetName( origVar ) << "_" << i << ".cip";
+         oss << paramstr2 << paramstr << "_" << historicCons_ << "_" << currentTime_ << "_algebraic_subscip_" << SCIPvarGetName( origVar ) << "_" << i << ".cip";
          SCIPdebugMessage( "WRITING transformed subscip to file %s\n", oss.str().c_str() );
          SCIPdebug( SCIP_CALL( SCIPwriteOrigProblem( subscip, oss.str().c_str(), "cip", FALSE ) ) );
       }
