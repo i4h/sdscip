@@ -24,7 +24,7 @@ propagating/obra/cutConf3d = 2
 
 propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
 
-propagating/obra/muteSubscip = false
+propagating/obra/muteSubscip = true
 #propagating/obra/breakTime = 300
 
 
