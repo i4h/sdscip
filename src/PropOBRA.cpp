@@ -49,6 +49,7 @@
 #define HASHTABLESIZE_FACTOR 5
 
 
+
 using namespace sdscip;
 
 /** Helper function used for display of run statistics */
@@ -426,33 +427,9 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, S
    return SCIP_OKAY;
 }
 
-/** Reads the params for the subscip if given in via parameter propagating/obra/subscipSetFile */
-SCIP_RETCODE PropOBRA::readSubscipParams(SCIP* scip, SCIP* subscip)
-{
-   /* Read subscip parameters (overwrites timelimit, if given in subscip set-file */
-   char* setfile;
-   SCIPgetStringParam(scip,"propagating/obra/subscipSetFile",&setfile);
-
-   if( SCIPfileExists(setfile) )
-   {
-      SCIPdebugMessage("reading subscip parameter file <%s>\n", setfile);
-      SCIP_CALL( SCIPreadParams(subscip, setfile) );
-   }
-   else
-      SCIPdebugMessage("subscip parameter file <%s> not found - using default parameters\n", setfile);
-
-   return SCIP_OKAY;
-}
-
 SCIP_RETCODE PropOBRA::createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap)
 {
-
-
    SCIP* subscip;
-   SCIP_Real subscipTimeLimit;
-   SCIP_Longint subscipNodeLimit;
-   SCIP_Bool muteSubscip;
-
    assert(scip != NULL);
 
    SCIP_CALL( SCIPcreate(subscipp) );
@@ -477,31 +454,22 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SC
    /* --- Configure subscip from obra parameters  ---- */
 
    /* Set reoptimization depending on obra parameters */
-   SCIP_Bool reoptimize;
-   SCIP_CALL( SCIPgetBoolParam(scip, "propagating/obra/reoptimize", &reoptimize));
-   if( reoptimize == TRUE )
+   if( reoptimize_ == TRUE )
    {
       SCIP_CALL( SCIPsetBoolParam(subscip, "reoptimization/enable", TRUE));
    }
 
    /* Set timelimit depending on obra parameters */
-   SCIP_CALL( SCIPgetRealParam(scip,"propagating/obra/subscipTimeLimit",&subscipTimeLimit) );
-   SCIP_CALL( SCIPsetRealParam(subscip,"limits/time",subscipTimeLimit) );
+   SCIP_CALL( SCIPsetRealParam(subscip,"limits/time",subscipTimeLimit_) );
 
    /* Set nodelimit depending on obra parameters*/
-   SCIP_CALL( SCIPgetLongintParam(scip,"propagating/obra/subscipNodeLimit",&subscipNodeLimit) );
-   SCIP_CALL( SCIPsetLongintParam(subscip,"limits/nodes",subscipNodeLimit) );
+   SCIP_CALL( SCIPsetLongintParam(subscip,"limits/nodes",subscipNodeLimit_) );
 
    /* Mute subscips depending on obra parameters*/
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/muteSubscip",&muteSubscip) );
-   if(muteSubscip == true)
+   if(subscipMute_ == true)
    {
       SCIP_CALL( SCIPsetIntParam(subscip, "display/verblevel", 0) );
    }
-
-   /* Read params for subscip */
-   readSubscipParams(scip, subscip);
-
 
    /* Create and allocate consmap and varmap */
    SCIP_CALL( SCIPhashmapCreate(consmap, SCIPblkmem(subscip), SCIPgetNConss(scip)) );

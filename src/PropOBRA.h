@@ -97,113 +97,120 @@ public:
       ,constTimePattern_()
       ,multiTimePattern_(1)
    {
-      /* add parameters */
-      SCIPaddIntParam(scip,
-             "propagating/obra/historicCons",
-             "Number of historic Constraints to be used in bound propagation (0: conventional bound propagation)",
-             NULL, FALSE, 5, 0, 1000, NULL, NULL);
-
+      /* Parameters about propagation */
       SCIPaddIntParam(scip,
              "propagating/obra/breakTime",
              "Timestep, at which propagation is stopped. Set to -1 for no limit",
-             NULL, FALSE, -1, -1, INT_MAX, NULL, NULL);
+             &breakTime, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
-      SCIPaddRealParam(scip,
-         "propagating/obra/subscipTimeLimit",
-         "Timelimit for the subscips",
-         FALSE, FALSE, 1e20, 0.0, SCIP_REAL_MAX, NULL, NULL);
-
-      SCIPaddLongintParam(scip,
-             "propagating/obra/subscipNodeLimit",
-             "Node Limit for subscips, -1: no limit",
-             NULL, FALSE, 10000, -1, INT_MAX, NULL, NULL);
-
-      SCIPaddBoolParam(scip,
-             "propagating/obra/muteSubscip",
-             "Disable Output of subscips",
-             NULL, FALSE, TRUE, NULL, NULL);
+      SCIPaddIntParam(scip,
+             "propagating/obra/historicCons",
+             "Number of historic Constraints to be used in bound propagation (0: conventional bound propagation)",
+             &historicCons, FALSE, 5, 0, 1000, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateAlgebraic",
              "Should bounds of algebraic variables be propagated explicitly?",
-             NULL, FALSE, TRUE, NULL, NULL);
+             &propagateAlgebraic_, FALSE, TRUE, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateStates",
              "Should bounds of state variables be propagated explicitly?",
-             NULL, FALSE, TRUE, NULL, NULL);
-
+             &propagateStates_, FALSE, TRUE, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateControls",
              "Should bounds of control variables be propagated (back) explicitly?",
-             NULL, FALSE, TRUE, NULL, NULL);
+             &propagateControls_, FALSE, TRUE, NULL, NULL);
 
+      SCIPaddBoolParam(scip,
+             "propagating/obra/addCuts",
+             "Add propcuts for states during propagation?",
+             &addCuts_, FALSE, TRUE, NULL, NULL);
+
+      SCIPaddIntParam(scip,
+             "propagating/obra/cutFreq",
+             "Frequency in (Problem) Time in which to try adding bounds diagonal to the state axes realized as cuts (-1: Disabled)",
+             &cutFreq_, FALSE, -1, -1, INT_MAX, NULL, NULL);
+
+      SCIPaddBoolParam(scip,
+             "propagating/obra/addMultiTimeCuts",
+             "Should we add cuts connecting one state variable at multiple times ",
+             &addMultiTimeCuts_, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddIntParam(scip,
+             "propagating/obra/cutConf3d",
+             "What kinds of cuts are added to problems with 3 state variables",
+             &cutConf3d_, FALSE, 0, 0, 2, NULL, NULL);
+
+      SCIPaddIntParam(scip,
+             "propagating/obra/multiTimeCutLookback",
+             "How many times should the multiTimeStateCut incorporate",
+             &multiTimeCutLookback_, FALSE, 2, 2, 1000, NULL, NULL);
+
+      SCIPaddBoolParam(scip,
+             "propagating/obra/useUnitCuts",
+             "Choose the slope of the cut independent of current bounds",
+             &useUnitCuts_, FALSE, TRUE, NULL, NULL);
+
+      /* Parameters about output */
+      SCIPaddBoolParam(scip,
+             "propagating/obra/writeAfterProp",
+             "Write transformed problem to file after propagation",
+             &writeAfterProp_, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddStringParam(scip,
+             "propagating/obra/outFile",
+             "Filename of cip file to write to after Propagation",
+             &outFile_, FALSE, "transprob.cip", NULL, NULL);
+
+      SCIPaddStringParam(scip,
+             "propagating/obra/outDir",
+             "Directory to write output files to, format directory/, default is ./",
+             &outDir_, FALSE, "./", NULL, NULL);
+
+      SCIPaddIntParam(scip,
+             "propagating/obra/writeFreq",
+             "(Problem) Time Intervals in which to write the problem during propagation",
+             &writeFreq_, FALSE, -1, -1, INT_MAX, NULL, NULL);
+
+      SCIPaddBoolParam(scip,
+             "propagating/obra/writeSubscips",
+             "Write subscips to a file (overwrites on every solve)",
+             &writeSubscips_, FALSE, FALSE, NULL, NULL);
+
+      /* Define parameters for settings of the subscip */
       SCIPaddStringParam(scip,
              "propagating/obra/subscipSetFile",
              "Filename to read subscip settings from (subscip.set)",
              NULL, FALSE, "subscip.set", NULL, NULL);
 
       SCIPaddBoolParam(scip,
-             "propagating/obra/writeAfterProp",
-             "Write transformed problem to file after propagation",
-             NULL, FALSE, FALSE, NULL, NULL);
-
-      SCIPaddStringParam(scip,
-             "propagating/obra/outFile",
-             "Filename of cip file to write to after Propagation",
-             NULL, FALSE, "transprob.cip", NULL, NULL);
-
-      SCIPaddStringParam(scip,
-             "propagating/obra/outDir",
-             "Directory to write output files to, format directory/, default is ./",
-             NULL, FALSE, "./", NULL, NULL);
-
-      SCIPaddIntParam(scip,
-             "propagating/obra/writeFreq",
-             "(Problem) Time Intervals in which to write the problem during propagation",
-             NULL, FALSE, -1, -1, INT_MAX, NULL, NULL);
-
-      SCIPaddBoolParam(scip,
-             "propagating/obra/addCuts",
-             "Add propcuts for states during propagation?",
-             NULL, FALSE, TRUE, NULL, NULL);
-
-      SCIPaddIntParam(scip,
-             "propagating/obra/cutFreq",
-             "Frequency in (Problem) Time in which to try adding bounds diagonal to the state axes realized as cuts (-1: Disabled)",
-             NULL, FALSE, -1, -1, INT_MAX, NULL, NULL);
-
-      SCIPaddBoolParam(scip,
-             "propagating/obra/addMultiTimeCuts",
-             "Should we add cuts connecting one state variable at multiple times ",
-             NULL, FALSE, FALSE, NULL, NULL);
-
-      SCIPaddIntParam(scip,
-             "propagating/obra/cutConf3d",
-             "What kinds of cuts are added to problems with 3 state variables",
-             NULL, FALSE, 0, 0, 2, NULL, NULL);
-
-      SCIPaddBoolParam(scip,
-             "propagating/obra/writeSubscips",
-             "Write subscips to a file (overwrites on every solve)",
-             NULL, FALSE, FALSE, NULL, NULL);
-
-
-      SCIPaddIntParam(scip,
-             "propagating/obra/multiTimeCutLookback",
-             "How many times should the multiTimeStateCut incorporate",
-             NULL, FALSE, 2, 2, 1000, NULL, NULL);
-
-      SCIPaddBoolParam(scip,
-             "propagating/obra/useUnitCuts",
-             "Choose the slope of the cut independent of current bounds",
-             NULL, FALSE, TRUE, NULL, NULL);
-
-      SCIPaddBoolParam(scip,
              "propagating/obra/reoptimize",
              "Enable reoptimization in subscips",
-             NULL, FALSE, FALSE, NULL, NULL);
+             &reoptimize_, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddRealParam(scip,
+            "propagating/obra/subscipGapLimit",
+            "Gap Limit for the subscips",
+            &subscipGapLimit_, FALSE, 1e20, 0.0, SCIP_REAL_MAX, NULL, NULL);
+
+      SCIPaddRealParam(scip,
+            "propagating/obra/subscipTimeLimit",
+            "Timelimit for the subscips",
+            &subscipTimeLimit_, FALSE, 1e20, 0.0, SCIP_REAL_MAX, NULL, NULL);
+
+      SCIPaddLongintParam(scip,
+             "propagating/obra/subscipNodeLimit",
+             "Node Limit for subscips, -1: no limit",
+             &subscipNodeLimit_, FALSE, 10000, -1, INT_MAX, NULL, NULL);
+
+      SCIPaddBoolParam(scip,
+             "propagating/obra/subscipMute",
+             "Disable Output of subscips",
+             &subscipMute_, FALSE, TRUE, NULL, NULL);
+
+
 
       varRegex_.assign(std::string("(?:t_)+([A-Za-z0-9_]+)\\(([0-9]+,)?([0-9]+)\\)"), boost::regex_constants::icase);
       consRegex_.assign(std::string("[A-Za-z0-9]+_([A-Za-z0-9_]+)\\(([0-9]+,)?([0-9]+)\\)"), boost::regex_constants::icase);
@@ -228,7 +235,6 @@ private:
    SCIP_RETCODE applyOBRA(SCIP* scip, SCIP_RESULT* result);
    SCIP_RETCODE prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
    SCIP_RETCODE prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_VAR* lastVar, SCIP_HASHMAP* varmap);
-   SCIP_RETCODE readSubscipParams(SCIP* scip, SCIP* subscip);
    SCIP_RETCODE createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap);
    SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, int historicCons, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
    //SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
@@ -246,6 +252,30 @@ private:
    boost::regex consRegex_;
    PropagationPattern constTimePattern_;
    PropagationPattern multiTimePattern_;
+
+   /* Parameters */
+   SCIP_Real subscipGapLimit_;
+   int historicCons;
+   int breakTime;
+   SCIP_Real subscipTimeLimit_;
+   SCIP_Longint subscipNodeLimit_;
+   SCIP_Bool subscipMute_;
+   SCIP_Bool propagateAlgebraic_;
+   SCIP_Bool propagateStates_;
+   SCIP_Bool propagateControls_;
+   SCIP_Bool writeAfterProp_;
+   char* outFile_;
+   char* outDir_;
+   int writeFreq_;
+   SCIP_Bool addCuts_;
+   int cutFreq_;
+   SCIP_Bool  addMultiTimeCuts_;
+   int cutConf3d_;
+   SCIP_Bool writeSubscips_;
+   int multiTimeCutLookback_;
+   SCIP_Bool useUnitCuts_;
+   SCIP_Bool reoptimize_;
+
 };
 
 }
