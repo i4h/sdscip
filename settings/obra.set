@@ -16,7 +16,7 @@ propagating/obra/multiTimeCutLookback = 2
 propagating/obra/useUnitCuts = false
 propagating/obra/cutConf3d = 2
 
-propagating/obra/writeSubscips = true
+propagating/obra/writeSubscips = false
 propagating/obra/writeFreq = 1
 
 #propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
@@ -27,6 +27,7 @@ propagating/obra/subscipMute = true
 
 reading/vopreader/checkStructure = true
 reading/vopreader/printSummary = true
+reading/vopreader/minVariableFormulation = true
 
 
 
