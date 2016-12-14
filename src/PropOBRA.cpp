@@ -255,6 +255,9 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
    multiTimePattern_.setUseUnitCuts(useUnitCuts_);
    algebraicPattern_.setUseUnitCuts(true);
    algebraicPattern_.setAddCuts(false);
+   controlPattern_.setUseUnitCuts(true);
+   controlPattern_.setAddCuts(false);
+
 
    structure_ = SDgetStructure(scip);
 
@@ -400,6 +403,30 @@ SCIP_RETCODE PropOBRA::prepareAlgebraicPattern(SCIP* scip, SCIP* subscip, SCIP_H
          } /* Close only constraints with forward variable */
       } /* Close loop over constraints of level */
    } /* Close loop over levels */
+   return SCIP_OKAY;
+}
+
+SCIP_RETCODE PropOBRA::prepareControlPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap)
+{
+   ConsVarVec::iterator pairIt;
+   VarVec subscipVars;
+
+   /* Configure pattern */
+   controlPattern_.clearVars();
+   controlPattern_.setScip(scip);
+   controlPattern_.setSubscip(subscip);
+   controlPattern_.setCurrentTime(currentTime_);
+
+	   SCIPdebugMessage(" Step 8: Propagating bounds to control variables at t=%i\n",currentTime_);
+	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )
+	   {
+		   SCIP_VAR* var(structure_->getControlVarAtTOrig());
+		   SCIPdbgMsg("Got control var %s\n", SCIPvarGetName(var));
+		   SCIP_VAR* subscipVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap,var);
+		   SCIPdbgMsg("Got subscip var %s\n", SCIPvarGetName(subscipVar));
+		   assert(subscipVar != NULL);
+		   controlPattern_.addVar(var, (SCIP_VAR*) SCIPhashmapGetImage(varmap,var));
+	   }
    return SCIP_OKAY;
 }
 
@@ -793,6 +820,17 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_
     */
 
    if( propagateControls_ )
+   {
+      SCIPdebugMessage("#### Step 8: Propagating bounds to control variables at t=%i\n",currentTime_);
+      ConsVarVec::iterator pairIt;
+
+      SCIP_CALL( prepareControlPattern(scip, subscip, varmap));
+      SCIP_CALL( controlPattern_.setSolMap(solMap));
+      SCIP_CALL( controlPattern_.propagate(currentTime_));
+      SCIPdebugMessage("#### Done with Step 8\n");
+   }
+
+   if (false)
    {
 	   SCIPdebugMessage(" Step 8: Propagating bounds to control variables at t=%i\n",currentTime_);
 	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )

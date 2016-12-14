@@ -237,6 +237,7 @@ private:
    SCIP_RETCODE prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
    SCIP_RETCODE prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_VAR* lastVar, SCIP_HASHMAP* varmap);
    SCIP_RETCODE prepareAlgebraicPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
+   SCIP_RETCODE prepareControlPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
 
    SCIP_RETCODE createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap);
    SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
@@ -255,6 +256,7 @@ private:
    boost::regex consRegex_;
    PropagationPattern constTimePattern_;
    PropagationPattern algebraicPattern_;
+   PropagationPattern controlPattern_;
    PropagationPattern multiTimePattern_;
 
    /* Parameters */
