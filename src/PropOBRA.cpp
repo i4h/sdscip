@@ -249,15 +249,12 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP* scip, SCIP_RESULT* result)
    SCIP_CALL( SCIPgetBoolParam( scip, "propagating/obra/addMultiTimeCuts", &addMultiTimeCuts ) );
    SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/cutFreq", &cutFreq ) );
 
-   /* Configure the constTime and multiTime PropagationPatterns */
-   int cutConf3d;
-   SCIP_CALL( SCIPgetIntParam( scip, "propagating/obra/cutConf3d", &cutConf3d ) );
-   constTimePattern_.setCutConf3d( cutConf3d );
+   /* Configure the constTime,multiTime  and algebraic PropagationPatterns */
+   constTimePattern_.setCutConf3d( cutConf3d_ );
    constTimePattern_.setUseUnitCuts(false);
-
-   SCIP_Bool useUnitCuts;
-   SCIP_CALL( SCIPgetBoolParam(scip,"propagating/obra/useUnitCuts",&useUnitCuts));
-   multiTimePattern_.setUseUnitCuts(useUnitCuts);
+   multiTimePattern_.setUseUnitCuts(useUnitCuts_);
+   algebraicPattern_.setUseUnitCuts(true);
+   algebraicPattern_.setAddCuts(false);
 
    structure_ = SDgetStructure(scip);
 
@@ -365,6 +362,44 @@ SCIP_RETCODE PropOBRA::prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, S
          SCIPdebugMessage("Constraint %s has no forward variable\n",SCIPconsGetName(pairIt->first));
       }
    }
+   return SCIP_OKAY;
+}
+
+SCIP_RETCODE PropOBRA::prepareAlgebraicPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap)
+{
+   ConsVarVec::iterator pairIt;
+   VarVec subscipVars;
+
+   /* Configure pattern */
+   algebraicPattern_.clearVars();
+   algebraicPattern_.setScip(scip);
+   algebraicPattern_.setSubscip(subscip);
+   algebraicPattern_.setCurrentTime(currentTime_);
+
+   /* Iterate over algebraic variables and add to pattern */
+   for( structure_->startLevelIteration(currentTime_ - 1); structure_->levelsLeft(currentTime_ - 1); structure_->incrementLevel())
+   {
+      for( structure_->startLevelConsIteration(); structure_->levelConsLeft() ; structure_->incrementLevelCons())
+      {
+         if( structure_->currentLevelConsHasVar() ) /* Only if constraint has forward variable */
+         {
+            SCIP_CONS* cons(structure_->getCurrentLevelConsCons());
+            SCIP_VAR* var(structure_->getCurrentLevelConsOrigVar());
+            assert(cons != NULL);
+
+            if( !SCIPconsIsDeleted(cons) )
+            {
+               SCIPdebugMessage("Adding variable %s to algebraicPattern_\n", SCIPvarGetName(var));
+               algebraicPattern_.addVar(var, (SCIP_VAR*) SCIPhashmapGetImage(varmap,var));
+            }
+            else
+            {
+               SCIPdbgMsg("not adding deleted cons to algebraicPattern %s\n", SCIPconsGetName(cons));
+            }
+
+         } /* Close only constraints with forward variable */
+      } /* Close loop over constraints of level */
+   } /* Close loop over levels */
    return SCIP_OKAY;
 }
 
@@ -596,75 +631,91 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_
     * 5: Propagate algebraic constraints
     */
    //@todo: Use a propagation pattern for this as well
-   if( propagateAlgebraic_ && (currentTime_ -1 >= 0) )
+
+   if( propagateAlgebraic_ && (currentTime_ >= 1) )
    {
-      SCIPdebugMessage(" Step 5: Propagating bounds to forward algebraic variables at t=%i\n",currentTime_ - 1);
-      SCIP_VAR* subscipLastVar = NULL;
-
-      for( structure_->startLevelIteration(currentTime_ - 1); structure_->levelsLeft(currentTime_ - 1); structure_->incrementLevel())
+      if (true)
       {
-         int consCounter(0);
-         for( structure_->startLevelConsIteration(); structure_->levelConsLeft() && !(*boundsDiverge); structure_->incrementLevelCons())
+         /* Use propagationPattern for algebraic vars */
+
+         SCIP_CALL( prepareAlgebraicPattern(scip, subscip, varmap));
+         SCIP_CALL( algebraicPattern_.setSolMap(solMap));
+         SCIP_CALL( algebraicPattern_.propagate(currentTime_));
+         SCIPdebugMessage("#### Done with Step 7_2\n");
+      }
+      else
+      {
+         /* Old code */
+
+         SCIPdebugMessage(" Step 5: Propagating bounds to forward algebraic variables at t=%i\n",currentTime_ - 1);
+         SCIP_VAR* subscipLastVar = NULL;
+
+         for( structure_->startLevelIteration(currentTime_ - 1); structure_->levelsLeft(currentTime_ - 1); structure_->incrementLevel())
          {
-            if( structure_->currentLevelConsHasVar() ) /* Only if constraint has forward variable */
+            int consCounter(0);
+            for( structure_->startLevelConsIteration(); structure_->levelConsLeft() && !(*boundsDiverge); structure_->incrementLevelCons())
             {
-               SCIP_CONS* currentCons(structure_->getCurrentLevelConsCons());
-               SCIP_VAR* forwardVar(structure_->getCurrentLevelConsOrigVar());
-               assert(currentCons != NULL);
-
-               if( !SCIPconsIsDeleted(currentCons) )
+               if( structure_->currentLevelConsHasVar() ) /* Only if constraint has forward variable */
                {
+                  SCIP_CONS* currentCons(structure_->getCurrentLevelConsCons());
+                  SCIP_VAR* forwardVar(structure_->getCurrentLevelConsOrigVar());
+                  assert(currentCons != NULL);
 
-                  SCIPdbg(SCIPinfoMessage(scip, NULL, "      Constraint: %s ----> %s [%1.16e,%1.16e]\n    ",
-                     SCIPconsGetName(currentCons), SCIPvarGetName(forwardVar),
-                     SCIPvarGetLbLocal(forwardVar),SCIPvarGetUbLocal(forwardVar)));
+                  if( !SCIPconsIsDeleted(currentCons) )
+                  {
 
-                  SCIPdbg( SCIP_CALL_ABORT( SCIPprintCons(scip, currentCons, NULL) ) );
-                  SCIPdbg( SCIPinfoMessage(scip, NULL, ";\n") );
+                     SCIPdbg(SCIPinfoMessage(scip, NULL, "      Constraint: %s ----> %s [%1.16e,%1.16e]\n    ",
+                        SCIPconsGetName(currentCons), SCIPvarGetName(forwardVar),
+                        SCIPvarGetLbLocal(forwardVar),SCIPvarGetUbLocal(forwardVar)));
 
-                  //unsigned int varIndex(SCIPvarGetIndex(forwardVar));
-                  SCIPdbgMsg("Considering Variable %s\n",SCIPvarGetName(forwardVar));
-                  SCIPdbgMsg("bound difference is %1.16f\n",SCIPvarGetUbLocal(forwardVar)-SCIPvarGetLbLocal(forwardVar));
+                     SCIPdbg( SCIP_CALL_ABORT( SCIPprintCons(scip, currentCons, NULL) ) );
+                     SCIPdbg( SCIPinfoMessage(scip, NULL, ";\n") );
 
-                  SCIP_Bool localBoundsDiverge(false);
+                     //unsigned int varIndex(SCIPvarGetIndex(forwardVar));
+                     SCIPdbgMsg("Considering Variable %s\n",SCIPvarGetName(forwardVar));
+                     SCIPdbgMsg("bound difference is %1.16f\n",SCIPvarGetUbLocal(forwardVar)-SCIPvarGetLbLocal(forwardVar));
 
-                  /* Set Objective of last variable back to zero */
-                  if( subscipLastVar != NULL )
-                     SCIPchgVarObj(subscip, subscipLastVar, 0);
+                     SCIP_Bool localBoundsDiverge(false);
 
-                  /* Set Objective of current variable to 1 */
-                  SCIPcppDbgMsg("Setting Objective" << std::endl);
-                  SCIP_VAR* subscipForwardVar;
-                  subscipForwardVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap,forwardVar);
+                     /* Set Objective of last variable back to zero */
+                     if( subscipLastVar != NULL )
+                        SCIPchgVarObj(subscip, subscipLastVar, 0);
 
-                  SCIPcppDbgMsg("Got current var from hashmap, original " << SCIPvarGetName(forwardVar) << std::endl);
-                  SCIPcppDbgMsg("image is " << SCIPvarGetName(subscipForwardVar) << std::endl);
-                  SCIPchgVarObj(subscip, subscipForwardVar, 1);
+                     /* Set Objective of current variable to 1 */
+                     SCIPcppDbgMsg("Setting Objective" << std::endl);
+                     SCIP_VAR* subscipForwardVar;
+                     subscipForwardVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap,forwardVar);
 
-                  SCIPcppDbgMsg("Set Objective" << std::endl);
-                  subscipLastVar = subscipForwardVar;
+                     SCIPcppDbgMsg("Got current var from hashmap, original " << SCIPvarGetName(forwardVar) << std::endl);
+                     SCIPcppDbgMsg("image is " << SCIPvarGetName(subscipForwardVar) << std::endl);
+                     SCIPchgVarObj(subscip, subscipForwardVar, 1);
 
-                  SCIP_CALL( propBoundWithSubscip(scip,forwardVar,subscip,subscipForwardVar,nchgbds,totalBoundReduction,&localBoundsDiverge, solMap) );
-                  if( nPropagatedVars != NULL )
-                     ++(*nPropagatedVars);
+                     SCIPcppDbgMsg("Set Objective" << std::endl);
+                     subscipLastVar = subscipForwardVar;
 
-                  if( localBoundsDiverge ) {
-                     SCIPdebugMessage("propagation arrives at divergence\n");
-                     *boundsDiverge = true;
+                     SCIP_CALL( propBoundWithSubscip(scip,forwardVar,subscip,subscipForwardVar,nchgbds,totalBoundReduction,&localBoundsDiverge, solMap) );
+                     if( nPropagatedVars != NULL )
+                        ++(*nPropagatedVars);
+
+                     if( localBoundsDiverge ) {
+                        SCIPdebugMessage("propagation arrives at divergence\n");
+                        *boundsDiverge = true;
+                     }
+
+                     /* Set Objective of current variable back to 0*/
+                     SCIPchgVarObj(subscip, subscipForwardVar, 0);
+                     ++consCounter;
+                  }
+                  else
+                  {
+                     SCIPdbgMsg("not adding deleted cons %s\n", SCIPconsGetName(currentCons));
                   }
 
-                  /* Set Objective of current variable back to 0*/
-                  SCIPchgVarObj(subscip, subscipForwardVar, 0);
-                  ++consCounter;
-               }
-               else
-               {
-                  SCIPdbgMsg("not adding deleted cons %s\n", SCIPconsGetName(currentCons));
-               }
+               } /* Close only constraints with forward variable */
+            } /* Close loop over constraints of level */
+         } /* Close loop over levels */
+      }
 
-            } /* Close only constraints with forward variable */
-         } /* Close loop over constraints of level */
-      } /* Close loop over levels */
    }
 
    /*
@@ -891,7 +942,6 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
       if( !success)
       {
          SCIPwarningMessage(scip, "Solution was not accepted in subscip\n");
-         assert(false);
       }
 
       SDsetIsReformulated( subscip, false );
@@ -907,7 +957,6 @@ SCIP_RETCODE PropOBRA::propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP
       {
          *boundsDiverge = true;
          SCIPdebugMessage( "Set boundsDiverge to true because subproblem was infeasible\n" );
-         assert(false);
       }
       else if( SCIPgetStatus( subscip ) == SCIP_STATUS_OPTIMAL
                || SCIPgetStatus( subscip ) == SCIP_STATUS_TIMELIMIT

@@ -425,8 +425,8 @@ void PropagationPattern::next()
       configurationLoaded_ = true;
       this->updateIsCut();
    }
-   while (    !patternType_ == 1 /* Multitimecuts: add this cut (we configure the multitimecuts for the patternType at construction) */
-	      &&  !(addCuts_  || !currentConfIsCut_) ); /* Consttimecut: Repeat until we should add cuts, or the configuration is not a cut */
+   while (     !patternType_ == 1 /* Multitimecuts: add this cut (we configure the multitimecuts for the patternType at construction) */
+	        &&  !(addCuts_  || !currentConfIsCut_) ); /* Consttimecut: Repeat until we should add cuts, or the configuration is not a cut */
    SCIPdbgMsg("found valid configuration\n");
 
    /* Decide if we want to use unit cuts */
@@ -442,7 +442,7 @@ void PropagationPattern::next()
    }
 
    /*
-    * Set the current configuration in the scips variables
+    * Set the objective coefficients to the current configuration
     * it->first iterates variable pairs (scip, subscip), it->second iterates objective values
     * */
    for (
@@ -617,46 +617,42 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 {
 
 	SCIP_Bool boundsDiverge = false;
-	/* Get parameters */
+
+	/* Get some parameters */
 	int historicCons(0);
-	SCIP_CALL( SCIPgetIntParam(this->scip_,"propagating/obra/historicCons",&historicCons));
 	char* paramstr,*paramstr2;
+	SCIP_Bool writeSubscips;
+	SCIP_CALL( SCIPgetIntParam(this->scip_,"propagating/obra/historicCons",&historicCons));
 	SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
 	SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
-	SCIP_Bool writeSubscips;
 	SCIPgetBoolParam(scip_,"propagating/obra/writeSubscips",&writeSubscips);
 
-	/* Add cuts using the pattern class with the added variables */
 	SCIPdebugMessage("entering solving loop------------------------ \n");
+
+	/* Iterate over configurations */
 	for (this->start(); (this->configurationsLeft() ); this->next() )
 	{
-		/* Emptying solution candidate storage */
 		SCIPdebugMessage("  Loaded Configuration: %s\n",this->confString().c_str());
-		//SCIPdbgMsg("Emptying primal solution storage\n");
-		//SCIP_CALL( SCIPprimalFree(&(this->subscip_)->origprimal, this->subscip_->mem->probmem) );
-		//SCIP_CALL( SCIPprimalCreate(&(this->subscip_)->origprimal) );
 
 		if (writeSubscips)
 		{
 			std::ostringstream oss;
 			oss << paramstr2 << paramstr << "_" << historicCons << "_" << currentTime << "_pattern_" << this->currentConfiguration_ << "_subscip.cip";
 			SCIPdebugMessage("  WRITING transformed subscip to file %s\n",oss.str().c_str());
-			/*SCIPwriteTransProblem(subscip, oss.str().c_str(), std::string("cip").c_str(), false);*/
-			SCIPdebug( SCIP_CALL( SCIPwriteOrigProblem(this->subscip_, oss.str().c_str(), "cip", FALSE) ) );
-			/*SCIPcppDebugMsg("writing subscip to " << oss.str() << std::endl);
-	        SCIPdebug( SCIP_CALL( SCIPwriteOrigProblem(subscip, oss.str().c_str(), "cip", FALSE) ) );*/
+			SCIP_CALL( SCIPwriteOrigProblem(this->subscip_, oss.str().c_str(), "cip", FALSE) );
 		}
 
 		SCIPdbgMsg("ready to solve SCIP\n");
 		SCIP_Bool success;
 		SCIPtransformProb(this->subscip_);
+
+		/* Try solution values from main scip in subscip */
 		if (solMap_->size() > 0)
 		{
          SCIP_SOL* subscipSol;
          SCIP_CALL(SCIPcreateSol(this->subscip_,&subscipSol,NULL));
          for( auto iter = solMap_->begin(); iter != solMap_->end(); ++iter)
          {
-            //SCIPdbgMsg("adding var %s to sol with val %f\n",SCIPvarGetName(iter->first), iter->second);
             SCIPsetSolVal(this->subscip_, subscipSol, iter->first, iter->second);
          }
          SCIPtrySolFree(this->subscip_, &subscipSol, FALSE, TRUE, TRUE, TRUE, TRUE, &success);
@@ -666,8 +662,12 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
          }
 		}
 
+		//@todo _SD: Remove this line
 		SDsetIsReformulated(this->subscip_,false);
+
+		/* Solve the subscip */
 		SCIP_CALL( SCIPsolve(this->subscip_) );
+
 		stats_.aggSolutionTime += SCIPgetSolvingTime(this->subscip_);
 		++stats_.nSubscips;
 #ifdef SCIP_DEBUG
@@ -676,7 +676,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		   ,SCIPgetPrimalbound(subscip_));
 #endif
 
-
+		/* Evaluate subscip solution */
 		if (SCIPgetStatus(this->subscip_) == SCIP_STATUS_UNBOUNDED)
 		{
 			boundsDiverge = true;
@@ -766,11 +766,10 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 				SCIPdebugMessage( "  solved for %s of variable %-10s, old bounds: [%e,%e], newBound %e\n"
 				   ,(boundVar.first == SDSCIP_DOWN ? "lb" : "ub")
 				   ,SCIPvarGetName(scipVar), SCIPvarGetLbLocal(scipVar),SCIPvarGetUbLocal(scipVar),newBound );
-				/*assert(SCIPisFeasPositive(subscip,newBound) || SCIPisFeasZero(subscip,newBound));*/
+
 
 				/* Set the new bound in scip and subscip if it is an improvement */
 				//TODO _SD: Update hyperCube extent of Pattern
-
 				if (boundVar.first == SDSCIP_UP && SCIPisLT(this->scip_,newBound,SCIPvarGetUbLocal(scipVar)))
 				{
 					/* Tighten upper bound */

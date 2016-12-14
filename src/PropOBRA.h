@@ -95,6 +95,7 @@ public:
       ,progressStep_(0.0)
       ,structure_()
       ,constTimePattern_()
+      ,algebraicPattern_()
       ,multiTimePattern_(1)
    {
       /* Parameters about propagation */
@@ -235,6 +236,8 @@ private:
    SCIP_RETCODE applyOBRA(SCIP* scip, SCIP_RESULT* result);
    SCIP_RETCODE prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
    SCIP_RETCODE prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_VAR* lastVar, SCIP_HASHMAP* varmap);
+   SCIP_RETCODE prepareAlgebraicPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
+
    SCIP_RETCODE createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap);
    SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
    //SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
@@ -251,6 +254,7 @@ private:
    boost::regex varRegex_;
    boost::regex consRegex_;
    PropagationPattern constTimePattern_;
+   PropagationPattern algebraicPattern_;
    PropagationPattern multiTimePattern_;
 
    /* Parameters */

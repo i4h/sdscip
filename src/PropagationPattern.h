@@ -58,6 +58,7 @@
  *       //Solve the scip and evaluate results
  *    }
  *
+ *  @todo: Use SCIP_RETCODE consistently in setters
  */
 
 
