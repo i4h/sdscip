@@ -98,6 +98,10 @@ public:
       ,algebraicPattern_()
       ,multiTimePattern_(1)
    {
+
+
+      scip_ = scip;
+
       /* Parameters about propagation */
       SCIPaddIntParam(scip,
              "propagating/obra/breakTime",
@@ -230,21 +234,32 @@ private:
 
    SCIP_RETCODE printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars);
    SCIP_RETCODE printProgress();
-   SCIP_RETCODE printSummary(SCIP* scip, int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock);
-   SCIP_RETCODE writeAfterProp(SCIP* scip, int breakTime);
+   SCIP_RETCODE printSummary( int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock);
+   SCIP_RETCODE writeAfterProp( int breakTime);
 
-   SCIP_RETCODE applyOBRA(SCIP* scip, SCIP_RESULT* result);
-   SCIP_RETCODE prepareConstTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
-   SCIP_RETCODE prepareMultiTimeStatePattern(SCIP* scip, SCIP* subscip, SCIP_VAR* lastVar, SCIP_HASHMAP* varmap);
-   SCIP_RETCODE prepareAlgebraicPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
-   SCIP_RETCODE prepareControlPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
+   SCIP_RETCODE applyOBRA(SCIP_RESULT* result);
+   SCIP_RETCODE solveEmptyNLP();
 
-   SCIP_RETCODE createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap);
-   SCIP_RETCODE addConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj, SCIP_Bool global, std::map<SCIP_VAR*, SCIP_Real>* solMap, SCIP_Bool copysol);
-   SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
-   //SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
-   SCIP_RETCODE propagateDifferentialWithPattern(SCIP* scip, SCIP* subscip, int* nNewCons, SCIP_Bool * boundsDiverge);
-   SCIP_RETCODE addPlanesWithSubscip(SCIP* scip, int nVars, SCIP_VAR** origVars, SCIP* subscip, SCIP_VAR** subscipObjectiveVars, int* nNewCons );
+   /* Preparation methods */
+   SCIP_RETCODE createAndConfigureSubscip();
+
+   /* In-looop parts of obra */
+
+   SCIP_RETCODE propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
+
+   SCIP_RETCODE addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, SCIP_Bool global, SCIP_Bool copysol);
+
+   SCIP_RETCODE prepareConstTimeStatePattern();
+   SCIP_RETCODE prepareMultiTimeStatePattern( SCIP_VAR* lastVar);
+   SCIP_RETCODE prepareAlgebraicPattern();
+   SCIP_RETCODE prepareControlPattern();
+
+
+   SCIP_RETCODE addHistoricAndCurrentAlgebraicCons();
+
+   //SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP_Bool noObj);
+   SCIP_RETCODE propagateDifferentialWithPattern( int* nNewCons, SCIP_Bool * boundsDiverge);
+   SCIP_RETCODE addPlanesWithSubscip( int nVars, SCIP_VAR** origVars, SCIP_VAR** subscipObjectiveVars, int* nNewCons );
 
    SCIP_Bool signal_;
    int currentTime_;
@@ -258,6 +273,11 @@ private:
    PropagationPattern algebraicPattern_;
    PropagationPattern controlPattern_;
    PropagationPattern multiTimePattern_;
+   SCIP_HASHMAP* consmap_;
+   SCIP_HASHMAP* varmap_;
+   std::map<SCIP_VAR*, SCIP_Real>* solMap_;
+   SCIP* scip_;
+   SCIP* subscip_;
 
    /* Parameters */
    SCIP_Real subscipGapLimit_;

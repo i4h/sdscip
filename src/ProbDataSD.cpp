@@ -1350,9 +1350,6 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
    return SCIP_OKAY;
 }
 
-
-
-
 void SDsetIsReformulated(SCIP * scip, bool isReformulated)
 {
 	   SCIP_PROBDATA* probdata;
