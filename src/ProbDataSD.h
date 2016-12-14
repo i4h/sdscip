@@ -122,8 +122,6 @@ SCIP_RETCODE SDprintStructure(SCIP* scip);
 SCIP_RETCODE SDprintStateVarNames(SCIP *scip);
 sdscip::SDproblemStructureInterface* SDgetStructure(SCIP* scip);
 
-SCIP_RETCODE SDaddConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj, SCIP_Bool global, std::map<SCIP_VAR*, SCIP_Real>* solMap, SCIP_Bool copysol);
-
 /* Getter methods for the problem data */
 
 //ExplicitDifferentialMap* SDgetExplicitDifferentialMap(SCIP* scip);

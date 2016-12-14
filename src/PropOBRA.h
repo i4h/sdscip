@@ -240,9 +240,9 @@ private:
    SCIP_RETCODE prepareControlPattern(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap);
 
    SCIP_RETCODE createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SCIP_HASHMAP** consmap, SCIP_HASHMAP** varmap);
+   SCIP_RETCODE addConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj, SCIP_Bool global, std::map<SCIP_VAR*, SCIP_Real>* solMap, SCIP_Bool copysol);
    SCIP_RETCODE propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, int* nPropagatedVars, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge);
    //SCIP_RETCODE addConsWithVars(SCIP_CONS* cons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj);
-   SCIP_RETCODE propBoundWithSubscip( SCIP* scip, SCIP_VAR* origVar, SCIP* subscip, SCIP_VAR* subscipObjectiveVar, int* nchgbds, SCIP_Real* totalBoundReduction, SCIP_Bool* boundsDiverge, std::map<SCIP_VAR*, SCIP_Real>* solMap );
    SCIP_RETCODE propagateDifferentialWithPattern(SCIP* scip, SCIP* subscip, int* nNewCons, SCIP_Bool * boundsDiverge);
    SCIP_RETCODE addPlanesWithSubscip(SCIP* scip, int nVars, SCIP_VAR** origVars, SCIP* subscip, SCIP_VAR** subscipObjectiveVars, int* nNewCons );
 

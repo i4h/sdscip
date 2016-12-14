@@ -535,6 +535,91 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip(SCIP* scip, SCIP** subscipp, SC
 
 }
 
+/** Adds a constraint in scip with its varaibles in to subscip
+ *  and copies the bounds of the variables  */
+SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP* scip, SCIP* subscip,SCIP_HASHMAP* varmap, SCIP_HASHMAP* consmap, SCIP_Bool noObj, SCIP_Bool global, std::map<SCIP_VAR*, SCIP_Real>* solMap, SCIP_Bool copysol)
+{
+   int nConsVars;
+   SCIP_VAR** consvars;
+   SCIP_Bool success;
+   SCIP_CONS* targetcons = NULL;
+   SCIP_SOL* scipSol;
+
+   assert(currentCons != NULL);
+   assert(scip != NULL);
+   assert(subscip != NULL);
+   assert(varmap != NULL);
+   assert(consmap != NULL);
+
+   scipSol = SCIPgetBestSol(scip);
+
+   SCIPdebugMessage("adding cons with Vars from scip in stage %i\n",SCIPgetStage(scip));
+
+    //Add constraint to subscip
+
+   SCIP_CONSHDLR* conshdlr;
+   conshdlr = SCIPconsGetHdlr(currentCons);
+   SCIP_CALL( SCIPgetConsCopy(scip, subscip, currentCons, &targetcons, conshdlr, varmap, consmap, NULL,
+         SCIPconsIsInitial(currentCons), SCIPconsIsSeparated(currentCons),
+         SCIPconsIsEnforced(currentCons), SCIPconsIsChecked(currentCons),
+         SCIPconsIsPropagated(currentCons), FALSE, SCIPconsIsModifiable(currentCons),
+         SCIPconsIsDynamic(currentCons), SCIPconsIsRemovable(currentCons), FALSE, TRUE, &success) );
+
+
+   /* Set original bounds in target scip from local/global bounds in source scip
+    * necessary, since the this runs in the presolving of the source scip only original bounds are copied */
+   SCIP_CALL( SCIPgetConsNVars(scip, currentCons, &nConsVars, &success) );
+   assert(success);
+   SCIP_CALL( SCIPallocBufferArray(scip, &consvars, nConsVars) );
+   SCIP_CALL( SCIPgetConsVars(scip, currentCons, consvars, nConsVars, &success) );
+   assert(success);
+   for( int v = 0; v < nConsVars; v++ )
+   {
+      SCIPdbgMsg("considering %s variable %s %p\n",SCIPvarIsOriginal(consvars[v]) ? "original" : "transformed", SCIPvarGetName(consvars[v]), (void*) consvars[v]);
+      SCIP_VAR* sourcevar = consvars[v];
+      SCIP_VAR* targetvar = (SCIP_VAR*) SCIPhashmapGetImage(varmap,consvars[v]);
+
+      assert(targetvar != NULL);
+      SCIPdbgMsg("lhs = %e\n",(global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar)));
+      SCIPdbgMsg("rhs = %e\n",(global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar)));
+      SCIPdbgMsg("delta = %e\n",global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar) - global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar));
+      assert((global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar)) <= (global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar)));
+      SCIPchgVarLb(subscip, targetvar, global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar));
+      SCIPchgVarUb(subscip, targetvar, global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar));
+      assert(SCIPisEQ(scip, SCIPvarGetLbLocal(targetvar), global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar)));
+      assert(SCIPisEQ(scip, SCIPvarGetUbLocal(targetvar), global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar)));
+
+      if (noObj)
+         SCIP_CALL( SCIPchgVarObj(subscip,targetvar,0) );
+
+      if (scipSol != NULL && copysol == TRUE)
+      {
+         SCIP_Real solVal = SCIPgetSolVal(scip,scipSol,consvars[v]);
+         (*solMap)[targetvar] = solVal;
+      }
+
+   }
+   SCIPfreeBufferArray(scip, &consvars); //TODO _SD allocating buffer outside of loop could increase performance?
+
+   /* add the copied constraint to target SCIP if the copying process was valid */
+   if( success )
+   {
+      SCIPdbgMsg("copied constraint %s to subscip\n",SCIPconsGetName(currentCons));
+      assert(targetcons != NULL);
+       /* add constraint to target SCIP */
+       SCIP_CALL( SCIPaddCons(subscip, targetcons) );
+       /* release constraint once for the creation capture */
+       SCIP_CALL( SCIPreleaseCons(subscip, &targetcons) );
+   }
+   else
+   {
+      SCIPdebugMessage("failed to copy constraint %s\n", SCIPconsGetName(currentCons));
+      assert(FALSE);
+   }
+
+   return SCIP_OKAY;
+}
+
 
 /** Method executing bound propagation using a subscip for differential and algebraic constraints at one given time
  *
@@ -599,7 +684,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_
             if( !SCIPconsIsDeleted(cons) )
             {
                SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(cons));
-               SCIP_CALL( SDaddConsWithVars(cons,scip,subscip, varmap, consmap, true, true, solMap, TRUE) );
+               SCIP_CALL( addConsWithVars(cons,scip,subscip, varmap, consmap, true, true, solMap, TRUE) );
             }
             else
             {
@@ -625,7 +710,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_
          {
             SCIP_CONS* cons(structure_->getDiffConsCons());
             SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(cons));
-            SCIP_CALL( SDaddConsWithVars(cons,scip,subscip, varmap, consmap, true, true, solMap, TRUE) );
+            SCIP_CALL( addConsWithVars(cons,scip,subscip, varmap, consmap, true, true, solMap, TRUE) );
          }
       }
       SCIPcppDbgMsg(" Added Constraints and Variables" << std::endl);
@@ -649,7 +734,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_
             assert(!SCIPconsIsDeleted(cut));
             SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(cut));
             /* Add this constraint and its variables */
-            SCIP_CALL( SDaddConsWithVars(cut,scip,subscip, varmap, consmap, true, true, solMap, FALSE) );
+            SCIP_CALL( addConsWithVars(cut,scip,subscip, varmap, consmap, true, true, solMap, FALSE) );
          }
       }
    }
@@ -686,7 +771,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip(SCIP* scip, SCIP* subscip, SCIP_
             SCIP_CONS * currentCons(structure_->getDiffConsCons());
             SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(currentCons));
             /* Add this constraint and its variables */
-            SCIP_CALL( SDaddConsWithVars(currentCons,scip,subscip, varmap, consmap, true, true, solMap, TRUE) );
+            SCIP_CALL( addConsWithVars(currentCons,scip,subscip, varmap, consmap, true, true, solMap, TRUE) );
          }
          else
          {
