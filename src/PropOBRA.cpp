@@ -241,25 +241,6 @@ SCIP_DECL_PROPPRESOL( PropOBRA::scip_presol )
    return SCIP_OKAY;
 }
 
-SCIP_RETCODE PropOBRA::solveEmptyNLP()
-{
-   SCIP* nlp;
-   SCIP_RETCODE retcode;
-
-   SCIP_CALL( SCIPcreate(&nlp) );
-   SCIP_CALL(SCIPincludeDefaultPlugins(nlp));
-   SCIP_CALL( SCIPcreateProbBasic(nlp, "empty problem") );
-   SCIP_CALL( SCIPtransformProb( nlp) );
-   SCIP_CALL( SCIPpresolve(nlp) );
-   SCIP_CALL( SCIPsetLongintParam(nlp, "limits/nodes", 0LL) );
-
-   retcode = SCIPsolve(nlp);
-
-   SCIP_CALL( SCIPsolveNLP(nlp) );
-   assert(false);
-
-
-}
 
 /** apply one round of obra */
 SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
@@ -689,6 +670,7 @@ SCIP_RETCODE PropOBRA::addHistoricAndCurrentAlgebraicCons()
       }
       SCIPcppDbgMsg(" Added Constraints and Variables" << std::endl);
    }
+   return SCIP_OKAY;
 }
 
 

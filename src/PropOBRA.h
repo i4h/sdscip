@@ -238,7 +238,6 @@ private:
    SCIP_RETCODE writeAfterProp( int breakTime);
 
    SCIP_RETCODE applyOBRA(SCIP_RESULT* result);
-   SCIP_RETCODE solveEmptyNLP();
 
    /* Preparation methods */
    SCIP_RETCODE createAndConfigureSubscip();
