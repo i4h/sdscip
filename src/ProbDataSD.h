@@ -179,10 +179,6 @@ SCIP_RETCODE SCIPincludeDialogSDensureValidStructure(
    SCIP*                 scip                /**< SCIP data structure */
    );
 
-SCIP_RETCODE SCIPincludeDialogWriteTransprobSD(
-   SCIP*                 scip                /**< SCIP data structure */
-				    );
-
 SCIP_RETCODE SCIPincludeDialogSDrefreshStructure(
    SCIP*                 scip                /**< SCIP data structure */
 				    );

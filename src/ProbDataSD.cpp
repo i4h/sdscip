@@ -293,36 +293,7 @@ SCIP_DECL_DIALOGEXEC(dialogExecSDensureValidStructure)
 
 
 
-/** execution method of dialog */
-static
-SCIP_DECL_DIALOGEXEC(dialogExecWriteTransprobSD)
-{  /*lint --e{715}*/
-   SCIP_PROBDATA* probdata;
-   probdata = SCIPgetProbData(scip);
-   assert(probdata != NULL);
 
-
-   /* add your dialog to history of dialogs that have been executed */
-   SCIP_CALL( SCIPdialoghdlrAddHistory(dialoghdlr, dialog, NULL, FALSE) );
-
-   SCIPdebugMessage("WriteTransprobSD called from dialog\n");
-   char* paramstr;
-   SCIPgetStringParam(scip,"constraints/ctrlDifferential/outFile",&paramstr);
-   int historicCons(0);
-   SCIP_CALL( SCIPgetIntParam(scip,"constraints/ctrlDifferential/historicCons",&historicCons));
-
-   std::ostringstream oss;
-   oss << paramstr << "_" << historicCons << ".gms";
-   SCIPdebugMessage("WRITING transformed problem to file %s\n",oss.str().c_str());
-   SCIPwriteTransProblem(scip, oss.str().c_str(), std::string("gms").c_str(), false);
-   SCIPdebugMessage("done writing\n");
-
-
-   /* next dialog will be root dialog again */
-   *nextdialog = SCIPdialoghdlrGetRoot(dialoghdlr);
-
-   return SCIP_OKAY;
-}
 
 /** execution method of dialog */
 static
@@ -1724,35 +1695,7 @@ sdscip::SDproblemStructureInterface* SDgetStructure(SCIP* scip)
 }
 
 
-/** creates the writeTransprobSD and includes it in SCIP */
-SCIP_RETCODE SCIPincludeDialogWriteTransprobSD(
-   SCIP*                 scip                /**< SCIP data structure */
-   )
-{
 
-   SCIP_DIALOG* dialog;
-   SCIP_DIALOG* parentdialog;
-
-   /** includes or updates the default dialog menus in SCIP */
-   SCIP_CALL( SCIPincludeDialogDefault(scip) );
-
-   /* get parent dialog */
-   parentdialog = SCIPgetRootDialog(scip);
-   assert(parentdialog != NULL);
-   /* TODO: _SD (optional) change parent dialog from root dialog to another existing dialog (needs to be a menu) */
-
-   /* create, include, and release dialog */
-   if( !SCIPdialogHasEntry(parentdialog, DIALOG_WRITE_NAME) )
-   {
-      SCIP_CALL( SCIPincludeDialog(scip, &dialog,
-            NULL, dialogExecWriteTransprobSD, NULL, NULL,
-            DIALOG_WRITE_NAME, DIALOG_DESC, DIALOG_ISSUBMENU, NULL) );
-      SCIP_CALL( SCIPaddDialogEntry(scip, parentdialog, dialog) );
-      SCIP_CALL( SCIPreleaseDialog(scip, &dialog) );
-   }
-
-   return SCIP_OKAY;
-}
 
 /** add sd-scip specific parameters that belong to no plugin */
 SCIP_RETCODE SCIPaddParamsSD(
