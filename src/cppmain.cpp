@@ -116,13 +116,14 @@ SCIP_RETCODE runSCIP(
    /* initialize SCIP */
    SCIP_CALL ( SCIPcreate ( &scip ) );
 
-   SCIP_CALL ( SCIPincludeDialogSDinit ( scip ) );
-   SCIP_CALL ( SCIPincludeDialogSDprintStructure( scip ) );
-   SCIP_CALL ( SCIPincludeDialogSDensureValidStructure( scip ) );
-   SCIP_CALL ( SCIPincludeDialogSDrefreshStructure( scip ) );
-   SCIP_CALL ( SCIPincludeDialogSDdoSomething( scip ) );
-   SCIP_CALL ( SCIPincludeDialogSDdisable( scip ) );
-   SCIP_CALL ( SCIPincludeDialogWriteTransprobSD ( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogSDinit ( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogSDprintStructure( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogSDensureValidStructure( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogSDrefreshStructure( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogSDdoSomething( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogSDdisable( scip ) );
+   //SCIP_CALL ( SCIPincludeDialogWriteTransprobSD ( scip ) );
+   SCIP_CALL ( SCIPincludeDialogSD ( scip ) );
 
    /* include default SCIP plugins */
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );

@@ -162,6 +162,11 @@ SCIP_RETCODE SDfixVarProbingExact(SCIP* scip, SCIP_VAR* var, SCIP_Real fixVal);
 
 /** creates the setup dialog and includes it in SCIP */
 
+SCIP_RETCODE SCIPincludeDialogSD(
+   SCIP*                 scip                /**< SCIP data structure */
+				    );
+
+
 SCIP_RETCODE SCIPincludeDialogSDinit(
    SCIP*                 scip                /**< SCIP data structure */
 				    );

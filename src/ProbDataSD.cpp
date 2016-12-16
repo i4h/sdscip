@@ -363,6 +363,33 @@ SCIP_DECL_DIALOGEXEC(dialogExecSDdoSomething)
 
 /** execution method of dialog */
 static
+SCIP_DECL_DIALOGEXEC(dialogExecOBRA)
+{  /*lint --e{715}*/
+
+   /* add your dialog to history of dialogs that have been executed */
+   SCIP_CALL( SCIPdialoghdlrAddHistory(dialoghdlr, dialog, NULL, FALSE) );
+
+
+   /* next dialog will be root dialog again */
+   *nextdialog = SCIPdialoghdlrGetRoot(dialoghdlr);
+
+   SCIPsetIntParam(scip, "propagating/obra/maxprerounds", 1);
+   SCIPsetIntParam(scip, "propagating/obra/freq", 1);
+
+
+   SCIPpresolve(scip);
+
+   SCIPwriteTransProblem(scip, "obra.bnd", "bnd", FALSE);
+
+   SCIPinfoMessage(scip, NULL, "\n");
+   SCIPinfoMessage(scip, NULL, "OBRA has finished. Final bounds have been saved to the file obra.bnd");
+
+
+   return SCIP_OKAY;
+}
+
+/** execution method of dialog */
+static
 SCIP_DECL_DIALOGEXEC(dialogExecSDdisable)
 {  /*lint --e{715}*/
 
@@ -1432,6 +1459,7 @@ SCIP_RETCODE SDfixVarProbingExact(SCIP* scip, SCIP_VAR* var, SCIP_Real fixVal) {
  * dialog specific interface methods
  */
 
+//@todo: remove unused dialogs
 /** creates the setup dialog and includes it in SCIP */
 SCIP_RETCODE SCIPincludeDialogSDinit(
    SCIP*                 scip                /**< SCIP data structure */
@@ -1463,6 +1491,67 @@ SCIP_RETCODE SCIPincludeDialogSDinit(
 
    return SCIP_OKAY;
 }
+
+
+
+/** creates the SD dialog  menu and includes it in SCIP */
+SCIP_RETCODE SCIPincludeDialogSD(
+   SCIP*                 scip                /**< SCIP data structure */
+   )
+{
+   SCIP_DIALOG* sdmenu;
+   SCIP_DIALOG* root;
+   SCIP_DIALOG* dialog;
+
+   root = SCIPgetRootDialog(scip);
+
+   /** includes or updates the default dialog menus in SCIP */
+   SCIP_CALL( SCIPincludeDialogDefault(scip) );
+
+   /* Create sd menu */
+   SCIP_CALL( SCIPincludeDialog(scip, &sdmenu,
+      NULL,
+      SCIPdialogExecMenu, NULL, NULL,
+      "sd", "system dynamics plugins", TRUE, NULL) );
+   SCIP_CALL( SCIPaddDialogEntry(scip, root, sdmenu) );
+   SCIP_CALL( SCIPreleaseDialog(scip, &sdmenu) );
+
+
+   /* Add "print structure" dialog */
+   if( !SCIPdialogHasEntry(sdmenu, "print structure") )
+   {
+      SCIP_CALL( SCIPincludeDialog(scip, &dialog,
+            NULL, dialogExecSDprintStructure, NULL, NULL,
+            "print structure", "print SD Problem Structure", FALSE, NULL) );
+      SCIP_CALL( SCIPaddDialogEntry(scip, sdmenu, dialog) );
+      SCIP_CALL( SCIPreleaseDialog(scip, &dialog) );
+   }
+
+   /* Add "disable" dialog */
+   if( !SCIPdialogHasEntry(sdmenu, "disable") )
+   {
+      SCIP_CALL( SCIPincludeDialog(scip, &dialog,
+            NULL, dialogExecSDdisable, NULL, NULL,
+            "disable", "disable SD-SCIP solving plugins", DIALOG_ISSUBMENU, NULL) );
+      SCIP_CALL( SCIPaddDialogEntry(scip, sdmenu, dialog) );
+      SCIP_CALL( SCIPreleaseDialog(scip, &dialog) );
+
+   }
+
+   /* Add "obra" dialog */
+   if( !SCIPdialogHasEntry(sdmenu, "obra") )
+   {
+      SCIP_CALL( SCIPincludeDialog(scip, &dialog,
+            NULL, dialogExecOBRA, NULL, NULL,
+            "obra", "Run Preosolving with OBRA enabled", DIALOG_ISSUBMENU, NULL) );
+      SCIP_CALL( SCIPaddDialogEntry(scip, sdmenu, dialog) );
+      SCIP_CALL( SCIPreleaseDialog(scip, &dialog) );
+
+   }
+
+   return SCIP_OKAY;
+}
+
 
 /** creates the setup dialog and includes it in SCIP */
 SCIP_RETCODE SCIPincludeDialogSDprintStructure(
@@ -1620,6 +1709,8 @@ SCIP_RETCODE SCIPincludeDialogSDdisable(
 
 
 
+
+
 sdscip::SDproblemStructureInterface* SDgetStructure(SCIP* scip)
 {
    SCIP_PROBDATA* probdata;
@@ -1663,7 +1754,7 @@ SCIP_RETCODE SCIPincludeDialogWriteTransprobSD(
    return SCIP_OKAY;
 }
 
-/** includes sdscip */
+/** add sd-scip specific parameters that belong to no plugin */
 SCIP_RETCODE SCIPaddParamsSD(
    SCIP*                 scip                /**< SCIP data structure */
 )
@@ -1678,6 +1769,7 @@ SCIP_RETCODE SCIPaddParamsSD(
 
    return SCIP_OKAY;
 }
+
 
 
 
