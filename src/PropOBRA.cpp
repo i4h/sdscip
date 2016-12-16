@@ -1,3 +1,4 @@
+//Pro#define SCIP_DBG
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 /*                                                                           */
 /*                  This file is part the SCIP-Extension                     */
@@ -90,21 +91,41 @@ SCIP_RETCODE PropOBRA::printTimeProgressHeader(int tStart, int tFinal, int steps
 /** displays the progress of propOBRA to the user as a horizontal progress bar */
 SCIP_RETCODE PropOBRA::printProgress()
 {
-   int tStart = structure->getTinit();
-   int tEnd = structure_->getTfinal();
+   SCIP_Real tStart = structure_->getTinit();
+   SCIP_Real tEnd = structure_->getTfinal();
+   SCIP_Real tSpan = tEnd - tStart;
    int nSteps = structure_->getLastTime();
    int width = 80;
-
-   int newTime = (int) std::floor((long double) currentTime_ * progressStep_);
-   for (int i = progressTime_; i < newTime; ++i) {
-      if( i == 0)
-         printf("|");
-      else
-         printf("-");
-      fflush(stdout);
+   int w = 3;
+   int precision = 0;
+   if (tEnd <= 99) {
+      precision = 1;
+      w = 4;
    }
+   int numWidth = w + (precision == 0 ? 0 : precision + 1);
 
-   progressTime_ = newTime;
+   /*                     ]  OBRA: [    T = ... / ...  */
+   int barWidth = width - 1  - 7      - 2 * numWidth - 6;
+
+   SCIP_Real percent = (SCIP_Real) currentTime_ / (SCIP_Real) nSteps;
+   int activeSegments = barWidth * percent;
+
+
+   SCIPdbgMsg("currentTIme: %i\n", currentTime_);
+   SCIPdbgMsg("percent: %f\n", percent);
+   SCIPdbgMsg("activeBars: %i\n", activeSegments);
+
+   std::cout << "OBRA: [";
+   for (int i = 0; i < barWidth; ++i) {
+      if (i < activeSegments)
+         std::cout << ("-");
+      else if (i == activeSegments)
+         std::cout << (">");
+      else
+         std::cout << (" ");
+   }
+   std::cout << "] T = " << std::fixed << std::setw(w) << std::setprecision(precision) <<  (tStart + percent * tSpan) << " / " << tEnd << "\r";
+   fflush(stdout);
 
    return SCIP_OKAY;
 }
@@ -233,8 +254,10 @@ SCIP_RETCODE PropOBRA::solveEmptyNLP()
    SCIP_CALL( SCIPsetLongintParam(nlp, "limits/nodes", 0LL) );
 
    retcode = SCIPsolve(nlp);
+
    SCIP_CALL( SCIPsolveNLP(nlp) );
    assert(false);
+
 
 }
 
@@ -242,9 +265,7 @@ SCIP_RETCODE PropOBRA::solveEmptyNLP()
 SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 {
 
-   solveEmptyNLP();
-   assert(false);
-
+   //solveEmptyNLP();
 
    /* Make sure parameters are the way we want them */
    {
@@ -292,8 +313,6 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
    SCIP_Real totalBoundReduction( 0 );
    int nPropagatedVars( 0 );
    int nchgbds( 0 );
-
-   printTimeProgressHeader(structure_->getTinit(), structure_->getTfinal(), structure_->getLastTime(), 80);
 
    SCIPinfoMessage(scip_, NULL, "\n");
 
@@ -599,14 +618,12 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
    assert(success);
    for( int v = 0; v < nConsVars; v++ )
    {
-      SCIPdbgMsg("considering %s variable %s %p\n",SCIPvarIsOriginal(consvars[v]) ? "original" : "transformed", SCIPvarGetName(consvars[v]), (void*) consvars[v]);
       SCIP_VAR* sourcevar = consvars[v];
       SCIP_VAR* targetvar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,consvars[v]);
 
+      SCIPdebugMessage("considering %s variable %s %p\n",SCIPvarIsOriginal(consvars[v]) ? "original" : "transformed", SCIPvarGetName(consvars[v]), (void*) consvars[v]);
+
       assert(targetvar != NULL);
-      SCIPdbgMsg("lhs = %e\n",(global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar)));
-      SCIPdbgMsg("rhs = %e\n",(global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar)));
-      SCIPdbgMsg("delta = %e\n",global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar) - global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar));
       assert((global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar)) <= (global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar)));
       SCIPchgVarLb(subscip_, targetvar, global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar));
       SCIPchgVarUb(subscip_, targetvar, global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar));
@@ -628,7 +645,7 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
    /* add the copied constraint to target SCIP if the copying process was valid */
    if( success )
    {
-      SCIPdbgMsg("copied constraint %s to subscip\n",SCIPconsGetName(currentCons));
+      SCIPdebugMessage("copied constraint %s to subscip\n",SCIPconsGetName(currentCons));
       assert(targetcons != NULL);
        /* add constraint to target SCIP */
        SCIP_CALL( SCIPaddCons(subscip_, targetcons) );
@@ -736,11 +753,11 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
          for( structure_->startDiffConsIteration(addTime); structure_->diffConsLeft(addTime); structure_->incrementDiffCons())
          {
             SCIP_CONS* cons(structure_->getDiffConsCons());
-            SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(cons));
+            SCIPdebugMessage(" Adding Constraint %s\n",SCIPconsGetName(cons));
             SCIP_CALL( addConsWithVars(cons, true, true, TRUE) );
          }
       }
-      SCIPcppDbgMsg(" Added Constraints and Variables" << std::endl);
+      //SCIPcppDbgMsg(" Added Constraints and Variables" << std::endl);
    }
 
    /*
@@ -754,7 +771,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
       SCIPdebugMessage(" Step 4: Adding state cut constraints to subscip at t=%i,...,%i\n",firstAddTime, currentTime_ - 1);
       for( addTime = firstAddTime; addTime < currentTime_; ++addTime)
       {
-         SCIPdbgMsg(" Adding cut constraints at t=%i\n",addTime);
+         SCIPdebugMessage(" Adding cut constraints at t=%i\n",addTime);
          for( structure_->startCutIteration(addTime); structure_->cutsLeft(addTime); structure_->incrementCut())
          {
             SCIP_CONS* cut(structure_->getCut());
@@ -796,7 +813,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
             SCIPdebug( SCIP_CALL_ABORT( SCIPprintCons(scip_, cons, NULL) ) );
             SCIPdebug( SCIPinfoMessage(scip_, NULL, ";\n") );
             SCIP_CONS * currentCons(structure_->getDiffConsCons());
-            SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(currentCons));
+            SCIPdebugMessage(" Adding Constraint %s\n",SCIPconsGetName(currentCons));
             /* Add this constraint and its variables */
             SCIP_CALL( addConsWithVars(currentCons, true, true, TRUE) );
          }

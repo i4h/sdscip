@@ -195,7 +195,7 @@ bool PropagationPattern::fetchPattern(int ndim)
     	 {
     		 SCIPmessagePrintError("MultiTimeCuts in 3d not implemented yet\n");
     	 }
-    	 std::cout << "ready to add pattern, confId is " << cutConf3d_ << std::endl << std::flush;
+
     	 switch (cutConf3d_)
     	 {
     	 case 0:
