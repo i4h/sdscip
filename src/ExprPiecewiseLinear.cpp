@@ -431,7 +431,7 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
 
    SCIPdbgMsg( "Convex hull from inner points is:\n" );
 
-   for( int i = 0; i < convexHull.size(); ++i )
+   for( unsigned int i = 0; i < convexHull.size(); ++i )
    {
       SCIPdbgMsg( "(%1.17e,%1.17e)\n", convexHull[i].first, convexHull[i].second );
    }
