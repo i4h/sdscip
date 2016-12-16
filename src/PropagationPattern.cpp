@@ -425,7 +425,7 @@ void PropagationPattern::next()
       configurationLoaded_ = true;
       this->updateIsCut();
    }
-   while (     !patternType_ == 1 /* Multitimecuts: add this cut (we configure the multitimecuts for the patternType at construction) */
+   while (     !( patternType_ == 1) /* Multitimecuts: add this cut (we configure the multitimecuts for the patternType at construction) */
 	        &&  !(addCuts_  || !currentConfIsCut_) ); /* Consttimecut: Repeat until we should add cuts, or the configuration is not a cut */
    SCIPdbgMsg("found valid configuration\n");
 
