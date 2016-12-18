@@ -137,7 +137,7 @@ SCIP_RETCODE PropOBRA::printSummary( int nSubscips, SCIP_Real aggSolvingTime, SC
 
    SCIPinfoMessage( scip_, NULL, "-------------------------------------------------------------------------\n" );
    SCIPinfoMessage(scip_,NULL,"| CtrlDifferential General Statistics in depth %5i                    |\n",SCIPgetDepth(scip_));
-   SCIPinfoMessage(scip_,NULL,"| HistoricCons parameter:          %-4i                                 |\n",historicCons_);
+   SCIPinfoMessage(scip_,NULL,"| HistoricCons parameter:          %-4i                                 |\n",lookback_);
    SCIPinfoMessage( scip_, NULL, "| Total time elapsed:             %1.5e s                         |\n", SCIPclockGetTime( propClock ) );
    SCIPinfoMessage( scip_, NULL, "| Last propagated Time:           %-4i                                  |\n", ( breakTime < 0 ? currentTime_ : breakTime - 1 ) );
    SCIPinfoMessage(scip_,NULL,"| Number of solved Subscips:       %-5i                                |\n",nSubscips);
@@ -200,11 +200,11 @@ SCIP_RETCODE PropOBRA::writeAfterProp( int breakTime)
       std::ostringstream oss,bndoss;
       SCIPgetStringParam( scip_, "propagating/obra/outFile", &outfilestr );
       SCIPgetStringParam( scip_, "propagating/obra/outDir", &outdirstr );
-      oss << outdirstr << outfilestr << "_" << historicCons_ << "_" << ( breakTime < 0 ? currentTime_ : breakTime - 1 ) << ".cip";
+      oss << outdirstr << outfilestr << "_" << lookback_ << "_" << ( breakTime < 0 ? currentTime_ : breakTime - 1 ) << ".cip";
 
       SCIPdebugMessage( "WRITING transformed problem to file %s at t=%i\n", oss.str().c_str(), currentTime_ );
       SCIPwriteTransProblem(scip_, oss.str().c_str(),"cip", false);
-      bndoss << outdirstr << outfilestr << "_" << historicCons_ << "_" << currentTime_ << ".bnd";
+      bndoss << outdirstr << outfilestr << "_" << lookback_ << "_" << currentTime_ << ".bnd";
       SCIPdebugMessage("WRITING bounds to file %s at t=%i\n",bndoss.str().c_str(),currentTime_);
       SCIPwriteTransProblem(scip_, bndoss.str().c_str(), "bnd", false);
 
@@ -308,7 +308,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
             std::ostringstream oss;
             SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
             SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
-            oss << paramstr2 << paramstr << "_" << historicCons_ << "_" << currentTime_ << ".cip";
+            oss << paramstr2 << paramstr << "_" << lookback_ << "_" << currentTime_ << ".cip";
             SCIPdebugMessage("WRITING transformed problem to file %s at t=%i\n",oss.str().c_str(),currentTime_);
             SCIPwriteTransProblem(scip_, oss.str().c_str(), "cip", false);
          }
@@ -349,7 +349,10 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
    SCIPclockStop( propClock, scip_->set );
 
    int nSubscips = constTimePattern_.stats_.nSubscips + constTimePattern_.stats_.nSubscips;
-   SCIP_Real aggSolvingTime    = constTimePattern_.stats_.aggSolutionTime    + multiTimePattern_.stats_.aggSolutionTime;
+   SCIP_Real aggSolvingTime =    constTimePattern_.stats_.aggSolutionTime
+                               + multiTimePattern_.stats_.aggSolutionTime
+                               + algebraicPattern_.stats_.aggSolutionTime
+                               + controlPattern_.stats_.aggCutsSolutionTime;
 
    /* Display the summary of this obra run */
    printSummary(nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime, propClock);
@@ -646,7 +649,7 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
 SCIP_RETCODE PropOBRA::addHistoricAndCurrentAlgebraicCons()
 {
    int addTime;
-   int firstAddTime(currentTime_ - 1 - historicCons_);
+   int firstAddTime(currentTime_ - 1 - lookback_);
    if( firstAddTime < 0)
       firstAddTime = 0;
    SCIPdebugMessage(" Step 2: Adding algebraic constraints and variables for t=%i,...,%i\n",firstAddTime,currentTime_ - 1);
@@ -680,7 +683,7 @@ SCIP_RETCODE PropOBRA::addHistoricAndCurrentAlgebraicCons()
  *  - scip                 : SCIP main data structure of the original problem
  *  - subscip              : SCIP main data structure for the subscip, with created empty problem and settings
  *  - currentTime          : Bounds of variables at the given currentTime will (hopfeully) be tightened
- *  - historicCons         : The number of historical constraints to be considered in bound tightening
+ *  - lookback         : The number of historical constraints to be considered in bound tightening
  *  - varmap               : A preallocated sufficiently large varmap to be used for the subscip (contents will be lost)
  *  - consmap              : A preallocated sufficently large consmap to be used for the subscip (contents will be lost)
  *  - nPropagatedVars      : Pointer to an integer, which is incrementend by one for each propagated variable, or NULL
@@ -690,9 +693,9 @@ SCIP_RETCODE PropOBRA::addHistoricAndCurrentAlgebraicCons()
  *
  *  The method sequentially completes two tasks:
  *  1) Bound propagation to algebraic variables at t = currentTime -1 using the algebraic constraints at t = currentTime -1
- *     and additionally historicCons earlier constraints
+ *     and additionally lookback earlier constraints
  *  2) Bound propagation to differential variables at t = currentTime using the algebraic constraints at t = currentTime
- *     and additionally historicCons earlier constraints
+ *     and additionally lookback earlier constraints
  *
  *  These tasks are divided into 6 smaller steps, see comments in code and SCIPdebugMessages
  *
@@ -726,7 +729,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
     */
    {
       int addTime;
-      int firstAddTime(currentTime_ - historicCons_);
+      int firstAddTime(currentTime_ - lookback_);
       if( firstAddTime < 0 )
          firstAddTime = 0;
       SCIPdebugMessage(" Step 3: Adding historic differential constraints to subscip at t=%i,...,%i\n",firstAddTime, currentTime_ - 1);
@@ -747,7 +750,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
     */
    {
       int addTime;
-      int firstAddTime(currentTime_ - historicCons_);
+      int firstAddTime(currentTime_ - lookback_);
       if( firstAddTime < 0 )
          firstAddTime = 0;
       SCIPdebugMessage(" Step 4: Adding state cut constraints to subscip at t=%i,...,%i\n",firstAddTime, currentTime_ - 1);

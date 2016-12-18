@@ -109,9 +109,9 @@ public:
              &breakTime, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
       SCIPaddIntParam(scip,
-             "propagating/obra/historicCons",
+             "propagating/obra/lookback",
              "Number of historic Constraints to be used in bound propagation (0: conventional bound propagation)",
-             &historicCons_, FALSE, 5, 0, 1000, NULL, NULL);
+             &lookback_, FALSE, 5, 0, 1000, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateAlgebraic",
@@ -280,7 +280,7 @@ private:
 
    /* Parameters */
    SCIP_Real subscipGapLimit_;
-   int historicCons_;
+   int lookback_;
    int breakTime;
    SCIP_Real subscipTimeLimit_;
    SCIP_Longint subscipNodeLimit_;

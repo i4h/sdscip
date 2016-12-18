@@ -619,10 +619,10 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	SCIP_Bool boundsDiverge = false;
 
 	/* Get some parameters */
-	int historicCons(0);
+	int lookback(0);
 	char* paramstr,*paramstr2;
 	SCIP_Bool writeSubscips;
-	SCIP_CALL( SCIPgetIntParam(this->scip_,"propagating/obra/historicCons",&historicCons));
+	SCIP_CALL( SCIPgetIntParam(this->scip_,"propagating/obra/lookback",&lookback));
 	SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
 	SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
 	SCIPgetBoolParam(scip_,"propagating/obra/writeSubscips",&writeSubscips);
@@ -637,7 +637,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		if (writeSubscips)
 		{
 			std::ostringstream oss;
-			oss << paramstr2 << paramstr << "_" << historicCons << "_" << currentTime << "_pattern_" << this->currentConfiguration_ << "_subscip.cip";
+			oss << paramstr2 << paramstr << "_" << lookback << "_" << currentTime << "_pattern_" << this->currentConfiguration_ << "_subscip.cip";
 			SCIPdebugMessage("  WRITING transformed subscip to file %s\n",oss.str().c_str());
 			SCIP_CALL( SCIPwriteOrigProblem(this->subscip_, oss.str().c_str(), "cip", FALSE) );
 		}
