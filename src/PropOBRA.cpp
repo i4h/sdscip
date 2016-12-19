@@ -251,7 +251,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
    /* Make sure parameters are the way we want them */
    {
       SCIP_Bool val;
-      SCIP_CALL(SCIPgetBoolParam(scip_, "constraints/nonlinear/reformulate", &val));
+      ///SCIP_CALL(SCIPgetBoolParam(scip_, "constraints/nonlinear/reformulate", &val));
       SCIP_CALL(SCIPgetBoolParam(scip_, "presolving/donotmultaggr", &val));
       assert(val == TRUE);
    }
