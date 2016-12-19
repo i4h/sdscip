@@ -146,7 +146,7 @@ public:
       SCIPaddIntParam(scip,
              "propagating/obra/cutConf3d",
              "What kinds of cuts are added to problems with 3 state variables",
-             &cutConf3d_, FALSE, 0, 0, 2, NULL, NULL);
+             &cutConf3d_, FALSE, 2, 0, 2, NULL, NULL);
 
       SCIPaddIntParam(scip,
              "propagating/obra/multiTimeCutLookback",
