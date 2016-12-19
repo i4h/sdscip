@@ -344,9 +344,11 @@ SCIP_DECL_DIALOGEXEC(dialogExecOBRA)
    /* next dialog will be root dialog again */
    *nextdialog = SCIPdialoghdlrGetRoot(dialoghdlr);
 
+   /* Disable multi aggregation for obra */
+   SCIP_CALL(SCIPsetBoolParam(scip_, "presolving/donotmultaggr", true));
+
    SCIPsetIntParam(scip, "propagating/obra/maxprerounds", 1);
    SCIPsetIntParam(scip, "propagating/obra/freq", 1);
-
 
    SCIPpresolve(scip);
 
