@@ -34,20 +34,20 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/**@file   ReaderVOP.h
- * @brief  C++ file reader for VOP data files
+/**@file   ReaderSDO.h
+ * @brief  C++ file reader for SDO data files
  * @author Robert Lion Gottwald
  */
 
-#ifndef __VOPREADER_H__
-#define __VOPREADER_H__
+#ifndef __SDOREADER_H__
+#define __SDOREADER_H__
 
 #include "objscip/objscip.h"
 #include "scip/pub_message.h"
 #include "scip/def.h"
 
 namespace sdo {
-class ReaderVOP : public scip::ObjReader {
+class ReaderSDO : public scip::ObjReader {
 public:
      char *discretization;
      char *lookuptype;
@@ -61,69 +61,69 @@ public:
      SCIP_Real lookupMaxRelErr;
      SCIP_Real lookupAproxTol;
      
-     ReaderVOP ( SCIP* scip ) :
-        scip::ObjReader(scip, "vopreader", "file reader for VOP files", "vop" ),
+     ReaderSDO ( SCIP* scip ) :
+        scip::ObjReader(scip, "sdoreader", "file reader for SDO files", "sdo" ),
         discretization(nullptr),
         lookuptype(nullptr)
      {
-          SCIP_CALL_ABORT( SCIPaddStringParam ( scip, "reading/vopreader/discretization",
+          SCIP_CALL_ABORT( SCIPaddStringParam ( scip, "reading/sdoreader/discretization",
                                                 "Method used for discretization. Supported values are "
                                                 "'rk2', 'rk3', 'rk4', 'imid2', 'gl4' or 'euler'",
                                                 &discretization, 0, "euler", nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddStringParam ( scip, "reading/vopreader/lookuptype",
+          SCIP_CALL_ABORT( SCIPaddStringParam ( scip, "reading/sdoreader/lookuptype",
                                                 "Spline type used for lookups. Supported values are 'cubic' and 'linear'",
                                                 &lookuptype, 0, "linear", nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/vopreader/positiveStates",
+          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/sdoreader/positiveStates",
                                               "If true, the lower bound of all states will be set to zero",
                                               &positiveStates, 0, false, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/vopreader/simplify",
+          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/sdoreader/simplify",
                                               "If true, the expressions will be simplified before they are stored in the prob structure",
                                               &simplify, true, true, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/vopreader/isolatelookups",
+          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/sdoreader/isolatelookups",
                                               "If true, the lookups will get a variable for their argument and for their result",
                                               &isolatelookups, false, false, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/vopreader/ratealgebraic",
+          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/sdoreader/ratealgebraic",
                                               "If true, the rates of the states will get a variable",
                                               &ratealgebraic, false, false, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip,"reading/vopreader/minVariableFormulation",
+          SCIP_CALL_ABORT( SCIPaddBoolParam ( scip,"reading/sdoreader/minVariableFormulation",
                                               "If true the formulation will only create variables if they are needed, "
                                               "i.e. for states, controls and objective variables",
                                               &useMinVariableFormulation, 0, true, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddIntParam ( scip,"reading/vopreader/multistep",
+          SCIP_CALL_ABORT( SCIPaddIntParam ( scip,"reading/sdoreader/multistep",
                                               "Use multistep method of given order for values greater than one",
                                               &multistep, false, 1, 1, 5, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddIntParam ( scip,"reading/vopreader/nsinglesteps",
+          SCIP_CALL_ABORT( SCIPaddIntParam ( scip,"reading/sdoreader/nsinglesteps",
                                               "Number of additional starting values that should be produced by a singlestep method"
                                               "before a multistep method is used",
                                               &nsinglesteps, false, 1, 1, 4, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddRealParam( scip,"reading/vopreader/lookupAproxTol",
+          SCIP_CALL_ABORT( SCIPaddRealParam( scip,"reading/sdoreader/lookupAproxTol",
                                              "The tolerance value used for cubic approximation of lookups",
                                              &lookupAproxTol, 0, 1e-6, 1e-16, 1e-3, nullptr, nullptr ) );
 
-          SCIP_CALL_ABORT( SCIPaddRealParam( scip,"reading/vopreader/lookupMaxRelErr",
+          SCIP_CALL_ABORT( SCIPaddRealParam( scip,"reading/sdoreader/lookupMaxRelErr",
                                              "The maximum relative error for cubic lookup approximations",
                                              &lookupMaxRelErr, 0, 0.05, 1e-3, 0.3, nullptr, nullptr  ) );
 
-          SCIPaddBoolParam(scip, "reading/vopreader/printSummary",
-                                              "Show problem structure summary after reading a vop file",
+          SCIPaddBoolParam(scip, "reading/sdoreader/printSummary",
+                                              "Show problem structure summary after reading a sdo file",
                                              NULL, false, false, nullptr, nullptr);
 
-          SCIPaddBoolParam(scip, "reading/vopreader/checkStructure",
+          SCIPaddBoolParam(scip, "reading/sdoreader/checkStructure",
                                              "Performs checks of problem structure after first read",
                                              NULL, FALSE, FALSE, NULL, NULL);
 
      }
      /** destructor */
-     virtual ~ReaderVOP() {
+     virtual ~ReaderSDO() {
      }
 
      /** destructor of file reader to free user data (called when SCIP is exiting) */

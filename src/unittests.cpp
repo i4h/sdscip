@@ -57,7 +57,7 @@
 #include "HeurSimODE.h"
 #include "BranchControlFirst.h"
 #include "PropODE.h"
-#include "ReaderVOP.h"
+#include "ReaderSDO.h"
 #include "PresolConsGraph.h"
 #include "Statistics.h"
 #include "scip/scipdefplugins.h"

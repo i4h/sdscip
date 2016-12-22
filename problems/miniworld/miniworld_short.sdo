@@ -1,0 +1,3 @@
+:model "miniworld_short.mdl"
+:objective "miniworld_max_pop.vpd"
+:control "miniworld.voc"

@@ -347,7 +347,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
 
    /** Create integrator **/
    char* discretization;
-   SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
+   SCIPgetStringParam(scip, "reading/sdoreader/discretization", &discretization);
    //const char* discretization = "euler";
    IntervalODEintegrator integrator(scip_, discretization , dt_, intermediateSteps_, nStates_, nAlgebraic_, nControls_);
    integrator.rateEvaluator()->setXdot(structure->getXdotAlgebraic());

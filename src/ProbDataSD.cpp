@@ -571,7 +571,7 @@ SCIP_RETCODE checkStructure(SCIP* scip)
 SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
 
       char* discretization;
-      SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
+      SCIPgetStringParam(scip, "reading/sdoreader/discretization", &discretization);
 
       SDensureValidStructure(scip);;
       sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);

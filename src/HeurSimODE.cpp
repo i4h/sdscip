@@ -164,7 +164,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
    /** Create integrator **/
    char* discretization;
-   SCIPgetStringParam(scip, "reading/vopreader/discretization", &discretization);
+   SCIPgetStringParam(scip, "reading/sdoreader/discretization", &discretization);
 
    //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE_MIDPOINT; mode = mode + 1) {
    //ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER;

@@ -36,8 +36,8 @@ propagating/obra/muteSubscip = false
 #limits/gap = 0.01
 ### vopreader
 
-reading/vopreader/checkStructure = true
-reading/vopreader/printSummary = true
+reading/sdoreader/checkStructure = true
+reading/sdoreader/printSummary = true
 
 
 

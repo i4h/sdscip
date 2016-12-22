@@ -34,8 +34,8 @@
 /*                                                                           */
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-/**@file   ReaderVOP.cpp
- * @brief  C++ file reader for vop data files
+/**@file   ReaderSDO.cpp
+ * @brief  C++ file reader for sdo data files
  * @author Robert Lion Gottwald
  */
 
@@ -69,7 +69,7 @@
 #include <scip/cons_varbound.h>
 #include <scip/cons_superindicator.h>
 
-#include "ReaderVOP.h"
+#include "ReaderSDO.h"
 #include "SDList.h"
 #include "ProbDataSD.h"
 #include "MdlExpressionTranslator.h"
@@ -100,7 +100,7 @@ static shared_ptr< spline::BSplineCurve<3, SCIP_Real> > getLookupApproximation(c
 }
 
 /** destructor of file reader to free user data (called when SCIP is exiting) */
-SCIP_DECL_READERFREE(sdo::ReaderVOP::scip_free)
+SCIP_DECL_READERFREE(sdo::ReaderSDO::scip_free)
 {
    return SCIP_OKAY;
 }
@@ -113,7 +113,7 @@ SCIP_DECL_READERFREE(sdo::ReaderVOP::scip_free)
  *
  *  If the reader detected an error in the input file, it should return with RETCODE SCIP_READERR or SCIP_NOFILE.
  */
-SCIP_DECL_READERREAD(sdo::ReaderVOP::scip_read)
+SCIP_DECL_READERREAD(sdo::ReaderSDO::scip_read)
 {
    /* Get parameters */
    ButcherTableau tableau(sdscip::SDproblemStructureInterface::getButcherTableau(scip, discretization));
@@ -121,13 +121,13 @@ SCIP_DECL_READERREAD(sdo::ReaderVOP::scip_read)
    try
    {
       std::string fName(filename);
-      sdo::VopFile vopFile;
+      sdo::VopFile sdoFile;
       sdo::ExpressionGraph exprGraph;
       sdo::Objective objective;
 
       try
       {
-          vopFile = sdo::parse_vop_file(fName);
+          sdoFile = sdo::parse_vop_file(fName);
       }
       catch(const std::ios_base::failure& err)
       {
@@ -138,37 +138,37 @@ SCIP_DECL_READERREAD(sdo::ReaderVOP::scip_read)
       //parse objective from vpd file
       try
       {
-         if( !vopFile.getObjectiveFile().empty() )
-            sdo::parse_vpd_file(vopFile.getObjectiveFile(), objective);
+         if( !sdoFile.getObjectiveFile().empty() )
+            sdo::parse_vpd_file(sdoFile.getObjectiveFile(), objective);
       }
       catch(const std::ios_base::failure& err)
       {
-         SCIPerrorMessage("Failed opening file: %s\n", vopFile.getObjectiveFile().c_str());
+         SCIPerrorMessage("Failed opening file: %s\n", sdoFile.getObjectiveFile().c_str());
          return SCIP_NOFILE;
       }
 
       //parse control into exprGraph from voc file (needs to be done before mdl)
       try
       {
-         if( !vopFile.getControlFile().empty() )
-            sdo::parse_voc_file(vopFile.getControlFile(), exprGraph);
+         if( !sdoFile.getControlFile().empty() )
+            sdo::parse_voc_file(sdoFile.getControlFile(), exprGraph);
       }
       catch(const std::ios_base::failure& err)
       {
-         SCIPerrorMessage("Failed opening file: %s\n", vopFile.getControlFile().c_str());
+         SCIPerrorMessage("Failed opening file: %s\n", sdoFile.getControlFile().c_str());
          return SCIP_NOFILE;
       }
       //parse model into exprGraph from mdl file
       try
       {
-         if( !vopFile.getModelFile().empty() )
-            sdo::parse_mdl_file(vopFile.getModelFile(), exprGraph);
+         if( !sdoFile.getModelFile().empty() )
+            sdo::parse_mdl_file(sdoFile.getModelFile(), exprGraph);
          else
             return SCIP_ERROR;
       }
       catch(const std::ios_base::failure& err)
       {
-         SCIPerrorMessage("Failed opening file: %s\n", vopFile.getModelFile().c_str());
+         SCIPerrorMessage("Failed opening file: %s\n", sdoFile.getModelFile().c_str());
          return SCIP_NOFILE;
       }
 
@@ -903,7 +903,7 @@ SCIP_DECL_READERREAD(sdo::ReaderVOP::scip_read)
       //now inform structure that reading is down and check it if the parameter is set
       SCIP_CALL( structure->doneReading() );
       SCIP_Bool check;
-      SCIP_CALL( SCIPgetBoolParam(scip , "reading/vopreader/checkStructure", &check) );
+      SCIP_CALL( SCIPgetBoolParam(scip , "reading/sdoreader/checkStructure", &check) );
       if( check )
       {
          SCIPinfoMessage(scip, NULL, "\n=== Performing structure checks ===\n");
@@ -911,7 +911,7 @@ SCIP_DECL_READERREAD(sdo::ReaderVOP::scip_read)
       }
 
       SCIP_Bool printSummary(true);
-      SCIP_CALL( SCIPgetBoolParam(scip ,"reading/vopreader/printSummary", &printSummary) );
+      SCIP_CALL( SCIPgetBoolParam(scip ,"reading/sdoreader/printSummary", &printSummary) );
       if (printSummary)
       {
          SCIP_CALL( SDprintStructureSummary(scip) );
@@ -930,7 +930,7 @@ SCIP_DECL_READERREAD(sdo::ReaderVOP::scip_read)
    }
 }
 
-SCIP_DECL_READERWRITE(sdo::ReaderVOP::scip_write)
+SCIP_DECL_READERWRITE(sdo::ReaderSDO::scip_write)
 {
    *result = SCIP_DIDNOTRUN;
 

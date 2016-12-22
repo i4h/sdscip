@@ -25,9 +25,9 @@ propagating/obra/subscipMute = true
 
 ### vopreader
 
-reading/vopreader/checkStructure = true
-reading/vopreader/printSummary = true
-reading/vopreader/minVariableFormulation = true
+reading/sdoreader/checkStructure = true
+reading/sdoreader/printSummary = true
+reading/sdoreader/minVariableFormulation = true
 
 
 

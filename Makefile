@@ -55,7 +55,7 @@ UNITTESTNAME	=	unittest
 
 MAINSRCPATH	=	cppmain.cpp \
 			MdlExpressionTranslator.cpp \
-			ReaderVOP.cpp \
+			ReaderSDO.cpp \
 			ExprLookup.cpp \
 			ProbDataSD.cpp \
 			PropOBRA.cpp \
@@ -96,7 +96,7 @@ MAINSRCPATH	=	cppmain.cpp \
 
 UNITTESTSRCPATH =	unittests.cpp \
 			MdlExpressionTranslator.cpp \
-			ReaderVOP.cpp \
+			ReaderSDO.cpp \
 			ExprLookup.cpp \
 			ProbDataSD.cpp \
 			PropOBRA.cpp \
