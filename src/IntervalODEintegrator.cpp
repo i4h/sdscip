@@ -358,7 +358,7 @@ void IntervalODEintegrator::step(const BoundMap& startStateBounds, const BoundMa
             varValues_[i].inf = varValues_[i].inf + row[j] * dtIntermediate_ * kMatrix[j][i].inf;
             SCIPdbgMsg("stage %i, dim %i, contribution to inf is %1.16e, new val %f\n", i, j, row[j] * dtIntermediate_ * kMatrix[j][i].inf, varValues_[i].inf);
             varValues_[i].sup = varValues_[i].sup + row[j] * dtIntermediate_ * kMatrix[j][i].sup;
-            SCIPdbgMsg("stage %i, dim %i, contribution to sup is %1.16e\n", i, j, row[j] * dtIntermediate_ * kMatrix[j][i].sup);
+            SCIPdbgMsg("stage %i, dim %i, contribution to sup is %1.16e, new val %f\n", i, j, row[j] * dtIntermediate_ * kMatrix[j][i].sup, varValues_[i].sup);
          }
 
          /* This is possible due to numerical difficulties and really bad bounds */
