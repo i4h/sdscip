@@ -118,7 +118,7 @@ public:
       SCIPaddIntParam(scip,
              "propagating/propODE/intermediateSteps",
              "Number of integration steps performed by PropODE in additon to problem discretization",
-             NULL, FALSE, 5, 0, 1000, NULL, NULL );
+             NULL, FALSE, 1, 0, 1000, NULL, NULL );
 
       SCIPaddStringParam(scip,
              "propagating/propODE/outFilePrefix",
