@@ -112,7 +112,7 @@ bool HyperCube::areExtentsFinite(SCIP* scip) const {
  * Finds the extent that is closes to one and returns the inverse as normalization factor
  */
 double HyperCube::getNormalizationFactor() const {
-	double normExtent;
+	double normExtent = 1;
 	for (int i = 0; i < ndim_; ++i)
 	{
 		double extent(this->getExtent(i));
