@@ -133,7 +133,7 @@ public:
       SCIPaddBoolParam(scip,
              "propagating/obra/addCuts",
              "Add propcuts for states during propagation?",
-             &addCuts_, FALSE, TRUE, NULL, NULL);
+             &addCuts_, FALSE, FALSE, NULL, NULL);
 
       SCIPaddIntParam(scip,
              "propagating/obra/cutFreq",
