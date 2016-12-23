@@ -1,0 +1,18 @@
+# SCIP Settings for OBRA Debugging
+
+
+propagating/obra/subscipMute = false
+
+### vopreader
+
+reading/sdoreader/checkStructure = true
+reading/sdoreader/printSummary = true
+
+
+
+
+
+
+
+
+
