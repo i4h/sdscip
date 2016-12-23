@@ -1,12 +1,54 @@
-# SCIP Settings for OBRA Debugging
+
+# SCIP Settings for OBRA
+
+presolving/donotaggr = true
+presolving/donotmultaggr = true
+
+# obra
+propagating/obra/maxprerounds = 1
+propagating/obra/historicCons = 5
+
+propagating/obra/propagateControls = false
+propagating/obra/propagateAlgebraic = true
+propagating/obra/propagateStates = true
+propagating/obra/addCuts = false
+propagating/obra/addMultiTimeCuts = false
+propagating/obra/multiTimeCutLookback = 2
+propagating/obra/useUnitCuts = false
+propagating/obra/cutConf3d = 2
 
 
-propagating/obra/subscipMute = false
+#propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
+propagating/obra/subscipGapLimit = 0.00
 
 ### vopreader
 
 reading/sdoreader/checkStructure = true
 reading/sdoreader/printSummary = true
+reading/sdoreader/minVariableFormulation = true
+
+
+
+
+
+
+
+
+
+
+# SCIP Settings for OBRA Debugging
+
+
+propagating/obra/subscipMute = false
+
+propagating/obra/writeFreq = 1
+propagating/obra/writeSubscips = true
+propagating/obra/breakTime = 5
+
+
+
+
+
 
 
 

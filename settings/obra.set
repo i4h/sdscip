@@ -3,7 +3,7 @@
 presolving/donotaggr = true
 presolving/donotmultaggr = true
 
-# obra
+#### obra
 propagating/obra/maxprerounds = 1
 propagating/obra/historicCons = 5
 
@@ -22,6 +22,9 @@ propagating/obra/writeFreq = -1
 #propagating/obra/subscipSetFile = "../settings/obra_subscip.set"
 propagating/obra/subscipGapLimit = 0.00
 propagating/obra/subscipMute = true
+
+### propODE
+propagating/propODE/intermediateSteps = 5
 
 ### vopreader
 
