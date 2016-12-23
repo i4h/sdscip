@@ -863,7 +863,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 					SCIP_CALL (this->setSubscipVarsArray(vars));
 
 					//SCIPdbgMsg("Found a cut the reduces this time slice by %e \n",vol);
-					printf(" cf ; 	%i ; %i ; %s ; %e ; %f; %s\n"
+					SCIPdebugMessage(" cf ; 	%i ; %i ; %s ; %e ; %f; %s\n"
 									,patternType_
 										 ,currentTime
 											  ,getCutString().c_str()
