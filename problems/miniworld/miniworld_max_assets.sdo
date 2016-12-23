@@ -1,0 +1,3 @@
+:model "miniworld.mdl"
+:objective "miniworld_max_assets.vpd"
+:control "miniworld.voc"

@@ -1,0 +1,4 @@
+:model "predator_prey_unlimited.mdl"
+:control "predator_prey_harvest.voc"
+:objective "predator_prey_maxprey.vpd"
+
