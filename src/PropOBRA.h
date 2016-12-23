@@ -42,6 +42,7 @@
 #ifndef __PROP_OBRA_H__
 #define __PROP_OBRA_H__
 
+#include "sdscip.h"
 #include "objscip/objscip.h"
 #include "PropagationPattern.h"
 #include <vector>
@@ -50,6 +51,7 @@
 #include <string>
 #include "scip/clock.h"
 #include "objscip/objscipdefplugins.h"
+#include "scip/cons.h"
 
 namespace sdscip
 {
