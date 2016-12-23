@@ -122,11 +122,11 @@ double HyperCube::getNormalizationFactor() const {
 		}
 		else
 		{
-			if (abs(normExtent-1) > abs(extent - 1))
+			if (labs(normExtent-1) > labs(extent - 1))
 				normExtent = extent;
 		}
 	}
-	return 1/normExtent;
+	return 1.0/normExtent;
 }
 
 void HyperCube::addDim(double lower, double higher) {
