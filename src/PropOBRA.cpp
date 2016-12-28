@@ -848,7 +848,6 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
          SCIPdebugMessage("  Creating multitime cuts on Variable %s --> %s\n",SCIPvarGetName(var),SCIPconsGetName(cons));
 
          SCIP_CALL( prepareMultiTimeStatePattern(var));
-         multiTimePattern_.toString();
          SCIP_CALL( multiTimePattern_.setSolMap(solMap_));
          SCIP_CALL(multiTimePattern_.buildHyperCube() );
          SCIP_CALL(multiTimePattern_.propagate(currentTime_));
