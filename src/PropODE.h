@@ -75,7 +75,7 @@ public:
       )
       : ObjProp(
     		  scip,                                              /**< SCIP data structure */
-    		  "propODE", 									              /** name of the propagator */
+    		  "ode", 									                 /** name of the propagator */
     		  "solving auxiliary ODEs to bound SDO Problems",    /** description of the propagator */
     		   100000,                                           /** default priority of the propagator */
     		   1,                                                /** freq */
@@ -106,22 +106,22 @@ public:
       ,addErrorTerms_(FALSE)
    {
       SCIPaddBoolParam(scip,
-             "propagating/propODE/writeBounds",
+             "propagating/ode/writeBounds",
              "Write calculated bounds to file",
              NULL, FALSE, FALSE, NULL, NULL);
 
       SCIPaddBoolParam(scip,
-             "propagating/propODE/addErrorTerms",
+             "propagating/ode/addErrorTerms",
              "Add error terms corresponding to step size when applying bounds",
              NULL, FALSE, TRUE, NULL, NULL);
 
       SCIPaddIntParam(scip,
-             "propagating/propODE/intermediateSteps",
+             "propagating/ode/intermediateSteps",
              "Number of integration steps performed by PropODE in additon to problem discretization",
              NULL, FALSE, 1, 0, 1000, NULL, NULL );
 
       SCIPaddStringParam(scip,
-             "propagating/propODE/outFilePrefix",
+             "propagating/ode/outFilePrefix",
              "Path of file to write calculated bounds to. The current node id and a .dat extension "
              "will be added to the end of the given string",
              NULL, FALSE, "propODEbounds", NULL, NULL);

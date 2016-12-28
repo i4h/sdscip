@@ -54,15 +54,15 @@ SCIP_DECL_PROPINIT(PropODE::scip_init)
    if( !structure->isXdotContinuous() )
    {
       SCIPwarningMessage(scip, "Derivatives are not absolutely continuous, disabling propODE\n");
-      SCIP_CALL( SCIPsetIntParam(scip, "propagating/propODE/maxprerounds", 0) );
-      SCIP_CALL( SCIPsetIntParam(scip, "propagating/propODE/freq", -1) );
+      SCIP_CALL( SCIPsetIntParam(scip, "propagating/ode/maxprerounds", 0) );
+      SCIP_CALL( SCIPsetIntParam(scip, "propagating/ode/freq", -1) );
    }
 
    /* Get parameters from scip */
-   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/writeBounds", &writeFile_) );
-   SCIP_CALL( SCIPgetStringParam(scip_ , "propagating/propODE/outFilePrefix",&outfilePrefix_) );
-   SCIP_CALL( SCIPgetIntParam(scip_ , "propagating/propODE/intermediateSteps",&intermediateSteps_) );
-   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/propODE/addErrorTerms", &addErrorTerms_) );
+   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/ode/writeBounds", &writeFile_) );
+   SCIP_CALL( SCIPgetStringParam(scip_ , "propagating/ode/outFilePrefix",&outfilePrefix_) );
+   SCIP_CALL( SCIPgetIntParam(scip_ , "propagating/ode/intermediateSteps",&intermediateSteps_) );
+   SCIP_CALL( SCIPgetBoolParam(scip_ ,"propagating/ode/addErrorTerms", &addErrorTerms_) );
 
 
    /* Get parameters from problem structure */

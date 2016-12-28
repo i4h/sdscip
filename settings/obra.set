@@ -24,7 +24,7 @@ propagating/obra/subscipGapLimit = 0.00
 propagating/obra/subscipMute = true
 
 ### propODE
-propagating/propODE/intermediateSteps = 5
+propagating/ode/intermediateSteps = 5
 
 ### vopreader
 
