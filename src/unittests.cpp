@@ -101,7 +101,6 @@ SCIP_RETCODE runSCIP(
    SCIP_CALL ( SCIPincludeDialogSDrefreshStructure( scip ) );
    SCIP_CALL ( SCIPincludeDialogSDdoSomething( scip ) );
    SCIP_CALL ( SCIPincludeDialogSDdisable( scip ) );
-   SCIP_CALL ( SCIPincludeDialogWriteTransprobSD ( scip ) );
 
    /* include default SCIP plugins */
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
