@@ -140,9 +140,9 @@ SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
 /** execution method of primal heuristic MaxCtrl */
 SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 {
-   /* No probdata, no heurSimODE (maybe called by subscip) */
    *result = SCIP_DIDNOTFIND;
 
+   /* No probdata, no heurSimODE (maybe called by subscip) */
    if( SCIPgetProbData(scip) == NULL)
       return SCIP_OKAY;
 
@@ -166,9 +166,18 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    char* discretization;
    SCIPgetStringParam(scip, "reading/sdoreader/discretization", &discretization);
 
+   /* Remember if previous loop found sim */
+   SCIP_Bool isSim = false;
+
    for( ReduceODEintegrator::REDUCTION_MODE mode : ReduceODEintegrator::getReductionModeVector())
    {
       SCIPdebugMessage("Simulating in %s mode\n",ReduceODEintegrator::getReductionModeString(mode).c_str());
+
+      if( isSim)
+      {
+         SCIPinfoMessage(scip_, NULL, "Not running HeurSimODE because problem was already marked as simulation in previous run\n");
+         break;
+      }
 
       /* Declare internal flags */
       SCIP_Bool infeasible(false); /* Know internally if we found infeasibility */
@@ -386,6 +395,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
          /* If we are in presolving and still in sim mode, inform user that problem is simulation */
          if( SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING && integrator.getSolveMode() == ReduceODEintegrator::SOLVE_MODE_SIM)
          {
+            isSim = true;
             SCIPinfoMessage(scip, NULL, "HeurSimODE: Detected pure simulation problem. All variables were fixed in presolving.\n");
          }
       }
