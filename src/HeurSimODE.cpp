@@ -166,9 +166,6 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    char* discretization;
    SCIPgetStringParam(scip, "reading/sdoreader/discretization", &discretization);
 
-   //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE_MIDPOINT; mode = mode + 1) {
-   //ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER;
-   //for(ReduceODEintegrator::REDUCTION_MODE mode = ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_LOWER; mode <= ReduceODEintegrator::REDUCTION_MODE::REDUCTION_MODE_MIDPOINT; mode = mode + 1)
    for( ReduceODEintegrator::REDUCTION_MODE mode : ReduceODEintegrator::getReductionModeVector())
    {
       SCIPdebugMessage("Simulating in %s mode\n",ReduceODEintegrator::getReductionModeString(mode).c_str());
