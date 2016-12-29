@@ -500,7 +500,7 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP_VAR* lastVar)
       SCIPdbgMsg("found var %s\n",SCIPvarGetName(var));
       /* Make sure varaible exists in subscip */
       SCIP_VAR* subscipVar;
-      subscipVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,SCIPvarGetTransVar(var));
+      subscipVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,var);
       if( subscipVar != NULL)
     	  multiTimePattern_.addVar(var, subscipVar);
    }
@@ -543,6 +543,9 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
 
    /* Set nodelimit depending on obra parameters*/
    SCIP_CALL( SCIPsetLongintParam(subscip_,"limits/nodes",subscipNodeLimit_) );
+
+   /* Set gaplimit depending on obra parameters*/
+   SCIP_CALL( SCIPsetRealParam(subscip_,"limits/gap",subscipGapLimit_) );
 
    /* Mute subscips depending on obra parameters*/
    if(subscipMute_ == true)
