@@ -162,8 +162,7 @@ SCIP_RETCODE SDproblemStructureV1::checkIsSimulation()
 
 bool SDproblemStructureV1::isSimulation()
 {
-   SCIPerrorMessage("not implemented");
-   return false;
+   return isSimulation_;
 }
 
 

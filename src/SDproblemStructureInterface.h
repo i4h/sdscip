@@ -113,11 +113,11 @@ public:
       return true;
    };
 
-   /* Returns if the problem is a simulation problem, i.e. there are no non-degenerate intervals in initial set or in control variables */
-   virtual bool isSimulation() {
-      assert(false);
-      return true;
-   };
+   /* Returns if the problem is a simulation problem, i.e.
+    * there are no non-degenerate intervals in initial set or in control variables
+    * This is not checked by the problem structure. It is false by default and can be set
+    * to true by a plugin that detected a simulation */
+   virtual bool isSimulation();
 
    /* Notify problemStructure that initial read of problem structure is finished */
    virtual SCIP_RETCODE doneReading() = 0;

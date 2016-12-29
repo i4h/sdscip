@@ -336,6 +336,12 @@ SCIP_Real SDproblemStructureInterface::getTfinal()
    return 0.0;
 }
 
+bool SDproblemStructureInterface::isSimulation()
+{
+   SCIPerrorMessage("%s:%s not implemented\n",__FILE__,__func__);
+   return false;
+}
+
 
 /* Helpers */
 
