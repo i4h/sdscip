@@ -181,6 +181,11 @@ public:
              "(Problem) Time Intervals in which to write the problem during propagation",
              &writeFreq_, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
+      SCIPaddIntParam(scip,
+             "propagating/obra/boundWriteFreq",
+             "(Problem) Time Intervals in which to write the bounds during propagation",
+             &boundWriteFreq_, FALSE, -1, -1, INT_MAX, NULL, NULL);
+
       SCIPaddBoolParam(scip,
              "propagating/obra/writeSubscips",
              "Write subscips to a file (overwrites on every solve)",
@@ -293,6 +298,7 @@ private:
    SCIP_Bool writeAfterProp_;
    char* outFile_;
    char* outDir_;
+   int boundWriteFreq_;
    int writeFreq_;
    SCIP_Bool addCuts_;
    int cutFreq_;

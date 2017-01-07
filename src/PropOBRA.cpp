@@ -308,6 +308,12 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
             SCIPdebugMessage("WRITING transformed problem to file %s at t=%i\n",oss.str().c_str(),currentTime_);
             SCIPwriteTransProblem(scip_, oss.str().c_str(), "cip", false);
          }
+
+         if( boundWriteFreq_!= -1 && currentTime_ % boundWriteFreq_ == 0)
+         {
+            SCIPdebugMessage("WRITING boundsto file %s at t=%i\n","current_bounds.bnd",currentTime_);
+            SCIPwriteTransProblem(scip_, "current_bounds.bnd", "bnd", false);
+         }
          /*
           * Create, allocate and configure Subscip
           */
