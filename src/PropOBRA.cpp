@@ -42,13 +42,11 @@
  *        - Add problem structure plugin
  *        - Write problem structure when creating subscips
  *        - Add and enable HeurMaxCtrl and PropODE plugins to subscip
-  */
-
+ */
 
 #include "PropOBRA.h"
+
 #define HASHTABLESIZE_FACTOR 5
-
-
 
 using namespace sdscip;
 
@@ -68,7 +66,6 @@ std::multimap<B,A> flip_map(const std::map<A,B> &src)
 			flip_pair<A,B>);
 	return dst;
 }
-
 
 /** Displays the header for the progress bar */
 SCIP_RETCODE PropOBRA::printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars)
@@ -109,11 +106,6 @@ SCIP_RETCODE PropOBRA::printProgress()
    SCIP_Real percent = (SCIP_Real) currentTime_ / (SCIP_Real) nSteps;
    int activeSegments = barWidth * percent;
 
-
-   SCIPdbgMsg("currentTIme: %i\n", currentTime_);
-   SCIPdbgMsg("percent: %f\n", percent);
-   SCIPdbgMsg("activeBars: %i\n", activeSegments);
-
    std::cout << "OBRA: [";
    for (int i = 0; i < barWidth; ++i) {
       if (i < activeSegments)
@@ -128,6 +120,7 @@ SCIP_RETCODE PropOBRA::printProgress()
 
    return SCIP_OKAY;
 }
+
 
 SCIP_RETCODE PropOBRA::printSummary( int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock)
 {
@@ -261,7 +254,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
    /* Start timing */
    SCIP_CALL( SCIPclockCreate(& propClock , SCIP_CLOCKTYPE_DEFAULT) );
    SCIPclockSetTime(propClock,0);
-   SCIPclockStart(propClock,scip_->set);
+   SCIPstartClock(scip_, propClock);
 
    /* Get parameters on how to run */
    int breakTime;
@@ -311,16 +304,13 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 
          if( boundWriteFreq_!= -1 && currentTime_ % boundWriteFreq_ == 0)
          {
-            SCIPdebugMessage("WRITING boundsto file %s at t=%i\n","current_bounds.bnd",currentTime_);
+            SCIPdebugMessage("WRITING bounds to file %s at t=%i\n","current_bounds.bnd",currentTime_);
             SCIPwriteTransProblem(scip_, "current_bounds.bnd", "bnd", false);
          }
          /*
           * Create, allocate and configure Subscip
           */
-
-
          SCIP_CALL( createAndConfigureSubscip() );
-
 
          SCIP_Bool boundsDiverge(false);
          SCIPdbgMsg("calling propBoundsAtTwithSubscip, currentTime = %i\n",currentTime_);
@@ -452,9 +442,7 @@ SCIP_RETCODE PropOBRA::prepareControlPattern()
 	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )
 	   {
 		   SCIP_VAR* var(structure_->getControlVarAtTOrig());
-		   SCIPdbgMsg("Got control var %s\n", SCIPvarGetName(var));
 		   SCIP_VAR* subscipVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,SCIPvarGetTransVar(var));
-		   SCIPdbgMsg("Got subscip var %s\n", SCIPvarGetName(subscipVar));
 		   assert(subscipVar != NULL);
 		   controlPattern_.addVar(var, (SCIP_VAR*) SCIPhashmapGetImage(varmap_,SCIPvarGetTransVar(var)));
 	   }
@@ -500,11 +488,8 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP_VAR* lastVar)
       SCIP_VAR* var;
       std::ostringstream oss;
       oss << "t_" << varName << "(" << currentTime_ - i << ")";
-      SCIPdbgMsg("i= %i:finding variable at time %i\n",i, currentTime_ - i);
-      SCIPdbgMsg("finding var %s\n",oss.str().c_str());
       var = SCIPfindVar(scip_,oss.str().c_str());
-      SCIPdbgMsg("found var %s\n",SCIPvarGetName(var));
-      /* Make sure varaible exists in subscip */
+      /* Make sure variable exists in subscip */
       SCIP_VAR* subscipVar;
       subscipVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,var);
       if( subscipVar != NULL)

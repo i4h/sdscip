@@ -200,6 +200,7 @@ private:
 
 
 
+
 };
 
 #endif /* PROPAGATIONPATTERN_H_ */
