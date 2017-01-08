@@ -84,6 +84,35 @@ SCIP_RETCODE PropOBRA::printTimeProgressHeader(int tStart, int tFinal, int steps
    return SCIP_OKAY;
 }
 
+/** writes the current progress to a file */
+SCIP_RETCODE PropOBRA::writeProgress(SCIP_Real solvingTime)
+{
+   std::vector<SCIP_Interval> stateBounds = structure_->getStateBounds();
+
+   if (!progressOfs_.is_open()) {
+      progressOfs_.open(progressFile_, std::ofstream::out);
+   }
+
+   progressOfs_ << structure_->getCurrentTime() << "\t";
+   progressOfs_ << solvingTime << "\t";
+   for(unsigned int i = 0; i < structure_->getNStates(); ++i) {
+      progressOfs_ << stateBounds[i].inf << "\t" << stateBounds[i].sup << "\t";
+   }
+   progressOfs_ << "\n";
+   progressOfs_.flush();
+
+   return SCIP_OKAY;
+}
+
+/** close the current progress file */
+SCIP_RETCODE PropOBRA::closeProgressFile(SCIP_Real solvingTime)
+{
+   if (progressOfs_.is_open())
+      progressOfs_.close();
+
+   return SCIP_OKAY;
+}
+
 /** displays the progress of propOBRA to the user as a horizontal progress bar */
 SCIP_RETCODE PropOBRA::printProgress()
 {
@@ -336,6 +365,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
          SCIPdebugMessage("breaking for breakTime\n");
       }
       printProgress();
+      writeProgress(SCIPclockGetTime(propClock));
    } /* Close iteration over times */
 
    SCIPclockStop( propClock, scip_->set );
@@ -348,8 +378,10 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 
    /* Display the summary of this obra run */
    printSummary(nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime, propClock);
+   closeProgressFile(SCIPclockGetTime(propClock));
 
    SCIP_CALL( writeAfterProp(breakTime) );
+
 
    SCIPclockFree( &propClock );
 

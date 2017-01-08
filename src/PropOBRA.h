@@ -48,6 +48,7 @@
 #include <vector>
 #include <map>
 #include <sstream>
+#include <fstream>      // std::ofstream
 #include <string>
 #include "scip/clock.h"
 #include "objscip/objscipdefplugins.h"
@@ -187,6 +188,16 @@ public:
              &boundWriteFreq_, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
       SCIPaddBoolParam(scip,
+             "propagating/obra/writeProgress",
+             "Write progress info to a file during propagation",
+             &writeProgress_, FALSE, TRUE, NULL, NULL);
+
+      SCIPaddStringParam(scip,
+             "propagating/obra/progressFile",
+             "Filename of file to write progress to",
+             &progressFile_, FALSE, "progress.log", NULL, NULL);
+
+      SCIPaddBoolParam(scip,
              "propagating/obra/writeSubscips",
              "Write subscips to a file (overwrites on every solve)",
              &writeSubscips_, FALSE, FALSE, NULL, NULL);
@@ -241,6 +252,8 @@ private:
 
    SCIP_RETCODE printTimeProgressHeader(int tStart, int tFinal, int steps, int nChars);
    SCIP_RETCODE printProgress();
+   SCIP_RETCODE closeProgressFile(SCIP_Real solvingTime);
+   SCIP_RETCODE writeProgress(SCIP_Real solvingTime);
    SCIP_RETCODE printSummary( int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock);
    SCIP_RETCODE writeAfterProp( int breakTime);
 
@@ -299,6 +312,9 @@ private:
    char* outFile_;
    char* outDir_;
    int boundWriteFreq_;
+   SCIP_Bool writeProgress_;
+   std::ofstream progressOfs_;
+   char* progressFile_;
    int writeFreq_;
    SCIP_Bool addCuts_;
    int cutFreq_;
@@ -308,6 +324,7 @@ private:
    int multiTimeCutLookback_;
    SCIP_Bool useUnitCuts_;
    SCIP_Bool reoptimize_;
+
 
 };
 
