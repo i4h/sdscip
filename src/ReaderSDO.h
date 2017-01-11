@@ -115,7 +115,7 @@ public:
 
           SCIPaddBoolParam(scip, "reading/sdoreader/printSummary",
                                               "Show problem structure summary after reading a sdo file",
-                                             NULL, false, false, nullptr, nullptr);
+                                             NULL, false, true, nullptr, nullptr);
 
           SCIPaddBoolParam(scip, "reading/sdoreader/checkStructure",
                                              "Performs checks of problem structure after first read",
