@@ -1490,12 +1490,12 @@ SCIP_RETCODE SCIPincludeDialogSD(
    SCIP_CALL( SCIPreleaseDialog(scip, &sdmenu) );
 
 
-   /* Add "print structure" dialog */
-   if( !SCIPdialogHasEntry(sdmenu, "print structure") )
+   /* Add "printStructure" dialog */
+   if( !SCIPdialogHasEntry(sdmenu, "printStructure") )
    {
       SCIP_CALL( SCIPincludeDialog(scip, &dialog,
             NULL, dialogExecSDprintStructure, NULL, NULL,
-            "print structure", "print SD Problem Structure", FALSE, NULL) );
+            "printStructure", "print SD Problem Structure", FALSE, NULL) );
       SCIP_CALL( SCIPaddDialogEntry(scip, sdmenu, dialog) );
       SCIP_CALL( SCIPreleaseDialog(scip, &dialog) );
    }
