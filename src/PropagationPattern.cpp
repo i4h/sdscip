@@ -702,7 +702,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		{
 			SCIPdbgMsg("got a result (optimal or limit), evaluating\n");
 			if (!this->isCut())
-			{
+			{ /* No cut (upper or lower bound) */
 				double newBound;
 				std::pair<SDSCIP_PROPDIR, VarPair> boundVar(this->getBoundVar());
 				SCIP_VAR * scipVar = boundVar.second.first;
