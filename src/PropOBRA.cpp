@@ -286,12 +286,10 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
    SCIPstartClock(scip_, propClock);
 
    /* Get parameters on how to run */
-   int breakTime;
    int writeFreq;
    SCIP_Bool addCuts;
    SCIP_Bool addMultiTimeCuts;
    int cutFreq;
-   SCIP_CALL( SCIPgetIntParam( scip_, "propagating/obra/breakTime", &breakTime ) );
    SCIP_CALL( SCIPgetIntParam( scip_, "propagating/obra/writeFreq", &writeFreq ) );
    SCIP_CALL( SCIPgetBoolParam( scip_, "propagating/obra/addCuts", &addCuts ) );
    SCIP_CALL( SCIPgetBoolParam( scip_, "propagating/obra/addMultiTimeCuts", &addMultiTimeCuts ) );
@@ -317,7 +315,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 
    for( currentTime_ = structure_->startTimeIteration(); structure_->timesLeft(); currentTime_ = structure_->incrementTime())
    {
-      if( breakTime == -1 || currentTime_ < breakTime)
+      if( breakTime_ == -1 || currentTime_ < breakTime_)
       {
          SCIPdebugMessage("t = %i\n",currentTime_);
          if( writeFreq != -1 && currentTime_ % writeFreq == 0)
@@ -360,8 +358,9 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
          }
 
       } /* Close stop iteration at given time */
-      else if( currentTime_ == breakTime)
+      else if( currentTime_ == breakTime_)
       {
+         SCIPinfoMessage(scip_, NULL, "Stopping at t = %i, (set via parameter prop/obra/breakTime)\n", breakTime_);
          SCIPdebugMessage("breaking for breakTime\n");
       }
       printProgress();
@@ -377,10 +376,10 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
                                + controlPattern_.stats_.aggCutsSolutionTime;
 
    /* Display the summary of this obra run */
-   printSummary(nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime, propClock);
+   printSummary(nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime_, propClock);
    closeProgressFile(SCIPclockGetTime(propClock));
 
-   SCIP_CALL( writeAfterProp(breakTime) );
+   SCIP_CALL( writeAfterProp(breakTime_) );
 
 
    SCIPclockFree( &propClock );

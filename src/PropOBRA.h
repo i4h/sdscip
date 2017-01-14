@@ -109,7 +109,7 @@ public:
       SCIPaddIntParam(scip,
              "propagating/obra/breakTime",
              "Timestep, at which propagation is stopped. Set to -1 for no limit",
-             &breakTime, FALSE, -1, -1, INT_MAX, NULL, NULL);
+             &breakTime_, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
       SCIPaddIntParam(scip,
              "propagating/obra/lookback",
@@ -301,7 +301,7 @@ private:
    /* Parameters */
    SCIP_Real subscipGapLimit_;
    int lookback_;
-   int breakTime;
+   int breakTime_;
    SCIP_Real subscipTimeLimit_;
    SCIP_Longint subscipNodeLimit_;
    SCIP_Bool subscipMute_;
