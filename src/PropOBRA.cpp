@@ -362,6 +362,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
       {
          SCIPinfoMessage(scip_, NULL, "Stopping at t = %i, (set via parameter prop/obra/breakTime)\n", breakTime_);
          SCIPdebugMessage("breaking for breakTime\n");
+         break;
       }
       printProgress();
       writeProgress(SCIPclockGetTime(propClock));
