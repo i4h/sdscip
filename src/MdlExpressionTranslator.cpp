@@ -1081,6 +1081,7 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
    using namespace sdo;
 
    std::unordered_set<MdlScipVar> states;
+   std::unordered_set<sdo::ExpressionGraph::Node*> visited;
    std::unordered_set<MdlScipVar> controls;
    std::unordered_set<MdlScipVar> comparisons;
    std::unordered_set<MdlScipVar> algebraic;
@@ -1122,7 +1123,14 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
          //if the node is not the root node of the current entry and has a symbol then
          //skip this subtree as it will have an own entry in the symbol table
          if( !isSelf && !exprGraph.getSymbol( node ).empty() && positive.find(node) == positive.end() )
+         {
             continue;
+         }
+         if( node != entry.second && visited.find(node) != visited.end())
+         {
+            continue;
+         }
+         visited.insert(node);
          isSelf = false;
 
          //now walk expression graph from the current node
