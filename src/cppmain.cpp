@@ -60,6 +60,7 @@
 #include "PropODE.h"
 
 #include "ReaderSDO.h"
+#include "ReaderSDC.h"
 #include "PresolConsGraph.h"
 #include "Statistics.h"
 #include "SDSCIPgitHash.h"
@@ -138,6 +139,7 @@ SCIP_RETCODE runSCIP(
    SCIP_CALL( SCIPincludeObjHeur(scip, new sdscip::HeurSimODE(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjBranchrule(scip, new sdscip::BranchruleControlFirst(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjProp(scip, new sdscip::PropODE(scip), TRUE) );
+   SCIP_CALL( SCIPincludeObjReader(scip, new sdscip::ReaderSDC(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjReader(scip, new sdo::ReaderSDO(scip), TRUE) );
 
    SCIP_CALL( SCIPaddParamsSD(scip));
