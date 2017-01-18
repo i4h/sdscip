@@ -1,0 +1,3 @@
+:model "mini_control.mdl"
+:objective "mini_control.vpd"
+:control "mini_control.voc"
