@@ -235,6 +235,23 @@ SCIP_RETCODE PropOBRA::writeAfterProp( int breakTime)
    return SCIP_OKAY;
 }
 
+SCIP_RETCODE PropOBRA::writeCuts()
+{
+   SCIP_Bool writeCutsAfterProp = true;
+   if( writeCutsAfterProp )
+   {
+      char* outfilestr = "cuts.sdc";
+
+      SCIPdebugMessage( "WRITING cuts to file %s\n", outfilestr);
+
+      SCIP_CALL( SCIPwriteTransProblem(scip_, "cuts.sdc", "sdc", FALSE) );
+
+      SCIPdebugMessage( "done writing\n" );
+   }
+
+   return SCIP_OKAY;
+}
+
 /** initialization method of propagator */
 SCIP_DECL_PROPINIT(PropOBRA::scip_init)
 {
@@ -382,6 +399,7 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 
    SCIP_CALL( writeAfterProp(breakTime_) );
 
+   SCIP_CALL( writeCuts() );
 
    SCIPclockFree( &propClock );
 

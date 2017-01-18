@@ -256,6 +256,8 @@ private:
    SCIP_RETCODE writeProgress(SCIP_Real solvingTime);
    SCIP_RETCODE printSummary( int nSubscips, SCIP_Real aggSolvingTime, SCIP_Bool addCuts, SCIP_Bool addMultiTimeCuts, int breakTime, SCIP_CLOCK* propClock);
    SCIP_RETCODE writeAfterProp( int breakTime);
+   SCIP_RETCODE writeCuts( );
+
 
    SCIP_RETCODE applyOBRA(SCIP_RESULT* result);
 
