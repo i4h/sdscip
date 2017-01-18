@@ -1679,11 +1679,6 @@ SCIP_RETCODE SCIPincludeDialogSDdisable(
    return SCIP_OKAY;
 }
 
-
-
-
-
-
 sdscip::SDproblemStructureInterface* SDgetStructure(SCIP* scip)
 {
    SCIP_PROBDATA* probdata;
