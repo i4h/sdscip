@@ -1089,12 +1089,21 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
 
    std::string seperator = "";
 
+   SCIPdebugMessage("Creating variable mapping\n");
+
    //for each symbol walk in the expression graph to find possibly hidden states
    for( auto & entry : exprGraph.getSymbolTable() )
    {
       std::stack<ExpressionGraph::Node *> stack;
       std::stack<ExpressionGraph::Node *> state_stack;
       stack.emplace( entry.second );
+
+
+#ifdef SCIP_DEBUG
+      std::ostringstream oss;
+      oss << entry.first;
+      SCIPdebugMessage("Symbol Loop: Considering symbol %s\n", oss.str().c_str());
+#endif
 
       SCIP_Real mayer_coeff = 0.0;
       SCIP_Real lagrange_coeff = 0.0;
@@ -1120,18 +1129,47 @@ std::vector<MdlScipVar> MdlExpressionTranslator::createVariableMapping( const sd
          ExpressionGraph::Node *node = stack.top();
          stack.pop();
 
+#ifdef SCIP_DEBUG
+         if (node->usages.size() != 0)
+         {
+            std::ostringstream oss;
+            oss << node->usages[0];
+            SCIPdebugMessage("Looking at node with op %i, %i usages, used at %s\n",node->op, node->usages.size(), oss.str().c_str());
+         }
+         else
+         {
+            SCIPdebugMessage("Looking at node with op %i without usage\n",node->op);
+         }
+
+         if (exprGraph.getSymbol( node ).empty() )
+         {
+            SCIPdebugMessage("Node has no symbol\n");
+         }
+         else
+         {
+            SCIPdebugMessage("Node has symobl(s):\n");
+            auto symbols = exprGraph.getSymbol(node);
+            for (auto it : symbols) {
+               std::ostringstream oss;
+               oss << it.second;
+               SCIPdebugMessage("- %s\n", oss.str().c_str());
+            }
+         }
+#endif
+
+
          //if the node is not the root node of the current entry and has a symbol then
          //skip this subtree as it will have an own entry in the symbol table
          if( !isSelf && !exprGraph.getSymbol( node ).empty() && positive.find(node) == positive.end() )
-         {
             continue;
-         }
-         if( node != entry.second && visited.find(node) != visited.end())
-         {
+
+         //if the node was already visited and this is not its symbol we continue
+         //avoids infinite loops, for example in delay3 formulation
+         if ( node != entry.second && visited.find(node) != visited.end())
             continue;
-         }
-         visited.insert(node);
+
          isSelf = false;
+         visited.insert(node);
 
          //now walk expression graph from the current node
          switch( node->op )
