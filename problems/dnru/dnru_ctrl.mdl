@@ -1,0 +1,369 @@
+diferential of demand=
+	(demand table((0.9*actual cost)/actual cost normal)*usage rate normal*(1-substitution fraction\
+		))-demand
+	~	dimensionless
+	~		|
+
+potential substitution fraction=
+	maximum substitution fraction*potential substitution fraction table(actual cost)
+	~	fraction
+	~		|
+
+potential substitution fraction table(
+	[(0,0)-(10,1)],(0,0),
+	(1,0.033),(2,0.083),(3,0.16),(4,0.25),(5,0.33),(6,0.5),(7,0.66)
+	,(8,0.83),(9,0.97),(10,1))
+	~	fraction
+	~		|
+
+substitution fraction change rate=
+	(potential substitution fraction-substitution fraction)/technology adjustment time
+	~	fraction/year
+	~		|
+
+substitution fraction= INTEG (
+	substitution fraction change rate,
+		0)
+	~	fraction
+	~		|
+
+maximum substitution fraction=
+	0.6
+	~	fraction
+	~		|
+
+demand=
+	demand table(actual cost/actual cost normal)*usage rate normal*(1-substitution fraction\
+		)
+	~	resource/year
+	~		|
+
+technology adjustment time=
+	technology adjustment table(substitution fraction)
+	~	year
+	~		|
+
+technology adjustment table(
+	[(0,0)-(0.6,10)],(0,10),(0.1,10)
+	,(0.2,10),(0.3,10),(0.4,10),(0.5,10),(0.6,10))
+	~	year
+	~		|
+
+actual cost=
+	actual cost table(usage rate average/usage rate normal)*distribution cost multiplier\
+		*technologgy cost multiplier
+	~	dollars/resource
+	~		|
+
+actual cost normal=
+	1
+	~	dollars/resource
+	~		|
+
+actual cost table(
+	[(0,0)-(3,6)],(0,1.5),(0.5,1.2),(1,1),(1.5,1.5)
+	,(2,2.2),(2.5,3.5),(3,6))
+	~	dollars/resource
+	~		|
+
+cost of technology advance=
+	cost of technology advance table(technology/technology initial)
+	~	dollars/(year*technology)
+	~		|
+
+cost of technology advance table(
+	[(0.8,0)-(6,20)],(1,1),(1.5,0.9)
+	,(2,0.82),(2.5,0.75),(3,0.82),(3.5,0.9),(4,1),(4.5,1.5),(5,3)
+	,(5.5,9),(6,20))
+	~	dollars/technology/year
+	~		|
+
+demand table(
+	[(0,0)-(10,3)],(0,2.5),(1,1),(2,0.89),(3,0.78)
+	,(4,0.67),(5,0.56),(6,0.45),(7,0.34),(8,0.23),(9,0.12),(10,1e-006))
+	~	dimensionless
+	~		|
+
+diferential of actual cost=
+	0.1*actual cost
+	~	dollars/resource
+	~		|
+
+distribution cost multiplier=
+	distribution cost table(natural resource fraction remaining)
+	~	dimensionless
+	~		|
+
+distribution cost table(
+	[(0,0)-(1,100)],(0,100),(0.1,20),(0.2,9.5)
+	,(0.3,7),(0.4,5),(0.5,3),(0.6,2),(0.7,1.5),(0.8,1.2),(0.9,1.08)
+	,(1,1))
+	~	dimensionless
+	~		|
+
+elasticity of demand=
+	(actual cost/demand)*(diferential of demand/diferential of actual cost)
+	~	dimensionless
+	~		|
+
+growth constant=
+	0.03
+	~	fraction/year
+	~		|
+
+natural resource fraction remaining=
+	natural resources/natural resources initial
+	~	dimensionless
+	~		|
+
+natural resources= INTEG (
+	-usage rate,
+		400)
+	~	resource
+	~		|
+
+natural resources initial=
+	400
+	~	resource
+	~		|
+
+percent invested in R D=
+	0.1
+	~	dimensionless
+	~		|
+
+R D investment=
+	percent invested in R D*sales revenues
+	~	dollars/year
+	~		|
+
+R D investment delayed=
+	DELAY3(R D investment,30)
+	~	dollars/year
+	~		|
+
+sales revenues=
+	actual cost*demand
+	~	dollars/year
+	~		|
+
+technologgy cost multiplier=
+	technology cost table(technology/technology initial)
+	~	dimensionless
+	~		|
+
+technology= INTEG (
+	technology change rate,
+		1)
+	~	technology
+	~		|
+
+technology change indicated=
+	technology change indicated normal*(1/cost of technology advance)*R D investment delayed\
+		*technology initial
+	~	technology/year
+	~		|
+
+technology change indicated normal= INITIAL (
+	0.1)
+	~	technology/year
+	~		|
+
+technology change rate=
+	technology change indicated
+	~	technology/year
+	~		|
+
+technology cost table(
+	[(0,0.2)-(9,1)],(1,1),(1.5,0.97),(2,0.95)
+	,(2.5,0.9),(3,0.8),(3.5,0.72),(4,0.6),(4.5,0.52),(5,0.44),(5.5,0.37)
+	,(6,0.33),(6.5,0.3),(7,0.28),(7.5,0.26),(8,0.25))
+	~	dimensionless
+	~		|
+
+technology initial=
+	1
+	~	technology
+	~		|
+
+usage rate=
+	demand
+	~	resource/year
+	~		|
+
+usage rate average=
+	SMOOTHI(usage rate,3,1)
+	~	resource/year
+	~		|
+
+usage rate initial=
+	1
+	~	resource/year
+	~		|
+
+usage rate normal=
+	usage rate initial*EXP(growth constant*(Time-1970))
+	~	resource/year
+	~		|
+
+********************************************************
+	.Control
+********************************************************~
+		Simulation Control Paramaters
+	|
+
+FINAL TIME  = 2170
+	~	year
+	~	The final time for the simulation.
+	|
+
+INITIAL TIME  = 1970
+	~	year
+	~	The initial time for the simulation.
+	|
+
+SAVEPER  = 
+        TIME STEP
+	~	year
+	~	The frequency with which output is stored.
+	|
+
+TIME STEP  = 1
+	~	year
+	~	The time step for the simulation.
+	|
+
+\\\---/// Sketch information - do not modify anything except names
+V300  Do not put anything below this section - it will be ignored
+*View 1
+$0,0,Times New Roman|12||0-0-0|0-0-0|0-0-0|-1--1--1|-1--1--1
+10,1,natural resources initial,169,88,40,20,8,3,0,0,0,0,0,0
+10,2,natural resource fraction remaining,319,112,41,29,8,3,0,0,0,0,0,0
+10,3,distribution cost multiplier,474,131,40,20,8,3,0,0,0,0,0,0
+10,4,actual cost,511,219,24,20,8,3,0,0,0,0,0,0
+10,5,demand,480,442,26,11,0,3,0,0,-1,0,0,0
+10,6,natural resources,135,244,40,20,3,3,0,0,0,0,0,0
+12,7,48,136,396,8,8,0,3,0,0,-1,0,0,0
+11,8,48,138,320,8,6,33,3,0,0,4,0,0,0
+10,9,usage rate,175,320,29,16,40,3,0,0,0,0,0,0
+10,10,usage rate average,330,191,26,22,8,3,0,0,0,0,0,0
+10,11,Time,323,268,26,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,12,elasticity of demand,409,552,40,20,8,3,0,0,0,0,0,0
+10,13,sales revenues,675,449,40,20,8,3,0,0,0,0,0,0
+10,14,percent invested in R D,654,555,40,20,8,3,0,0,0,0,0,0
+10,15,usage rate initial,308,307,27,20,8,3,0,0,0,0,0,0
+10,16,actual cost normal,479,328,40,20,8,3,0,0,0,0,0,0
+10,17,usage rate normal,397,331,28,21,8,3,0,0,0,0,0,0
+10,18,demand table,379,395,40,20,8,3,0,0,0,0,0,0
+10,19,distribution cost table,433,35,40,20,8,3,0,0,0,0,0,0
+10,20,actual cost table,599,274,40,20,8,3,0,0,0,0,0,0
+10,21,growth constant,297,362,27,15,8,3,0,0,0,0,0,0
+10,22,R D investment,721,516,40,20,8,3,0,0,0,0,0,0
+10,23,R D investment delayed,817,468,40,20,8,3,0,0,0,0,0,0
+10,24,technology change indicated,844,402,40,20,8,3,0,0,0,0,0,0
+10,25,technologgy cost multiplier,618,164,40,20,8,3,0,0,0,0,0,0
+10,26,technology cost table,578,79,40,20,8,3,0,0,0,0,0,0
+10,27,technology,831,198,40,20,3,3,0,0,0,0,0,0
+12,28,48,981,198,8,8,0,3,0,0,-1,0,0,0
+11,29,48,920,197,6,8,34,3,0,0,1,0,0,0
+10,30,technology change rate,920,225,40,20,40,3,0,0,0,0,0,0
+10,31,cost of technology advance,761,271,40,20,8,3,0,0,0,0,0,0
+10,32,technology initial,682,340,40,20,8,3,0,0,0,0,0,0
+10,33,cost of technology advance table,715,190,40,20,8,3,0,0,0,0,0,0
+10,34,technology change indicated normal,852,308,40,20,8,3,0,0,0,0,0,0
+10,35,percent Invested in R D table,515,532,39,23,8,3,0,0,0,0,0,0
+10,36,diferential of demand,270,483,40,16,8,3,0,0,0,0,0,0
+10,37,diferential of actual cost,344,628,32,25,8,3,0,0,0,0,0,0
+10,38,demand table,140,468,40,20,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,39,usage rate normal,142,520,40,20,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,40,actual cost normal,212,427,36,25,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,41,actual cost,213,580,40,20,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,42,demand,1295,1053,35,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,43,substitution fraction,478,641,40,20,3,3,0,0,0,0,0,0
+12,44,48,479,764,8,8,0,3,0,0,-1,0,0,0
+11,45,48,480,725,8,6,33,3,0,0,4,0,0,0
+10,46,substitution fraction change rate,527,725,39,25,40,3,0,0,0,0,0,0
+10,47,technology adjustment time,637,657,42,24,8,3,0,0,0,0,0,0
+10,48,potential substitution fraction,678,732,44,25,8,3,0,0,0,0,0,0
+10,49,actual cost,792,694,43,11,0,2,0,3,-1,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,50,substitution fraction,421,502,40,20,8,2,0,3,0,0,0,0,128-128-128,0-0-0,|12||128-128-128
+10,51,technology adjustment table,746,626,44,24,8,3,0,0,0,0,0,0
+10,52,potential substitution fraction table,816,751,43,25,8,3,0,0,0,0,0,0
+10,53,maximum substitution fraction,625,803,44,25,8,3,0,0,0,0,0,0
+1,54,8,7,4,0,0,22,0,0,0,-1--1--1,,1|(138,357)|
+1,55,8,6,100,0,0,22,0,0,0,-1--1--1,,1|(138,289)|
+1,56,1,2,2,0,0,0,0,0,0,-1--1--1,,1|(211,61)|
+1,57,6,2,2,0,0,0,0,0,0,-1--1--1,,1|(199,162)|
+1,58,2,3,2,0,0,0,0,0,0,-1--1--1,,1|(385,75)|
+1,59,3,4,2,0,0,0,0,0,0,-1--1--1,,1|(514,172)|
+1,60,4,5,2,0,0,0,0,0,0,-1--1--1,,1|(532,367)|
+1,61,5,9,2,0,0,0,0,0,0,-1--1--1,,1|(269,408)|
+1,62,18,5,2,4,0,0,0,0,0,-1--1--1,,1|(427,429)|
+1,63,15,17,2,0,0,0,0,0,0,-1--1--1,,1|(362,320)|
+1,64,17,5,2,0,0,0,0,0,0,-1--1--1,,1|(431,391)|
+1,65,16,5,2,0,0,0,0,0,0,-1--1--1,,1|(470,382)|
+1,66,19,3,2,4,0,0,0,0,0,-1--1--1,,1|(464,79)|
+1,67,17,4,2,0,0,0,0,0,0,-1--1--1,,1|(450,271)|
+1,68,20,4,2,4,0,0,0,0,0,-1--1--1,,1|(572,242)|
+1,69,21,17,2,0,0,0,0,0,0,-1--1--1,,1|(359,354)|
+1,70,9,10,2,0,0,0,0,0,0,-1--1--1,,1|(232,227)|
+1,71,10,4,2,0,0,0,0,0,0,-1--1--1,,1|(447,197)|
+1,72,11,17,2,0,0,0,0,0,0,-1--1--1,,1|(378,288)|
+1,73,29,27,4,0,0,22,0,0,0,-1--1--1,,1|(892,197)|
+1,74,29,28,100,0,0,22,0,0,0,-1--1--1,,1|(949,197)|
+1,75,26,25,2,4,0,0,0,0,0,-1--1--1,,1|(599,94)|
+1,76,27,25,2,0,0,0,0,0,0,-1--1--1,,1|(798,139)|
+1,77,25,4,2,0,0,0,0,0,0,-1--1--1,,1|(564,172)|
+1,78,27,31,2,0,0,0,0,0,0,-1--1--1,,1|(776,223)|
+1,79,31,24,2,0,0,0,0,0,0,-1--1--1,,1|(769,349)|
+1,80,24,30,2,0,0,0,0,0,0,-1--1--1,,1|(952,292)|
+1,81,5,12,2,0,0,0,0,0,0,-1--1--1,,1|(482,499)|
+1,82,12,14,2,0,0,0,0,0,0,-1--1--1,,1|(550,585)|
+1,83,14,22,2,0,0,0,0,0,0,-1--1--1,,1|(715,577)|
+1,84,5,13,2,0,0,0,0,0,0,-1--1--1,,1|(570,503)|
+1,85,13,22,2,0,0,0,0,0,0,-1--1--1,,1|(693,476)|
+1,86,22,23,2,0,0,0,0,0,0,-1--1--1,,1|(805,503)|
+1,87,23,24,2,0,0,0,0,0,0,-1--1--1,,1|(877,456)|
+1,88,32,25,2,0,0,0,0,0,0,-1--1--1,,1|(634,238)|
+1,89,32,24,2,0,0,0,0,0,0,-1--1--1,,1|(722,383)|
+1,90,32,31,2,0,0,0,0,0,0,-1--1--1,,1|(718,289)|
+1,91,33,31,2,4,0,0,0,0,0,-1--1--1,,1|(695,240)|
+1,92,34,24,2,0,0,0,0,0,0,-1--1--1,,1|(867,356)|
+1,93,4,13,2,0,0,0,0,0,0,-1--1--1,,1|(637,372)|
+1,94,36,12,2,0,0,0,0,0,0,-1--1--1,,1|(322,530)|
+1,95,37,12,2,0,0,0,0,0,0,-1--1--1,,1|(395,606)|
+1,96,38,36,2,4,0,0,0,0,0,-1--1--1,,1|(211,492)|
+1,97,39,36,2,0,0,0,0,0,0,-1--1--1,,1|(206,536)|
+1,98,40,36,2,0,0,0,0,0,0,-1--1--1,,1|(264,442)|
+1,99,41,36,2,0,0,0,0,0,0,-1--1--1,,1|(263,546)|
+1,100,41,12,2,0,0,0,0,0,0,-1--1--1,,1|(320,571)|
+1,101,41,37,2,0,0,0,0,0,0,-1--1--1,,1|(261,616)|
+1,102,5,36,2,0,0,0,0,0,0,-1--1--1,,1|(378,481)|
+1,103,35,14,2,4,0,0,0,0,0,-1--1--1,,1|(591,525)|
+1,104,45,43,4,0,0,22,0,0,0,-1--1--1,,1|(480,690)|
+1,105,45,44,100,0,0,22,0,0,0,-1--1--1,,1|(480,743)|
+1,106,43,46,2,0,0,0,0,0,0,-1--1--1,,1|(548,662)|
+1,107,43,47,2,0,0,0,0,0,0,-1--1--1,,1|(545,625)|
+1,108,47,46,2,0,0,0,0,0,0,-1--1--1,,1|(606,704)|
+1,109,48,46,2,0,0,0,0,0,0,-1--1--1,,1|(614,755)|
+1,110,49,48,2,0,0,0,0,0,0,-1--1--1,,1|(720,682)|
+1,111,50,5,2,0,0,0,0,0,0,-1--1--1,,1|(451,469)|
+1,112,51,47,2,4,0,0,0,0,0,-1--1--1,,1|(667,619)|
+1,113,53,48,2,0,0,0,0,0,0,-1--1--1,,1|(694,789)|
+1,114,52,48,2,4,0,0,0,0,0,-1--1--1,,1|(750,734)|
+1,115,50,36,2,0,0,0,0,0,0,-1--1--1,,1|(346,508)|
+12,116,0,470,30,387,11,0,4,0,2,-1,0,0,0,0-0-0,0-0-0,|12||255-0-0
+Replicated by Paulo Goncalves, MIT System Dynamics Group from W.M. Behrens, "Dynamics of Natural Resource Utilization"
+///---\\\
+:L<%^E!@
+1:Current.vdf
+9:Current
+15:0,0,0,0,0,0
+19:100,0
+27:2,
+34:0,
+4:Time
+5:actual cost
+24:1970
+25:2170
+26:2170
