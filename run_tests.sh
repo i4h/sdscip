@@ -18,7 +18,7 @@ OPTFILE=""
 TMPFILE=".run_tests.tmp"
 # function definitions 
 function usage {
- echo "Usage: $SCRIPTNAME [-h] [-v] [-o arg] file ..." >&2
+ echo "Usage: $SCRIPTNAME [-h] [-v] [-o arg] [testset] " >&2
  echo "Run tests"
  echo ""
  echo "Options: "
@@ -68,7 +68,10 @@ for ARG ; do
  fi
 done
 
-
+testset="all"
+if [[ $# == 1 ]] ; then
+    testset=$1
+fi
 
 
 if [ -z ${FLAGS+x} ]; then
@@ -102,18 +105,26 @@ echo "Getting repo_summary"
 sd_repo_summary.sh | tee $TMPFILE
 mv $TMPFILE $log
 
-make test TEST=simulate SETTINGS=simulate $FLAGS | tee -a $log
-#read -p "Done with testset __simulate__. Press enter to continue" yn
-
-make test TEST=propODE SETTINGS=propODE  TIME=10 $FLAGS  | tee -a $log
-#read -p "Done with testset __simulate__. Press enter to continue" yn
-
-if [[ $QUICK = n ]]; then
-    make test TEST=obra SETTINGS=obra  $FLAGS  | tee -a $log
-else
-    make test TEST=obra_quick SETTINGS=obra  $FLAGS  | tee -a $log   
+if [ $testset == "all" ] || [ $testset == "simulate" ] ; then
+    make test TEST=simulate SETTINGS=simulate $FLAGS | tee -a $log
+    #read -p "Done with testset __simulate__. Press enter to continue" yn
 fi
-#read -p "Done with testset __simulate__. Press enter to continue" yn
+
+if [ $testset == "all" ] || [ $testset == "propODE" ] ; then
+    make test TEST=propODE SETTINGS=propODE  TIME=10 $FLAGS  | tee -a $log
+    #read -p "Done with testset __simulate__. Press enter to continue" yn
+fi
+
+if [ $testset == "all" ] || [ $testset == "obra" ] ; then
+
+    if [[ $QUICK = n ]]; then
+	make test TEST=obra SETTINGS=obra  $FLAGS  | tee -a $log
+    else
+	make test TEST=obra_quick SETTINGS=obra  $FLAGS  | tee -a $log   
+    fi
+#read -p "Done with testset __simulate__. Press enter to continue" yn    
+fi
+
 
 
 exit $EXIT_SUCCESS
