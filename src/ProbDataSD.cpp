@@ -370,8 +370,8 @@ SCIP_DECL_DIALOGEXEC(dialogExecSDdisable)
    SCIP_CALL( SCIPdialoghdlrAddHistory(dialoghdlr, dialog, NULL, FALSE) );
 
    SCIPsetIntParam(scip, "heuristics/simODE/freq", -1);
-   SCIPsetIntParam(scip, "propagating/propODE/freq", -1);
-   SCIPsetIntParam(scip, "propagating/propODE/maxprerounds", 0);
+   SCIPsetIntParam(scip, "propagating/ode/freq", -1);
+   SCIPsetIntParam(scip, "propagating/ode/maxprerounds", 0);
    SCIPsetIntParam(scip, "propagating/obra/maxprerounds", 0);
    SCIPsetIntParam(scip, "propagating/obra/freq", -1);
 
