@@ -90,12 +90,14 @@ sdscip::Vector Line::intersection(const sdscip::HyperPlane *plane) {
 
    double enumerator(*(plane->getVector()) * (*(plane->getPoint()) - a_));
    double denominator(*(plane->getVector()) * (b_ - a_));
-   double alpha(enumerator / denominator);
 
    if (denominator < 1e-9 && denominator > -1e-9) {
       /* Denominator is ~ 0 -> line and plane are parallel */
       return sdscip::Vector(0);
    }
+
+   double alpha(enumerator / denominator);
+
    /*
    std::cout << "alpha is " << alpha << std::endl;
    std::cout << "enum is " << enumerator<< std::endl;
