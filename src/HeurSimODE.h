@@ -137,6 +137,8 @@ public:
     */
    virtual SCIP_DECL_HEUREXITSOL(scip_exitsol);
 
+
+
    /** execution method of primal heuristic
     *
     *  Searches for feasible primal solutions. The method is called in the node processing loop.
@@ -162,6 +164,7 @@ public:
 private:
    SCIP_RETCODE prepareOutFile(std::vector<std::string>  stateVarNames, std::string reductionModeString);
    SCIP_RETCODE finalizeOutFile(std::string message);
+   SCIP_RETCODE propagateInitial(SCIP* scip);
 
    /* Dimension of state space */
    int nStates_;

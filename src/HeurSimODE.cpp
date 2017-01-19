@@ -136,6 +136,32 @@ SCIP_RETCODE HeurSimODE::finalizeOutFile(std::string message)
    return SCIP_OKAY;
 }
 
+SCIP_RETCODE HeurSimODE::propagateInitial(SCIP* scip)
+{
+   sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip) );
+
+   /* Iterate explicit differential cons at 0 */
+
+   for (structure->startDiffConsIteration(0); structure->diffConsLeft(0); structure->incrementDiffCons())
+   {
+      SCIP_CONS * cons(structure->getDiffConsCons());
+      if(cons != nullptr) {
+         SCIP_RESULT result;
+         SCIP_CONS* transcons;
+         SCIPgetTransformedCons(scip, cons, &transcons);
+         SCIPpropCons(scip, transcons, SCIP_PROPTIMING_ALWAYS, &result);
+         //assert(!SCIPconsIsDeleted(cons));
+         SCIP_CALL_ABORT( SCIPprintCons(scip, transcons, NULL) );
+         SCIPinfoMessage(scip, NULL, ";\n");
+
+         assert(false);
+      }
+   }
+   SCIPprintTransProblem(scip, NULL, "cip", FALSE);
+   assert(false);
+
+}
+
 
 /** execution method of primal heuristic MaxCtrl */
 SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
@@ -161,6 +187,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    nStates_ = structure->getNStates();
    nAlgebraic_ = structure->getNAlgebraic();
    SCIPdbgMsg("set nAlgebraic_ to %i\n", nAlgebraic_);
+
+   propagateInitial(scip);
 
    /** Create integrator **/
    char* discretization;
@@ -379,7 +407,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       if (doingFine)
       {
          SCIP_Real obj = SCIPsolGetOrigObj(sol_);
-         SCIPtrySolFree(scip_, &sol_, FALSE, TRUE, TRUE, TRUE, TRUE, &stored);
+         SCIPprintSol(scip_, sol_, NULL, TRUE);
+         SCIPtrySolFree(scip_, &sol_, TRUE, TRUE, TRUE, TRUE, TRUE, &stored);
          //SCIPdebugMessage("Solution%s stored!\n", (stored ? "" : " NOT"));
          finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
          assert(stored  || (SCIPgetBestSol(scip_) != NULL));
