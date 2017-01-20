@@ -90,20 +90,20 @@ echo "Making with "$makeFlags
 # clean if clean flag
 if [[ $CLEAN = y ]] ; then
     # Exit on fail (can clean fail)
-    make -j $NCORES clean $makeFlags  || exit $?
+    make "-j"$NCORES clean $makeFlags  || exit $?
 fi
 
 # clean if cleanonly flag
 if [[ $CLEANONLY = y ]] ; then
-    make -j $NCORES clean $makeFlags    
+    make "-j"$NCORES clean $makeFlags    
     exit $?
 fi
 
 # Make if not cleanonly
 if [[ $CLEANONLY = n ]] ; then
-    echo "make -j $NCORES $TARGET $makeFlags "
+    echo make "-j"$NCORES $TARGET $makeFlags 
 
-    make -j $NCORES $TARGET $makeFlags    
+    make "-j"$NCORES $TARGET $makeFlags    
     exit $?
 fi
 
