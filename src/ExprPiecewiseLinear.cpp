@@ -1097,7 +1097,7 @@ static SCIP_DECL_USEREXPRFREEDATA( freeLookupExpr )
 
 static SCIP_DECL_USEREXPRPRINT( lookupExprPrint)
 {
-   SCIPmessageFPrintInfo(messagehdlr, file, "lookup%s(", data->identifier);
+   SCIPmessageFPrintInfo(messagehdlr, file, "lookup%s", data->identifier);
 }
 
 SCIP_RETCODE SCIPexprCreatePiecewiseLinear(
