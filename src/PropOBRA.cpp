@@ -710,7 +710,7 @@ SCIP_RETCODE PropOBRA::addHistoricAndCurrentAlgebraicCons()
       {
          SCIPdbgMsg("entered algebraicCons iteration\n");
          SCIP_CONS* cons(structure_->getAlgebraicCons());
-         if( !SCIPconsIsDeleted(cons) )
+         if( cons != nullptr && !SCIPconsIsDeleted(cons) )
          {
             SCIPdbgMsg(" Adding Constraint %s\n",SCIPconsGetName(cons));
             SCIP_CALL( addConsWithVars(cons, true, true, TRUE) );
@@ -788,7 +788,10 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
          {
             SCIP_CONS* cons(structure_->getDiffConsCons());
             SCIPdebugMessage("   Adding Constraint %s\n",SCIPconsGetName(cons));
-            SCIP_CALL( addConsWithVars(cons, true, true, TRUE) );
+            if( cons != nullptr)
+            {
+               SCIP_CALL( addConsWithVars(cons, true, true, TRUE) );
+            }
          }
       }
       //SCIPcppDbgMsg(" Added Constraints and Variables" << std::endl);
@@ -841,7 +844,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
       {
          SCIP_CONS * cons(structure_->getDiffConsCons());
 
-         if( !SCIPconsIsDeleted(cons) )
+         if( cons != nullptr && !SCIPconsIsDeleted(cons) )
          {
             assert(!SCIPconsIsDeleted(cons));
             SCIPdebug( SCIP_CALL_ABORT( SCIPprintCons(scip_, cons, NULL) ) );
