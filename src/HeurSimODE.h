@@ -164,6 +164,12 @@ public:
 private:
    SCIP_RETCODE prepareOutFile(std::vector<std::string>  stateVarNames, std::string reductionModeString);
    SCIP_RETCODE finalizeOutFile(std::string message);
+
+
+   /** Problems may have explicit differential (varname initial value) or algebraic (varname definition)
+    * constraints that propagate initial values to initial state variables. For the heuristic to work,
+    * we need to propagate those constraints once before doing anything else
+    */
    SCIP_RETCODE propagateInitial(SCIP* scip);
 
    /* Dimension of state space */

@@ -142,24 +142,31 @@ SCIP_RETCODE HeurSimODE::propagateInitial(SCIP* scip)
 
    /* Iterate explicit differential cons at 0 */
 
-   for (structure->startDiffConsIteration(0); structure->diffConsLeft(0); structure->incrementDiffCons())
+   for( structure->startAlgebraicConsIteration(0); structure->algebraicConsLeft(0); structure->incrementAlgebraicCons())
    {
-      SCIP_CONS * cons(structure->getDiffConsCons());
-      if(cons != nullptr) {
+      SCIP_CONS* cons(structure->getAlgebraicCons());
+      SCIP_CONS* transcons;
+      SCIPgetTransformedCons(scip, cons, &transcons);
+      if( cons != nullptr )
+      {
          SCIP_RESULT result;
          SCIP_CONS* transcons;
          SCIPgetTransformedCons(scip, cons, &transcons);
          SCIPpropCons(scip, transcons, SCIP_PROPTIMING_ALWAYS, &result);
-         //assert(!SCIPconsIsDeleted(cons));
-         SCIP_CALL_ABORT( SCIPprintCons(scip, transcons, NULL) );
-         SCIPinfoMessage(scip, NULL, ";\n");
-
-         //assert(false);
       }
    }
-   SCIPprintTransProblem(scip, NULL, "cip", FALSE);
-   assert(false);
 
+   for( structure->startDiffConsIteration(0); structure->diffConsLeft(0); structure->incrementDiffCons())
+   {
+      SCIP_CONS * cons(structure->getDiffConsCons());
+      if( cons != nullptr )
+      {
+         SCIP_RESULT result;
+         SCIP_CONS* transcons;
+         SCIPgetTransformedCons(scip, cons, &transcons);
+         SCIPpropCons(scip, transcons, SCIP_PROPTIMING_ALWAYS, &result);
+      }
+   }
 }
 
 
@@ -188,7 +195,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    nAlgebraic_ = structure->getNAlgebraic();
    SCIPdbgMsg("set nAlgebraic_ to %i\n", nAlgebraic_);
 
-   //propagateInitial(scip);
+   propagateInitial(scip);
 
    /** Create integrator **/
    char* discretization;
