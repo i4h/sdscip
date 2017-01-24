@@ -210,7 +210,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
       if( isSim)
       {
-         SCIPinfoMessage(scip_, NULL, "Not running HeurSimODE because problem was already marked as simulation in previous run\n");
+         SCIPverbMessage(scip_, SCIP_VERBLEVEL_FULL, NULL, "Not running HeurSimODE because problem was already marked as simulation in previous run\n");
          break;
       }
 
