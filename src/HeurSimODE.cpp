@@ -414,11 +414,18 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       if (doingFine)
       {
          SCIP_Real obj = SCIPsolGetOrigObj(sol_);
-         SCIPprintSol(scip_, sol_, NULL, TRUE);
-         SCIPtrySolFree(scip_, &sol_, TRUE, TRUE, TRUE, TRUE, TRUE, &stored);
-         //SCIPdebugMessage("Solution%s stored!\n", (stored ? "" : " NOT"));
+         SCIPtrySol(scip_, sol_, FALSE,  TRUE, TRUE, TRUE, TRUE, &stored);
          finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
-         assert(stored  || (SCIPgetBestSol(scip_) != NULL));
+         /* Only good reason for infeasible solutions in presolving is existence of path constraints */
+         if( !stored && SCIPgetStage(scip)== SCIP_STAGE_PRESOLVING && SCIPgetBestSol(scip_) != NULL  )
+         {
+            SCIPwarningMessage(scip, "HeurSimODE computed infeasible solution in %s mode\n", integrator.getReductionModeString().c_str());
+            SCIPdebug( SCIPtrySol(scip_, sol_, TRUE,  TRUE, TRUE, TRUE, TRUE, &stored) );
+            SCIPdebug( SCIPprintSol(scip_, sol_, "simode_debug.sol", TRUE));
+            SCIPdebugMessage("Solution written to simode_debug.sol");
+         }
+         SCIPfreeSol(scip_, &sol_);
+
          if (stored)
             *result = SCIP_FOUNDSOL;
 
