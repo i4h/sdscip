@@ -260,6 +260,22 @@ bool PropagationPattern::fetchPattern(int ndim)
          break;
       }
 
+      case 4:
+          if (patternType_ == 1)
+          {
+             SCIPmessagePrintError("MultiTimeCuts in 3d not implemented yet\n");
+             assert(false);
+          }
+			 { static const double arr[] = {  1, 0,  0,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { -1, 0,  0,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  1,  0,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0, -1,  0,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  0,  1,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  0, -1,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  0,  0,  1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  0,  0, -1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+         break;
+
       case 5:
           if (patternType_ == 1)
           {
