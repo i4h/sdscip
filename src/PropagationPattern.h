@@ -176,6 +176,8 @@ public:
    SCIP_RETCODE buildHyperCube();
    Statistics stats_;
 
+   char identifier_;
+
 private:
    VarPairVec vars_; /* Contains Varpairs: <scipVar, subscipVar> */
    int currentDim_;

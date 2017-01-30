@@ -47,7 +47,8 @@
 
 
 PropagationPattern::PropagationPattern() :
-   currentDim_(0)
+   identifier_('n')
+   ,currentDim_(0)
    ,currentConfiguration_(0)
    ,currentTime_(-1)
    ,totalPatterns_(0)
@@ -653,7 +654,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		if (writeSubscips)
 		{
 			std::ostringstream oss;
-			oss << paramstr2 << paramstr << "_" << lookback << "_" << currentTime << "_pattern_" << this->currentConfiguration_ << "_subscip.cip";
+			oss << paramstr2 << paramstr << "_" << lookback << "_" << currentTime << "_pattern_" << this->identifier_ << "" << this->currentConfiguration_ << "_subscip.cip";
 			SCIPdebugMessage("  WRITING transformed subscip to file %s\n",oss.str().c_str());
 			SCIP_CALL( SCIPwriteOrigProblem(this->subscip_, oss.str().c_str(), "cip", FALSE) );
 		}
