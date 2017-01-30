@@ -295,12 +295,13 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
          integrator.writeStates(outFile_);
 
          /* Set state values in solution */
+         SCIPdbgMsg("Setting state var values\n");
          for (structure->startStateVarIteration(); structure->stateVarsLeft() && doingFine ;structure->incrementStateVar())
          {
             SCIP_VAR* var = structure->getCurrentStateVarOrig();
-            //SCIPdbgMsg("var is %s [%f,%f]\n",SCIPvarGetName(var), SCIPvarGetLbLocal(var), SCIPvarGetUbLocal(var));
             int varId = structure->getCurrentStateVarId();
             SCIP_Real val = integrator.getState(varId);
+            SCIPdbgMsg(" %s [%f,%f] = %f \n",SCIPvarGetName(var), SCIPvarGetLbLocal(var), SCIPvarGetUbLocal(var), val);
             if( SCIPisFeasLT(scip_, val, SCIPvarGetLbLocal(var)) || SCIPisFeasGT(scip_, val, SCIPvarGetUbLocal(var)) )
             {
                doingFine = false;
