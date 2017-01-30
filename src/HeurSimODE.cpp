@@ -426,9 +426,12 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
          /* Only good reason for infeasible solutions in presolving is existence of path constraints */
          if( !stored && SCIPgetStage(scip)== SCIP_STAGE_PRESOLVING && SCIPgetBestSol(scip_) != NULL  )
          {
-            SCIPwarningMessage(scip, "HeurSimODE computed infeasible solution in %s mode\n", integrator.getReductionModeString().c_str());
+            SCIPwarningMessage(scip, "HeurSimODE computed complete but infeasible solution in %s mode\n", integrator.getReductionModeString().c_str());
+            SCIPdebug( FILE* file );
+            SCIPdebug( file = fopen("simode_debug.sol", "w") ) ;
             SCIPdebug( SCIPtrySol(scip_, sol_, TRUE,  TRUE, TRUE, TRUE, TRUE, &stored) );
-            SCIPdebug( SCIPprintSol(scip_, sol_, "simode_debug.sol", TRUE));
+
+            SCIPdebug( SCIPprintSol(scip_, sol_, file, TRUE));
             SCIPdebugMessage("Solution written to simode_debug.sol");
          }
          SCIPfreeSol(scip_, &sol_);
