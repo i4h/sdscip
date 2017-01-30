@@ -171,6 +171,7 @@ SCIP_RETCODE HeurSimODE::propagateInitial(SCIP* scip)
          SCIPpropCons(scip, transcons, SCIP_PROPTIMING_ALWAYS, &result);
       }
    }
+   return SCIP_OKAY;
 }
 
 
@@ -199,7 +200,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    nAlgebraic_ = structure->getNAlgebraic();
    SCIPdbgMsg("set nAlgebraic_ to %i\n", nAlgebraic_);
 
-   propagateInitial(scip);
+   if (true || propagateInitial_ == TRUE && SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING)
+      SCIP_CALL(propagateInitial(scip) );
 
    /** Create integrator **/
    char* discretization;

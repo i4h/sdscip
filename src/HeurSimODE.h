@@ -101,6 +101,12 @@ public:
              "Write calculated solutions to file",
              NULL, FALSE, FALSE, NULL, NULL);
 
+      SCIPaddBoolParam(scip,
+             "heuristics/simODE/propagatenitial",
+             "Propagate constraints at time=0 before running if in presolving",
+             &propagateInitial_, FALSE, FALSE, NULL, NULL);
+
+
       SCIPaddStringParam(scip,
              "heuristics/simODE/outFilePrefix",
              "Path of file to write calculated bounds to. The current node id and a .dat file extension "
@@ -171,6 +177,9 @@ private:
     * we need to propagate those constraints once before doing anything else
     */
    SCIP_RETCODE propagateInitial(SCIP* scip);
+
+   /* Varaible to store propagateinitial parameter */
+   SCIP_Bool propagateInitial_;
 
    /* Dimension of state space */
    int nStates_;
