@@ -200,7 +200,7 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
    nAlgebraic_ = structure->getNAlgebraic();
    SCIPdbgMsg("set nAlgebraic_ to %i\n", nAlgebraic_);
 
-   if (true || propagateInitial_ == TRUE && SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING)
+   if (propagateInitial_ == TRUE && SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING)
       SCIP_CALL(propagateInitial(scip) );
 
    /** Create integrator **/
