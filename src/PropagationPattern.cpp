@@ -649,7 +649,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	/* Iterate over configurations */
 	for (this->start(); (this->configurationsLeft() ); this->next() )
 	{
-		SCIPdebugMessage("  Loaded Configuration: %s\n",this->confString().c_str());
+		SCIPdebugMessage(" Loaded Configuration: %s\n",this->confString().c_str());
 
 		if (writeSubscips)
 		{
@@ -659,7 +659,15 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 			SCIP_CALL( SCIPwriteOrigProblem(this->subscip_, oss.str().c_str(), "cip", FALSE) );
 		}
 
-		SCIPdbgMsg("ready to solve SCIP\n");
+#ifdef SCIP_DEBUG
+		if (!this->isCut())
+		{ /* No cut (upper or lower bound) */
+		   std::pair<SDSCIP_PROPDIR, VarPair> boundVar(this->getBoundVar());
+		   SCIP_VAR * scipVar = boundVar.second.first;
+		   SCIPdebugMessage("  Ready to solve %s bound for  %s\n",(boundVar.first == SDSCIP_UP ? "upper" : "lower"), SCIPvarGetName(scipVar));
+		}
+#endif
+
 		SCIP_Bool success;
 		SCIPtransformProb(this->subscip_);
 
@@ -759,10 +767,11 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 					{
 					   SCIPdbgMsg("sol is feasible\n");
 					}
+				   SCIPdebugMessage("  optimal\n");
 				}
 				else
 				{
-					SCIPdbgMsg("non-optimal\n");
+				        SCIPdebugMessage("  not optimal\n");
 					++stats_.nDirectNonOptimal;
 					std::pair<SDSCIP_PROPDIR, VarPair> boundVar(this->getBoundVar());
 					switch (boundVar.first)
@@ -776,11 +785,11 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 						break;
 					}
 					SCIPdbgMsg("newBound is %1.16e\n",newBound);
-					SCIPdebugMessage("  did not solve to optimality\n");
+
 				}
 				SCIP_CALL( SCIPfreeTransform(this->subscip_) );
 
-				SCIPdebugMessage( "  solved for %s of variable %-10s, old bounds: [%e,%e], newBound %e\n"
+				SCIPdebugMessage( "  %s of %-10s: old bounds: [%e,%e], newBound %e\n"
 				   ,(boundVar.first == SDSCIP_DOWN ? "lb" : "ub")
 				   ,SCIPvarGetName(scipVar), SCIPvarGetLbLocal(scipVar),SCIPvarGetUbLocal(scipVar),newBound );
 

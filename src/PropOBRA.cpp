@@ -905,7 +905,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
          SCIP_CALL(multiTimePattern_.resetObjVals());
 
       }
-      SCIPdebugMessage("#### Done with Step 7_3\n");
+      SCIPdebugMessage("#### Done with Step 7_2\n");
    } /* Close Step 7_2 */
 
    /*
