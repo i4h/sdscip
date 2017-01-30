@@ -627,7 +627,7 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
 
    scipSol = SCIPgetBestSol(scip_);
 
-   SCIPdebugMessage("    adding cons %s with Vars from scip \n",SCIPconsGetName(currentCons));
+   SCIPdbgMsg("    adding cons %s with Vars from scip \n",SCIPconsGetName(currentCons));
 
    if (SCIPconsIsOriginal(currentCons))
       currentCons = SCIPconsGetTransformed(currentCons);
@@ -659,7 +659,7 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
       SCIP_VAR* sourcevar = consvars[v];
       SCIP_VAR* targetvar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,consvars[v]);
 
-      SCIPdebugMessage("    considering %s variable %s %p\n",SCIPvarIsOriginal(consvars[v]) ? "original" : "transformed", SCIPvarGetName(consvars[v]), (void*) consvars[v]);
+      SCIPdbgMsg("    considering %s variable %s %p\n",SCIPvarIsOriginal(consvars[v]) ? "original" : "transformed", SCIPvarGetName(consvars[v]), (void*) consvars[v]);
 
       assert(targetvar != NULL);
       assert((global ? SCIPvarGetLbGlobal(sourcevar) : SCIPvarGetLbLocal(sourcevar)) <= (global ? SCIPvarGetUbGlobal(sourcevar) : SCIPvarGetUbLocal(sourcevar)));
@@ -683,7 +683,7 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
    /* add the copied constraint to target SCIP if the copying process was valid */
    if( success )
    {
-      SCIPdebugMessage("    copied constraint %s to subscip\n",SCIPconsGetName(currentCons));
+      SCIPdbgMsg("    copied constraint %s to subscip\n",SCIPconsGetName(currentCons));
       assert(targetcons != NULL);
        /* add constraint to target SCIP */
        SCIP_CALL( SCIPaddCons(subscip_, targetcons) );
@@ -692,7 +692,7 @@ SCIP_RETCODE PropOBRA::addConsWithVars(SCIP_CONS* currentCons, SCIP_Bool noObj, 
    }
    else
    {
-      SCIPdebugMessage("failed to copy constraint %s\n", SCIPconsGetName(currentCons));
+      SCIPdbgMsg("failed to copy constraint %s\n", SCIPconsGetName(currentCons));
       assert(FALSE);
    }
 
@@ -828,15 +828,14 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
    /*
     * 5: Propagate algebraic constraints
     */
-   //@todo: Use a propagation pattern for this as well
-
+   SCIPdebugMessage(" Step 5: Propagating bounds to algebraic variables at t=%i\n",currentTime_);
    if( propagateAlgebraic_ && (currentTime_ >= 1) )
    {
       /* Use propagationPattern for algebraic vars */
       SCIP_CALL( prepareAlgebraicPattern());
       SCIP_CALL( algebraicPattern_.setSolMap(solMap_));
       SCIP_CALL( algebraicPattern_.propagate(currentTime_));
-      SCIPdebugMessage("#### Done with Step 7_2\n");
+      SCIPdebugMessage("#### Done with Step 5\n");
    }
 
    /*
@@ -872,7 +871,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
     */
    if(  currentTime_ >= 1 && propagateStates_ && !(*boundsDiverge) )
    {
-      SCIPdebugMessage("#### Step 7_2: Propagating bounds to differential variables at t=%i\n",currentTime_);
+      SCIPdebugMessage("Step 7_1: Propagating bounds to differential variables at t=%i\n",currentTime_);
       ConsVarVec::iterator pairIt;
 
       SCIP_CALL( prepareConstTimeStatePattern());
@@ -880,7 +879,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
       SCIP_CALL( constTimePattern_.buildHyperCube() );
 
       SCIP_CALL( constTimePattern_.propagate(currentTime_));
-      SCIPdebugMessage("#### Done with Step 7_2\n");
+      SCIPdebugMessage("#### Done with Step 7_1\n");
    } /* Close Step 7_1 */
 
 
@@ -890,7 +889,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
    if( currentTime_ >= 1 && addMultiTimeCuts_ && !(*boundsDiverge) )
    {
       SCIPdbgMsg("multitimelookback = %i\n",multiTimeCutLookback_);
-      SCIPdebugMessage("#### Step 7_3: Propagating bounds to differential variables at t=%i...%i\n",currentTime_ - multiTimeCutLookback_ + 1,currentTime_);
+      SCIPdebugMessage("Step 7_2: Propagating bounds to differential variables at t=%i...%i\n",currentTime_ - multiTimeCutLookback_ + 1,currentTime_);
       ConsVarVec::iterator pairIt;
 
       for( structure_->startDiffConsIteration(); structure_->diffConsLeft(); structure_->incrementDiffCons())
