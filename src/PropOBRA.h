@@ -233,10 +233,14 @@ public:
              "Disable Output of subscips",
              &subscipMute_, FALSE, TRUE, NULL, NULL);
 
-
-
       varRegex_.assign(std::string("(?:t_)+([A-Za-z0-9_]+)\\(([0-9]+,)?([0-9]+)\\)"), boost::regex_constants::icase);
       consRegex_.assign(std::string("[A-Za-z0-9]+_([A-Za-z0-9_]+)\\(([0-9]+,)?([0-9]+)\\)"), boost::regex_constants::icase);
+
+      /* Set identifiers in patterns */
+      constTimePattern_.identifier_ = 's';
+      algebraicPattern_.identifier_ = 'a';
+      controlPattern_.identifier_ = 'c';
+      multiTimePattern_.identifier_ = 'm';
    }
 
    /** destructor */
