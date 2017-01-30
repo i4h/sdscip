@@ -145,15 +145,19 @@ SCIP_RETCODE HeurSimODE::propagateInitial(SCIP* scip)
    for( structure->startAlgebraicConsIteration(0); structure->algebraicConsLeft(0); structure->incrementAlgebraicCons())
    {
       SCIP_CONS* cons(structure->getAlgebraicCons());
+      SCIP_RESULT result;
       SCIP_CONS* transcons;
-      SCIPgetTransformedCons(scip, cons, &transcons);
-      if( cons != nullptr )
+
+      if (cons == nullptr)
+         continue;
+
+      SCIP_CALL( SCIPgetTransformedCons(scip, cons, &transcons) );
+      if( transcons == NULL || SCIPconsIsDeleted(transcons) == TRUE )
       {
-         SCIP_RESULT result;
-         SCIP_CONS* transcons;
-         SCIPgetTransformedCons(scip, cons, &transcons);
-         SCIPpropCons(scip, transcons, SCIP_PROPTIMING_ALWAYS, &result);
+         continue;
       }
+
+      SCIPpropCons(scip, transcons, SCIP_PROPTIMING_ALWAYS, &result);
    }
 
    for( structure->startDiffConsIteration(0); structure->diffConsLeft(0); structure->incrementDiffCons())
