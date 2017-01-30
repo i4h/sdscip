@@ -568,6 +568,11 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
    SCIP_CALL( SCIPsetBoolParam(subscip_, "timing/statistictiming", FALSE) );
 #endif
 
+
+#ifdef SCIP_DEBUG
+   SCIP_CALL( SCIPsetIntParam(subscip_, "display/verblevel", 5) );
+#endif
+
    /* forbid call of heuristics and separators solving sub-CIPs */
    SCIP_CALL( SCIPsetSubscipsOff(subscip_, TRUE) );
 
