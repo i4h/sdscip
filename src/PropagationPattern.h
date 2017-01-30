@@ -200,9 +200,6 @@ private:
    int patternType_; /* 0: Configurations for constTimeCuts, 1: configurations for multiTimeCuts */
    std::map<SCIP_VAR*, SCIP_Real>* solMap_;
 
-
-
-
 };
 
 #endif /* PROPAGATIONPATTERN_H_ */
