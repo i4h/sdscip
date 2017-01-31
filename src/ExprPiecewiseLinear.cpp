@@ -1054,6 +1054,9 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
       SCIPInterval tmp;
       SCIP_Real p = pointInsideInterval( infinity, argbounds[0] );
       SCIPintervalSet( &tmp, data->lookup->operator()( p ) );
+      /* Be sure before returning cutoff (SCIPintervalAreDisjoint has no tolerance) */
+      tmp.inf = tmp.inf - EPSILON;
+      tmp.sup = tmp.sup + EPSILON;
       SCIPdebugMessage( "test: f(%g) = %g\n", p, SCIPintervalGetInf( tmp ) );
       SCIPdebugMessage( "funcbounds: [%g,%g]\n", SCIPintervalGetInf( funcbounds ), SCIPintervalGetSup( funcbounds ) );
 
