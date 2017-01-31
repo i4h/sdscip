@@ -1064,6 +1064,12 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
       //inside the argbounds the bounds are infeasible
       if( SCIPintervalAreDisjoint( tmp, funcbounds ) )
       {
+         if( !(funclb + EPSILON < funcub) )
+         {
+            SCIPdebugMessage("Returning cutoff after propagating degenerate interval when propagating\n"
+               "propagating lookup %s with bound [%1.16e,%1.16e] and argbounds [%1.16e,%1.16e]\n",
+               data->identifier, funclb, funcub, arglb, argub );
+         }
          SCIPdebugMessage( "funcbounds dont contain lookup of value from argbounds -> cutoff\n" );
          *cutoff = true;
       }
