@@ -603,7 +603,7 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
     * The varmap will map transformed variables of the main scip to original variables of the subscip
     * */
    SCIP_CALL( SCIPhashmapCreate(&consmap_, SCIPblkmem(subscip_), SCIPgetNConss(scip_)) );
-   SCIP_CALL( SCIPhashmapCreate(&varmap_, SCIPblkmem(subscip_), SCIPcalcHashtableSize(SCIPgetNVars(scip_))) );
+   SCIP_CALL( SCIPhashmapCreate(&varmap_, SCIPblkmem(subscip_), SCIPgetNVars(scip_)) );
 
    return SCIP_OKAY;
 
