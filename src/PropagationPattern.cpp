@@ -196,6 +196,7 @@ bool PropagationPattern::fetchPattern(int ndim)
     	 if (patternType_ == 1)
     	 {
     		 SCIPmessagePrintError("MultiTimeCuts in 3d not implemented yet\n");
+    		 assert(false);
     	 }
 
     	 switch (cutConf3d_)
