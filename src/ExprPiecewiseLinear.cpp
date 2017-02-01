@@ -545,17 +545,11 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 
    /* If argval is within feastol smaller than lower argbound (because of feastol), move lower argbound to argval */
    if ( !(argvals[0] >= SCIPintervalGetInf(argbounds[0])) )
-   {
       lb = argvals[0];
-      printf("Warning: Lowered lb by %e before estimating \n", lb - SCIPintervalGetInf(argbounds[0]));
-   }
 
    /* If argval is greater than upper argbound (because of feastol), move upper argbound to argval */
    if( !(argvals[0] <= SCIPintervalGetSup(argbounds[0])) )
-   {
       ub = argvals[0];
-      printf("Warning: Increased ub by %e before estimating \n", ub - SCIPintervalGetSup(argbounds[0]));
-   }
    
    SCIP_Interval newargbounds = {lb, ub};
 
