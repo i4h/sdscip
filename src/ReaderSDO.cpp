@@ -917,6 +917,21 @@ SCIP_DECL_READERREAD(sdo::ReaderSDO::scip_read)
          SCIP_CALL( SDprintStructureSummary(scip) );
       }
 
+      /* Read additional bounds into problem */
+      try
+      {
+         if( !sdoFile.getBoundFile().empty() )
+         {
+            SCIPinfoMessage(scip, NULL, "Reading additional bounds from %s\n", sdoFile.getBoundFile().c_str());
+            SCIPreadProb(scip, sdoFile.getBoundFile().c_str(), "bnd");
+         }
+      }
+      catch(const std::ios_base::failure& err)
+      {
+         SCIPerrorMessage("Failed opening file: %s\n", sdoFile.getObjectiveFile().c_str());
+         return SCIP_NOFILE;
+      }
+
       *result = SCIP_SUCCESS;
       return SCIP_OKAY;
    }
