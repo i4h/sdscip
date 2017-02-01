@@ -356,6 +356,7 @@ SCIP_DECL_DIALOGEXEC(dialogExecOBRA)
 
    SCIPinfoMessage(scip, NULL, "\n");
    SCIPinfoMessage(scip, NULL, "OBRA has finished. Final bounds have been saved to the file obra.bnd");
+   SCIPinfoMessage(scip, NULL, "\n");
 
 
    return SCIP_OKAY;
