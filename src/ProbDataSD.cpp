@@ -90,7 +90,7 @@
 
 bool SDisEquation(SCIP* scip, SCIP_CONS* cons)
 {
-   SCIP_Bool isEquation;
+   SCIP_Bool isEquation = false;
    SCIP_CONSHDLR* conshdlr;
    conshdlr = SCIPconsGetHdlr(cons);
 
@@ -439,8 +439,6 @@ SCIP_RETCODE checkStructure(SCIP* scip)
    {
       SCIPdebugMessage("checking alphabetic order of state variables t\n");
 
-      SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
-      assert(probdata != NULL);
       SDensureValidStructure(scip);;
       sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
       unsigned int nStates(structure->getNStates());
@@ -457,8 +455,6 @@ SCIP_RETCODE checkStructure(SCIP* scip)
    {
       SCIPdebugMessage("checking order of state stateVarNames corresponds to scip stateVars t\n");
 
-      SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
-      assert(probdata != NULL);
       SDensureValidStructure(scip);;
       sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
       unsigned int nStates(structure->getNStates());
@@ -494,8 +490,6 @@ SCIP_RETCODE checkStructure(SCIP* scip)
 
    {
       SCIPdebugMessage("checking order of control variables t\n");
-      SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
-      assert(probdata != NULL);
       SDensureValidStructure(scip);;
       sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
       unsigned int nControls(structure->getNControls());
@@ -529,8 +523,6 @@ SCIP_RETCODE checkStructure(SCIP* scip)
    {
       SCIPdebugMessage("making sure, state variables are returned as transformed variables\n");
 
-      SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
-      assert(probdata != NULL);
       SDensureValidStructure(scip);;
       sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
@@ -628,12 +620,12 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
    return SCIP_OKAY;
 }
 
+//@todo _SD: remove this function
 SCIP_RETCODE SDreadStructure(SCIP* scip) {
 
    SCIPdbgMsg("building fresh structure\n");
 
    SCIP_CONSHDLR** conshdlrs;
-   SCIP_PROBDATA* probdata;
 
    std::map<int, std::multiset<int> > controlVarTimes; /* Keeps track of the constraint times in which control variables appear */
    std::map<int, SCIP_VAR* > controlVarPointers; /* Saves variable pointers and  and indices for control variables */
@@ -645,8 +637,6 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
    assert(scip != NULL);
 
    /* Get propdata */
-   probdata = SCIPgetProbData(scip);
-   assert(probdata != NULL);
    sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
    SCIPdbgMsg("entered SDrefreshStructure, got probdata and structure\n");
@@ -744,7 +734,7 @@ SCIP_RETCODE SDreadStructure(SCIP* scip) {
                   if (consTypeString.compare(std::string("")) != 0)
                      consType= sdscip::SDproblemStructureInterface::SD_CONS_TYPE(atoi(consTypeString.c_str()));
 
-                  SCIP_VAR* explicitVar;
+                  SCIP_VAR* explicitVar = NULL;
                   SCIP_VAR* algebraicForwardVar = NULL;
 
                   SCIPcppDbgMsg("Matched expression, time is " << consTimeString << std::endl);
@@ -948,8 +938,6 @@ SCIP_RETCODE SDprintStructure(SCIP* scip)
    SDensureValidStructure( scip );
 
    //Get propdata
-   SCIP_PROBDATA *probdata = SCIPgetProbData(scip);
-   assert(probdata != NULL);
    sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
    int nParamsPerTime = structure->getNParamsPerTime();
 
@@ -1363,11 +1351,8 @@ void SDsetIsReformulated(SCIP * scip, bool isReformulated)
 
 bool SDgetIsReformulated(SCIP *scip)
 {
-	   SCIP_PROBDATA* probdata;
 	   assert(scip != NULL);
 	   //Get propdata
-	   probdata = SCIPgetProbData(scip);
-	   assert(probdata != NULL);
 	   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
 	   //return probdata->isReformulated ;
@@ -1376,34 +1361,28 @@ bool SDgetIsReformulated(SCIP *scip)
 
 void SDsetIsStructureValid(SCIP * scip, bool isValid)
 {
-	   SCIP_PROBDATA* probdata;
 	   assert(scip != NULL);
 	   //Get propdata
-	   probdata = SCIPgetProbData(scip);
-	   assert(probdata != NULL);
-	   probdata->structure->setIsValid(isValid);
+	   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
+	   structure->setIsValid(isValid);
 }
 
 bool SDgetIsStructureValid(SCIP *scip)
 {
-	   SCIP_PROBDATA* probdata;
 	   assert(scip != NULL);
 	   //Get propdata
-	   probdata = SCIPgetProbData(scip);
-	   assert(probdata != NULL);
-	   return probdata->structure->isValid();
+	   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
+	   return structure->isValid();
 }
 
 SCIP_RETCODE SDprintStateVarNames(SCIP *scip)
 {
 
    SCIPdbgMsg("printing state var names\n");
-   SCIP_PROBDATA* probdata;
    assert(scip != NULL);
    //Get propdata
-   probdata = SCIPgetProbData(scip);
-   assert(probdata != NULL);
-   std::string list(probdata->structure->getStateVarList());
+   sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
+   std::string list(structure->getStateVarList());
    SCIPinfoMessage(scip, NULL, list.c_str());
    SCIPinfoMessage(scip, NULL, "\n");
    SCIPdbgMsg("returning\n");

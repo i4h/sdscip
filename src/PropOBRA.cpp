@@ -491,8 +491,7 @@ SCIP_RETCODE PropOBRA::prepareControlPattern()
 	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )
 	   {
 		   SCIP_VAR* var(structure_->getControlVarAtTOrig());
-		   SCIP_VAR* subscipVar = (SCIP_VAR*) SCIPhashmapGetImage(varmap_,SCIPvarGetTransVar(var));
-		   assert(subscipVar != NULL);
+		   assert((SCIP_VAR*) SCIPhashmapGetImage(varmap_,SCIPvarGetTransVar(var)) != NULL);
 		   controlPattern_.addVar(var, (SCIP_VAR*) SCIPhashmapGetImage(varmap_,SCIPvarGetTransVar(var)));
 	   }
    return SCIP_OKAY;
