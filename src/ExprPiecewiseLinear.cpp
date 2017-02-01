@@ -198,8 +198,8 @@ SCIP_RETCODE estimateSafe(
 
    )
 {
+   assert(x2 - x1 >= 1e-9);
 
-   assert(x2 - x1 > 1e-9);
    SCIPdebugMessage("%sestimating safe: (lb,ub) = (%f,%f)\n",
       (overestimate ? "over" : "under"), lb, ub);
    //SCIPdebugMessage("(x1,y1 = (%1.17e,%1.17e), (x2,y2) = (%1.17e,%1.17e), argval = %f, type: %i\n",
