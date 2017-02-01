@@ -592,10 +592,18 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
    /* Set gaplimit depending on obra parameters*/
    SCIP_CALL( SCIPsetRealParam(subscip_,"limits/gap",subscipGapLimit_) );
 
-   /* Mute subscips depending on obra parameters*/
-   if(subscipMute_ == true)
+   /* Set logfile or mute subscips depending on obra parameters*/
+
+   if( subscipWriteLogs_)
    {
-      SCIP_CALL( SCIPsetIntParam(subscip_, "display/verblevel", 0) );
+      std::ostringstream oss;
+      oss << "subscip_" << lookback_ << "_" << currentTime_ << ".log";
+      SCIPsetMessagehdlrLogfile(subscip_, oss.str().c_str() );
+   }
+   if( subscipMute_ == true)
+   {
+      SCIPsetMessagehdlrQuiet(subscip_, TRUE);
+      //SCIP_CALL( SCIPsetIntParam(subscip_, "display/verblevel", 0) );
    }
 
    /* Create and allocate consmap and varmap

@@ -239,6 +239,11 @@ public:
              &subscipNodeLimit_, FALSE, 10000, -1, INT_MAX, NULL, NULL);
 
       SCIPaddBoolParam(scip,
+             "propagating/obra/subscipWriteLogs",
+             "Write subscip output to logfile",
+             &subscipWriteLogs_, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddBoolParam(scip,
              "propagating/obra/subscipMute",
              "Disable Output of subscips",
              &subscipMute_, FALSE, TRUE, NULL, NULL);
@@ -320,6 +325,7 @@ private:
    int breakTime_;
    SCIP_Real subscipTimeLimit_;
    SCIP_Longint subscipNodeLimit_;
+   SCIP_Bool subscipWriteLogs_;
    SCIP_Bool subscipMute_;
    SCIP_Bool propagateAlgebraic_;
    SCIP_Bool propagateStates_;
