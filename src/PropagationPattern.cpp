@@ -650,7 +650,6 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
 	SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
 	SCIPgetBoolParam(scip_,"propagating/obra/writeSubscips",&writeSubscips);
-
 	SCIPdebugMessage("entering solving loop------------------------ \n");
 
 	/* Iterate over configurations */
