@@ -660,7 +660,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		if (writeSubscips)
 		{
 			std::ostringstream oss;
-			oss << paramstr2 << paramstr << "_" << lookback << "_" << currentTime << "_pattern_" << this->identifier_ << "" << this->currentConfiguration_ << "_subscip.cip";
+			oss << paramstr2 << paramstr << "_" << lookback << "_" << currentTime << "_pattern_" << this->identifier_ << "_" << this->currentConfiguration_ << "_subscip.cip";
 			SCIPdebugMessage("  WRITING transformed subscip to file %s\n",oss.str().c_str());
 			SCIP_CALL( SCIPwriteOrigProblem(this->subscip_, oss.str().c_str(), "cip", FALSE) );
 		}
@@ -698,6 +698,10 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 
 		/* Solve the subscip */
 		SCIP_CALL( SCIPsolve(this->subscip_) );
+
+		SCIPinfoMessage(subscip_, NULL, "finished solve, primal %f, dual %f\n", SCIPgetPrimalbound(subscip_), SCIPgetDualbound(subscip_));
+		SCIPprintStage(subscip_, NULL);
+		SCIPinfoMessage(subscip_, NULL, "\n");
 
 		stats_.aggSolutionTime += SCIPgetSolvingTime(this->subscip_);
 		++stats_.nSubscips;
