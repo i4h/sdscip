@@ -200,8 +200,6 @@ SCIP_RETCODE estimateSafe(
 {
 
    assert(x2 - x1 > 1e-9);
-
-   SCIPdebugMessage("\n");
    SCIPdebugMessage("%sestimating safe: (lb,ub) = (%f,%f)\n",
       (overestimate ? "over" : "under"), lb, ub);
    //SCIPdebugMessage("(x1,y1 = (%1.17e,%1.17e), (x2,y2) = (%1.17e,%1.17e), argval = %f, type: %i\n",
@@ -285,7 +283,7 @@ SCIP_RETCODE estimateSafe(
    /* Reset rounding mode for evaluation*/
    SCIPintervalSetRoundingModeToNearest();
 
-   SCIPdebugMessage("Checking estimation at defining points\n");
+   SCIPdbgMsg("Checking estimation at defining points\n");
    SCIP_Interval mi = {*coefficient, *coefficient};
    SCIP_Interval bi = {*intercept, *intercept};
    SCIP_Interval myy1 = mi *x1i + bi;
@@ -301,7 +299,7 @@ SCIP_RETCODE estimateSafe(
       assert( myy1.inf <= y1  );
       assert( myy2.inf <= y2  );
    }
-   SCIPdebugMessage("estimation valid at (x1,y1) and (x2,y2) within in rounding error of evaluation \n");
+   SCIPdbgMsg("estimation valid at (x1,y1) and (x2,y2) within in rounding error of evaluation \n");
 #endif
 
    /* Reset rounding mode */
@@ -397,17 +395,17 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
 
    std::vector<std::pair<SCIP_Real, SCIP_Real> > convexHull;
    convexHull.push_back( std::make_pair( lb, linear(lb) ) );
-   SCIPdebugMessage( "bounds are [%g,%g]\n", lb, ub );
-   SCIPdebugMessage( "intervals for bounds are %li and %li\n", begin, end );
-   SCIPdebugMessage( "intervals for upper bound is [%f, %f]\n", linear.getInfimum(end), linear.getSupremum(end));
+   SCIPdbgMsg( "bounds are [%g,%g]\n", lb, ub );
+   SCIPdbgMsg( "intervals for bounds are %li and %li\n", begin, end );
+   SCIPdbgMsg( "intervals for upper bound is [%f, %f]\n", linear.getInfimum(end), linear.getSupremum(end));
 
    if( begin < end )
    {
-      SCIPdebugMessage( "pushing into convex  hull: (%f, %f)\n",linear.getSupremum(begin), linear( linear.getSupremum(begin)));
+      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",linear.getSupremum(begin), linear( linear.getSupremum(begin)));
       convexHull.push_back( std::make_pair( linear.getSupremum(begin), linear( linear.getSupremum(begin) ) ) );
    }
 
-   SCIPdebugMessage( "Starting computation of convex hull with %li points (%g,%g) (%g,%g)\n", convexHull.size(), convexHull.front().first, convexHull.front().second, convexHull.back().first, convexHull.back().second );
+   SCIPdbgMsg( "Starting computation of convex hull with %li points (%g,%g) (%g,%g)\n", convexHull.size(), convexHull.front().first, convexHull.front().second, convexHull.back().first, convexHull.back().second );
 
    for( auto i = begin + 2; i <= end; ++i )
    {
@@ -630,7 +628,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
             }
 
             SAFE_ESTIMATOR estimator = selectEstimator(overestimate, lb, ub, argvals[0], x1, x2, e5valid, e6valid);
-            SCIPdebugMessage("selected safe linear estimator %i\n", estimator);
+            SCIPdbgMsg("selected safe linear estimator %i\n", estimator);
             SCIP_CALL( estimateSafe(overestimate, lb, ub, argvals[0], x1, x2, y1, y2, estimator, coeffs, constant) );
 
             /* Check if we need a safeguard due to numerics */
@@ -654,7 +652,7 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 
    /* Use TestExprPiecewiseLinear to check the estimation by sampling the interval */
 #ifdef EXPR_PCW_LIN_TEST_ESTIMATIONS
-   SCIPdebugMessage("Verifying computed estimation\n");
+   SCIPdbgMsg("Verifying computed estimation\n");
    EstimationData estimation;
    estimation.coefficient = coeffs[0];
    estimation.constant = *constant;
@@ -730,7 +728,7 @@ static SCIP_DECL_USEREXPRINTEVAL( intervalEvaluateLookup )
    auto& linear = *(data->lookup);
    SCIP_CALL( findMinMaxPiecewiseLinear(linear, argvals, argmin, argmax, min, max) );
    SCIPintervalSetBounds(funcvalue, min, max);
-   SCIPdebugMessage("interval [%g, %g] evaluated to [%g, %g]\n", SCIPintervalGetInf(argvals[0]), SCIPintervalGetSup(argvals[0]), funcvalue->inf, funcvalue->sup);
+   SCIPdbgMsg("interval [%g, %g] evaluated to [%g, %g]\n", SCIPintervalGetInf(argvals[0]), SCIPintervalGetSup(argvals[0]), funcvalue->inf, funcvalue->sup);
    if( gradient )
    {
 
@@ -883,7 +881,7 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
 
          for( std::vector<SCIP_Real>::iterator iter = solution.begin(); iter != solution.end(); ++iter )
          {
-            SCIPdebugMessage( "found intersection with funcbound inf: %.16g\n", *iter );
+            SCIPdbgMsg( "found intersection with funcbound inf: %.16g\n", *iter );
             SCIPInterval currentInterval;
             SCIPintervalSetBounds(
                &currentInterval,
@@ -899,25 +897,25 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
                //first derivative is positive at the point where the lookup
                //has the value of the lower bound. Thus right of this point
                //it is above the lower bound and left it is below.
-               SCIPdebugMessage( "deriv positive. updated valid interval [%.16g,%.16g] to ", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "deriv positive. updated valid interval [%.16g,%.16g] to ", newargbounds.inf, newargbounds.sup );
                SCIPInterval tmp;
                SCIPintervalSetBounds( &tmp, *iter, currentInterval.sup );
                SCIPintervalUnify( &newargbounds, newargbounds, tmp );
-               SCIPdebugMessage( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
             }
             else if( gleft < 0.0 && gright < 0.0 )
             {
-               SCIPdebugMessage( "deriv negative. updated valid interval [%.16g,%.16g] to ", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "deriv negative. updated valid interval [%.16g,%.16g] to ", newargbounds.inf, newargbounds.sup );
                //first derivative is negative and thus the valid
                //interval that is above the lower bound is to the left
                SCIPInterval tmp;
                SCIPintervalSetBounds( &tmp, currentInterval.inf, *iter );
                SCIPintervalUnify( &newargbounds, newargbounds, tmp );
-               SCIPdebugMessage( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
             }
             else if( gleft > 0.0 && gright < 0.0 )
             {
-               SCIPdebugMessage( "deriv zero at intersection and second deriv negative\n" );
+               SCIPdbgMsg( "deriv zero at intersection and second deriv negative\n" );
                //first derivative is zero and second derivative negative
                //thus the lookup has a local maximum that equals the lower bound.
                //The valid interval may be reduced since the lookup is below the
@@ -951,7 +949,7 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
 
          if( SCIPintervalIsEmpty( infinity, argbounds[0] ) )
          {
-            SCIPdebugMessage( "argbounds empty now -> cutoff\n" );
+            SCIPdbgMsg( "argbounds empty now -> cutoff\n" );
             *cutoff = true;
          }
       }
@@ -973,7 +971,7 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
 
          for( std::vector<SCIP_Real>::iterator iter = solution.begin(); iter != solution.end(); ++iter )
          {
-            SCIPdebugMessage( "found intersection with funcbound sup: %.16g\n", *iter );
+            SCIPdbgMsg( "found intersection with funcbound sup: %.16g\n", *iter );
             SCIPInterval currentInterval;
             SCIPintervalSetBounds(
                &currentInterval,
@@ -985,28 +983,28 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
 
             if( gleft > 0.0 && gright > 0.0 )
             {
-               SCIPdebugMessage( "deriv positive. updated valid interval to  [%.16g,%.16g] \n", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "deriv positive. updated valid interval to  [%.16g,%.16g] \n", newargbounds.inf, newargbounds.sup );
                //first derivative is positive at the point where the lookup
                //has the value of the upper bound. Thus left of this point
                //it was below the upper bound and right it is above.
                SCIPInterval tmp;
                SCIPintervalSetBounds( &tmp, currentInterval.inf, *iter );
                SCIPintervalUnify( &newargbounds, newargbounds, tmp );
-               SCIPdebugMessage( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
             }
             else if( gleft < 0.0 && gright < 0.0 )
             {
-               SCIPdebugMessage( "deriv negative. updated valid interval [%.16g,%.16g] to ", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "deriv negative. updated valid interval [%.16g,%.16g] to ", newargbounds.inf, newargbounds.sup );
                //first derivative is negative and thus the valid
                //interval that is below the upper bound is to the right
                SCIPInterval tmp;
                SCIPintervalSetBounds( &tmp, *iter, currentInterval.sup );
                SCIPintervalUnify( &newargbounds, newargbounds, tmp );
-               SCIPdebugMessage( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
             }
             else if( gleft < 0.0 && gright > 0.0 )
             {
-               SCIPdebugMessage( "deriv zero at intersection and second deriv positive\n" );
+               SCIPdbgMsg( "deriv zero at intersection and second deriv positive\n" );
                //first derivative is zero and second derivative positive
                //thus the lookup has a local minimum that equals the upper bound.
                //The valid interval may be reduced since the lookup is above the
@@ -1017,7 +1015,7 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
                SCIPInterval tmp;
                SCIPintervalSet( &tmp, *iter );
                SCIPintervalUnify( &newargbounds, newargbounds, tmp );
-               SCIPdebugMessage( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
+               SCIPdbgMsg( "[%.16g,%.16g]\n", newargbounds.inf, newargbounds.sup );
 
             }
             else
@@ -1039,14 +1037,14 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
 
          if( SCIPintervalIsEmpty(infinity, argbounds[0] ) )
          {
-            SCIPdebugMessage( "argbounds empty now -> cutoff\n" );
+            SCIPdbgMsg( "argbounds empty now -> cutoff\n" );
             *cutoff = true;
             return SCIP_OKAY;
          }
       }
    }
 
-   SCIPdebugMessage( "argbounds after backwardprop [%.16g,%.16g]\n", argbounds->inf, argbounds->sup );
+   SCIPdbgMsg( "argbounds after backwardprop [%.16g,%.16g]\n", argbounds->inf, argbounds->sup );
    if( sols_empty )
    {
       //if the solution is empty then the bounds either
@@ -1057,8 +1055,8 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
       /* Be sure before returning cutoff (SCIPintervalAreDisjoint has no tolerance) */
       tmp.inf = tmp.inf - EPSILON;
       tmp.sup = tmp.sup + EPSILON;
-      SCIPdebugMessage( "test: f(%g) = %g\n", p, SCIPintervalGetInf( tmp ) );
-      SCIPdebugMessage( "funcbounds: [%g,%g]\n", SCIPintervalGetInf( funcbounds ), SCIPintervalGetSup( funcbounds ) );
+      SCIPdbgMsg( "test: f(%g) = %g\n", p, SCIPintervalGetInf( tmp ) );
+      SCIPdbgMsg( "funcbounds: [%g,%g]\n", SCIPintervalGetInf( funcbounds ), SCIPintervalGetSup( funcbounds ) );
 
       //if the funcbounds do not contain the result of the evaluation at an arbitrary point
       //inside the argbounds the bounds are infeasible
@@ -1070,7 +1068,7 @@ static SCIP_DECL_USEREXPRPROP( propagateLookup )
                "propagating lookup %s with bound [%1.16e,%1.16e] and argbounds [%1.16e,%1.16e]\n",
                data->identifier, funclb, funcub, arglb, argub );
          }
-         SCIPdebugMessage( "funcbounds dont contain lookup of value from argbounds -> cutoff\n" );
+         SCIPdbgMsg( "funcbounds dont contain lookup of value from argbounds -> cutoff\n" );
          *cutoff = true;
       }
    }
