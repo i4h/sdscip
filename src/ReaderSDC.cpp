@@ -68,12 +68,12 @@ SCIP_DECL_READERFREE(ReaderSDC::scip_free)
  */
 SCIP_DECL_READERREAD(ReaderSDC::scip_read)
 {
-   SCIP_RETCODE retcode;
+   //@todo: Implement reading of sdc files
 
-
-   *result = SCIP_SUCCESS;
+   *result = SCIP_DIDNOTRUN;
 
    return SCIP_OKAY;
+
 } /*lint !e715*/
 
 /** writing method of sdc reader
