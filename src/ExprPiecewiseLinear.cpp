@@ -216,7 +216,7 @@ SCIP_RETCODE estimateSafe(
    SCIP_Real merr = coefficienti.sup - coefficienti.inf;
 
    /* Decide how to round the slope */
-   SCIP_Bool mup; /* If true, round the slope upwards, else round downwards */
+   SCIP_Bool mup = true; /* If true, round the slope upwards, else round downwards */
    switch (estimator)
    {
       case SAFE_ESTIMATOR_TYPE_1:
@@ -300,6 +300,11 @@ SCIP_RETCODE estimateSafe(
       assert( myy2.inf <= y2  );
    }
    SCIPdbgMsg("estimation valid at (x1,y1) and (x2,y2) within in rounding error of evaluation \n");
+
+   if (! ( myy2.inf <= y2  ) && ( myy1.inf <= y1  ) && ( myy2.sup >= y2  ) && ( myy1.sup >= y1  ))
+   {
+      SCIPerrorMessage("Invalid estimation!\n");
+   }
 #endif
 
    /* Reset rounding mode */

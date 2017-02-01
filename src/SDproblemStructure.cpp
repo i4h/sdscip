@@ -426,7 +426,10 @@ SCIP_VAR* SDproblemStructure::getCurrentStateVar() {
       SCIP_VAR* transvar;
       SCIP_RETCODE retcode;
       retcode = SCIPgetTransformedVar(scip_, *stateVarIt_, &transvar );
-      assert(retcode == SCIP_OKAY);
+	   if( retcode != SCIP_OKAY)
+	   {
+	      SCIPwarningMessage(scip_, "Error getting current state var\n");
+	   }
       return transvar;
    }
    else

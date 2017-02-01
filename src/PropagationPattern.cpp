@@ -487,7 +487,10 @@ void PropagationPattern::next()
 	   SCIP_RETCODE returnCode;
 	   returnCode = SCIPchgVarObj(subscip_,subscipVar,varObj);
 	   SCIPdbgMsg("set obj of var %s to %e\n",SCIPvarGetName(subscipVar),varObj);
-	   assert(returnCode == SCIP_OKAY);
+	   if( returnCode != SCIP_OKAY)
+	   {
+	      SCIPwarningMessage(subscip_, "Error changing var objective on variable %s\n", SCIPvarGetName(subscipVar));
+	   }
    }
 }
 

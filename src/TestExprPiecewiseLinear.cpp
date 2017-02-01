@@ -156,6 +156,7 @@ EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Re
 
    retcode = SCIPexprEstimateUser(pcwlin, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
    assert(retcode == SCIP_OKAY);
+   test(retcode == SCIP_OKAY);
 
    SCIPdbgMsg("Got estimation: %f*x + %f\n", coeffs, constant);
 
@@ -358,6 +359,7 @@ SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData 
 
    retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
    assert(retcode == SCIP_OKAY);
+   test(retcode == SCIP_OKAY);
 
    std::string identifier(data.label);
    identifier.resize(10);

@@ -200,6 +200,7 @@ public:
             return cons_constminmax_->cons;
          default:
             assert(false);
+            return NULL;
       }
    }
 
