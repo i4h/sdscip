@@ -40,8 +40,6 @@
  *
  */
 
-#define SCIP_DEBUG
-
 #include "PropagationPattern.h"
 #include "HyperCube.h"
 
