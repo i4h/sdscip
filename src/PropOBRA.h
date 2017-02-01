@@ -177,6 +177,16 @@ public:
              "Directory to write output files to, format directory/, default is ./",
              &outDir_, FALSE, "./", NULL, NULL);
 
+      SCIPaddBoolParam(scip,
+             "propagating/obra/writeCutsAfterProp",
+             "Write cuts to file after propagation",
+             &writeCutsAfterProp_, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddStringParam(scip,
+             "propagating/obra/cutFile",
+             "Filename of sdc file to write to after propagation",
+             &cutFile_, FALSE, "transprob.cip", NULL, NULL);
+
       SCIPaddIntParam(scip,
              "propagating/obra/writeFreq",
              "(Problem) Time Intervals in which to write the problem during propagation",
@@ -315,6 +325,8 @@ private:
    SCIP_Bool propagateStates_;
    SCIP_Bool propagateControls_;
    SCIP_Bool writeAfterProp_;
+   SCIP_Bool writeCutsAfterProp_;
+   char* cutFile_;
    char* outFile_;
    char* outDir_;
    int boundWriteFreq_;

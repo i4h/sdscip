@@ -240,11 +240,10 @@ SCIP_RETCODE PropOBRA::writeCuts()
    SCIP_Bool writeCutsAfterProp = true;
    if( writeCutsAfterProp )
    {
-      char* outfilestr = "cuts.sdc";
 
-      SCIPdebugMessage( "WRITING cuts to file %s\n", outfilestr);
+      SCIPdebugMessage( "WRITING cuts to file %s\n", cutFile_);
 
-      SCIP_CALL( SCIPwriteTransProblem(scip_, "cuts.sdc", "sdc", FALSE) );
+      SCIP_CALL( SCIPwriteTransProblem(scip_, cutFile_, "sdc", FALSE) );
 
       SCIPdebugMessage( "done writing\n" );
    }
