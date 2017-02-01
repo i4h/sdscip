@@ -202,7 +202,12 @@ bool PropagationPattern::fetchPattern(int ndim)
     	 switch (cutConf3d_)
     	 {
     	 case 0:
-    		 SCIPmessagePrintError("Pattern 0 not yet implemented for 3d problems\n");
+			 { static const double arr[] = {  1, 0,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { -1, 0,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  1,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0, -1,  0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  0,  1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,  0, -1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
     		 break;
     	 case 1:
 			 { static const double arr[] = { 0, 0, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
