@@ -421,11 +421,27 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
       SCIPdbgMsg("convex hull is %s\n", oss.str().c_str());
    }
 
-
-   convexHull.push_back( std::make_pair( ub, linear( ub ) ) );
-   SCIPdbgMsg("evaluating pcwlin at %1.17e = %1.17e\n", ub, linear(ub));
-   SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear( ub ));
-   grahamScanCheck<side> ( convexHull );
+   SCIPdbgMsg("last x val in hull is %1.16e\n", convexHull.back().first);
+   /*
+    * If ub and last point in hull are equal:
+    *   exchange last point by point at ub to avoid coinciding points but still
+    *   ensure that argval stays strictly in x range of hull
+    *   no grahamcheck is needed because last point is already checked
+    * else
+    *   add ub and scan one last time
+    * */
+   if (is_equal(convexHull.back().first, ub))
+   {
+      convexHull.pop_back();
+      convexHull.push_back( std::make_pair( ub, linear( ub ) ) );
+   }
+   else
+   {
+      convexHull.push_back( std::make_pair( ub, linear( ub ) ) );
+      SCIPdbgMsg("evaluating pcwlin at %1.17e = %1.17e\n", ub, linear(ub));
+      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear( ub ));
+      grahamScanCheck<side> ( convexHull );
+   }
 
    SCIPdbgMsg( "Convex hull from inner points is:\n" );
 
