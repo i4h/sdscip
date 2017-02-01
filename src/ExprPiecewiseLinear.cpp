@@ -535,7 +535,6 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    }
 
    /* If argval is greater than upper argbound (because of feastol), move upper argbound to argval */
-
    if( !(argvals[0] <= SCIPintervalGetSup(argbounds[0])) )
    {
       ub = argvals[0];
@@ -543,7 +542,6 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
    }
    
    SCIP_Interval newargbounds = {lb, ub};
-
 
    SCIP_CALL( findMinMaxPiecewiseLinear(*(data->lookup), &newargbounds, argmin, argmax, min, max) );
 
@@ -583,10 +581,10 @@ static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
 
    SCIPdebugMessage("%sestimating lookup %s with bounds [%g,%g], argval = %g\n", overestimate ? "over" : "under" , data->identifier, lb, ub, argvals[0]);
 
-
    if( is_equal( lb, ub ) )
    {
       /* Trivial case */
+      SCIPdebugMessage("handling trivial case lb: %1.16e, ub %1.16e, delta: %1.16e", lb, ub, ub - lb);
       coeffs[0] = 0.0;
       *constant = overestimate ? max : min;
    }
