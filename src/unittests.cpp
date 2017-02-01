@@ -136,8 +136,8 @@ SCIP_RETCODE runSCIP(
    {
       /* Set testall to false and use this code to run an an individual test */
       TestExprPiecewiseLinear* test = new sdscip::TestExprPiecewiseLinear(scip);
-      test->runWorldLookupFeastol();
-      //test->runWorldLookup();
+      //test->runDNRULookup();
+      test->runAll();
       std::cout << test->summaryString() << std::endl;
       delete test;
    }

@@ -127,6 +127,7 @@ public:
    /* Tests */
    void runEstimatorManualTests();
    void runWorldLookup();
+   void runDNRULookup();
    void runWorldLookupFeastol();
    void runEstimatorRandomTests();
    void runEstimatorNumericsTests();

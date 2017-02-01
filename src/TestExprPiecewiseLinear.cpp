@@ -614,6 +614,58 @@ void TestExprPiecewiseLinear::runWorldLookup()
 
 }
 
+/* Check a lookup from the dnru model that created problems */
+void TestExprPiecewiseLinear::runDNRULookup()
+{
+   SCIP_RETCODE retcode;
+   SCIP_EXPR* expr;
+   SCIP_EXPR* child;
+   SCIP_VAR* arg;
+   bool overestimate = true;
+
+   std::vector<double> xvals = {1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 5.5, 6, 6.5, 7, 7.5, 8};
+   std::vector<double> yvals = {1, 0.97, 0.95, 0.9, 0.8, 0.72, 0.6, 0.52, 0.44, 0.37, 0.33, 0.3, 0.28, 0.26, 0.25};
+
+   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(xvals, yvals);
+
+   SCIPcreateVarBasic(subscip_, &arg, "argument", -SCIPinfinity(scip_), SCIPinfinity(scip_), 0, SCIP_VARTYPE_CONTINUOUS);
+   retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
+   assert(retcode == SCIP_OKAY);
+
+   char identifier[7] = "lookup";
+
+   retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
+   SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
+   assert(retcode == SCIP_OKAY);
+   SCIP_Real argvals;
+   SCIP_Interval argbounds;
+   SCIP_Real coeffs;
+   SCIP_Real constant;
+   SCIP_Bool success;
+   argbounds.inf = 3.4586873987176938;
+   argbounds.sup = 3.5000000000000022;
+   argvals = 3.5000000000000022;
+
+
+   retcode = SCIPexprEstimateUser(expr, SCIPinfinity(scip_), &argvals, &argbounds, overestimate, &coeffs, &constant, &success);
+   test(retcode == SCIP_OKAY);
+
+   EstimationData estimation;
+   estimation.coefficient = coeffs;
+   estimation.constant = constant;
+   estimation.overestimate = overestimate;
+   SCIPdebugMessage("Estimation: %s\n", estimationToString(estimation).c_str());
+   int nerrors(0);
+   sampleEstimationAtKnots(SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, std::make_pair(SCIPintervalGetInf( argbounds ), SCIPintervalGetSup( argbounds )), nerrors, 0.0);
+
+   ++nExecutedTests_;
+   nError_ += nerrors;
+
+   SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
+   SCIPreleaseVar(subscip_, &arg);
+
+}
+
 /* Check the lookup from world2 model with an argval abover argbounds by 1e-7 */
 void TestExprPiecewiseLinear::runWorldLookupFeastol()
 {
@@ -691,6 +743,7 @@ void TestExprPiecewiseLinear::runAll()
 {
    runWorldLookup();
    runWorldLookupFeastol();
+   runDNRULookup();
    runEstimatorManualTests();
    runEstimatorNumericsTests();
    runEstimatorRandomTests();
