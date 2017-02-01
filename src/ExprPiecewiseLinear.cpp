@@ -343,7 +343,7 @@ SCIP_Real determinant(
 }
 
 /**
- * Checks for the last three points of a convex set of points if the second last point has to be removed
+ * Checks for the last three points of a convex set of points if the second to last point has to be removed
  * for convexity. If yes it removes it and repeats the check.
  * The template parameter is used to check convexity from top and from below.
  */
