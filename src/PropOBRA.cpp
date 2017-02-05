@@ -798,9 +798,9 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
          for( structure_->startDiffConsIteration(addTime); structure_->diffConsLeft(addTime); structure_->incrementDiffCons())
          {
             SCIP_CONS* cons(structure_->getDiffConsCons());
-            SCIPdebugMessage("   Adding Constraint %s\n",SCIPconsGetName(cons));
             if( cons != nullptr)
             {
+               SCIPdebugMessage("   Adding Constraint %s\n",SCIPconsGetName(cons));
                SCIP_CALL( addConsWithVars(cons, true, true, TRUE) );
             }
          }
