@@ -657,6 +657,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	for (this->start(); (this->configurationsLeft() ); this->next() )
 	{
 		SCIPdebugMessage(" Loaded Configuration: %s\n",this->confString().c_str());
+		SCIPinfoMessage(subscip_, NULL, " Loaded Configuration: %s\n",this->confString().c_str());
 
 		if (writeSubscips)
 		{
@@ -672,6 +673,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		   std::pair<SDSCIP_PROPDIR, VarPair> boundVar(this->getBoundVar());
 		   SCIP_VAR * scipVar = boundVar.second.first;
 		   SCIPdebugMessage("  Ready to solve %s bound for  %s\n",(boundVar.first == SDSCIP_UP ? "upper" : "lower"), SCIPvarGetName(scipVar));
+		   SCIPinfoMessage(subscip_, NULL, "Solving %s bound for  %s\n",(boundVar.first == SDSCIP_UP ? "upper" : "lower"), SCIPvarGetName(scipVar));
 		}
 #endif
 
