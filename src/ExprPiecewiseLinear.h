@@ -70,6 +70,9 @@ enum SAFE_ESTIMATOR
    SAFE_ESTIMATOR_TYPE_6 = 6,
 };
 
+EXTERN
+SCIP_RETCODE SCIPincludeUserExprParserPiecewiseLinear(SCIP* scip);
+
 
 /**
  * Creates a piecewise linear expression using its piecewise cubic approximation

@@ -56,9 +56,11 @@
 #include <cmath>
 #include <scip/intervalarith.h>
 #include <scip/pub_message.h>
+#include <scip/cons_nonlinear.h>
 #include <fstream>
 #include <stdio.h>
 #include <string.h>
+#include <boost/lexical_cast.hpp>
 
 using boost::shared_ptr;
 using std::isfinite;
@@ -527,7 +529,60 @@ static SCIP_RETCODE findMinMaxPiecewiseLinear(
    
 }
 
+template<typename Out>
+void split(const std::string &s, char delim, Out result) {
+    std::stringstream ss;
+    ss.str(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        *(result++) = item;
+    }
+}
 
+
+std::vector<std::string> split(const std::string &s, char delim) {
+    std::vector<std::string> elems;
+    split(s, delim, std::back_inserter(elems));
+    return elems;
+}
+
+static SCIP_DECL_USEREXPRPARSE( parseLookup )
+{
+
+   std::string dataString(str, length);
+   std::vector<double> xvals;
+   std::vector<double> yvals;
+
+   SCIPdebugMessage("parsing \"%s\"\n", dataString.c_str());
+
+   std::vector<std::string> pointStrings = split(dataString, ':');
+
+   for (auto it : pointStrings)
+   {
+      std::string point = it;
+
+      /* Remove paranthesis */
+      point.erase(0,1).pop_back();
+      std::vector<std::string> vals = split(point, ',');
+      xvals.push_back(boost::lexical_cast<double>(vals[0]));
+      yvals.push_back(boost::lexical_cast<double>(vals[1]));
+   }
+   SCIPdebugMessage("xvec: %s\n",sdscip::Vector::vec2string(xvals, std::string()).c_str());
+   SCIPdebugMessage("yvec: %s\n",sdscip::Vector::vec2string(yvals, std::string()).c_str());
+
+   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(xvals, yvals);
+
+   SCIP_CALL( SCIPexprCreatePiecewiseLinear( blkmem, expr, arg, pcwlin , identifier) );
+   return SCIP_OKAY;
+
+}
+
+
+SCIP_RETCODE SCIPincludeUserExprParserPiecewiseLinear(SCIP* scip)
+{
+   SCIPincludeUserExprParser(scip, "lookup", "", parseLookup);
+   return SCIP_OKAY;
+}
 
 
 static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )
@@ -1119,7 +1174,18 @@ static SCIP_DECL_USEREXPRFREEDATA( freeLookupExpr )
 
 static SCIP_DECL_USEREXPRPRINT( lookupExprPrint)
 {
-   SCIPmessageFPrintInfo(messagehdlr, file, "lookup%s", data->identifier);
+
+   /* Print user expression identifier */
+   SCIPmessageFPrintInfo(messagehdlr, file, "[lookup]");
+
+   /* Print identifier */
+   SCIPmessageFPrintInfo(messagehdlr, file, "[%s]", data->identifier);
+
+   /* Print points */
+   SCIPmessageFPrintInfo(messagehdlr, file, "[");
+   SCIPexprPiecewiseLinearPrintPoints(data, messagehdlr, file);
+   SCIPmessageFPrintInfo(messagehdlr, file, "]");
+
 }
 
 SCIP_RETCODE SCIPexprCreatePiecewiseLinear(
@@ -1180,10 +1246,9 @@ void SCIPexprPiecewiseLinearPrintPoints(SCIP_USEREXPRDATA* data, SCIP_MESSAGEHDL
    for (auto it = coeffs.begin(); it < coeffs.end(); ++it) {
       int i = it - coeffs.begin();
       if (i  >= 1)
-         SCIPmessageFPrintInfo(messagehdlr, file, ",");
+         SCIPmessageFPrintInfo(messagehdlr, file, ":");
       SCIPmessageFPrintInfo(messagehdlr, file, "(%f,%f)",data->lookup->getKnot(i), *it);
    }
-   SCIPmessageFPrintInfo(messagehdlr, file, "\n");
 }
 
 

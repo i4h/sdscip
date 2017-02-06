@@ -65,6 +65,8 @@
 #include "Statistics.h"
 #include "SDSCIPgitHash.h"
 
+#include "ExprPiecewiseLinear.h"
+
 using namespace scip;
 using namespace std;
 
@@ -141,6 +143,7 @@ SCIP_RETCODE runSCIP(
    SCIP_CALL( SCIPincludeObjProp(scip, new sdscip::PropODE(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjReader(scip, new sdscip::ReaderSDC(scip), TRUE) );
    SCIP_CALL( SCIPincludeObjReader(scip, new sdo::ReaderSDO(scip), TRUE) );
+   SCIP_CALL( SCIPincludeUserExprParserPiecewiseLinear(scip) );
 
    SCIP_CALL( SCIPaddParamsSD(scip));
 
