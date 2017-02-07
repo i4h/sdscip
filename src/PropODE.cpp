@@ -48,9 +48,18 @@ using namespace sdscip;
 /** initialization method of propagator */
 SCIP_DECL_PROPINIT(PropODE::scip_init)
 {
+   int maxprerounds;
+   int freq;
+
+   /* Return of propagator is already disabled */
+   SCIPgetIntParam(scip, "propagating/ode/maxprerounds", &maxprerounds);
+   SCIPgetIntParam(scip, "propagating/ode/freq", &freq);
+   if (maxprerounds == 0 && freq == -1)
+      return SCIP_OKAY;
+
    sdscip::SDproblemStructureInterface* structure(SDgetStructure(scip));
 
-   /* Disable propODE if derivatives ar not continuous */
+   /* Disable propODE if derivatives are not continuous */
    if( !structure->isXdotContinuous() )
    {
       SCIPwarningMessage(scip, "Derivatives are not absolutely continuous, disabling propODE\n");
