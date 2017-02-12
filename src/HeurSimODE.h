@@ -98,8 +98,13 @@ public:
 
       SCIPaddBoolParam(scip,
              "heuristics/simODE/writesols",
-             "Write calculated solutions to file",
+             "Write values of state  variables to file while integrating (meant for debugging)",
              NULL, FALSE, FALSE, NULL, NULL);
+
+      SCIPaddBoolParam(scip,
+             "heuristics/simODE/savesols",
+             "Save completed solutions for each reduction mode to a .sol file when in presolving",
+             &savesols_, FALSE, FALSE, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "heuristics/simODE/propagatenitial",
@@ -178,8 +183,11 @@ private:
     */
    SCIP_RETCODE propagateInitial(SCIP* scip);
 
-   /* Varaible to store propagateinitial parameter */
+   /* Variable to store propagateinitial parameter */
    SCIP_Bool propagateInitial_;
+
+   /* Variable to store saveols parameter */
+   SCIP_Bool savesols_;
 
    /* Dimension of state space */
    int nStates_;

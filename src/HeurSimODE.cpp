@@ -434,6 +434,17 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
             SCIPdebug( SCIPprintSol(scip_, sol_, file, TRUE));
             SCIPdebugMessage("Solution written to simode_debug.sol");
          }
+
+         /* Save the solution if in presolving if savesols parameter is true */
+         if (stored && savesols_ && SCIPgetStage(scip) == SCIP_STAGE_PRESOLVING )
+         {
+            std::ostringstream solFileName;
+            solFileName << "HeurSimODE_" << ReduceODEintegrator::getReductionModeString(mode) << ".sol";
+            FILE* file = fopen(solFileName.str().c_str(), "w");
+            SCIP_CALL( SCIPprintSol(scip_, sol_, file, TRUE) );
+            SCIPdbgMsg("Wrote solution to file %s\n", solFileName.str().c_str());
+         }
+
          SCIPfreeSol(scip_, &sol_);
 
          if (stored)
