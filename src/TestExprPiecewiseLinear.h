@@ -154,6 +154,7 @@ public:
    void executeIntervalEvaluatorTests();
 
    void addManualIntervalEvaluateTests();
+   void addRandomIntervalEvaluatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds);
 
    /* Tests */
    void runEstimatorManualTests();
@@ -164,6 +165,7 @@ public:
    void runEstimatorNumericsTests();
 
    void runIntervalEvaluatorManualTests();
+   void runIntervalEvaluatorRandomTests();
 
 
 

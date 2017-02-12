@@ -40,7 +40,6 @@
  *
  */
 
-
 #include "TestExprPiecewiseLinear.h"
 
 namespace sdscip
@@ -592,9 +591,7 @@ TestExprPiecewiseLinear::PointsPair TestExprPiecewiseLinear::rollPoints(Bound xr
 }
 
 
-/** generate random tests and add to testdata
- *
- * */
+/** generate random tests and add to testdata */
 void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds)
 {
    srand (1);
@@ -613,7 +610,6 @@ void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, 
       odata.points = rollPoints(xrange, yrange, npoints, integerDataPoints);
 
       /* Generate argbounds */
-
       ywidth = 2*ywidth;
       for (int j = 0; j < nArgBounds; ++j) {
          double a = 0;
@@ -639,6 +635,46 @@ void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, 
       udata.label = std::string("random_under_") + std::to_string(i);
       estimatorTestsData_.emplace_back(odata);
       estimatorTestsData_.emplace_back(udata);
+   }
+}
+
+/** generate random tests of interval evaluation and add to testdata */
+void TestExprPiecewiseLinear::addRandomIntervalEvaluatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds)
+{
+   srand (1);
+   int maxnpoints = 10;
+   double xwidth = xrange.second - xrange.second;
+   double ywidth = yrange.second - yrange.second;
+
+   for (int i = 0; i < nTests; ++i)
+   {
+      SCIPdbgMsg("\n\n========================================================\n");
+      SCIPdbgMsg("generating test random_%i\n",i);
+      IntervalEvaluatorTestData data;
+      int npoints = getRandInt(1, maxnpoints);
+      SCIPdbgMsg("Generating lookup with %i points\n", npoints);
+
+      data.points = rollPoints(xrange, yrange, npoints, integerDataPoints);
+
+      /* Generate argbounds */
+      ywidth = 2*ywidth;
+      for (int j = 0; j < nArgBounds; ++j) {
+         double a = 0;
+         double b = 0;
+         while(std::abs(a-b) <= 1)
+         {
+            a = getRandInt(xrange.first - 0.5*xwidth, xrange.second+ 0.5*xwidth );
+            b = getRandInt(xrange.first - 0.5*xwidth, xrange.second + 0.5*xwidth );
+         }
+         data.argbounds.emplace_back(std::make_pair(std::min(a,b), std::max(a,b)));
+      }
+      for( auto it = data.argbounds.begin(); it != data.argbounds.end(); ++it)
+      {
+         //int k = it - odata.argbounds.begin();
+         //SCIPdbgMsg("argval: %f, argbounds (%f,%f)\n", data.argvals[k], it->first, it->second );
+      }
+      data.label = std::string("random_") + std::to_string(i);
+      intervalEvaluatorTestsData_.emplace_back(data);
    }
 }
 
@@ -951,6 +987,15 @@ void TestExprPiecewiseLinear::runIntervalEvaluatorManualTests()
    executeIntervalEvaluatorTests();
 }
 
+/** add and run tests generated using random numbers */
+void TestExprPiecewiseLinear::runIntervalEvaluatorRandomTests()
+{
+   int ntests = 1e5;
+   int argboundspertest = 10;
+   addRandomIntervalEvaluatorTests(ntests, std::make_pair(-100.0, 100.0), std::make_pair(-100.0, 100.0), false, argboundspertest);
+   executeIntervalEvaluatorTests();
+}
+
 /** Method running all tests of this class */
 void TestExprPiecewiseLinear::runAll()
 {
@@ -960,6 +1005,8 @@ void TestExprPiecewiseLinear::runAll()
    runEstimatorManualTests();
    runEstimatorNumericsTests();
    runEstimatorRandomTests();
+   runIntervalEvaluatorManualTests();
+   runIntervalEvaluatorRandomTests();
 }
 
 }
