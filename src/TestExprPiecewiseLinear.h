@@ -56,8 +56,6 @@
 #include "Vector.h"
 #include <sstream>
 
-
-
 namespace sdscip
 {
 
@@ -96,6 +94,9 @@ class TestExprPiecewiseLinear : public TestSDplugin
 
 public:
 
+   /* Pair of vectors of x- and y-values of points (defines a lookup) */
+   using PointsPair = std::pair<std::vector<SCIP_Real>, std::vector<SCIP_Real> >;
+
    using Bound = std::pair<SCIP_Real, SCIP_Real>;
    using BoundVec = std::vector<std::pair<SCIP_Real, SCIP_Real> >;
    using ValVec = std::vector<SCIP_Real >;
@@ -118,11 +119,12 @@ public:
 
    /* Testdata management */
    void addManualEstimatorTests();
+   PointsPair rollPoints(Bound xrange, Bound yrange, int nPoints, bool integerDataPoints );
    void addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds);
    void addNumericsEstimatorTests();
    void printTests();
    void clearTests();
-   void runTests();
+   void executeEstimatorTests();
 
    /* Tests */
    void runEstimatorManualTests();
@@ -131,8 +133,6 @@ public:
    void runWorldLookupFeastol();
    void runEstimatorRandomTests();
    void runEstimatorNumericsTests();
-
-
 
 
    /* Run all tests */

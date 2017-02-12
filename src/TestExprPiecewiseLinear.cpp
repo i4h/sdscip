@@ -308,7 +308,7 @@ void TestExprPiecewiseLinear::clearTests()
 }
 
 /** Run tests currently in the testData */
-void TestExprPiecewiseLinear::runTests()
+void TestExprPiecewiseLinear::executeEstimatorTests()
 {
    for(auto it = testsData_.begin(); it != testsData_.end(); ++it)
    {
@@ -375,26 +375,19 @@ SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData 
  *  Methods adding tests to testdata
  ***********************************************/
 
-/** generate random tests and add to testdata */
-void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds)
+/** Randomly Generates nPoints many two-dimensional points within xrange and yrange
+ *
+ * If generated points coincide they will be removed, so the final size of vectors
+ * is only guaranteed to be between 2 and nPoints
+ * */
+TestExprPiecewiseLinear::PointsPair TestExprPiecewiseLinear::rollPoints(Bound xrange, Bound yrange, int nPoints, bool integerDataPoints )
 {
-   srand (1);
-   int maxnpoints = 10;
-   double xwidth = xrange.second - xrange.second;
-   double ywidth = yrange.second - yrange.second;
-
-   for (int i = 0; i < nTests; ++i)
-   {
-      //SCIPdbgMsg("\n\n========================================================\n");
-      //SCIPdbgMsg("generating test random_%i\n",i);
-      EstimatorTestData odata;
-      int npoints = getRandInt(1, maxnpoints);
-      //SCIPdbgMsg("Generating lookup with %i points\n", npoints);
-
+   std::vector<double> xvals;
+   std::vector<double> yvals;
+   /* Repeat unitl at least two points did not coiincide */
+   do {
       /* Generate xvals, yvals */
-      std::vector<double> xvals;
-      std::vector<double> yvals;
-      for (int j = 0; j < npoints; ++j)
+      for (int j = 0; j < nPoints; ++j)
       {
          if (integerDataPoints)
          {
@@ -412,24 +405,48 @@ void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, 
 
       removeCoincidingPoints(xvals, yvals);
 
+#ifdef SCIP_DBG
+      /* Print points of this test */
       std::string out;
       for( auto x : xvals )
       {
          out = out + std::string(", ") + std::to_string(x);
       }
-      //SCIPdbgMsg("xvals: %s\n", out.c_str());
+      SCIPdbgMsg("xvals: %s\n", out.c_str());
       out = std::string();
       for( auto y : yvals )
       {
          out = out + std::string(", ") + std::to_string(y);
       }
-      //SCIPdbgMsg("yvals: %s\n", out.c_str());
+      SCIPdbgMsg("yvals: %s\n", out.c_str());
+#endif
 
-      /* Only continue of two or more points left */
-      if (xvals.size() <= 1)
-         continue;
 
-      odata.points = std::make_pair( xvals, yvals );
+   } while(xvals.size() <= 1);
+
+   return std::make_pair(xvals, yvals);
+}
+
+
+/** generate random tests and add to testdata
+ *
+ * */
+void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds)
+{
+   srand (1);
+   int maxnpoints = 10;
+   double xwidth = xrange.second - xrange.second;
+   double ywidth = yrange.second - yrange.second;
+
+   for (int i = 0; i < nTests; ++i)
+   {
+      //SCIPdbgMsg("\n\n========================================================\n");
+      //SCIPdbgMsg("generating test random_%i\n",i);
+      EstimatorTestData odata;
+      int npoints = getRandInt(1, maxnpoints);
+      //SCIPdbgMsg("Generating lookup with %i points\n", npoints);
+
+      odata.points = rollPoints(xrange, yrange, npoints, integerDataPoints);
 
       /* Generate argbounds */
 
@@ -544,14 +561,14 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
 void TestExprPiecewiseLinear::runEstimatorManualTests()
 {
    addManualEstimatorTests();
-   runTests();
+   executeEstimatorTests();
 }
 
 /** add and run the numerics tests */
 void TestExprPiecewiseLinear::runEstimatorNumericsTests()
 {
    addNumericsEstimatorTests();
-   runTests();
+   executeEstimatorTests();
 }
 
 /** add and run tests generated using random numbers */
@@ -561,7 +578,7 @@ void TestExprPiecewiseLinear::runEstimatorRandomTests()
    int argvalspertest = 10;
 
    addRandomEstimatorTests(ntests, std::make_pair(-100.0, 100.0), std::make_pair(-100.0, 100.0), false, argvalspertest);
-   runTests();
+   executeEstimatorTests();
 }
 
 /* Check the lookup from world2 model */
