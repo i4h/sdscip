@@ -70,7 +70,7 @@ struct EstimationData
 class EstimatorTestData
 {
 public:
-   /* Points defining the estimation */
+   /* Points defining the lookup */
    std::pair<std::vector<SCIP_Real>, std::vector<SCIP_Real> > points;
 
    /* Vector of bounds in which estimation should be tested */
@@ -84,6 +84,23 @@ public:
 
    /* Is this a test of over- or underesimators? */
    bool overestimate;
+
+   /* Output test data to summarize failed tests */
+   std::string toString(int boundidx);
+};
+
+/* Data needed for one single interval evaluator test */
+class IntervalEvaluatorTestData
+{
+public:
+   /* Points defining the lookup */
+   std::pair<std::vector<SCIP_Real>, std::vector<SCIP_Real> > points;
+
+   /* Vector if intervals that should be evaluated */
+   std::vector<std::pair<SCIP_Real, SCIP_Real> > argbounds;
+
+   /* Label of this test */
+   std::string label;
 
    /* Output test data to summarize failed tests */
    std::string toString(int boundidx);
@@ -111,20 +128,32 @@ public:
    static bool verifyEstimation(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval, SCIP_Real tolerance);
    double compareEstimationSpline(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval);
    void removeCoincidingPoints(ValVec &xvals, ValVec &yvals);
-   SCIP_EXPR* createExprPiecewiseLinear(EstimatorTestData data);
+   SCIP_EXPR* createExprPiecewiseLinear(ValVec xPoints, ValVec yPoints, std::string identifier);
+   SCIP_EXPR* createExprPiecewiseLinearFromIntervalEvaluatorTest(IntervalEvaluatorTestData data);
+   SCIP_EXPR* createExprPiecewiseLinearFromEstimatorTest(EstimatorTestData data);
    EstimationData getEstimation(SCIP_EXPR* pcwlin, SCIP_Real argvals, Bound argbounds, bool overestimate);
+   Bound getIntervalEvaluation(SCIP_EXPR* pcwlin, Bound argbound);
    bool sampleEstimation(SCIP_EXPR* pcwlin, int nPoints, Bound argbound, EstimationData estimation);
    static bool sampleEstimationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, Bound argbound, int &localErrors, SCIP_Real tolerance);
+   static bool isIntervalEvaluationValidAtPoint(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, SCIP_Real point, Bound bound, SCIP_Real tolerance);
+   static bool isValueInBound(Bound bound, SCIP_Real value, SCIP_Real tolerance);
+   static bool sampleIntervalEvaluationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, Bound interval, Bound argbound, int &localErrors, SCIP_Real tolerance);
    std::vector<EstimatorTestData> estimatorTestsData_;
+   std::vector<IntervalEvaluatorTestData> intervalEvaluatorTestsData_;
+
 
    /* Testdata management */
    void addManualEstimatorTests();
    PointsPair rollPoints(Bound xrange, Bound yrange, int nPoints, bool integerDataPoints );
    void addRandomEstimatorTests(int nTests, Bound xrange, Bound yrange, bool integerDataPoints, int nArgBounds);
    void addNumericsEstimatorTests();
-   void printTests();
+   void printEstimatorTests();
+   void printIntervalEvaluatorTests();
    void clearTests();
    void executeEstimatorTests();
+   void executeIntervalEvaluatorTests();
+
+   void addManualIntervalEvaluateTests();
 
    /* Tests */
    void runEstimatorManualTests();
@@ -133,6 +162,9 @@ public:
    void runWorldLookupFeastol();
    void runEstimatorRandomTests();
    void runEstimatorNumericsTests();
+
+   void runIntervalEvaluatorManualTests();
+
 
 
    /* Run all tests */

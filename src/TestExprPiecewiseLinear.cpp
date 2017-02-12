@@ -46,6 +46,30 @@
 namespace sdscip
 {
 
+/** Return a string listing the estimator test data for argbounds(boundidx) */
+std::string EstimatorTestData::toString(int boundidx)
+{
+   std::ostringstream oss;
+   oss << "Test " << label << std::endl;
+   oss << "xvals:        " << sdscip::Vector::vec2string(points.first,std::string()) << std::endl;
+   oss << "yvals:        " << sdscip::Vector::vec2string(points.second,std::string()) << std::endl;
+   oss << "argbounds:    (" << std::to_string(argbounds[boundidx].first) << ", " << std::to_string(argbounds[boundidx].second) << ")" << std::endl;
+   oss << "argval:       " << std::to_string(argvals[boundidx]) << std::endl;
+   oss << "overestimate: " << ( overestimate ? std::string("true") : std::string("false"));
+   return oss.str();
+}
+
+/** Return a string listing the test data for argbounds(boundidx) */
+std::string IntervalEvaluatorTestData::toString(int boundidx)
+{
+   std::ostringstream oss;
+   oss << "Test " << label << std::endl;
+   oss << "xvals:        " << sdscip::Vector::vec2string(points.first,std::string()) << std::endl;
+   oss << "yvals:        " << sdscip::Vector::vec2string(points.second,std::string()) << std::endl;
+   oss << "argbounds:    (" << std::to_string(argbounds[boundidx].first) << ", " << std::to_string(argbounds[boundidx].second) << ")";
+   return oss.str();
+}
+
 TestExprPiecewiseLinear::TestExprPiecewiseLinear(SCIP* scip) :
     TestSDplugin(scip)
    ,tolerance_(1e-9)
@@ -101,7 +125,8 @@ bool TestExprPiecewiseLinear::sampleEstimation(SCIP_EXPR* expr, int nPoints, Bou
    }
 }
 
-/** Verify an estimation by comparging it to spline at argval */
+
+/** Verify an estimation by comparing it to spline at argval */
 bool TestExprPiecewiseLinear::verifyEstimation(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, double argval, SCIP_Real tolerance)
 {
 
@@ -171,19 +196,23 @@ EstimationData TestExprPiecewiseLinear::getEstimation(SCIP_EXPR* pcwlin, SCIP_Re
    return estimationData;
 }
 
-/** Return a string listing the test data for argbounds(boundidx) */
-std::string EstimatorTestData::toString(int boundidx)
+/** Execute Interval evaluation */
+TestExprPiecewiseLinear::Bound TestExprPiecewiseLinear::getIntervalEvaluation(SCIP_EXPR* pcwlin, Bound argbound)
 {
-   std::ostringstream oss;
-   oss << "Test " << label << std::endl;
-   oss << "xvals:        " << sdscip::Vector::vec2string(points.first,std::string()) << std::endl;
-   oss << "yvals:        " << sdscip::Vector::vec2string(points.second,std::string()) << std::endl;
-   oss << "argbounds:    (" << std::to_string(argbounds[boundidx].first) << ", " << std::to_string(argbounds[boundidx].second) << ")" << std::endl;
-   oss << "argval:       " << std::to_string(argvals[boundidx]) << std::endl;
-   oss << "overestimate: " << ( overestimate ? std::string("true") : std::string("false"));
+   SCIP_RETCODE retcode;
+   SCIP_Interval argbounds;
+   SCIP_Interval result;
+   argbounds.inf = argbound.first;
+   argbounds.sup = argbound.second;
 
-   return oss.str();
+   retcode = SCIPexprEvalInt(pcwlin, SCIPinfinity(scip_), &argbounds, NULL, &result);
+   assert(retcode == SCIP_OKAY);
+
+   SCIPdbgMsg("Got Resultant Interval : [%f, %f]\n", result.inf, result.sup);
+
+   return std::make_pair(result.inf, result.sup);
 }
+
 
 /** Create a std::string describing the estimation */
 std::string TestExprPiecewiseLinear::estimationToString(EstimationData estimation)
@@ -258,6 +287,84 @@ bool TestExprPiecewiseLinear::sampleEstimationAtKnots(boost::shared_ptr< spline:
    }
 }
 
+/** Return true if value is within bound with given tolerance */
+bool TestExprPiecewiseLinear::isValueInBound(Bound bound, SCIP_Real value, SCIP_Real tolerance)
+{
+   return (   bound.first - tolerance <= value
+           && bound.second + tolerance >= value );
+}
+
+/** Return true if value is within bound with given tolerance */
+bool TestExprPiecewiseLinear::isIntervalEvaluationValidAtPoint(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, SCIP_Real point, Bound bound, SCIP_Real tolerance)
+{
+   /* Get function value at point */
+   return isValueInBound(bound, (*pcwlin)(point), tolerance);
+}
+
+
+/** Check the given over- or underestimation at all knots of the spline */
+bool TestExprPiecewiseLinear::sampleIntervalEvaluationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, Bound interval, Bound argbound, int &nerrors, SCIP_Real tolerance)
+{
+   int olderrors = nerrors;
+   int checkedknots = 0;
+   std::vector<SCIP_Real> invalidPoints;
+   /* Iterate knots and check if knot is in interval */
+   auto coeffs = pcwlin->getCoefficients();
+
+   /* Check at knots within the interval */
+   for (auto it = coeffs.begin(); it < coeffs.end(); ++it)
+   {
+      int i = it - coeffs.begin();
+      SCIP_Real argval = pcwlin->getKnot(i);
+
+      /* If this knot is inside of considered interval */
+      if (argval >= argbound.first && argval <= argbound.second)
+      {
+         SCIPdbgMsg("checking at knot %i = %f\n", i, argval);
+         if (!isIntervalEvaluationValidAtPoint(pcwlin, argval, interval, tolerance))
+         {
+            ++nerrors;
+            invalidPoints.push_back(argval);
+            SCIPdbgMsg("invalid!\n");
+         }
+         ++checkedknots;
+      }
+   }
+
+   /* Verify lower argbound is in interval */
+   SCIPdbgMsg("Verifying lower argbound, x = %e\n", argbound.first);
+   if (!isIntervalEvaluationValidAtPoint(pcwlin, argbound.first, interval, tolerance))
+   {
+      SCIPdbgMsg("lower argbound invalid\n");
+      ++nerrors;
+      invalidPoints.push_back(argbound.first);
+   }
+   ++checkedknots;
+
+   /* Verify upper argbound is in interval */
+   if (!isIntervalEvaluationValidAtPoint(pcwlin, argbound.second, interval, tolerance))
+   {
+      SCIPdbgMsg("upper argbound invalid\n");
+      ++nerrors;
+      invalidPoints.push_back(argbound.second);
+   }
+   ++checkedknots;
+
+   /* Evaluate found problems  */
+   if (nerrors == olderrors)
+   {
+      SCIPdbgMsg("Estimation is valid at %i sampled knots\n", checkedknots);
+      return true;
+   }
+   else
+   {
+      SCIPdebugMessage("Estimation is invalid at %i of %i sampled knots: %s\n", nerrors, checkedknots, sdscip::Vector::vec2string(invalidPoints, std::string("")).c_str());
+      return false;
+   }
+}
+
+
+
 /** Check the vector of xVals for coinciding points and remove one of two coinciding
  *  points from xvals and yvals
   */
@@ -286,7 +393,7 @@ void TestExprPiecewiseLinear::removeCoincidingPoints(ValVec &xvals, ValVec &yval
 }
 
 /** Print the tests currently in the testData */
-void TestExprPiecewiseLinear::printTests()
+void TestExprPiecewiseLinear::printEstimatorTests()
 {
    SCIPinfoMessage(scip_, NULL,  "Printing Tests in Testdata\n");
 
@@ -301,13 +408,29 @@ void TestExprPiecewiseLinear::printTests()
    }
 }
 
+/** Print the tests currently in the testData */
+void TestExprPiecewiseLinear::printIntervalEvaluatorTests()
+{
+   SCIPinfoMessage(scip_, NULL,  "Printing Tests in Testdata\n");
+
+   for(auto it = intervalEvaluatorTestsData_.begin(); it != intervalEvaluatorTestsData_.end(); ++it)
+   {
+      auto data = *it;
+      for( auto boundsIt = data.argbounds.begin(); boundsIt != data.argbounds.end(); ++boundsIt)
+      {
+         int i = boundsIt - data.argbounds.begin();
+         SCIPinfoMessage(scip_, NULL,  "%s\n", it->toString(i).c_str());
+      }
+   }
+}
+
 /** Delete all tests from the test data */
 void TestExprPiecewiseLinear::clearTests()
 {
    estimatorTestsData_.clear();
 }
 
-/** Run tests currently in the testData */
+/** Run estimator tests currently in the testData */
 void TestExprPiecewiseLinear::executeEstimatorTests()
 {
    for(auto it = estimatorTestsData_.begin(); it != estimatorTestsData_.end(); ++it)
@@ -316,7 +439,7 @@ void TestExprPiecewiseLinear::executeEstimatorTests()
       //SCIPdebugMessage("\n\n========================================================\n");
       SCIPdebugMessage("Running test %s\n", data.label.c_str());
 
-      SCIP_EXPR* expr = createExprPiecewiseLinear(data);
+      SCIP_EXPR* expr = createExprPiecewiseLinearFromEstimatorTest(data);
 
       SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
 
@@ -346,29 +469,70 @@ void TestExprPiecewiseLinear::executeEstimatorTests()
    clearTests();
 }
 
+/** Run interval evaluator tests currently in the testData */
+void TestExprPiecewiseLinear::executeIntervalEvaluatorTests()
+{
+   for(auto it = intervalEvaluatorTestsData_.begin(); it != intervalEvaluatorTestsData_.end(); ++it)
+   {
+      auto data = *it;
+      //SCIPdebugMessage("\n\n========================================================\n");
+      SCIPdebugMessage("Running test %s\n", data.label.c_str());
+
+      SCIP_EXPR* expr = createExprPiecewiseLinearFromIntervalEvaluatorTest(data);
+
+      for( auto boundsIt = data.argbounds.begin(); boundsIt != data.argbounds.end(); ++boundsIt)
+      {
+         int i = boundsIt - data.argbounds.begin();
+         SCIPdbgMsg("Considering argbounds [%f,%f]\n", data.argbounds[i].first, data.argbounds[i].second);
+
+         Bound interval= getIntervalEvaluation(expr, data.argbounds[i]);
+
+         SCIPdbgMsg("got interval [%f, %f]\n", interval.first, interval.second);
+
+         bool knotsValid = sampleIntervalEvaluationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), interval, data.argbounds[i], nError_, tolerance_);
+
+         if( knotsValid )
+            nSuccess_++;
+         else
+         {
+            SCIPdebugMessage("test failed, printing test data:\n%s \nPoints: ", data.toString(i).c_str());
+            SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL);
+            SCIPmessageFPrintInfo(SCIPgetMessagehdlr(scip_), NULL, "\n");
+         }
+         ++nExecutedTests_;
+      }
+      SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
+   }
+   clearTests();
+}
+
 /** Create an Expression Piecewise Linear in blockmem of subscip_
  *  SCIPexprFreeDeep must be called to free memory
  */
-SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(EstimatorTestData data)
+SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(ValVec xPoints, ValVec yPoints, std::string identifier)
 {
    SCIP_RETCODE retcode;
    SCIP_EXPR* expr;
    SCIP_EXPR* child;
 
-   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(data.points.first, data.points.second);
+   auto pcwlin = boost::make_shared<spline::BSplineCurve<1, SCIP_Real>>(xPoints, yPoints);
 
    retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
    assert(retcode == SCIP_OKAY);
-   test(retcode == SCIP_OKAY);
-
-   std::string identifier(data.label);
    identifier.resize(10);
-
    retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
    assert(retcode == SCIP_OKAY);
-
    return expr;
+}
 
+SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinearFromEstimatorTest(EstimatorTestData data)
+{
+   return createExprPiecewiseLinear(data.points.first, data.points.second, data.label);
+}
+
+SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinearFromIntervalEvaluatorTest(IntervalEvaluatorTestData data)
+{
+   return createExprPiecewiseLinear(data.points.first, data.points.second, data.label);
 }
 
 /***********************************************
@@ -548,6 +712,30 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
 
 
       estimatorTestsData_.emplace_back(data);
+   }
+}
+
+
+/***********************************************
+ *  Methods adding IntervalEvaluator Tests
+ ***********************************************/
+
+void TestExprPiecewiseLinear::addManualIntervalEvaluateTests()
+{
+   /* A problem lookup from dnru */
+   if( true )
+   {
+      IntervalEvaluatorTestData data;
+      data.label = std::string("dnru_actual_cost");
+      data.points = std::make_pair(
+          std::vector<double>{0  , 0.5, 1, 1.5, 2  , 2.5, 3}
+         ,std::vector<double>{1.5, 1.2, 1, 1.5, 2.2, 3.5, 6}
+      );
+
+      data.argbounds = BoundVec{
+                   std::make_pair(0.90677072687813576,1.0581067608278705)
+      };
+      intervalEvaluatorTestsData_.push_back(data);
    }
 }
 
@@ -755,6 +943,12 @@ void TestExprPiecewiseLinear::runWorldLookupFeastol()
    SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
    SCIPreleaseVar(subscip_, &arg);
 
+}
+
+void TestExprPiecewiseLinear::runIntervalEvaluatorManualTests()
+{
+   addManualIntervalEvaluateTests();
+   executeIntervalEvaluatorTests();
 }
 
 /** Method running all tests of this class */

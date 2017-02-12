@@ -398,7 +398,7 @@ void TestEstimatorTypes::runTests()
             SCIP_RETCODE retcode;
 
             /* Get piecewise linear for y-values and verification of estimation */
-            SCIP_EXPR* expr = createExprPiecewiseLinear(data);
+            SCIP_EXPR* expr = TestExprPiecewiseLinear::createExprPiecewiseLinearFromEstimatorTest(data);
             SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
             auto pcwlin = SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr));
 
