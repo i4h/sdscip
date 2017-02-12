@@ -130,8 +130,7 @@ SCIP_RETCODE runSCIP(
    /* include default SCIP plugins */
    SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
 
-
-   /* we explicitly enable the use of a debug solution for this main SCIP instance */
+   /* we explicitly enable the use of a debug solution for the main SCIP instance */
    SCIPenableDebugSol(scip);
 
    //SCIP_CALL( SCIPincludeDefaultPlugins(scip) );
