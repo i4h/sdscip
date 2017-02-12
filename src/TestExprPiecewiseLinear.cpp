@@ -290,7 +290,7 @@ void TestExprPiecewiseLinear::printTests()
 {
    SCIPinfoMessage(scip_, NULL,  "Printing Tests in Testdata\n");
 
-   for(auto it = testsData_.begin(); it != testsData_.end(); ++it)
+   for(auto it = estimatorTestsData_.begin(); it != estimatorTestsData_.end(); ++it)
    {
       auto data = *it;
       for( auto valsIt = data.argvals.begin(); valsIt != data.argvals.end(); ++valsIt)
@@ -304,13 +304,13 @@ void TestExprPiecewiseLinear::printTests()
 /** Delete all tests from the test data */
 void TestExprPiecewiseLinear::clearTests()
 {
-   testsData_.clear();
+   estimatorTestsData_.clear();
 }
 
 /** Run tests currently in the testData */
 void TestExprPiecewiseLinear::executeEstimatorTests()
 {
-   for(auto it = testsData_.begin(); it != testsData_.end(); ++it)
+   for(auto it = estimatorTestsData_.begin(); it != estimatorTestsData_.end(); ++it)
    {
       auto data = *it;
       //SCIPdebugMessage("\n\n========================================================\n");
@@ -473,8 +473,8 @@ void TestExprPiecewiseLinear::addRandomEstimatorTests(int nTests, Bound xrange, 
       odata.label = std::string("random_over_") + std::to_string(i);
       udata.overestimate = false;
       udata.label = std::string("random_under_") + std::to_string(i);
-      testsData_.emplace_back(odata);
-      testsData_.emplace_back(udata);
+      estimatorTestsData_.emplace_back(odata);
+      estimatorTestsData_.emplace_back(udata);
    }
 }
 
@@ -496,7 +496,7 @@ void TestExprPiecewiseLinear::addNumericsEstimatorTests()
       data.argvals = ValVec{3};
       data.overestimate = false;
 
-      testsData_.emplace_back(data);
+      estimatorTestsData_.emplace_back(data);
    }
 }
 
@@ -519,11 +519,11 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
       data.argvals = ValVec{8.5808151653009102e-01};
       data.overestimate = true;
 
-      testsData_.push_back(data);
+      estimatorTestsData_.push_back(data);
 
       data.overestimate = false;
       data.label = std::string("world2_from70_underest");
-      testsData_.emplace_back(data);
+      estimatorTestsData_.emplace_back(data);
    }
 
 
@@ -547,7 +547,7 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
       data.overestimate = false;
 
 
-      testsData_.emplace_back(data);
+      estimatorTestsData_.emplace_back(data);
    }
 }
 

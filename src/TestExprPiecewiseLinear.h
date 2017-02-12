@@ -115,7 +115,7 @@ public:
    EstimationData getEstimation(SCIP_EXPR* pcwlin, SCIP_Real argvals, Bound argbounds, bool overestimate);
    bool sampleEstimation(SCIP_EXPR* pcwlin, int nPoints, Bound argbound, EstimationData estimation);
    static bool sampleEstimationAtKnots(boost::shared_ptr< spline::BSplineCurve<1, SCIP_Real> > pcwlin, EstimationData estimation, Bound argbound, int &localErrors, SCIP_Real tolerance);
-   std::vector<EstimatorTestData> testsData_;
+   std::vector<EstimatorTestData> estimatorTestsData_;
 
    /* Testdata management */
    void addManualEstimatorTests();
