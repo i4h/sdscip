@@ -509,7 +509,7 @@ static SCIP_RETCODE findMinMaxPiecewiseLinear(
    }
 
    auto end = linear.findInterval(SCIPintervalGetSup( *bounds ));
-   for( auto i = linear.findInterval(SCIPintervalGetInf( *bounds ))+1; i < end; ++i )
+   for( auto i = linear.findInterval(SCIPintervalGetInf( *bounds ))+1; i <= end; ++i )
    {
       SCIP_Real val = linear.evaluate<0>( linear.getInfimum(i), i );
 
