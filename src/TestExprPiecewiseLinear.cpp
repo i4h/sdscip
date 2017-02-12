@@ -692,7 +692,7 @@ void TestExprPiecewiseLinear::addManualEstimatorTests()
 
 
    /* Simple concave function with two lines */
-   if( false )
+   if( true )
    {
       EstimatorTestData data;
       data.label = std::string("concave_two_lines");
