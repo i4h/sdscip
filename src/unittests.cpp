@@ -120,7 +120,9 @@ SCIP_RETCODE runSCIP(
       tests.emplace_back( new sdscip::TestEstimatorTypes(scip));
       tests.emplace_back( new sdscip::TestExprPiecewiseLinear(scip));
 
+
       /* Run all tests of all test classes */
+      std::cout << "Running all tests" << std::endl << std::endl;
       for (auto it : tests)
       {
          std::cout << "==========================================================" << std::endl;
@@ -131,6 +133,7 @@ SCIP_RETCODE runSCIP(
          std::cout << std::endl;
          delete it;
       }
+      std::cout << "Finished" << std::endl;
    }
    else
    {
