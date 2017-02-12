@@ -170,7 +170,7 @@ public:
       SCIPaddStringParam(scip,
              "propagating/obra/outFile",
              "Filename of cip file to write to after propagation",
-             &outFile_, FALSE, "transprob.cip", NULL, NULL);
+             &outFile_, FALSE, "obra_finish", NULL, NULL);
 
       SCIPaddStringParam(scip,
              "propagating/obra/outDir",
