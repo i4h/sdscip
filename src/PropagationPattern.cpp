@@ -802,6 +802,9 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 				}
 				SCIP_CALL( SCIPfreeTransform(this->subscip_) );
 
+				SCIPinfoMessage(subscip_, NULL, "--Computed %s of %-10s: %1.16e\n"
+				   ,(boundVar.first == SDSCIP_DOWN ? "lb" : "ub"), SCIPvarGetName(scipVar), newBound );
+
 				SCIPdebugMessage( "  %s of %-10s: old bounds: [%e,%e], newBound %e\n"
 				   ,(boundVar.first == SDSCIP_DOWN ? "lb" : "ub")
 				   ,SCIPvarGetName(scipVar), SCIPvarGetLbLocal(scipVar),SCIPvarGetUbLocal(scipVar),newBound );
