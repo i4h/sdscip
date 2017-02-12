@@ -441,7 +441,8 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
 
          SCIPstopClock(scip_, clock);
 
-         SCIPdebugMessage("Exit HeurSimODE %s, %f seconds for sim, %f total, obj: %f\n",
+         SCIPdebugMessage("Exit %s HeurSimODE %s, %f seconds for sim, %f total, obj: %f\n",
+            ReduceODEintegrator::getReductionModeString(mode).c_str(),
             (stored ? "(solution found)" : (infeasible ? "(infeasible)" : (infiniteBound ? "(infinite)" : (violatedBounds ? "(violatedBounds)" : "")))),
             solTime, SCIPclockGetTime(clock), obj);
 
