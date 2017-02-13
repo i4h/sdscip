@@ -403,7 +403,20 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
    auto end = linear.findInterval( ub, begin );
 
    std::vector<std::pair<SCIP_Real, SCIP_Real> > convexHull;
-   convexHull.push_back( std::make_pair( lb, linear(lb) ) );
+   if (begin == 0 && lb <= linear.getInfimum(begin))
+   {
+      /* If lb is left of first interval, we add lb
+       * We can then ignore interval 0, since it is added by the handler
+       * and always has slope 0*/
+      convexHull.push_back( std::make_pair( lb, linear( lb ) ) );
+   }
+   else
+   {
+      /* To improve numerical stability in computing slopes, the first and last point of the convex hull
+       * may be outside of argBounds */
+      convexHull.push_back( std::make_pair( linear.getInfimum(begin), linear( linear.getInfimum(begin) ) ) );
+   }
+
    SCIPdbgMsg( "bounds are [%g,%g]\n", lb, ub );
    SCIPdbgMsg( "intervals for bounds are %li and %li\n", begin, end );
    SCIPdbgMsg( "intervals for upper bound is [%f, %f]\n", linear.getInfimum(end), linear.getSupremum(end));
@@ -431,29 +444,23 @@ static std::vector<std::pair<SCIP_Real, SCIP_Real> > computeConvexHull(
    }
 
    SCIPdbgMsg("last x val in hull is %1.16e\n", convexHull.back().first);
-   /*
-    * If ub and last point in hull are equal:
-    *   exchange last point by point at ub to avoid coinciding points but still
-    *   ensure that argval stays strictly in x range of hull
-    *   no grahamcheck is needed because last point is already checked
-    * else
-    *   add ub and scan one last time
-    * */
-   if (is_equal(convexHull.back().first, ub))
+
+   /* Add supremum of interval containing ub and scan one last time */
+   if (ub >= linear.getSupremum(end))
    {
-      convexHull.pop_back();
-      convexHull.push_back( std::make_pair( ub, linear( ub ) ) );
+      convexHull.push_back( std::make_pair( ub, linear( ub) ) );
+      SCIPdbgMsg("evaluating pcwlin at ub (is outside of last interval) %1.17e = %1.17e\n", ub ,linear(ub));
+      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",  ub, linear(ub));
    }
    else
    {
-      convexHull.push_back( std::make_pair( ub, linear( ub ) ) );
-      SCIPdbgMsg("evaluating pcwlin at %1.17e = %1.17e\n", ub, linear(ub));
-      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",ub, linear( ub ));
-      grahamScanCheck<side> ( convexHull );
+      convexHull.push_back( std::make_pair( linear.getSupremum(end), linear( linear.getSupremum(end)) ) );
+      SCIPdbgMsg("evaluating pcwlin at supremum of last interval %1.17e = %1.17e\n", linear.getSupremum(end), linear( linear.getSupremum(end)) );
+      SCIPdbgMsg( "pushing into convex  hull: (%f, %f)\n",  linear.getSupremum(end), linear( linear.getSupremum(end)) );
    }
+   grahamScanCheck<side> ( convexHull );
 
    SCIPdbgMsg( "Convex hull from inner points is:\n" );
-
    for( unsigned int i = 0; i < convexHull.size(); ++i )
    {
       SCIPdbgMsg( "(%1.17e,%1.17e)\n", convexHull[i].first, convexHull[i].second );
