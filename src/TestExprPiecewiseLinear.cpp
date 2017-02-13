@@ -206,6 +206,7 @@ TestExprPiecewiseLinear::Bound TestExprPiecewiseLinear::getIntervalEvaluation(SC
 
    retcode = SCIPexprEvalInt(pcwlin, SCIPinfinity(scip_), &argbounds, NULL, &result);
    assert(retcode == SCIP_OKAY);
+   test(retcode == SCIP_OKAY);
 
    SCIPdbgMsg("Got Resultant Interval : [%f, %f]\n", result.inf, result.sup);
 
@@ -518,9 +519,11 @@ SCIP_EXPR* TestExprPiecewiseLinear::createExprPiecewiseLinear(ValVec xPoints, Va
 
    retcode = SCIPexprCreate(SCIPblkmem(subscip_), &child, SCIP_EXPR_VARIDX, 0);
    assert(retcode == SCIP_OKAY);
+   test(retcode == SCIP_OKAY);
    identifier.resize(10);
    retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
    assert(retcode == SCIP_OKAY);
+   test(retcode == SCIP_OKAY);
    return expr;
 }
 
