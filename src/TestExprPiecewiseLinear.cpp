@@ -996,6 +996,36 @@ void TestExprPiecewiseLinear::runIntervalEvaluatorRandomTests()
    executeIntervalEvaluatorTests();
 }
 
+/** test computation of convex hull when points are argbounds are close to data points*/
+void TestExprPiecewiseLinear::runConvexHullCoincidenceTests()
+{
+
+   ValVec xVals= std::vector<double>{1, 2, 3, 4, 5};
+   ValVec yVals= std::vector<double>{1, 2, 2, 1, 1};
+   std::string label("hulltest");
+   SCIP_EXPR* expr;
+
+   expr = createExprPiecewiseLinear(xVals, yVals, label);
+   Bound argbounds = std::make_pair(2.0 - 1e-10, 3.0 + 1e-10);
+   EstimationData estimation = getEstimation(expr, 2.0 - 0.5e-10, argbounds, true);
+   SCIPdbgMsg("got estimation %s\n", estimationToString(estimation).c_str());
+
+   bool sampleValid = sampleEstimation(expr, 50, argbounds, estimation);
+   bool knotsValid = sampleEstimationAtKnots( SCIPexprPiecewiseLinearGetSpline(SCIPexprGetUserData(expr)), estimation, argbounds, nError_, tolerance_);
+
+   if( sampleValid && knotsValid )
+      nSuccess_++;
+   else
+      SCIPdebugMessage("runConvecxHullCoincidenceTests failed\n");
+   ++nExecutedTests_;
+
+
+   SCIPexprFreeDeep(SCIPblkmem(subscip_), &expr);
+
+}
+
+
+
 /** Method running all tests of this class */
 void TestExprPiecewiseLinear::runAll()
 {
@@ -1007,6 +1037,7 @@ void TestExprPiecewiseLinear::runAll()
    runEstimatorRandomTests();
    runIntervalEvaluatorManualTests();
    runIntervalEvaluatorRandomTests();
+   runConvexHullCoincidenceTests();
 }
 
 }

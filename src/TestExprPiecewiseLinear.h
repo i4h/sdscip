@@ -167,7 +167,7 @@ public:
    void runIntervalEvaluatorManualTests();
    void runIntervalEvaluatorRandomTests();
 
-
+   void runConvexHullCoincidenceTests();
 
    /* Run all tests */
    void runAll();
