@@ -74,7 +74,6 @@ void TestBSplineCurve::runEvalWorldLookup()
    SCIP_EXPR* expr;
    SCIP_EXPR* child;
    SCIP_VAR* arg;
-   bool overestimate = true;
 
    std::vector<double> xvals = {0, 1, 2, 3, 4} ;
 
@@ -91,11 +90,7 @@ void TestBSplineCurve::runEvalWorldLookup()
    retcode = SCIPexprCreatePiecewiseLinear( SCIPblkmem( subscip_ ), &expr, child, pcwlin , identifier);
    SCIPdbg( SCIPexprPiecewiseLinearPrintPoints(SCIPexprGetUserData(expr), SCIPgetMessagehdlr(scip_), NULL) );
    assert(retcode == SCIP_OKAY);
-   SCIP_Real argvals;
    SCIP_Interval argbounds;
-   SCIP_Real coeffs;
-   SCIP_Real constant;
-   SCIP_Bool success;
    argbounds.inf = -1e100;
    argbounds.sup = 1e100;
    SCIP_Interval val;
