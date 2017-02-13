@@ -291,20 +291,22 @@ SCIP_RETCODE estimateSafe(
    SCIP_Interval myy1 = mi *x1i + bi;
    SCIP_Interval myy2 = mi * x2i + bi;
 
+   /* if one of the defining points is outside of the bounds 
+    * it is okay for that point to be cut off by estimation */
    if (overestimate)
    {
-      assert( myy1.sup >= y1  );
-      assert( myy2.sup >= y2  );
+      assert( myy1.sup >= y1  || x1 <= lb);
+      assert( myy2.sup >= y2  || x2 >= ub);
    }
    else
    {
-      assert( myy1.inf <= y1  );
-      assert( myy2.inf <= y2  );
+      assert( myy1.inf <= y1  || x1 <= lb);
+      assert( myy2.inf <= y2  || x2 >= ub);
    }
    SCIPdbgMsg("estimation valid at (x1,y1) and (x2,y2) within in rounding error of evaluation \n");
 
-   if (!(     (overestimate && ( myy2.sup >= y2  ) && ( myy1.sup >= y1  ))
-          ||  (!overestimate && ( myy2.inf <= y2  ) && ( myy1.inf <= y1  ))
+   if (!(     (overestimate && ( myy2.sup >= y2 || x2 >= ub ) && ( myy1.sup >= y1 || x1 <= lb ))
+          ||  (!overestimate && ( myy2.inf <= y2 || x2 >= ub ) && ( myy1.inf <= y1 || x1 <= lb ))
          ))
    {
       SCIPerrorMessage("Invalid estimation!\n");
