@@ -555,6 +555,7 @@ std::vector<std::string> split(const std::string &s, char delim) {
     return elems;
 }
 
+#ifdef SCIP_USEREXPRPARSE
 static SCIP_DECL_USEREXPRPARSE( parseLookup )
 {
 
@@ -585,13 +586,15 @@ static SCIP_DECL_USEREXPRPARSE( parseLookup )
    return SCIP_OKAY;
 
 }
+#endif
 
-
+#ifdef SCIP_USEREXPRPARSE
 SCIP_RETCODE SCIPincludeUserExprParserPiecewiseLinear(SCIP* scip)
 {
    SCIPincludeUserExprParser(scip, "lookup", "", parseLookup);
    return SCIP_OKAY;
 }
+#endif
 
 
 static SCIP_DECL_USEREXPRESTIMATE( estimateLookup )

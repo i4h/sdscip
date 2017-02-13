@@ -70,8 +70,10 @@ enum SAFE_ESTIMATOR
    SAFE_ESTIMATOR_TYPE_6 = 6,
 };
 
+#ifdef SCIP_USEREXPRPARSE
 EXTERN
 SCIP_RETCODE SCIPincludeUserExprParserPiecewiseLinear(SCIP* scip);
+#endif
 
 
 /**
