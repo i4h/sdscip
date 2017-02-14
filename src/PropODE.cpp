@@ -443,7 +443,7 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
       for (structure->startStateVarIteration(); structure->stateVarsLeft() && doingFine ;structure->incrementStateVar())
       {
          SCIP_VAR* var = structure->getCurrentStateVar();
-         if (true || SCIPvarGetStatus(var) == SCIP_VARSTATUS_LOOSE || SCIPvarGetStatus(var) == SCIP_VARSTATUS_COLUMN )
+         if (SCIPvarGetStatus(var) == SCIP_VARSTATUS_LOOSE || SCIPvarGetStatus(var) == SCIP_VARSTATUS_COLUMN )
          {
             for (int bndType = SCIP_BOUNDTYPE_LOWER; bndType <=  SCIP_BOUNDTYPE_UPPER && doingFine; bndType++)
             {
