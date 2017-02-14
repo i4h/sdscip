@@ -186,7 +186,10 @@ private:
    std::vector<std::vector<SCIP_Real>> yVals_;
    int nLookups_;
    std::ofstream outFile_;
-   SCIP_Real boundApplyCutoff_; /* We dont apply bounds outside of [-boundAppplyCutoff, boundApplyCutoff ] to avoid numerical problems with bounds very close to SCIPinfinity */
+
+   /* We dont apply bounds outside of [-boundAppplyCutoff, boundApplyCutoff ] to avoid
+    * numerical problems with bounds very close to SCIPinfinity */
+   SCIP_Real boundApplyCutoff_;
 
    /* Private variables for scip parameters */
    SCIP_Bool writeFile_ = false;
