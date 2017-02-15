@@ -286,12 +286,12 @@ SCIP_DECL_READERREAD(sdo::ReaderSDO::scip_read)
 
          if(var.positive)
          {
-            SCIPwarningMessage(scip, "Constrained variable '%s' to be positive only.\n", var.name.c_str() );
+            SCIPinfoMessage(scip, NULL, "Constrained variable '%s' to be positive only.\n", var.name.c_str() );
             boundMap.emplace(sdscip::SDproblemStructureInterface::BoundKey{var.idx, SCIP_BOUNDTYPE_LOWER}, var.getLb(scip));
          }
          if(var.negative)
          {
-            SCIPwarningMessage(scip, "Constrained variable '%s' to be negative only.\n", var.name.c_str() );
+            SCIPinfoMessage(scip, NULL, "Constrained variable '%s' to be negative only.\n", var.name.c_str() );
             boundMap.emplace(sdscip::SDproblemStructureInterface::BoundKey{var.idx, SCIP_BOUNDTYPE_UPPER}, var.getUb(scip));
          }
 
