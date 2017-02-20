@@ -284,12 +284,12 @@ SCIP_DECL_READERREAD(sdo::ReaderSDO::scip_read)
       {
          SCIP_CALL( SCIPexprCreate(SCIPblkmem(scip), &varexprs[var.idx], SCIP_EXPR_VARIDX, var.idx) );
 
-         if(var.positive)
+         if( var.positive)
          {
             SCIPinfoMessage(scip, NULL, "Constrained variable '%s' to be positive only.\n", var.name.c_str() );
             boundMap.emplace(sdscip::SDproblemStructureInterface::BoundKey{var.idx, SCIP_BOUNDTYPE_LOWER}, var.getLb(scip));
          }
-         if(var.negative)
+         if( var.negative)
          {
             SCIPinfoMessage(scip, NULL, "Constrained variable '%s' to be negative only.\n", var.name.c_str() );
             boundMap.emplace(sdscip::SDproblemStructureInterface::BoundKey{var.idx, SCIP_BOUNDTYPE_UPPER}, var.getUb(scip));
@@ -912,7 +912,7 @@ SCIP_DECL_READERREAD(sdo::ReaderSDO::scip_read)
 
       SCIP_Bool printSummary(true);
       SCIP_CALL( SCIPgetBoolParam(scip ,"reading/sdoreader/printSummary", &printSummary) );
-      if (printSummary)
+      if( printSummary)
       {
          SCIP_CALL( SDprintStructureSummary(scip) );
       }
