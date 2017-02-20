@@ -175,8 +175,8 @@ public:
 
       SCIPaddStringParam(scip,
              "propagating/obra/outFile",
-             "Filename of cip file to write to after propagation",
-             &outFile_, FALSE, "obra_finish", NULL, NULL);
+             "Prefix for cip files written during propagation",
+             &outFile_, FALSE, "obra", NULL, NULL);
 
       SCIPaddStringParam(scip,
              "propagating/obra/outDir",
@@ -195,7 +195,7 @@ public:
 
       SCIPaddIntParam(scip,
              "propagating/obra/writeFreq",
-             "(Problem) Time Intervals in which to write the problem during propagation",
+             "(Problem) Time Intervals in which to write the problem before propagating to time",
              &writeFreq_, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
       SCIPaddIntParam(scip,
@@ -215,7 +215,7 @@ public:
 
       SCIPaddBoolParam(scip,
              "propagating/obra/writeSubscips",
-             "Write subscips to a file (overwrites on every solve)",
+             "Write original subscips to a file before solving a pattern",
              &writeSubscips_, FALSE, FALSE, NULL, NULL);
 
       /* Define parameters for settings of the subscip */
