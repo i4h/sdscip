@@ -156,6 +156,7 @@ public:
    void next();
    void toString() const;
    std::string confString() const;
+   std::string nConfString() const;
    void ensureValidPattern();
    void updateIsCut();
    bool isCut();

@@ -509,8 +509,8 @@ void PropagationPattern::toString() const {
    std::cout << std::endl << std::flush;
 
    if (configurationLoaded_)
-	   std::cout << "  Loaded configuration "<< this->confString() << std::endl << std::flush;
-
+	   std::cout << "  Loaded configuration "<< this->confString() << "(" <<
+	   currentTime_ << "_pattern_" << this->identifier_ << "_" << this->currentConfiguration_ << ")" << std::endl << std::flush;
 }
 
 std::string PropagationPattern::confString() const
@@ -529,6 +529,14 @@ std::string PropagationPattern::confString() const
 	std::string result(oss.str());
 	std::replace( result.begin(), result.end(), '-', 'm'); /* the '-' in a constraint name is not compatible with gams */
 	return result;
+}
+
+std::string PropagationPattern::nConfString() const
+{
+	assert(configurationLoaded_);
+	std::ostringstream oss;
+   oss << currentTime_ << "_pattern_" << this->identifier_ << "_" << this->currentConfiguration_ ;
+	return oss.str();
 }
 
 int PropagationPattern::getCurrentDim()
@@ -658,8 +666,8 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	/* Iterate over configurations */
 	for (this->start(); (this->configurationsLeft() ); this->next() )
 	{
-		SCIPdebugMessage(" Loaded Configuration: %s\n",this->confString().c_str());
-		SCIPinfoMessage(subscip_, NULL, " Loaded Configuration: %s\n",this->confString().c_str());
+		SCIPdebugMessage(" Loaded Configuration: %s (%s)\n",this->confString().c_str(), this->nConfString().c_str());
+		SCIPinfoMessage(subscip_, NULL, "-- Loaded Configuration: %s (%s)\n",this->confString().c_str(), this->nConfString().c_str());
 
 		if (writeSubscips)
 		{
