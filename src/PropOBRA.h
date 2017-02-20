@@ -161,6 +161,12 @@ public:
              "Choose the slope of the cut independent of current bounds",
              &useUnitCuts_, FALSE, TRUE, NULL, NULL);
 
+      SCIPaddBoolParam(scip,
+             "propagating/obra/tryMainSol",
+             "Should we try the best solution form mainscip in subscip",
+             NULL, FALSE, TRUE, NULL, NULL);
+
+
       /* Parameters about output */
       SCIPaddBoolParam(scip,
              "propagating/obra/writeAfterProp",

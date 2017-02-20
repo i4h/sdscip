@@ -647,10 +647,12 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 	int lookback(0);
 	char* paramstr,*paramstr2;
 	SCIP_Bool writeSubscips;
+	SCIP_Bool tryMainSol;
 	SCIP_CALL( SCIPgetIntParam(this->scip_,"propagating/obra/lookback",&lookback));
 	SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
 	SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
 	SCIPgetBoolParam(scip_,"propagating/obra/writeSubscips",&writeSubscips);
+	SCIPgetBoolParam(scip_,"propagating/obra/tryMainSol",&tryMainSol);
 	SCIPdebugMessage("entering solving loop------------------------ \n");
 
 	/* Iterate over configurations */
@@ -681,7 +683,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		SCIPtransformProb(this->subscip_);
 
 		/* Try solution values from main scip in subscip */
-		if (solMap_->size() > 0)
+		if (tryMainSol && solMap_->size() > 0)
 		{
          SCIP_SOL* subscipSol;
          SCIP_CALL(SCIPcreateSol(this->subscip_,&subscipSol,NULL));
