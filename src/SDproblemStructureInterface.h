@@ -138,6 +138,9 @@ public:
    virtual std::vector<std::string> getAlgebraicVarNames();
    virtual std::vector<std::string> getControlVarNames();
 
+   /* Returns a vector of statevarnames, followed by algebraic var names, followed by control varnames */
+   std::vector<std::string> getVarNames();
+
    /* Gets a variable name from varId */
    std::string getVarName(unsigned int varId);
    virtual void setStateVarNames(std::vector<std::string>) {}

@@ -42,8 +42,11 @@
 
 
 #include "SDproblemStructureInterface.h"
-
-//TODO: When everything is implemented, this can be removed
+#include <vector>
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+//TODO: Re-check which includes are not needed
 
 namespace sdscip {
 
@@ -184,6 +187,20 @@ std::vector<std::string> SDproblemStructureInterface::getAlgebraicVarNames()
    //TODO
    SCIPerrorMessage("%s:%s not implemented\n",__FILE__,__func__);
    return std::vector<std::string>();
+}
+
+std::vector<std::string> SDproblemStructureInterface::getVarNames()
+{
+   std::vector<std::string> varNames;
+   auto stateVarNames = getStateVarNames();
+   auto controlVarNames = getControlVarNames();
+   auto algebraicVarNames = getAlgebraicVarNames();
+
+   varNames.insert(std::end(varNames), std::begin(stateVarNames), std::end(stateVarNames));
+   varNames.insert(std::end(varNames), std::begin(controlVarNames), std::end(controlVarNames));
+   varNames.insert(std::end(varNames), std::begin(algebraicVarNames), std::end(algebraicVarNames));
+
+   return varNames;
 }
 
 unsigned int SDproblemStructureInterface::getNStates()

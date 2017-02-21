@@ -570,6 +570,16 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
       sdscip::SDproblemStructureInterface* structure = SDgetStructure(scip);
 
 
+      auto varnames = structure->getVarNames();
+      /* Build char pointer array to point to contents of varnames */
+      const char** varpointers;
+      int nvars = structure->getNStates() + structure->getNControls() + structure->getNAlgebraic();
+      SCIP_CALL( SCIPallocBufferArray(scip, &varpointers, nvars) );
+      for (int i = 0; i < nvars; ++i)
+      {
+         varpointers[i] = varnames[i].c_str();
+      }
+
       SCIPinfoMessage(scip, NULL, "\n=== Printing structure summary ===\n");
       SCIPinfoMessage(scip, NULL, "STATES:   %s (%i)\n",structure->getStateVarList().c_str(), structure->getNStates());
       SCIPinfoMessage(scip, NULL, "CONTROLS: %s (%i)\n",structure->getControlVarList().c_str(), structure->getNControls());
@@ -580,14 +590,15 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
       {
          SCIP_EXPR** xDots = structure->getXdot();
          SCIPinfoMessage(scip, NULL, "xDot[%i]: ", i);
-         SCIPexprPrint(xDots[i], SCIPgetMessagehdlr(scip), NULL, NULL, NULL, NULL);
+
+         SCIPexprPrint(xDots[i], SCIPgetMessagehdlr(scip), NULL, varpointers, NULL, NULL);
          SCIPinfoMessage(scip, NULL, "\n");
       }
       for (int i = 0; i < (int) structure->getNStates(); ++i)
       {
          SCIP_EXPR** xDots = structure->getXdotAlgebraic();
          SCIPinfoMessage(scip, NULL, "xDotA[%i]: ", i);
-         SCIPexprPrint(xDots[i], SCIPgetMessagehdlr(scip), NULL, NULL, NULL, NULL);
+         SCIPexprPrint(xDots[i], SCIPgetMessagehdlr(scip), NULL, varpointers, NULL, NULL);
          SCIPinfoMessage(scip, NULL, "\n");
       }
 
@@ -595,7 +606,7 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
       {
          SCIP_EXPR** algebraic = structure->getAlgebraicExpressions();
          SCIPinfoMessage(scip, NULL, "y[%i] (%s): ",i, structure->getAlgebraicVarNames()[i].c_str());
-         SCIPexprPrint(algebraic[i], SCIPgetMessagehdlr(scip), NULL, NULL, NULL, NULL);
+         SCIPexprPrint(algebraic[i], SCIPgetMessagehdlr(scip), NULL, varpointers, NULL, NULL);
          SCIPinfoMessage(scip, NULL, "\n");
       }
       if( !structure->isXdotContinuous() )
@@ -616,6 +627,8 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
 
       }
       SCIPinfoMessage(scip, NULL, "=== End of structure summary ===\n");
+
+      SCIPfreeBufferArray(scip, &varpointers);
 
    return SCIP_OKAY;
 }
