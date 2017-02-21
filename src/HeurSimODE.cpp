@@ -421,7 +421,11 @@ SCIP_DECL_HEUREXEC(HeurSimODE::scip_exec)
       if (doingFine)
       {
          SCIP_Real obj = SCIPsolGetOrigObj(sol_);
+#ifdef SCIP_DEBUG
+         SCIPtrySol(scip_, sol_, TRUE,  TRUE, TRUE, TRUE, TRUE, &stored);
+#else
          SCIPtrySol(scip_, sol_, FALSE,  TRUE, TRUE, TRUE, TRUE, &stored);
+#endif
          finalizeOutFile(std::string("#") + std::to_string(SCIPclockGetTime(clock)) + std::string(" s"));
          /* Only good reason for infeasible solutions in presolving is existence of path constraints */
          if( !stored && SCIPgetStage(scip)== SCIP_STAGE_PRESOLVING && SCIPgetBestSol(scip_) != NULL  )
