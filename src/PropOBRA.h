@@ -206,7 +206,7 @@ public:
       SCIPaddBoolParam(scip,
              "propagating/obra/writeProgress",
              "Write progress info to a file during propagation",
-             &writeProgress_, FALSE, TRUE, NULL, NULL);
+             &writeProgress_, FALSE, FALSE, NULL, NULL);
 
       SCIPaddStringParam(scip,
              "propagating/obra/progressFile",
