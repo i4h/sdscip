@@ -282,14 +282,6 @@ SCIP_DECL_PROPPRESOL( PropOBRA::scip_presol )
 /** apply one round of obra */
 SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 {
-
-   /* Make sure parameters are the way we want them */
-   {
-      SCIP_Bool val;
-      SCIP_CALL(SCIPgetBoolParam(scip_, "presolving/donotmultaggr", &val));
-      assert(val == TRUE);
-   }
-
    /* Don't run in probing */
    if( SCIPinProbing( scip_ ) )
       return SCIP_OKAY;
