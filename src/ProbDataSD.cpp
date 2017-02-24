@@ -337,24 +337,31 @@ static
 SCIP_DECL_DIALOGEXEC(dialogExecOBRA)
 {  /*lint --e{715}*/
 
+   int oldmaxprerounds;
+   int oldfreq;
+
    /* add your dialog to history of dialogs that have been executed */
    SCIP_CALL( SCIPdialoghdlrAddHistory(dialoghdlr, dialog, NULL, FALSE) );
 
    /* next dialog will be root dialog again */
    *nextdialog = SCIPdialoghdlrGetRoot(dialoghdlr);
 
+   SCIPgetIntParam(scip, "propagating/obra/maxprerounds", &oldmaxprerounds);
+   SCIPgetIntParam(scip, "propagating/obra/freq", &oldfreq);
 
    SCIPsetIntParam(scip, "propagating/obra/maxprerounds", 1);
    SCIPsetIntParam(scip, "propagating/obra/freq", 1);
 
    SCIPpresolve(scip);
 
+   SCIPsetIntParam(scip, "propagating/obra/maxprerounds", oldmaxprerounds);
+   SCIPsetIntParam(scip, "propagating/obra/freq", oldfreq);
+
    SCIPwriteTransProblem(scip, "obra.bnd", "bnd", FALSE);
 
    SCIPinfoMessage(scip, NULL, "\n");
    SCIPinfoMessage(scip, NULL, "OBRA has finished. Final bounds have been saved to the file obra.bnd");
    SCIPinfoMessage(scip, NULL, "\n");
-
 
    return SCIP_OKAY;
 }
