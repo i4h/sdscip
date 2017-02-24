@@ -340,7 +340,6 @@ SCIP_DECL_DIALOGEXEC(dialogExecOBRA)
    /* add your dialog to history of dialogs that have been executed */
    SCIP_CALL( SCIPdialoghdlrAddHistory(dialoghdlr, dialog, NULL, FALSE) );
 
-
    /* next dialog will be root dialog again */
    *nextdialog = SCIPdialoghdlrGetRoot(dialoghdlr);
 
