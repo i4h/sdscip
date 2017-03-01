@@ -797,7 +797,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 				}
 				else
 				{
-				        SCIPdebugMessage("  not optimal\n");
+				   SCIPdebugMessage("  not optimal\n");
 					++stats_.nDirectNonOptimal;
 					std::pair<SDSCIP_PROPDIR, VarPair> boundVar(this->getBoundVar());
 					switch (boundVar.first)
