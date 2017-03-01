@@ -409,6 +409,7 @@ SCIP_RETCODE PropOBRA::prepareConstTimeStatePattern()
    constTimePattern_.setScip(scip_);
    constTimePattern_.setSubscip(subscip_);
    constTimePattern_.setCurrentTime(currentTime_);
+   constTimePattern_.setCancelBound(cancelBound_);
    SCIP_CALL( constTimePattern_.setAddCuts(addCuts_) );
 
    /* Iterate over variables that will create the space of the linear cut */
@@ -441,6 +442,7 @@ SCIP_RETCODE PropOBRA::prepareAlgebraicPattern()
    algebraicPattern_.setSubscip(subscip_);
    algebraicPattern_.setCurrentTime(currentTime_);
 
+   algebraicPattern_.setCancelBound(cancelBound_);
    /* Iterate over algebraic variables and add to pattern */
    for( structure_->startLevelIteration(currentTime_ - 1); structure_->levelsLeft(currentTime_ - 1); structure_->incrementLevel())
    {
@@ -478,6 +480,7 @@ SCIP_RETCODE PropOBRA::prepareControlPattern()
    controlPattern_.setScip(scip_);
    controlPattern_.setSubscip(subscip_);
    controlPattern_.setCurrentTime(currentTime_);
+   controlPattern_.setCancelBound(cancelBound_);
 
 	   SCIPdebugMessage(" Step 8: Propagating bounds to control variables at t=%i\n",currentTime_);
 	   for( structure_->startControlVarIteration(currentTime_ - 1); structure_->controlVarsLeft(currentTime_ - 1);structure_->incrementControlVar() )
@@ -505,6 +508,7 @@ SCIP_RETCODE PropOBRA::prepareMultiTimeStatePattern(SCIP_VAR* lastVar)
    multiTimePattern_.setScip(scip_);
    multiTimePattern_.setSubscip(subscip_);
    multiTimePattern_.setCurrentTime(currentTime_);
+   multiTimePattern_.setCancelBound(cancelBound_);
 
    std::vector<SCIP_VAR*> lastVars(structure_->getDiffConsLastVars(multiTimeCutLookback_));
 
@@ -833,6 +837,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
       SCIP_CALL( prepareAlgebraicPattern());
       SCIP_CALL( algebraicPattern_.setSolMap(solMap_));
       SCIP_CALL( algebraicPattern_.propagate(currentTime_));
+      *boundsDiverge = algebraicPattern_.boundsDiverge_;
       SCIPdebugMessage("#### Done with Step 5\n");
    }
 
@@ -877,6 +882,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
       SCIP_CALL( constTimePattern_.buildHyperCube() );
 
       SCIP_CALL( constTimePattern_.propagate(currentTime_));
+      *boundsDiverge = constTimePattern_.boundsDiverge_;
       SCIPdebugMessage("#### Done with Step 7_1\n");
    } /* Close Step 7_1 */
 
@@ -909,7 +915,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
    /*
     * 8: Propagation of control variables
     */
-   if( propagateControls_ )
+   if( propagateControls_  && !(*boundsDiverge) )
    {
       SCIPdebugMessage("#### Step 8: Propagating bounds to control variables at t=%i\n",currentTime_);
       ConsVarVec::iterator pairIt;
@@ -917,6 +923,7 @@ SCIP_RETCODE PropOBRA::propBoundsAtTwithSubscip( int* nPropagatedVars, int* nchg
       SCIP_CALL( prepareControlPattern());
       SCIP_CALL( controlPattern_.setSolMap(solMap_));
       SCIP_CALL( controlPattern_.propagate(currentTime_));
+      *boundsDiverge = controlPattern_.boundsDiverge_;
       SCIPdebugMessage("#### Done with Step 8\n");
    }
 

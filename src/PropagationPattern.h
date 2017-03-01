@@ -150,6 +150,7 @@ public:
    void setSubscip(SCIP *);
    void setScip(SCIP *);
    void  setCurrentTime(int currentTime);
+   void  setCancelBound(SCIP_Real cancelBound);
    SCIP* getSubscip();
    SCIP* getScip();
    SCIP_RETCODE start();
@@ -176,6 +177,7 @@ public:
    SCIP_RETCODE resetObjVals();
    SCIP_RETCODE buildHyperCube();
    Statistics stats_;
+   SCIP_Bool boundsDiverge_;
 
    char identifier_;
 
@@ -185,6 +187,7 @@ private:
    int currentConfiguration_;
    int currentTime_;
    int totalPatterns_;
+   SCIP_Real cancelBound_;
    sdscip::HyperCube hyperCube_;
    sdscip::Vector subscipSolutionVector_;
    SCIP * subscip_;

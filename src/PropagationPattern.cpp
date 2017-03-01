@@ -62,6 +62,7 @@ PropagationPattern::PropagationPattern() :
    ,cutConf3d_(0)
    ,patternType_(0)
    ,solMap_()
+   ,boundsDiverge_(false)
 {
 	stats_.reset();
 }
@@ -109,6 +110,10 @@ void  PropagationPattern::setCurrentTime(int currentTime)
    currentTime_ = currentTime;
 }
 
+void  PropagationPattern::setCancelBound(SCIP_Real cancelBound)
+{
+   cancelBound_ = cancelBound;
+}
 
 void PropagationPattern::addVar(SCIP_VAR * scipVar, SCIP_VAR * subscipVar)
 {
@@ -649,7 +654,7 @@ SCIP_RETCODE PropagationPattern::updateSubscipSolutionVector() {
 SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 {
 
-	SCIP_Bool boundsDiverge = false;
+	boundsDiverge_ = false;
 
 	/* Get some parameters */
 	int lookback(0);
@@ -727,7 +732,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		/* Evaluate subscip solution */
 		if (SCIPgetStatus(this->subscip_) == SCIP_STATUS_UNBOUNDED)
 		{
-			boundsDiverge = true;
+			boundsDiverge_ = true;
 			SCIPdebugMessage("Set boundsDiverge to true because subproblem was unbounded\n");
 			break;
 		}
@@ -819,6 +824,14 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 				   ,(boundVar.first == SDSCIP_DOWN ? "lb" : "ub")
 				   ,SCIPvarGetName(scipVar), SCIPvarGetLbLocal(scipVar),SCIPvarGetUbLocal(scipVar),newBound );
 
+				if (   (boundVar.first == SDSCIP_UP && SCIPisGE(scip_, newBound, cancelBound_))
+				    || (boundVar.first == SDSCIP_DOWN && SCIPisLE(scip_, newBound, -cancelBound_))
+				    )
+				{
+				   boundsDiverge_ = true;
+				   SCIPinfoMessage(scip_, NULL, "Computed bound of %e violates cancelBounds of %e, stopping propagation\n", newBound, cancelBound_);
+				   break;
+				}
 
 				/* Set the new bound in scip and subscip if it is an improvement */
 				//TODO _SD: Update hyperCube extent of Pattern
@@ -940,7 +953,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 			assert(false);
 		}
 
-		if (boundsDiverge)
+		if (boundsDiverge_)
 		{
 			SCIPdbgMsg("end of pattern loop, boundsDiverge");
 		}
