@@ -738,9 +738,7 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 		}
 		else if (SCIPgetStatus(this->subscip_) == SCIP_STATUS_INFEASIBLE)
 		{
-			boundsDiverge = true;
-			//SCIPprintTransProblem(this->subscip_,NULL,"cip",FALSE);
-			SCIPdebugMessage("Set boundsDiverge to true because subproblem was infeasible\n");
+			SCIPerrorMessage("infeasibility detected in subscip\n");
 			assert(false);
 			break;
 		}
