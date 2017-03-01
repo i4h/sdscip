@@ -46,7 +46,8 @@
 
 
 PropagationPattern::PropagationPattern() :
-   identifier_('n')
+   boundsDiverge_(false)
+   ,identifier_('n')
    ,currentDim_(0)
    ,currentConfiguration_(0)
    ,currentTime_(-1)
@@ -62,7 +63,7 @@ PropagationPattern::PropagationPattern() :
    ,cutConf3d_(0)
    ,patternType_(0)
    ,solMap_()
-   ,boundsDiverge_(false)
+
 {
 	stats_.reset();
 }
@@ -809,6 +810,10 @@ SCIP_RETCODE PropagationPattern::propagate(int currentTime)
 						/* Down means objective = -1 */
 						newBound = -1.0 * SCIPgetDualbound(this->subscip_);
 						break;
+					default:
+					   newBound = 0;
+					   SCIPerrorMessage("unknown case\n");
+					   assert(false);
 					}
 					SCIPdbgMsg("newBound is %1.16e\n",newBound);
 
