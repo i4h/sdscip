@@ -134,7 +134,7 @@ public:
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateControls",
              "Should bounds of control variables be propagated (back) explicitly?",
-             &propagateControls_, FALSE, TRUE, NULL, NULL);
+             &propagateControls_, FALSE, FALSE, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/addCuts",
