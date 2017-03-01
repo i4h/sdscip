@@ -116,6 +116,11 @@ public:
              "Number of historic Constraints to be used in bound propagation (0: conventional bound propagation)",
              &lookback_, FALSE, 5, 0, 1000, NULL, NULL);
 
+      SCIPaddRealParam(scip,
+             "propagating/obra/cancelBound",
+             "Give up obra when a computed bound is outside of [-cancelBound, cancelBound]",
+             &cancelBound_, FALSE, 1e6,-1e20, 1e20, NULL, NULL);
+
       SCIPaddBoolParam(scip,
              "propagating/obra/propagateAlgebraic",
              "Should bounds of algebraic variables be propagated explicitly?",
@@ -328,6 +333,7 @@ private:
    /* Parameters */
    SCIP_Real subscipGapLimit_;
    int lookback_;
+   SCIP_Real cancelBound_;
    int breakTime_;
    SCIP_Real subscipTimeLimit_;
    SCIP_Longint subscipNodeLimit_;
