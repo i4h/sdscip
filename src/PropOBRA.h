@@ -242,7 +242,7 @@ public:
       SCIPaddRealParam(scip,
             "propagating/obra/subscipTimeLimit",
             "Timelimit for the subscips",
-            &subscipTimeLimit_, FALSE, 1e20, 0.0, SCIP_REAL_MAX, NULL, NULL);
+            &subscipTimeLimit_, FALSE, 300, 0.0, SCIP_REAL_MAX, NULL, NULL);
 
       SCIPaddLongintParam(scip,
              "propagating/obra/subscipNodeLimit",
