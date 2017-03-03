@@ -329,12 +329,16 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
          if( writeFreq != -1 && currentTime_ % writeFreq == 0)
          {
             char* paramstr,*paramstr2;
-            std::ostringstream oss;
+            std::ostringstream oss, bndoss;
             SCIPgetStringParam(scip_,"propagating/obra/outFile",&paramstr);
             SCIPgetStringParam(scip_,"propagating/obra/outDir",&paramstr2);
             oss << paramstr2 << paramstr << "_" << lookback_ << "_" << currentTime_ << ".cip";
             SCIPdebugMessage("WRITING transformed problem to file %s at t=%i\n",oss.str().c_str(),currentTime_);
             SCIPwriteTransProblem(scip_, oss.str().c_str(), "cip", false);
+
+            bndoss << paramstr2 << paramstr << "_" << lookback_ << "_" << currentTime_ << ".bnd";
+            SCIPdebugMessage("WRITING bounds to file %s at t=%i\n",bndoss.str().c_str(),currentTime_);
+            SCIPwriteTransProblem(scip_, bndoss.str().c_str(), "bnd", false);
          }
 
          if( boundWriteFreq_!= -1 && currentTime_ % boundWriteFreq_ == 0)
