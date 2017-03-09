@@ -286,12 +286,10 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
    if( SCIPinProbing( scip_ ) )
       return SCIP_OKAY;
 
-   SCIP_CLOCK* propClock;
-
    /* Start timing */
-   SCIP_CALL( SCIPclockCreate(& propClock , SCIP_CLOCKTYPE_DEFAULT) );
-   SCIPclockSetTime(propClock,0);
-   SCIPstartClock(scip_, propClock);
+   SCIP_CALL( SCIPclockCreate(& propClock_ , SCIP_CLOCKTYPE_DEFAULT) );
+   SCIPclockSetTime(propClock_,0);
+   SCIPstartClock(scip_, propClock_);
 
    /* Get parameters on how to run */
    int writeFreq;
@@ -377,10 +375,11 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
          break;
       }
       printProgress();
-      writeProgress(SCIPclockGetTime(propClock));
+      writeProgress(SCIPclockGetTime(propClock_));
    } /* Close iteration over times */
 
-   SCIPclockStop( propClock, scip_->set );
+   SCIPclockStop( propClock_, scip_->set );
+
 
 
 
@@ -395,14 +394,14 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
                                + controlPattern_.stats_.aggCutsSolutionTime;
 
    /* Display the summary of this obra run */
-   printSummary(nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime_, propClock);
-   closeProgressFile(SCIPclockGetTime(propClock));
+   printSummary(nSubscips, aggSolvingTime, addCuts, addMultiTimeCuts, breakTime_, propClock_);
+   closeProgressFile(SCIPclockGetTime(propClock_));
 
    SCIP_CALL( writeAfterProp(breakTime_) );
 
    SCIP_CALL( writeCuts() );
 
-   SCIPclockFree( &propClock );
+   SCIPclockFree( &propClock_ );
 
    *result = SCIP_DIDNOTFIND;
    return SCIP_OKAY;

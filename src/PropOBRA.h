@@ -361,6 +361,7 @@ private:
    SCIP_Bool useUnitCuts_;
    SCIP_Bool reoptimize_;
 
+   SCIP_CLOCK* propClock_;
 
 };
 
