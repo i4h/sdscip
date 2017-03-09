@@ -237,7 +237,7 @@ public:
       SCIPaddRealParam(scip,
             "propagating/obra/subscipGapLimit",
             "Gap Limit for the subscips",
-            &subscipGapLimit_, FALSE, 0.01, 0.0, SCIP_REAL_MAX, NULL, NULL);
+            &subscipGapLimit_, FALSE, 0.001, 0.0, SCIP_REAL_MAX, NULL, NULL);
 
       SCIPaddRealParam(scip,
             "propagating/obra/subscipTimeLimit",
