@@ -247,7 +247,7 @@ public:
       SCIPaddLongintParam(scip,
              "propagating/obra/subscipNodeLimit",
              "Node Limit for subscips, -1: no limit",
-             &subscipNodeLimit_, FALSE, 10000, -1, INT_MAX, NULL, NULL);
+             &subscipNodeLimit_, FALSE, -1, -1, INT_MAX, NULL, NULL);
 
       SCIPaddBoolParam(scip,
              "propagating/obra/subscipWriteLogs",
