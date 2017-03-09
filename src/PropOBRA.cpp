@@ -170,7 +170,7 @@ SCIP_RETCODE PropOBRA::printSummary( int nSubscips, SCIP_Real aggSolvingTime, SC
    SCIPinfoMessage(scip_,NULL,"| Number of considered bounds:     %-4i                                 |\n",constTimePattern_.stats_.nDirectBounds);
    SCIPinfoMessage(scip_,NULL,"| Number of changed bounds:        %-4i                                 |\n",constTimePattern_.stats_.nUpdatedBounds);
    SCIPinfoMessage(scip_,NULL,"| Updated Bounds [percent]:        %-3.2f                               |\n",constTimePattern_.stats_.nUpdatedBounds == 0 ? 0 : (double) constTimePattern_.stats_.nDirectBounds / (double) constTimePattern_.stats_.nUpdatedBounds * 100);
-   SCIPinfoMessage(scip_,NULL,"| Optimal Bounds [percent]:        %-3.2f                               |\n",(double) constTimePattern_.stats_.nDirectBounds / (double) constTimePattern_.stats_.nDirectOptimal * 100);
+   SCIPinfoMessage(scip_,NULL,"| Optimal Bounds [percent]:        %-3.2f                               |\n",(double) constTimePattern_.stats_.nDirectOptimal / (double) constTimePattern_.stats_.nDirectBounds * 100);
    SCIPinfoMessage(scip_,NULL,"| Aggregated Remaining Bounds:     %1.5e                          |\n",constTimePattern_.stats_.aggRemainingBounds);
    SCIPinfoMessage(scip_,NULL,"| Average Remaining Bounds:        %1.5e                          |\n",constTimePattern_.stats_.aggRemainingBounds / constTimePattern_.stats_.nDirectBounds / 2);
    SCIPinfoMessage(scip_,NULL,"| Aggregated Bound Reduction:      %1.5e                          |\n",constTimePattern_.stats_.aggBoundReduction);
@@ -382,7 +382,13 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
 
    SCIPclockStop( propClock, scip_->set );
 
-   int nSubscips = constTimePattern_.stats_.nSubscips + constTimePattern_.stats_.nSubscips;
+
+
+   int nSubscips =    constTimePattern_.stats_.nSubscips
+                     + multiTimePattern_.stats_.nSubscips
+                     + algebraicPattern_.stats_.nSubscips
+                     + controlPattern_.stats_.nSubscips;
+
    SCIP_Real aggSolvingTime =    constTimePattern_.stats_.aggSolutionTime
                                + multiTimePattern_.stats_.aggSolutionTime
                                + algebraicPattern_.stats_.aggSolutionTime
