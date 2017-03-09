@@ -100,6 +100,7 @@ public:
       ,constTimePattern_()
       ,algebraicPattern_()
       ,multiTimePattern_(1)
+      ,nSubscipsPerTime_(0)
    {
 
 
@@ -244,6 +245,11 @@ public:
             "Timelimit for the subscips",
             &subscipTimeLimit_, FALSE, 100, 0.0, SCIP_REAL_MAX, NULL, NULL);
 
+      SCIPaddRealParam(scip,
+            "propagating/obra/timeLimit",
+            "Timelimit for one obra run (enforced by successively updating setting subscip timelimits)",
+            &timeLimit_, FALSE, 3600, 0.0, SCIP_REAL_MAX, NULL, NULL);
+
       SCIPaddLongintParam(scip,
              "propagating/obra/subscipNodeLimit",
              "Node Limit for subscips, -1: no limit",
@@ -336,6 +342,7 @@ private:
    SCIP_Real cancelBound_;
    int breakTime_;
    SCIP_Real subscipTimeLimit_;
+   SCIP_Real timeLimit_;
    SCIP_Longint subscipNodeLimit_;
    SCIP_Bool subscipWriteLogs_;
    SCIP_Bool subscipMute_;
@@ -360,7 +367,7 @@ private:
    int multiTimeCutLookback_;
    SCIP_Bool useUnitCuts_;
    SCIP_Bool reoptimize_;
-
+   int nSubscipsPerTime_;
    SCIP_CLOCK* propClock_;
 
 };

@@ -376,6 +376,16 @@ SCIP_RETCODE PropOBRA::applyOBRA(SCIP_RESULT* result)
       }
       printProgress();
       writeProgress(SCIPclockGetTime(propClock_));
+
+      if (currentTime_ == 1 )
+      {
+         nSubscipsPerTime_ = constTimePattern_.stats_.nSubscips
+                        + multiTimePattern_.stats_.nSubscips
+                        + algebraicPattern_.stats_.nSubscips
+                        + controlPattern_.stats_.nSubscips;
+         SCIPdbgMsg("nSubscipsPerTime: %i\n", nSubscipsPerTime_);
+      }
+
    } /* Close iteration over times */
 
    SCIPclockStop( propClock_, scip_->set );
@@ -582,22 +592,8 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
    /* --- Configure subscip from obra parameters  ---- */
 
    /* Set reoptimization depending on obra parameters */
-   if( reoptimize_ == TRUE )
-   {
-      SCIP_CALL( SCIPsetBoolParam(subscip_, "reoptimization/enable", TRUE));
-   }
-
-   /* Set timelimit depending on obra parameters */
-   SCIP_CALL( SCIPsetRealParam(subscip_,"limits/time",subscipTimeLimit_) );
-
-   /* Set nodelimit depending on obra parameters*/
-   SCIP_CALL( SCIPsetLongintParam(subscip_,"limits/nodes",subscipNodeLimit_) );
-
-   /* Set gaplimit depending on obra parameters*/
-   SCIP_CALL( SCIPsetRealParam(subscip_,"limits/gap",subscipGapLimit_) );
 
    /* Set logfile or mute subscips depending on obra parameters*/
-
    if( subscipWriteLogs_)
    {
       std::ostringstream oss;
@@ -609,6 +605,31 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
       SCIPsetMessagehdlrQuiet(subscip_, TRUE);
       //SCIP_CALL( SCIPsetIntParam(subscip_, "display/verblevel", 0) );
    }
+
+   if( reoptimize_ == TRUE )
+   {
+      SCIP_CALL( SCIPsetBoolParam(subscip_, "reoptimization/enable", TRUE));
+   }
+
+   /* Compute remainig time from global time limit */
+
+   SCIP_Real timeLeft = timeLimit_ - SCIPclockGetTime(propClock_);
+   SCIP_Real stepsLeft = structure_->getLastTime() - structure_->getCurrentTime();
+   SCIP_Real timePerSubscipLeft = nSubscipsPerTime_ == 0 ? 1e20 : timeLeft / (nSubscipsPerTime_ * stepsLeft);
+   SCIP_Real varianceFactor = 5.0;
+   SCIPdebugMessage("total time left: %f, => time per subscip: %f\n", timeLeft, timePerSubscipLeft);
+   SCIP_Real applicableSubscipTimeLimit = std::min(subscipTimeLimit_, varianceFactor * timePerSubscipLeft);
+   SCIPinfoMessage(subscip_, NULL, "- Current subscip time limit: %f\n", applicableSubscipTimeLimit);
+
+   /* Set timelimit depending on obra parameters */
+   SCIP_CALL( SCIPsetRealParam(subscip_,"limits/time",applicableSubscipTimeLimit) );
+
+   /* Set nodelimit depending on obra parameters*/
+   SCIP_CALL( SCIPsetLongintParam(subscip_,"limits/nodes",subscipNodeLimit_) );
+
+   /* Set gaplimit depending on obra parameters*/
+   SCIP_CALL( SCIPsetRealParam(subscip_,"limits/gap",subscipGapLimit_) );
+
 
    /* Create and allocate consmap and varmap
     * The varmap will map transformed variables of the main scip to original variables of the subscip
