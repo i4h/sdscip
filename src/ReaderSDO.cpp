@@ -260,11 +260,16 @@ SCIP_DECL_READERREAD(sdo::ReaderSDO::scip_read)
 
       //get start, end time, and size of time step
       const SCIP_Real initial_time = exprGraph.getNode(sdo::Symbol("INITIAL TIME"))->value;
-      const SCIP_Real final_time = exprGraph.getNode(sdo::Symbol("FINAL TIME"))->value;
       const SCIP_Real time_step = exprGraph.getNode(sdo::Symbol("TIME STEP"))->value;
-      //compute number of timesteps
-      const int time_step_count = (final_time - initial_time) / time_step  + 1;
+      //get final time from problem or stepOverriden
+      const SCIP_Real final_time = stepOverride == -1
+                                 ? exprGraph.getNode(sdo::Symbol("FINAL TIME"))->value
+                                 : initial_time + (stepOverride - 1) * time_step;
 
+      //compute number of timesteps or use stepOverride value
+      const int time_step_count = stepOverride == -1
+                              ? (final_time - initial_time) / time_step  + 1
+                              : stepOverride;
       //set up class to translate expressions in the expression graph of the mdl-file
       //into expressions of scip
       MdlExpressionTranslator expr_translator(scip, exprGraph, lkpMap);

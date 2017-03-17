@@ -57,6 +57,7 @@ public:
      SCIP_Bool isolatelookups;
      SCIP_Bool ratealgebraic;
      int multistep;
+     int stepOverride;
      int nsinglesteps;
      SCIP_Real lookupMaxRelErr;
      SCIP_Real lookupAproxTol;
@@ -82,6 +83,10 @@ public:
           SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/sdoreader/simplify",
                                               "If true, the expressions will be simplified before they are stored in the prob structure",
                                               &simplify, true, true, nullptr, nullptr ) );
+
+          SCIP_CALL_ABORT( SCIPaddIntParam ( scip,"reading/sdoreader/stepOverride",
+                                              "If this is set to a positive value the number of steps given in the problem will be overriden by the value",
+                                              &stepOverride, false, -1, -1, 1e6, nullptr, nullptr ) );
 
           SCIP_CALL_ABORT( SCIPaddBoolParam ( scip, "reading/sdoreader/isolatelookups",
                                               "If true, the lookups will get a variable for their argument and for their result",
