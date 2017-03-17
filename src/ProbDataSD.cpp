@@ -588,7 +588,7 @@ SCIP_RETCODE SDprintStructureSummary(SCIP* scip) {
       SCIPinfoMessage(scip, NULL, "STATES:   %s (%i)\n",structure->getStateVarList().c_str(), structure->getNStates());
       SCIPinfoMessage(scip, NULL, "CONTROLS: %s (%i)\n",structure->getControlVarList().c_str(), structure->getNControls());
       SCIPinfoMessage(scip, NULL, "ALGEBRAIC: %s (%i)\n",structure->getAlgebraicVarList().c_str(), structure->getNAlgebraic());
-      SCIPinfoMessage(scip, NULL, "TIME:     %f -> %f (%i Steps) \n",structure->getTinit(), structure->getTfinal(), structure->getLastTime());
+      SCIPinfoMessage(scip, NULL, "TIME:     %f -> %f (%i Steps) \n",structure->getTinit(), structure->getTfinal(), structure->getLastTime() + 1);
       SCIPinfoMessage(scip, NULL, "SCHEME:   %s \n",discretization);
       for (int i = 0; i < (int) structure->getNStates(); ++i)
       {
