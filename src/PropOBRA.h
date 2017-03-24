@@ -100,9 +100,13 @@ public:
       ,constTimePattern_()
       ,algebraicPattern_()
       ,multiTimePattern_(1)
+      ,cutFile_(NULL)
+      ,outFile_(NULL)
+      ,outDir_(NULL)
+
+      ,progressFile_(NULL)
       ,nSubscipsPerTime_(0)
    {
-
 
       scip_ = scip;
 
