@@ -615,7 +615,7 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
 
    SCIP_Real timeLeft = timeLimit_ - SCIPclockGetTime(propClock_);
    SCIP_Real stepsLeft = structure_->getLastTime() - structure_->getCurrentTime();
-   SCIP_Real timePerSubscipLeft = nSubscipsPerTime_ == 0 ? 1e20 : timeLeft / (nSubscipsPerTime_ * stepsLeft);
+   SCIP_Real timePerSubscipLeft = nSubscipsPerTime_ == 0 ? 1e20 : timeLeft / (nSubscipsPerTime_ * (stepsLeft + 1 ));
    SCIP_Real varianceFactor = 5.0;
    SCIPdebugMessage("total time left: %f, => time per subscip: %f\n", timeLeft, timePerSubscipLeft);
    SCIP_Real applicableSubscipTimeLimit = std::min(subscipTimeLimit_, varianceFactor * timePerSubscipLeft);
