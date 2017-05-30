@@ -234,23 +234,25 @@ bool PropagationPattern::fetchPattern(int ndim)
 			 break;
 
     	 case 2:
-    		 /* Direct bounds and corners */
+    		 /* Direct bounds  */
 			 { static const double arr[] = { 0, 0, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0, 1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,-1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0, 0,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 1, 0, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = {-1, 0, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+
+			 /* Corners */
 			 { static const double arr[] = {-1,-1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = { 1,-1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = { 1, 1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = {-1, 1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 
-			 { static const double arr[] = { 0, 1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = {-1, 1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = {-1,-1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = { 1,-1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = { 0,-1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 
 			 { static const double arr[] = { 1, 1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = { 0, 0,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = { 1, 0, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = {-1, 0, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 
 			 /* Sides */
 			 { static const double arr[] = { 0, 1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
