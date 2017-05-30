@@ -175,13 +175,9 @@ bool PropagationPattern::fetchPattern(int ndim)
       case 2:
       {
 
-    	 if (patternType_ == 0)
+    	 if (patternType_ == 1)
     	 {
-			 { static const double arr[] = { 0, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = { 1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = { 0,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-			 { static const double arr[] = {-1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
-
+    		 /* multitime cuts */
 			 { static const double arr[] = { 1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = { 1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = {-1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
@@ -189,6 +185,12 @@ bool PropagationPattern::fetchPattern(int ndim)
     	 }
     	 else
     	 {
+    		 /* state space cuts */
+			 { static const double arr[] = { 0, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = { 0,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+			 { static const double arr[] = {-1, 0}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
+
 			 { static const double arr[] = { 1, 1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = { 1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
 			 { static const double arr[] = {-1,-1}; pattern_[ndim].push_back(ObjectiveValuesVec (arr, arr + sizeof(arr) / sizeof(arr[0]) ) ); }
