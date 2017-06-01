@@ -155,9 +155,7 @@ void SBrateEvaluator::applyEnclosure(int state, SCIP_BOUNDTYPE boundType, const 
       int state = it->first.first;
       SCIP_BOUNDTYPE type = it->first.second;
       SCIP_Real bound = it->second;
-      //SCIPdbgMsg("    applying bound for state %i of type %i = %f to current interval [%f, %f]\n", state, type, it->second, varValues[state].inf, varValues[state].sup);
-      /* If [v,w] \cap enclosure is empty, we set v := \gamma = w
-       * which is equivalent to                   inf = \gamma = sup */
+      SCIPdbgMsg("    applying bound for state %i of type %i = %f to current interval [%f, %f]\n", state, type, it->second, varValues[state].inf, varValues[state].sup);
       if (type == SCIP_BOUNDTYPE_LOWER) /* Lower bound */
       {
          /* If [v,w] \cap enclosure is empty, we set v := \gamma = w
@@ -203,6 +201,8 @@ void SBrateEvaluator::applyEnclosure(int state, SCIP_BOUNDTYPE boundType, const 
          assert(varValues[state].inf <= varValues[state].sup);
       }
    }
+
+   /* @todo: Apply polyhedral bounds (cut constraints) from problem structure */
 }
 
 #if 0
@@ -287,8 +287,7 @@ void SBrateEvaluator::applyEnclosure(int state, SCIP_BOUNDTYPE boundType, const 
       }
       ++n;
 #endif
-   /* Apply polyhedral bounds (cut constraints)*/
-   /*@todo*/
+
 
 
 /* Implementation of procedure described in Definition 4 */
