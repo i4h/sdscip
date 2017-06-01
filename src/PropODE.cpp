@@ -285,10 +285,6 @@ SCIP_RETCODE PropODE::prepareOutFile(std::vector<std::string>  stateVarNames)
       SCIPdebugMessage("WRITNG u,v to %s\n", outFileName.str().c_str());
       outFile_ << "#" << std::setw(3) << "t" << "\t";
       for (int i = 0; i < nStates_; ++i)
-         outFile_ << std::setw(8) << "v[" << i << "]" << "\t"
-         << std::setw(8) << "w[" << i << "]" << "\t";
-      outFile_ << std::endl;
-      for (int i = 0; i < nStates_; ++i)
          outFile_ <<  stateVarNames[i] << "_l" << "\t"
          << stateVarNames[i] << "_u" << "\t";
       outFile_ << std::endl;
@@ -298,10 +294,16 @@ SCIP_RETCODE PropODE::prepareOutFile(std::vector<std::string>  stateVarNames)
 
 SCIP_RETCODE PropODE::finalizeOutFile(std::string message)
 {
+
+	SCIPdbgMsg("finalizing outfile with message %s\n",message.c_str());
    if (outFile_.is_open())
    {
       outFile_ << message;
       outFile_.close();
+   }
+   else
+   {
+      SCIPdbgMsg("outfile was already closed");
    }
 
    return SCIP_OKAY;
