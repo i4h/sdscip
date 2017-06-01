@@ -118,9 +118,7 @@ std::vector<SCIP_Interval> SBrateEvaluator::getOmega(int state, SCIP_BOUNDTYPE b
    SCIPdbgMsg("   SBrateEvaluator::getOmega, state=%i, boundType=%i\n", state, (int) boundType);
    std::vector<SCIP_Interval> omega = varValues; /* Copy */
    applyB(state, boundType, omega);
-   //TODO _SD: reenable this
-   //applyEnclosure(state, boundType, stateBounds, omega);
-
+   applyEnclosure(state, boundType, stateBounds, omega);
    return omega;
 }
 
@@ -146,8 +144,6 @@ void SBrateEvaluator::applyB(int state, SCIP_BOUNDTYPE boundType, std::vector<SC
       varValues[state].inf = varValues[state].sup;
 }
 
-
-// @TODO _SD: Why is this no longer needed? What code replaces this?
 void SBrateEvaluator::applyEnclosure(int state, SCIP_BOUNDTYPE boundType, const BoundMap& stateBounds, std::vector<SCIP_Interval>& varValues)
 {
    //SCIPdbgMsg("entered applyEnclosure\n");
