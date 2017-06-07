@@ -361,7 +361,7 @@ void IntervalODEintegrator::step(const BoundMap& startStateBounds, const BoundMa
             SCIPdbgMsg("stage %i, dim %i, contribution to sup is %1.16e, new val %f\n", i, j, row[j] * dtIntermediate_ * kMatrix[j][i].sup, varValues_[i].sup);
          }
 
-         /* This is possible due to numerical difficulties and really bad bounds */
+         /* This is possible due to branching boundchanges, numerical difficulties and really bad bounds */
          if( varValues_[i].inf > varValues_[i].sup)
          {
             std::ostringstream oss;
