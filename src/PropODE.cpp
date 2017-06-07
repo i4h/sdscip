@@ -409,8 +409,11 @@ SCIP_RETCODE PropODE::applyPropODE(SCIP* scip, int *nchgbds, SCIP_RESULT *result
       try {
          integrator.step(oldStateBounds, currentStateBounds, structure->getXdotParams(currentTime - 1) );
       } catch( std::exception &err) {
-         SCIPerrorMessage("%s %s\n","IntervalIntegrator threw Exception:",err.what());
-         return SCIP_ERROR;
+         SCIPwarningMessage(scip,"%s %s\n","IntervalIntegrator threw Exception:",err.what());
+         SCIPdebugMessage("IntervalIntegrator threw exception, giving up\n");
+         infiniteBound = true;
+         doingFine = false;
+         break;
       }
 
       t = integrator.getT();
