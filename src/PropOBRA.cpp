@@ -618,7 +618,7 @@ SCIP_RETCODE PropOBRA::createAndConfigureSubscip()
    SCIP_Real timePerSubscipLeft = nSubscipsPerTime_ == 0 ? 1e20 : timeLeft / (nSubscipsPerTime_ * (stepsLeft + 1 ));
    SCIP_Real varianceFactor = 5.0;
    SCIPdebugMessage("total time left: %f, => time per subscip: %f\n", timeLeft, timePerSubscipLeft);
-   SCIP_Real applicableSubscipTimeLimit = std::min(subscipTimeLimit_, varianceFactor * timePerSubscipLeft);
+   SCIP_Real applicableSubscipTimeLimit = std::max(0.0, std::min(subscipTimeLimit_, varianceFactor * timePerSubscipLeft));
    SCIPinfoMessage(subscip_, NULL, "- Current subscip time limit: %f\n", applicableSubscipTimeLimit);
 
    /* Set timelimit depending on obra parameters */
