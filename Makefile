@@ -172,7 +172,7 @@ VERBOSE = true
 #-----------------------------------------------------------------------------
 #FLAGS         +=    -I /home/bzfvierh/lib/lemon/include -L /home/bzfvierh/lib/lemon/lib -lemon
 FLAGS         +=    -I $(HOME)/lib/lemon/include -L $(HOME)/lib/lemon/lib -I $(HOME)/lib/sdotools/include -lemon -msse4.1 -std=c++11
-FLAGS         +=    -Wno-shadow -fno-sanitize=undefined -fno-omit-frame-pointer 
+FLAGS         +=    -Wno-shadow -fno-omit-frame-pointer 
 LDFLAGS       +=    -lpthread -lboost_regex -lboost_system -lboost_filesystem -lboost_serialization -L$(HOME)/lib/sdotools/lib -lsdo -lcpplsq -lboost_locale -lblas -fopenmp
 
 
