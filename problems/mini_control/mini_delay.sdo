@@ -1,3 +1,4 @@
 :model "mini_delay3.mdl"
 :objective "mini_delay.vpd"
 :control "mini_delay.voc"
+:bounds "mini_delay.bnd"
